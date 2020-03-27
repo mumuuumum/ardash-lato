@@ -21,6 +21,7 @@ public class MountainRange extends Group implements StageAccessor{
 	 */
 	private final int numPieces;
 	private final float distanceBetweenPieces = 100f;
+	private final float VARIANCE = 13f;
 
 	public MountainRange(int numPieces) {
 		this.numPieces =numPieces;
@@ -30,11 +31,21 @@ public class MountainRange extends Group implements StageAccessor{
 	public void init() {
 		for (int i=0; i< numPieces; i++)
 		{
-			Image img = new Image(getAssets().getSTexture(SceneTexture.MOUNT));
+			Image img = new Image(getAssets().getSTexture(SceneTexture.MOUNT_PIX));
 			img.rotateBy(45f);
-			img.moveBy(distanceBetweenPieces*i + MathUtils.random(-10f, 10f), MathUtils.random(-10f, 10f));
+			img.scaleBy(128f);
+			img.moveBy(distanceBetweenPieces*i + MathUtils.random(-VARIANCE, VARIANCE), MathUtils.random(-VARIANCE, VARIANCE));
 			addActor(img);
 		}
+		scaleBy(0.5f,0f);  // stretch sidewards: long mountains
+		
+		// add gradiant fog at bottom
+		Image img = new Image(getAssets().getSTexture(SceneTexture.MOUNTAINFOG));
+//		img.rotateBy(45f);
+		img.setSize(128f*numPieces, 128f);
+//		img.moveBy(distanceBetweenPieces*i + MathUtils.random(-VARIANCE, VARIANCE), MathUtils.random(-VARIANCE, VARIANCE));
+		addActor(img);
+		img.setColor(1f, 0.9f, 0.9f, 0.9f);
 	}
 
 	public float getSpeed() {

@@ -25,13 +25,6 @@ public class LatoGame extends Game {
     public void create () {
     	gm = new GameManager(this);
     	setScreen(new LoadingScreen(gm));
-//Asset a;
-////Assets aa;
-////Disposables.gracefullyDisposeOf(disposables);
-//AbstractInternalAsset aia;
-//AssetManager am;
-////am.dis
-////StatefulDisposable sd;
 
         // set up random control points
         int width = Gdx.graphics.getWidth();

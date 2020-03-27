@@ -32,19 +32,28 @@ public class GameScreen implements Screen {
 		
 		stage = new LatoStage(new FitViewport(640, 480), this);
 		stage = new LatoStage(new ExtendViewport(640, 480), this);
-		stage.setDebugAll(true);
+//		stage.setDebugAll(true);
 		Gdx.input.setInputProcessor(stage);
-		
-//		Image img = new Image(am.get(Assets.ball, Texture.class));
-//		Image img = new Image(assets.getSTexture(SceneTexture.MOUNT));
-//		img.rotateBy(45f);
-//		img.moveBy(100, 0);
-//		stage.addActor(img);
-		MountainRange mr = new MountainRange(10);
-		stage.addActor(mr);
-		mr.init();
-//		mr.moveBy(400, 0);
-		mr.setSpeed(20f);
+
+		for (int i = 0; i<4 ; i++)
+		{
+			MountainRange mr = new MountainRange(10);
+			stage.addActor(mr);
+			mr.init();
+			mr.moveBy(50, 60);
+			mr.setSpeed(20f);
+			
+			// fog layer
+			Image fog = new Image(assets.getSTexture(SceneTexture.FOG_PIX));
+			fog.setSize(2048, 2048); // TODO reduce to display size
+			stage.addActor(fog);
+			fog.setColor(1f, 0.9f, 0.9f, 0.125f);
+			
+			// range offset
+			mr.moveBy(-60f*(i+1), -30f*i);
+			mr.setSpeed((i*i+1)*0.9f);
+		}
+
 	}
 
 	@Override
