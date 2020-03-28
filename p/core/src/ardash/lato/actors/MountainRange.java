@@ -18,11 +18,11 @@ public class MountainRange extends Group implements StageAccessor{
 	private float speed = 0f;
 	
 	/**
-	 * numberof mountains in the mountain range
+	 * number of mountains in the mountain range
 	 */
 	private final int numPieces;
 	private final float MOUNT_SIZE = 22f;
-	private final float distanceBetweenPieces = 18f;
+	private final float distanceBetweenPieces = 17f;
 	private final float VARIANCE = 5f;
 
 	public MountainRange(int numPieces) {
