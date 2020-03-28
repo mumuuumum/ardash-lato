@@ -47,6 +47,22 @@ public class LatoStage extends Stage {
 				cam.zoom =0f;
 			}
 		}
+		if (Gdx.input.isKeyPressed(Keys.LEFT))
+		{
+			cam.translate(-1.1f, 0);
+		}
+		if (Gdx.input.isKeyPressed(Keys.RIGHT))
+		{
+			cam.translate(1.1f, 0);
+		}
+		if (Gdx.input.isKeyPressed(Keys.UP))
+		{
+			cam.translate(0, 1.1f);
+		}
+		if (Gdx.input.isKeyPressed(Keys.DOWN))
+		{
+			cam.translate(0, -1.1f);
+		}
 	}
 
 	@Override

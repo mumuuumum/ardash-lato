@@ -1,23 +1,28 @@
 package ardash.lato.actors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.CatmullRomSpline;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.utils.Collections;
 import com.badlogic.gdx.utils.Disposable;
+
+import ardash.lato.GameScreen;
+import ardash.lato.terrain.Downer;
 
 public class WaveDrawer extends Actor implements Disposable {
 
 	private ShapeRenderer sr;
 	private CatmullRomSpline<Vector2> path1;
 	Vector2[] controlPoints;
+	ArrayList<Vector2> cpList;
+	List<Downer> terrainSegmentList;
 
 	// create vectors to store start and end points of this section of the curve
 	Vector2 st = new Vector2();
@@ -36,6 +41,9 @@ public class WaveDrawer extends Actor implements Disposable {
 		int height = Gdx.graphics.getHeight();
 		int points = 8;
 		controlPoints = new Vector2[points];
+		cpList = new ArrayList<Vector2>();
+		terrainSegmentList = new ArrayList<Downer>();
+		terrainSegmentList.add(new Downer()); // TODO init stating area of terrain
 		for (int i = 0; i < points; i++) {
 			int x = (int) (Math.random() * width);
 			int y = (int) (Math.random() * height);
@@ -83,7 +91,7 @@ public class WaveDrawer extends Actor implements Disposable {
 		sr.setColor(getColor());
 		sr.setProjectionMatrix(batch.getProjectionMatrix());
 
-		final int fragments = 200;
+		final int fragments = 400;
 		final float fragmentLength = 1 / (float) fragments;
 		float lastEnd = fragmentLength;
 		path1.valueAt(st, 0); // get first position
@@ -105,11 +113,11 @@ public class WaveDrawer extends Actor implements Disposable {
 			lastEnd += fragmentLength;
 		}
 
-		sr.setColor(Color.LIME);
 		// draw control points
-		for (Vector2 v : controlPoints) {
-			sr.line(v.x, v.y, v.x + 1, v.y + 1);
-		}
+//		sr.setColor(Color.LIME);
+//		for (Vector2 v : controlPoints) {
+//			sr.line(v.x, v.y, v.x + 1, v.y + 1);
+//		}
 
 		sr.end();
 
@@ -120,24 +128,86 @@ public class WaveDrawer extends Actor implements Disposable {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		updateControlPoints();
+		updateTerrainSegments();
 		moveBy(-0.1f, 0f); // TODO add speed
 	}
 
-	private void updateControlPoints() {
+	private void updateTerrainSegments() {
 		final float currentX = getX();
 		System.out.println("terrain x: " + currentX);
 		System.out.println("terrain cp1: " + controlPoints[1]);
 
-		// check if the first 2 control points are beyond X
-		if (controlPoints[1].x+currentX < -5f) {
+		// check if last available control point is before max required X terrain
+		final Downer lastSeg = terrainSegmentList.get(terrainSegmentList.size()-1);
+		if (lastSeg.last().x+currentX < GameScreen.MAX_WORLD_WIDTH)
+		{
+			// we need a new segment
+			Downer ts = new Downer();
+
+			// the the TerrainSegment is still in relative coords, the coords of the last point must be added to it
+			for (Vector2 v : ts.getPoints()) {
+				v.add(lastSeg.last()); // add last point of last segment
+			}
+			
+			// now it can be appended
+			terrainSegmentList.add(ts);
+			
+			// now update the control point list
+			updateControlPoints();
+		}
+		
+		// check if a segment is way in front of 0 so we don't need it any more (won't be rendered any more)
+		final Downer firstSeg = terrainSegmentList.get(0);
+		if (firstSeg.last().x+currentX < -5f)
+		{
+			terrainSegmentList.remove(0);
+			updateControlPoints();
+		}		
+	}
+
+	private void updateControlPoints() {
+		ArrayList<Vector2> tmpList = new ArrayList<Vector2>();
+		for (Downer t : terrainSegmentList) {
+			for (Vector2 v : t.getPoints()) {
+				tmpList.add(v);
+			}
+		}
+		controlPoints = new Vector2[tmpList.size()];
+		tmpList.toArray(controlPoints);
+		path1 = new CatmullRomSpline<Vector2>(controlPoints, false);
+	}
+
+	private void updateControlPoints2() {
+		final float currentX = getX();
+		System.out.println("terrain x: " + currentX);
+		System.out.println("terrain cp1: " + controlPoints[1]);
+
+		// check if the last control point is less than required terrain
+		if (controlPoints[controlPoints.length-1].x+currentX < GameScreen.MAX_WORLD_WIDTH) {
 			// shift array left
-			for (int i = 1; i < controlPoints.length; i++) {
-				controlPoints[i-1].set(controlPoints[i]);
+//			for (int i = 1; i < controlPoints.length; i++) {
+//				controlPoints[i-1].set(controlPoints[i]);
+//			}
+			
+			// get new TerrainSegment
+			Downer ts = new Downer();
+			cpList.clear();
+			java.util.Collections.addAll(cpList, controlPoints);
+			cpList.remove(0);
+			final int oldLength = cpList.size();
+			cpList.addAll(ts.getPoints());
+			controlPoints = new Vector2[cpList.size()];
+			cpList.toArray(controlPoints);
+			
+			// the the TerrainSegment was appended but is still in relative coords, the coords of the last point must be added to it
+			
+			for (int i = oldLength; i<controlPoints.length; i++ )
+			{
+				controlPoints[i].add(controlPoints[oldLength-1]);
 			}
 			
 			// add new point in the end
-			controlPoints[controlPoints.length-1].set(controlPoints[controlPoints.length-2].x+5f, controlPoints[controlPoints.length-2].y+MathUtils.random(-5f,5f));
+//			controlPoints[controlPoints.length-1].set(controlPoints[controlPoints.length-2].x+5f, controlPoints[controlPoints.length-2].y+MathUtils.random(-5f,5f));
 			
 			path1 = new CatmullRomSpline<Vector2>(controlPoints, false);
 		}
