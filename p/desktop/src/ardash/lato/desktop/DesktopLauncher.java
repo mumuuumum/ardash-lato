@@ -10,8 +10,20 @@ import ardash.lato.LatoGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 1280; // PHONE SIZE (Ifor screenshots)
-		config.height = 720; // PHONE SIZE
+		// 16/9 = 1.77
+		// 19/9 = 2.1111
+		config.width = 480; // MDPI 1.33
+		config.height = 360; // MDPI
+//		config.width = 800; // HDPI 1.66
+//		config.height = 480; // HDPI
+		config.width = 1280; // XHDPI 1.77
+		config.height = 720; // XHDPI
+//		config.width = 1920/2; // XXHDPI 1.77
+//		config.height = 1080/2; // XXHDPI
+//		config.width = 2560/2; // XXXHDPI 1.77
+//		config.height = 1440/2; // XXXHDPI
+//		config.width = 3040/2; // 19/9 -> 2.11 max expectable screen aspect ratio
+//		config.height = 1440/2; // XXXHDPI
 		
 
 		
