@@ -2,6 +2,7 @@ package ardash.lato;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -10,7 +11,9 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 import ardash.lato.Assets.SceneTexture;
+import ardash.lato.actors.HorizontalLine;
 import ardash.lato.actors.MountainRange;
+import ardash.lato.actors.WaveDrawer;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
 public class GameScreen implements Screen {
@@ -70,6 +73,10 @@ public class GameScreen implements Screen {
 			// the collection a bit higher
 			mr.moveBy(0,10f);
 		}
+		
+		// test to add shaperenderers
+		WaveDrawer hl = new WaveDrawer(Color.WHITE);
+		stage.addActor(hl);
 
 	}
 

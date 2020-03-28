@@ -26,34 +26,34 @@ public class LatoGame extends Game {
     	gm = new GameManager(this);
     	setScreen(new LoadingScreen(gm));
 
-        // set up random control points
-        int width = Gdx.graphics.getWidth();
-        int height = Gdx.graphics.getHeight();
-        int points = 8;
-        Vector2[] controlPoints = new Vector2[points];
-        for (int i = 0; i < points; i++) {
-           int x = (int) (Math.random() * width) ;
-           int y = (int) (Math.random() * height);
-           Vector2 point = new Vector2(x, y);
-           controlPoints[i] = point;
-        }
-        
-        controlPoints[0].set(50, 400);
-        controlPoints[1].set(100, 350);
-        controlPoints[2].set(150, 360);
-        controlPoints[3].set(200, 300);
-        controlPoints[4].set(250, 310);
-        controlPoints[5].set(300, 250);
-        controlPoints[6].set(350, 260);
-        controlPoints[7].set(400, 200);
-
-        // set up the curves
-        path1 = new CatmullRomSpline<Vector2>(controlPoints, false);
-        path2 = new CatmullRomSpline<Vector2>(controlPoints, false);
-
-        // setup ShapeRenderer
-        sr = new ShapeRenderer();
-        sr.setAutoShapeType(true);
+//        // set up random control points
+//        int width = Gdx.graphics.getWidth();
+//        int height = Gdx.graphics.getHeight();
+//        int points = 8;
+//        Vector2[] controlPoints = new Vector2[points];
+//        for (int i = 0; i < points; i++) {
+//           int x = (int) (Math.random() * width) ;
+//           int y = (int) (Math.random() * height);
+//           Vector2 point = new Vector2(x, y);
+//           controlPoints[i] = point;
+//        }
+//        
+//        controlPoints[0].set(50, 400);
+//        controlPoints[1].set(100, 350);
+//        controlPoints[2].set(150, 360);
+//        controlPoints[3].set(200, 300);
+//        controlPoints[4].set(250, 310);
+//        controlPoints[5].set(300, 250);
+//        controlPoints[6].set(350, 260);
+//        controlPoints[7].set(400, 200);
+//
+//        // set up the curves
+//        path1 = new CatmullRomSpline<Vector2>(controlPoints, false);
+//        path2 = new CatmullRomSpline<Vector2>(controlPoints, false);
+//
+//        // setup ShapeRenderer
+//        sr = new ShapeRenderer();
+//        sr.setAutoShapeType(true);
     }
 
 

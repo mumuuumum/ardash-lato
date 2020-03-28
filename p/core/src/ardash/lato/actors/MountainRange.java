@@ -11,7 +11,6 @@ import ardash.lato.Assets.SceneTexture;
 
 public class MountainRange extends Group implements StageAccessor{
 
-
 	/**
 	 * speed in units per sec
 	 */
