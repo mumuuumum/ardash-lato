@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
@@ -97,7 +98,8 @@ public class LatoStage extends Stage {
 
 	public static void disposeObject(Object object) {
 		if (object instanceof Disposable) {
-			((Disposable) object).dispose();
+			Disposables.gracefullyDisposeOf((Disposable)object);
+//			((Disposable) object).dispose();
 		}
 	}
 }

@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.CatmullRomSpline;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Disposable;
+import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.lato.GameScreen;
 import ardash.lato.terrain.Downer;
@@ -129,7 +130,7 @@ public class WaveDrawer extends Actor implements Disposable {
 	public void act(float delta) {
 		super.act(delta);
 		updateTerrainSegments();
-		moveBy(-0.1f, 0f); // TODO add speed
+//		moveBy(-0.1f, 0f); // TODO add speed
 	}
 
 	private void updateTerrainSegments() {
@@ -177,43 +178,6 @@ public class WaveDrawer extends Actor implements Disposable {
 		path1 = new CatmullRomSpline<Vector2>(controlPoints, false);
 	}
 
-	private void updateControlPoints2() {
-		final float currentX = getX();
-		System.out.println("terrain x: " + currentX);
-		System.out.println("terrain cp1: " + controlPoints[1]);
-
-		// check if the last control point is less than required terrain
-		if (controlPoints[controlPoints.length-1].x+currentX < GameScreen.MAX_WORLD_WIDTH) {
-			// shift array left
-//			for (int i = 1; i < controlPoints.length; i++) {
-//				controlPoints[i-1].set(controlPoints[i]);
-//			}
-			
-			// get new TerrainSegment
-			Downer ts = new Downer();
-			cpList.clear();
-			java.util.Collections.addAll(cpList, controlPoints);
-			cpList.remove(0);
-			final int oldLength = cpList.size();
-			cpList.addAll(ts.getPoints());
-			controlPoints = new Vector2[cpList.size()];
-			cpList.toArray(controlPoints);
-			
-			// the the TerrainSegment was appended but is still in relative coords, the coords of the last point must be added to it
-			
-			for (int i = oldLength; i<controlPoints.length; i++ )
-			{
-				controlPoints[i].add(controlPoints[oldLength-1]);
-			}
-			
-			// add new point in the end
-//			controlPoints[controlPoints.length-1].set(controlPoints[controlPoints.length-2].x+5f, controlPoints[controlPoints.length-2].y+MathUtils.random(-5f,5f));
-			
-			path1 = new CatmullRomSpline<Vector2>(controlPoints, false);
-		}
-
-	}
-
 	@Override
 	public void moveBy(float x, float y) {
 		super.moveBy(x, y);
@@ -223,6 +187,6 @@ public class WaveDrawer extends Actor implements Disposable {
 
 	@Override
 	public void dispose() {
-		sr.dispose();
+		Disposables.gracefullyDisposeOf(sr);
 	}
 }

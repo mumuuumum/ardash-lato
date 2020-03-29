@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Logger;
 
 import ardash.lato.Assets;
+import ardash.lato.GameScreen;
 import ardash.lato.Assets.SceneTexture;
 
 public class MountainRange extends Group implements StageAccessor{
@@ -20,9 +21,9 @@ public class MountainRange extends Group implements StageAccessor{
 	 * number of mountains in the mountain range
 	 */
 	private final int numPieces;
-	private final float MOUNT_SIZE = 22f;
-	private final float distanceBetweenPieces = 17f;
-	private final float VARIANCE = 5f;
+	public static final float MOUNT_SIZE = GameScreen.WORLD_WIDTH * 0.275f; // 0.275 of WW
+	private final float distanceBetweenPieces = MOUNT_SIZE*0.77f; //0.77 of above
+	private final float VARIANCE = (MOUNT_SIZE + distanceBetweenPieces) / 8; //(avg of 2 val above) / 4
 
 	public MountainRange(int numPieces) {
 		this.numPieces =numPieces;
@@ -34,7 +35,7 @@ public class MountainRange extends Group implements StageAccessor{
 		{
 			Image img = new Image(getAssets().getSTexture(SceneTexture.MOUNT_PIX));
 			img.rotateBy(45f);
-//			img.scaleBy(MOUNT_SIZE);
+			img.rotateBy(MathUtils.random(-2f, 2f));
 			img.setScale(MOUNT_SIZE);
 			img.moveBy(distanceBetweenPieces*i + MathUtils.random(-VARIANCE, VARIANCE), MathUtils.random(-VARIANCE, VARIANCE));
 			addActor(img);

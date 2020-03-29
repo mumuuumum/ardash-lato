@@ -9,18 +9,20 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.lato.Assets.SceneTexture;
 import ardash.lato.actors.HorizontalLine;
 import ardash.lato.actors.MountainRange;
+import ardash.lato.actors.Performer;
 import ardash.lato.actors.WaveDrawer;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
 public class GameScreen implements Screen {
 	
 //	The world adjusted to MDPI/10 , the smallest expectable device.
-	public static float WORLD_WIDTH=80; // visible meters from left to right, with default zoom on smallest display
-	public static float WORLD_HEIGHT=60;
+	public static float WORLD_WIDTH=35.59f; // visible meters from left to right, with default zoom on smallest display
+	public static float WORLD_HEIGHT=26.76f;
 	public static float SNOWBOARD_LENGTH=1.85f; // length of snowboard in meters 
 
 	/**
@@ -32,6 +34,7 @@ public class GameScreen implements Screen {
 	public GameManager gm;
 	public AnnotationAssetManager am;
 	public Assets assets;
+	public LatoStage backStage;
 	public LatoStage stage;
 
 	public GameScreen(GameManager gm) {
@@ -45,30 +48,31 @@ public class GameScreen implements Screen {
 		Texture ball = am.get(Assets.ball); // Assets.ball is a String
 		
 //		stage = new LatoStage(new FitViewport(480, 360), this);
+		backStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), this);
 		stage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), this);
-		CURRENT_WORLD_WIDTH = stage.getViewport().getWorldWidth();
-//		stage.setDebugAll(true);
-		Gdx.input.setInputProcessor(stage);
+		CURRENT_WORLD_WIDTH = backStage.getViewport().getWorldWidth();
+		stage.setDebugAll(true);
+//		Gdx.input.setInputProcessor(backStage);
 
 		for (int i = 0; i<4 ; i++)
 		{
 			MountainRange mr = new MountainRange(10);
-			stage.addActor(mr);
+			backStage.addActor(mr);
 			mr.init();
 //			mr.moveBy(50, 60);
 //			mr.setSpeed(20f);
 			
 			// fog layer
 			Image fog = new Image(assets.getSTexture(SceneTexture.FOG_PIX));
-			fog.setSize(2048, 2048); // TODO reduce to display size
-			stage.addActor(fog);
+			fog.setSize(204, 204); // TODO reduce to display size
+			backStage.addActor(fog);
 //			fog.setColor(1f, 0.9f, 0.9f, 0.125f);
 			fog.setColor(EnvColors.DAY.fog);
 			fog.getColor().a = 0.225f;
 			
 			// range offset
-			mr.moveBy(-20f*(i+1), -4f*i);
-			mr.setSpeed((i*i+1)*0.9f);
+			mr.moveBy(-MountainRange.MOUNT_SIZE*(i+1), -3f*i-4);
+			mr.setSpeed((i*i+1)*0.2f);
 			
 			// the collection a bit higher
 			mr.moveBy(0,10f);
@@ -77,7 +81,15 @@ public class GameScreen implements Screen {
 		// test to add shaperenderers
 		WaveDrawer hl = new WaveDrawer(Color.WHITE);
 		stage.addActor(hl);
-
+		
+		for (int i=0 ; i<25 ; i++)
+		{
+			Performer p = new Performer();
+			stage.addActor(p);
+			p.init();
+//			p.moveBy(20f+(float)i*p.getWidth(), 10f);
+			p.moveBy(i*1.8f, 10f);
+		}
 	}
 
 	@Override
@@ -85,14 +97,20 @@ public class GameScreen implements Screen {
 		//draw something nice to look at
         Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
     	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    	backStage.act(delta);
     	stage.act(delta);
+    	
+    	// move camera before drawing
+//    	stage.getCamera().translate(0.1f, -0.15f, 0);
+    	
+    	backStage.draw();
     	stage.draw();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		stage.getViewport().update(width, height, true);
-		
+		backStage.getViewport().update(width, height, true);
+		stage.getViewport().update(width, height, true);		
 	}
 
 	@Override
@@ -115,8 +133,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		stage.dispose();
-		
+		Disposables.gracefullyDisposeOf(backStage, stage);
 	}
 
 }
