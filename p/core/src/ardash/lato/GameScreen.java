@@ -81,15 +81,15 @@ public class GameScreen implements Screen {
 		// test to add shaperenderers
 		WaveDrawer hl = new WaveDrawer(Color.WHITE);
 		stage.addActor(hl);
+		stage.setWaveDrawer(hl);
 		
-		for (int i=0 ; i<25 ; i++)
-		{
-			Performer p = new Performer();
-			stage.addActor(p);
-			p.init();
-//			p.moveBy(20f+(float)i*p.getWidth(), 10f);
-			p.moveBy(i*1.8f, 10f);
-		}
+		// add performer
+		Performer p = new Performer();
+		stage.addActor(p);
+		p.init();
+//		p.moveBy(4*1.8f, 10f);
+		p.moveBy(8*1.8f, 10f); // tmp becasue no starting groudn yet
+		stage.setPerformer(p); // attach the camera to him
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		backStage.getViewport().update(width, height, true);
-		stage.getViewport().update(width, height, true);		
+		stage.getViewport().update(width, height, false);		
 	}
 
 	@Override

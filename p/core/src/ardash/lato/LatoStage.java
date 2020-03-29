@@ -10,6 +10,8 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
+import ardash.lato.actors.Performer;
+import ardash.lato.actors.WaveDrawer;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
 public class LatoStage extends Stage {
@@ -19,6 +21,8 @@ public class LatoStage extends Stage {
 	public final Assets assets;
 	public final AnnotationAssetManager am;
 	public final GameManager gm;
+	private Performer performer = null;
+	private WaveDrawer waveDrawer = null;
 
 	public LatoStage(Viewport vp, GameScreen gameScreen) {
 		super(vp);
@@ -27,6 +31,7 @@ public class LatoStage extends Stage {
 		this.assets = screen.assets;
 		this.am = screen.am;
 		this.gm = screen.gm;
+		getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false); // override super constructor
 	}
 
 	@Override
@@ -35,6 +40,21 @@ public class LatoStage extends Stage {
 	 */
 	public void draw() {
 		super.draw();
+		
+		// performer has moved, the camera shall follow on the y axis
+		if (performer != null)
+		{
+			System.out.print("cam Y: "+getCamera().position.y);
+			System.out.println(" per Y: "+performer.getY());
+//			getCamera().position.y;
+			getCamera().translate(0, -(getCamera().position.y - performer.getY()), 0);
+			System.out.print("pcam Y: "+getCamera().position.y);
+			System.out.println("p per Y: "+performer.getY());
+//			getCamera().update();
+//			getViewport().apply(false);
+		}
+
+		
 		OrthographicCamera cam = (OrthographicCamera)getCamera();
 		if (Gdx.input.isKeyPressed(Keys.Z))
 		{
@@ -64,6 +84,30 @@ public class LatoStage extends Stage {
 		{
 			cam.translate(0, -1.1f);
 		}
+	}
+	
+	@Override
+	public void act() {
+		super.act();
+		
+	}
+
+	public Performer getPerformer() {
+		return performer;
+	}
+
+	public void setPerformer(Performer performer) {
+		if (this.performer != null)
+			throw new RuntimeException("Performer is already set for this stage.");
+		this.performer = performer;
+	}
+
+	public WaveDrawer getWaveDrawer() {
+		return waveDrawer;
+	}
+
+	public void setWaveDrawer(WaveDrawer waveDrawer) {
+		this.waveDrawer = waveDrawer;
 	}
 
 	@Override

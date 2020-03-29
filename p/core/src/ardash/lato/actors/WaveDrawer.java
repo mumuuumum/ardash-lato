@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.CatmullRomSpline;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Disposable;
@@ -24,6 +25,7 @@ public class WaveDrawer extends Actor implements Disposable {
 	Vector2[] controlPoints;
 	ArrayList<Vector2> cpList;
 	List<Downer> terrainSegmentList;
+	Vector2 tmpVector = new Vector2(); // can be used by one method atomically
 
 	// create vectors to store start and end points of this section of the curve
 	Vector2 st = new Vector2();
@@ -104,10 +106,14 @@ public class WaveDrawer extends Actor implements Disposable {
 			// draw body below curve
 //			sr.line(st.x, st.y, end.x, end.y);
 			sr.set(ShapeType.Filled);
+//			sr.setColor(Color.RED);
 			sr.rect(st.x, st.y, end.x - st.x, -100f);
 
 			// draw the curve
-			sr.line(st.x, st.y, end.x, end.y);
+//			sr.set(ShapeType.Line);
+//			sr.setColor(Color.LIME);
+//			sr.line(st.x, st.y, end.x, end.y);
+			sr.rectLine(st.x, st.y, end.x, end.y, 0.2f);
 
 			// prepare next round
 			st.set(end);
@@ -131,6 +137,43 @@ public class WaveDrawer extends Actor implements Disposable {
 		super.act(delta);
 		updateTerrainSegments();
 //		moveBy(-0.1f, 0f); // TODO add speed
+	}
+	
+	public float getHeightAt(final float x)
+	{
+		float lx = x, ly = 0;
+		float pos = 0.0f; // value between 0 and 1 that indicated the current seeker position
+		float offset = 0.1f; // the value to move next, can be negative to move back
+		
+		while (true)
+		{
+			pos += offset;
+			path1.valueAt(tmpVector, pos);
+			lx = tmpVector.x;
+			ly = tmpVector.y;
+			if (MathUtils.isEqual(lx, x, 0.001f))
+			{
+				return ly;
+			}
+			boolean movingForward = offset >= 0;
+			if (lx>x)
+			{
+				// went too far, go back
+				offset = -1f * Math.abs(offset);
+				// if we just changed direction (moved forward before), reduce stepsize
+				if (movingForward)
+					offset *= 0.1f;
+			}
+			else {
+				// didn't go far enough yet, go forward
+				offset = Math.abs(offset);
+				// if we just changed direction (moved backward before), reduce stepsize
+				if (! movingForward)
+					offset *= 0.1f;
+			}
+		}
+		
+//		return ly;
 	}
 
 	private void updateTerrainSegments() {
