@@ -20,7 +20,7 @@ public class Performer extends Group implements StageAccessor {
 		img.setWidth(PERFORMER_WIDTH);
 		img.setHeight(PERFORMER_WIDTH);
 		addActor(img);
-		
+		setOriginX(PERFORMER_WIDTH/2f);
 	}
 	
 	@Override
@@ -31,6 +31,7 @@ public class Performer extends Group implements StageAccessor {
 		float heightUnderActor = ((LatoStage)getStage()).getWaveDrawer().getHeightAt(getX()+(PERFORMER_WIDTH/2f));
 		float heightOfMe = getY();
 		moveBy(0, - (getY() - heightUnderActor));
+		setRotation( ((LatoStage)getStage()).getWaveDrawer().getAngleAtLatQuery());
 	}
 
 }

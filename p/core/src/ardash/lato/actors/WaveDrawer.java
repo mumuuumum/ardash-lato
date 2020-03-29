@@ -26,6 +26,7 @@ public class WaveDrawer extends Actor implements Disposable {
 	ArrayList<Vector2> cpList;
 	List<Downer> terrainSegmentList;
 	Vector2 tmpVector = new Vector2(); // can be used by one method atomically
+	private float posOfLastQuery;
 
 	// create vectors to store start and end points of this section of the curve
 	Vector2 st = new Vector2();
@@ -153,6 +154,7 @@ public class WaveDrawer extends Actor implements Disposable {
 			ly = tmpVector.y;
 			if (MathUtils.isEqual(lx, x, 0.001f))
 			{
+				posOfLastQuery=pos;
 				return ly;
 			}
 			boolean movingForward = offset >= 0;
@@ -174,6 +176,14 @@ public class WaveDrawer extends Actor implements Disposable {
 		}
 		
 //		return ly;
+	}
+	
+	/**
+	 * for performance reasons this one returns the angle at the x of the last call of getHeightAt(x)
+	 */
+	public float getAngleAtLatQuery() {
+		path1.derivativeAt(tmpVector, posOfLastQuery);
+		return tmpVector.angle();
 	}
 
 	private void updateTerrainSegments() {
