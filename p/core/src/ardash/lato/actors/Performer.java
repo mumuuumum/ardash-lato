@@ -31,7 +31,7 @@ public class Performer extends Group implements StageAccessor {
 		float heightUnderActor = ((LatoStage)getStage()).getWaveDrawer().getHeightAt(getX()+(PERFORMER_WIDTH/2f));
 		float heightOfMe = getY();
 		moveBy(0, - (getY() - heightUnderActor));
-		setRotation( ((LatoStage)getStage()).getWaveDrawer().getAngleAtLatQuery());
+		setRotation( ((LatoStage)getStage()).getWaveDrawer().getAngleAtX(getX()+(PERFORMER_WIDTH/2f)));
 	}
 
 }
