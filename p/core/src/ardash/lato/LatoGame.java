@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.github.czyzby.kiwi.util.gdx.asset.AbstractInternalAsset;
 import com.github.czyzby.kiwi.util.gdx.asset.Asset;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
+import com.github.czyzby.kiwi.util.gdx.scene2d.range.ColorRange;
 
 public class LatoGame extends Game {
 	GameManager gm;
@@ -100,5 +101,5 @@ public class LatoGame extends Game {
     @Override
     public void dispose () {
     	Disposables.gracefullyDisposeOf(gm.am);
-    }
+    	}
 }
