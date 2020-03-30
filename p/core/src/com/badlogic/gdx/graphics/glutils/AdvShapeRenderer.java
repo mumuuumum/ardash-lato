@@ -16,7 +16,7 @@ public class AdvShapeRenderer extends ShapeRenderer {
 	    if (count % 2 != 0)
 	        throw new IllegalArgumentException("Polygons must have an even number of vertices.");
 
-//	    check(getCurrentType(), null, count);
+//	    check(getCurrentType(), null, count);  // TODO shall we make this checked again?
 
 	    final float firstX = vertices[0];
 	    final float firstY = vertices[1];

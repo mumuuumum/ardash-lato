@@ -11,15 +11,6 @@ public class HomeHill extends TerrainSegList {
 		add (new Vector2(0,0), new Vector2(10,3), Interpolation.smooth);
 		add (new Vector2(10,3), new Vector2(25,3), Interpolation.smooth);
 		add (new Vector2(25,3),new Vector2(40,0), Interpolation.smooth);
-		
-//		points = new ArrayList<Vector2>(5);
-//		points.add(new Vector2(0,0));
-//		points.add(new Vector2(0.1f,0.1f));
-//		points.add(new Vector2(10,3));
-//		points.add(new Vector2(25,3));
-//		points.add(new Vector2(40,0));
-////		points.add(new Vector2(55,3));
-//		points.add(new Vector2(56,2.9f));
 	}
 
 

@@ -4,11 +4,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Logger;
 
-import ardash.lato.Assets;
-import ardash.lato.GameScreen;
 import ardash.lato.Assets.SceneTexture;
+import ardash.lato.GameScreen;
 
 public class MountainRange extends Group implements StageAccessor{
 

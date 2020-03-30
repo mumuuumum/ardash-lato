@@ -17,6 +17,5 @@ public class RangeMap<K, V> extends TreeMap<K, V>{
 	public V mappedVal(K key) {
 		return mappedValue(this, key);
 		
-	}
-	
+	}	
 }

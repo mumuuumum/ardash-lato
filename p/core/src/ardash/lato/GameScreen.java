@@ -5,14 +5,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.lato.Assets.SceneTexture;
-import ardash.lato.actors.HorizontalLine;
 import ardash.lato.actors.MountainRange;
 import ardash.lato.actors.Performer;
 import ardash.lato.actors.WaveDrawer;

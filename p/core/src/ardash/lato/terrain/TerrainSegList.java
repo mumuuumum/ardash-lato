@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.collision.Segment;
 
 public class TerrainSegList extends ArrayList<TerrainSeg>{
 	
@@ -35,26 +34,9 @@ public class TerrainSegList extends ArrayList<TerrainSeg>{
 		return ret;
 	}
 	
-//	private Interpolation getInterpolatorForX(final float x) {
-//		return rm.mappedVal(x);
-//	}
-
-//	private float getRangeStartForX(final float x) {
-//		return rm.floorKey(x);
-//	}
-//
-//	private float getRangeEndForX(final float x) {
-//		return rm.ceilingKey(x);
-//	}
-	
-//	public Vector2 getPoint(int index) {
-//		return get(index).point;
-//	}
-
 	public Interpolation getTransistion(int index) {
 		return get(index).transistion;
 	}
-
 
 	public Vector2 first() {
 		return get(0).fromPoint;
@@ -63,15 +45,6 @@ public class TerrainSegList extends ArrayList<TerrainSeg>{
 	public Vector2 last() {
 		return get(size()-1).toPoint;
 	}
-	
-//	public void validate ()
-//	{
-//		assert size() >1;
-//		for (int i=0; i<size()-2; i++) {
-//			assert get(i).point.x < get(i+1).point.x;
-//			assert get(i).point.dst2(get(i+1).point) >0;
-//		}
-//	}
 	
 	public void removeFirst() {
 		super.remove(0);
@@ -108,7 +81,7 @@ public class TerrainSegList extends ArrayList<TerrainSeg>{
 	}
 
 	/**
-	 * Adds new items without adding an offset. Can be used fo the initial terain part.
+	 * Adds new items without adding an offset. Can be used for the initial terrain part.
 	 * @param c
 	 * @return
 	 */

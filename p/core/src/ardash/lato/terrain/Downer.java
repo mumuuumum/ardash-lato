@@ -1,7 +1,5 @@
 package ardash.lato.terrain;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 

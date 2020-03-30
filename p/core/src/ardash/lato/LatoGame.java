@@ -1,17 +1,10 @@
 package ardash.lato;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.CatmullRomSpline;
 import com.badlogic.gdx.math.Vector2;
-import com.github.czyzby.kiwi.util.gdx.asset.AbstractInternalAsset;
-import com.github.czyzby.kiwi.util.gdx.asset.Asset;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
-import com.github.czyzby.kiwi.util.gdx.scene2d.range.ColorRange;
 
 public class LatoGame extends Game {
 	GameManager gm;

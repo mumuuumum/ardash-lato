@@ -1,12 +1,10 @@
 package ardash.lato.actors;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
-import ardash.lato.LatoStage;
 import ardash.lato.Assets.SceneTexture;
+import ardash.lato.LatoStage;
 
 public class Performer extends Group implements StageAccessor {
 
@@ -16,7 +14,6 @@ public class Performer extends Group implements StageAccessor {
 	@Override
 	public void init() {
 		Image img = new Image(getAssets().getSTexture(SceneTexture.PERFORMER));
-//		img.rotateBy(45f);
 		img.setWidth(PERFORMER_WIDTH);
 		img.setHeight(PERFORMER_WIDTH);
 		addActor(img);

@@ -17,7 +17,6 @@ import net.dermetfan.gdx.assets.AnnotationAssetManager;
 public class LatoStage extends Stage {
 
 	public final GameScreen screen;
-//	public final LatoGame game;
 	public final Assets assets;
 	public final AnnotationAssetManager am;
 	public final GameManager gm;
@@ -27,7 +26,6 @@ public class LatoStage extends Stage {
 	public LatoStage(Viewport vp, GameScreen gameScreen) {
 		super(vp);
 		this.screen = gameScreen;
-//		this.game = screen.;
 		this.assets = screen.assets;
 		this.am = screen.am;
 		this.gm = screen.gm;
@@ -143,7 +141,6 @@ public class LatoStage extends Stage {
 	public static void disposeObject(Object object) {
 		if (object instanceof Disposable) {
 			Disposables.gracefullyDisposeOf((Disposable)object);
-//			((Disposable) object).dispose();
 		}
 	}
 }
