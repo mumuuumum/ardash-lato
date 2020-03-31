@@ -1,5 +1,6 @@
 package ardash.lato.actors;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -10,7 +11,9 @@ import ardash.lato.LatoStage;
 public class Performer extends Group implements StageAccessor {
 
 	private static final float PERFORMER_WIDTH = 1.85f;
-	private float speed = 1f; // speed in m/s
+	private static final float MIN_SPEED = 9.3f;
+	private static final float MAX_SPEED = 19.3f;
+	private float speed = 0f; // speed in m/s
 //	private float direction = 0f; // current rotation (direction) in degrees
 	private Vector2 velocity = new Vector2();
 	
@@ -27,12 +30,36 @@ public class Performer extends Group implements StageAccessor {
 		addActor(img);
 		setOriginX(PERFORMER_WIDTH/2f);
 		camSpot.set(getX(), getY());
+		setSpeed(MIN_SPEED);
 	}
 	
 	@Override
 	public void act(float delta) {
 		super.act(delta);
 //		moveBy(0, -0.01f); // gravity
+		
+		// accelerate
+		// TODO only if on ground
+		final float angleToGround = 360f - velocity.angle(); // 0 or 360 is horizontal, 90 is downward, 45 is ramp down forward
+//		System.out.println(angleToGround);
+		if (angleToGround > 0)
+		{
+			if (angleToGround < 20f) // TODO adjust here. everything above this angle speeds up
+			{
+				setSpeed(speed-(1.1f*delta));
+			}
+			else if (angleToGround < 90f)
+			{
+				setSpeed(speed+(1.1f*delta));
+			}
+			else
+			{
+				setSpeed(speed-(1.1f*delta));
+			}
+		}
+		
+		System.out.println(Gdx.graphics.getFramesPerSecond());
+//		System.out.println(speed);
 		
 		// apply the speed into a direction of movement
 		velocity.set(1,1).setLength(speed).setAngle(getRotation());
@@ -51,6 +78,10 @@ public class Performer extends Group implements StageAccessor {
 	}
 
 	public void setSpeed(float speed) {
+		if (speed < MIN_SPEED)
+			speed = MIN_SPEED;
+		if (speed > MAX_SPEED)
+			speed = MAX_SPEED;
 		this.speed = speed;
 	}
 
