@@ -42,12 +42,16 @@ public class LatoStage extends Stage {
 		// performer has moved, the camera shall follow on the y axis
 		if (performer != null)
 		{
-			System.out.print("cam Y: "+getCamera().position.y);
-			System.out.println(" per Y: "+performer.getY());
+//			System.out.print("cam Y: "+getCamera().position.y);
+//			System.out.println(" per Y: "+performer.getY());
 //			getCamera().position.y;
-			getCamera().translate(0, -(getCamera().position.y - performer.getY()), 0);
-			System.out.print("pcam Y: "+getCamera().position.y);
-			System.out.println("p per Y: "+performer.getY());
+//			getCamera().translate(0, -(getCamera().position.y - performer.getY()), 0);
+//			System.out.print("pcam Y: "+getCamera().position.y);
+//			System.out.println("p per Y: "+performer.getY());
+			
+			// point camera to the camspot
+			getCamera().translate(-(getCamera().position.x - performer.getCamSpot().x)
+					, -(getCamera().position.y - performer.getCamSpot().y), 0);
 //			getCamera().update();
 //			getViewport().apply(false);
 		}
@@ -82,11 +86,25 @@ public class LatoStage extends Stage {
 		{
 			cam.translate(0, -1.1f);
 		}
+		if (Gdx.input.isKeyJustPressed(Keys.NUM_1))
+		{
+			if (performer != null)
+				performer.setSpeed(performer.getSpeed()-1);
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.NUM_2))
+		{
+			if (performer != null)
+				performer.setSpeed(performer.getSpeed()+1);
+		}
 	}
 	
 	@Override
-	public void act() {
-		super.act();
+	public void act(float delta) {
+		super.act(delta);
+		if (waveDrawer != null)
+		{
+			waveDrawer.updateTerrainSegments(performer.getX());
+		}
 		
 	}
 

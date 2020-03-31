@@ -43,12 +43,12 @@ public class WaveDrawer extends Actor implements Disposable {
 		sr.setProjectionMatrix(batch.getProjectionMatrix());
 
 		final float drawSteps=0.2f;
-		for (float x = 1; x<terrainSegmentList.last().x-drawSteps ; x+=drawSteps)
+		for (float x = terrainSegmentList.first().x; x<terrainSegmentList.last().x-drawSteps ; x+=drawSteps)
 		{
 			float y = terrainSegmentList.heightAt(x);
 			float toX = x+drawSteps;
 			float toY = terrainSegmentList.heightAt(toX);
-			float[] fa = {x,y, toX,toY, toX,-100f, x, -100f};
+			float[] fa = {x,y, toX,toY, toX,y-500f, x, y-500f};
 			sr.polygon(fa);
 		}
 
@@ -83,29 +83,6 @@ public class WaveDrawer extends Actor implements Disposable {
 		return tmpVector.scl(-1f).angle();
 	}
 	
-// TODO continue here: reinstate automatic creation and deletion of segemnts
-//	private void updateTerrainSegments() {
-//		final float currentX = getX();
-//		System.out.println("terrain x: " + currentX);
-//		System.out.println("terrain cp1: " + controlPoints[1]);
-//
-//		// check if last available control point is before max required X terrain
-//		final TerrainSegment lastSeg = terrainSegmentList.get(terrainSegmentList.size()-1);
-//		if (lastSeg.last().x+currentX < GameScreen.MAX_WORLD_WIDTH)
-//		{
-//			// we need a new segment
-//			addTerrainSegment();
-//		}
-//		
-//		// check if a segment is way in front of 0 so we don't need it any more (won't be rendered any more)
-//		final TerrainSegment firstSeg = terrainSegmentList.get(0);
-//		if (firstSeg.last().x+currentX < -5f)
-//		{
-//			terrainSegmentList.remove(0);
-//			updateControlPoints();
-//		}		
-//	}
-
 	@Override
 	public void moveBy(float x, float y) {
 		super.moveBy(x, y);
@@ -116,5 +93,30 @@ public class WaveDrawer extends Actor implements Disposable {
 	@Override
 	public void dispose() {
 		Disposables.gracefullyDisposeOf(sr);
+	}
+
+	/**
+	 * Remove passed terrain segments and add new terrain in front of the player.
+	 * @param x The current position of the performer
+	 */
+	public void updateTerrainSegments(float x) {
+		final float currentMin = terrainSegmentList.first().x;
+		final float currentMax = terrainSegmentList.last().x;
+		
+		final float PASSED_TERRAIN = 200f; // longest possible terrain
+		final float FUTURE_TERRAIN = 200f;
+		
+		if (currentMin+PASSED_TERRAIN < x)
+		{
+			// old terrain can be removed
+			terrainSegmentList.removeFirst();
+		}
+		if (currentMax-FUTURE_TERRAIN < x)
+		{
+			// new terrain must be added
+			terrainSegmentList.addAll(new Downer());
+		}
+		
+		
 	}
 }

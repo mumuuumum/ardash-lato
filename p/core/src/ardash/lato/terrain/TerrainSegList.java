@@ -8,11 +8,24 @@ import com.badlogic.gdx.math.Vector2;
 
 public class TerrainSegList extends ArrayList<TerrainSeg>{
 	
-//	private Vector2 start = new Vector2();
 	private RangeMap<Float, TerrainSeg> rm = new RangeMap<Float, TerrainSeg>();
-//	protected final String type;
+	
+	/**
+	 * for method: add(Vector2 to, Interpolation i)
+	 */
+	private Vector2 end = null;
+
+	
 	public void add(Vector2 from, Vector2 to, Interpolation i) {
 		add (new TerrainSeg(from, to, i));		
+		end = to.cpy();
+	}
+	
+	public void add(Vector2 to, Interpolation i) {
+		if (end == null)
+			throw new RuntimeException("this function can only be used if there is already at least one vector");
+		add (new TerrainSeg(end, to, i));
+		end = to.cpy();
 	}
 	
 	public float heightAt(float x)
