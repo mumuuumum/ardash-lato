@@ -1,61 +1,82 @@
 
 scene.png
-size: 512,256
+size: 2048,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+flare
+  rotate: false
+  xy: 2, 393
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
 fog_pix
   rotate: false
-  xy: 262, 247
+  xy: 1030, 774
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
+glow
+  rotate: false
+  xy: 516, 393
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
 mount
   rotate: false
-  xy: 2, 120
+  xy: 1030, 777
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 mount_pix
   rotate: false
-  xy: 2, 2
+  xy: 1160, 904
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 mount_pix2
   rotate: false
-  xy: 116, 117
+  xy: 2, 2
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 mountainfog
   rotate: false
-  xy: 132, 120
+  xy: 2, 5
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 performer
   rotate: false
-  xy: 2, 5
+  xy: 260, 278
   size: 112, 113
   orig: 112, 113
   offset: 0, 0
   index: -1
+sun_shape
+  rotate: false
+  xy: 2, 135
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
 tree_bg_pix
   rotate: false
-  xy: 262, 244
+  xy: 132, 132
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 tree_fg_pix
   rotate: false
-  xy: 265, 247
+  xy: 260, 275
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
