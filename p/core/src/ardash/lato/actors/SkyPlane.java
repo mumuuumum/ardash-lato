@@ -53,6 +53,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable {
 		imgSun.setHeight(SUN_WIDTH);
 		sunRotor.addActor(imgSun);
 		imgSun.setPosition(0, -15f); // sun rotation radius
+		spawnFlareInForeground(imgSun, 500f);
 
 		// move glow to sun
 		imgGlow.setPosition(imgSun.getX()-imgGlow.getWidth()/2f, imgSun.getY()-imgGlow.getHeight()/2f);

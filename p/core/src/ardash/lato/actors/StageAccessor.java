@@ -1,5 +1,6 @@
 package ardash.lato.actors;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import ardash.lato.Assets;
@@ -41,6 +42,20 @@ public interface StageAccessor {
 	{
 		return getGameManager().getGameScreen();
 	}
+	
+	public default Actor spawnFlareInForeground(Actor emitter, float size)
+	{
+		return getGameScreen().flarePlane.spawnFlare(emitter, size);
+	}
+	
+//	public default float getCenterX()
+//	{
+//		return getX()+getWidth();
+//	}
+//
+//	public int getX();
+//
+//	public int getWidth();
 
 	public Stage getStage();
 	

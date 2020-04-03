@@ -43,6 +43,7 @@ public class GameScreen implements Screen {
 	public LatoStage stage;
 	public LatoStage frontStage;
 	private RayHandler rayHandler;
+	public FlarePlane flarePlane;
 
 	public GameScreen(GameManager gm) {
 		this.gm = gm;
@@ -61,8 +62,15 @@ public class GameScreen implements Screen {
 		CURRENT_WORLD_WIDTH = backStage.getViewport().getWorldWidth();
 //		stage.setDebugAll(true);
 //		backStage.setDebugAll(true);
+//		frontStage.setDebugAll(true);
 //		Gdx.input.setInputProcessor(backStage);
 
+		// additive flare plane (must be done first, so actors can spawn the flares)
+		flarePlane = new FlarePlane(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
+		frontStage.addActor(flarePlane);
+		flarePlane.init();
+
+		
 		final SkyPlane skyPlane = new SkyPlane(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
 		backStage.addActor(skyPlane);
 		skyPlane.init();
@@ -148,10 +156,6 @@ public class GameScreen implements Screen {
 //		frontStage.addActor(flarePlane);
 //		flarePlane.init();
 
-		// additive flare
-		final FlarePlane flarePlane = new FlarePlane(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
-		frontStage.addActor(flarePlane);
-		flarePlane.init();
 
 		
 	}
@@ -174,7 +178,7 @@ public class GameScreen implements Screen {
 //    	stage.getCamera().translate(0.1f, -0.15f, 0);
     	
     	backStage.draw();
-    	stage.draw();
+//    	stage.draw();
     	frontStage.draw();
     	
     	final int blendDstFunc = frontStage.getBatch().getBlendDstFunc(); //771 GL_ONE_MINUS_SRC_ALPHA
