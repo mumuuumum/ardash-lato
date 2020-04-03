@@ -1,6 +1,10 @@
 package ardash.lato.actors;
 
+import java.util.LinkedList;
+
 import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import ardash.lato.EnvColors;
 
 public class WeatherProvider extends Actor{
 	public static final float DAYTIME_HOURS = 16f;
@@ -19,8 +23,30 @@ public class WeatherProvider extends Actor{
 	 * current Second Of Day. A value from 0 to 24 * SECONDS_PER_HOUR
 	 */
 	float currentSOD = SECONDS_PER_HOUR * 10.5f; // 10.5 = 10:30 am 
-	public interface Listener
-	{
-		
+	
+	private LinkedList<ColorChangeListener> fogColourChangeListeners;
+	
+	public WeatherProvider() {
+		fogColourChangeListeners = new LinkedList<ColorChangeListener>();
 	}
+
+	@Override
+	public void act(float delta) {
+		super.act(delta);
+		currentSOD +=delta;
+		if (currentSOD >= SECONDS_PER_DAY)
+			currentSOD =0f; // start new day
+		if (currentSOD > (SECONDS_PER_HOUR * 10.5f)+ 10f)
+		{
+			for (ColorChangeListener colorChangeListener : fogColourChangeListeners) {
+				colorChangeListener.onColorChangeTriggered(EnvColors.DUSK.fog, 5f);
+			}
+		}
+	}
+	
+	public void addFogColourChangeListener(ColorChangeListener fogColourChangeListener) {
+		this.fogColourChangeListeners.add(fogColourChangeListener);
+	}
+
+	
 }

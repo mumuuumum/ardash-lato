@@ -3,6 +3,7 @@ package ardash.lato;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -39,8 +40,11 @@ public class LatoStage extends Stage {
 	 * to handle inputs
 	 */
 	public void draw() {
+    	Gdx.gl20.glEnable(GL20.GL_BLEND);
+    	Gdx.gl20.glBlendFunc(GL20.GL_ZERO, GL20.GL_ZERO);
 		super.draw();
-		
+    	Gdx.gl20.glBlendFunc(GL20.GL_ZERO, GL20.GL_ZERO);
+
 		// performer has moved, the camera shall follow on the y axis
 		if (performer != null)
 		{

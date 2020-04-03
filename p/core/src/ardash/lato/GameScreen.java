@@ -5,20 +5,20 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 import com.github.czyzby.kiwi.util.gdx.scene2d.Actors;
 
 import ardash.lato.Assets.SceneTexture;
+import ardash.lato.actors.ColorChangeListener;
+import ardash.lato.actors.FlarePlane;
 import ardash.lato.actors.MountainRange;
 import ardash.lato.actors.Performer;
 import ardash.lato.actors.SkyPlane;
 import ardash.lato.actors.WaveDrawer;
-import box2dLight.PointLight;
-import box2dLight.PositionalLight;
+import ardash.lato.actors.WeatherProvider;
 import box2dLight.RayHandler;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
@@ -37,9 +37,11 @@ public class GameScreen implements Screen {
 
 	public GameManager gm;
 	public AnnotationAssetManager am;
+	public WeatherProvider weather;
 	public Assets assets;
 	public LatoStage backStage;
 	public LatoStage stage;
+	public LatoStage frontStage;
 	private RayHandler rayHandler;
 
 	public GameScreen(GameManager gm) {
@@ -51,10 +53,11 @@ public class GameScreen implements Screen {
 	@Override
 	public void show() {
 		Texture ball = am.get(Assets.ball); // Assets.ball is a String
-		
-//		stage = new LatoStage(new FitViewport(480, 360), this);
+
+		weather = new WeatherProvider();
 		backStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), this);
 		stage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), this);
+		frontStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), this);
 		CURRENT_WORLD_WIDTH = backStage.getViewport().getWorldWidth();
 //		stage.setDebugAll(true);
 //		backStage.setDebugAll(true);
@@ -74,13 +77,26 @@ public class GameScreen implements Screen {
 //			mr.setSpeed(20f);
 			
 			// fog layer
-			Image fog = new Image(assets.getSTexture(SceneTexture.FOG_PIX));
+			final Image fog = new Image(assets.getSTexture(SceneTexture.FOG_PIX));
 			fog.setSize(204, 204); // TODO reduce to display size
 			backStage.addActor(fog);
 //			fog.setColor(1f, 0.9f, 0.9f, 0.125f);
 			fog.setColor(EnvColors.DAY.fog);
 			fog.getColor().a = 0.225f;
 			Actors.centerActor(fog);
+			
+			// subscribe the fog layers to fog colour change
+			weather.addFogColourChangeListener(new ColorChangeListener() {
+				
+				@Override
+				public void onColorChangeTriggered(Color target, float seconds) {
+					Color t = target.cpy();
+					t.a = 0.225f;	
+					fog.addAction(Actions.color(t, seconds));
+				}
+			});
+			
+			
 			
 			// range offset
 			mr.moveBy(-MountainRange.MOUNT_SIZE*(i+1), -2f*i-4);
@@ -109,6 +125,35 @@ public class GameScreen implements Screen {
 //		p.moveBy(4*1.8f, 10f);
 		p.moveBy(8*1.8f, 10f); // tmp becasue no starting groudn yet
 		stage.setPerformer(p); // attach the camera to him
+		
+//		// add ambient light overlay
+//		Image fog = new Image(assets.getSTexture(SceneTexture.FOG_PIX));
+//		fog.setSize(204, 204); // TODO reduce to display size
+//		stage.addActor(fog);
+////		fog.setColor(1f, 0.9f, 0.9f, 0.125f);
+//		fog.setColor(EnvColors.DAY.ambient.cpy());
+//		fog.getColor().a = 0.7225f;
+//		Actors.centerActor(fog);
+
+//		Image fog = new Image(assets.getSTexture(SceneTexture.FLARE));
+//		fog.setSize(40, 40); // TODO reduce to display size
+//		stage.addActor(fog);
+////		fog.setColor(1f, 0.9f, 0.9f, 0.125f);
+////		fog.setColor(EnvColors.DAY.ambient.cpy());
+////		fog.getColor().a = 0.7225f;
+//		Actors.centerActor(fog);
+		
+		// flare
+//		final FlarePlane flarePlane = new FlarePlane(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
+//		frontStage.addActor(flarePlane);
+//		flarePlane.init();
+
+		// additive flare
+		final FlarePlane flarePlane = new FlarePlane(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
+		frontStage.addActor(flarePlane);
+		flarePlane.init();
+
+		
 	}
 
 	@Override
@@ -116,27 +161,41 @@ public class GameScreen implements Screen {
 		//draw something nice to look at
         Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
     	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    	Gdx.gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+    	Gdx.gl20.glBlendFunc(GL20.GL_ONE_MINUS_DST_COLOR, GL20.GL_ONE);
+    	Gdx.gl20.glBlendFunc(GL20.GL_ZERO, GL20.GL_ZERO);
 
+    	weather.act(delta);
     	backStage.act(delta);
     	stage.act(delta);
+    	frontStage.act(delta);
     	
     	// move camera before drawing
 //    	stage.getCamera().translate(0.1f, -0.15f, 0);
     	
     	backStage.draw();
     	stage.draw();
+    	frontStage.draw();
     	
-    	World world = new World(new Vector2(), false);
-		// add light
-    	rayHandler = new RayHandler(world );
-    	rayHandler.setShadows(false);
-    	new PointLight(rayHandler, 50, new Color(1,1,1,1),35f, 10, 10);
-//    	rayHandler.poi
-    	rayHandler.setAmbientLight(1, 0, 0, 0.5f); 
-    	rayHandler.setBlur(true);
-    	rayHandler.setBlurNum(30);
-    	rayHandler.setCombinedMatrix(backStage.getCamera().combined);
-    	rayHandler.updateAndRender();
+    	final int blendDstFunc = frontStage.getBatch().getBlendDstFunc(); //771 GL_ONE_MINUS_SRC_ALPHA
+    	final int blendSrcFunc = frontStage.getBatch().getBlendSrcFunc(); //770 GL_SRC_ALPHA
+    	final int blendDstFuncAlpha = frontStage.getBatch().getBlendDstFuncAlpha();
+    	final int blendSrcFuncAlpha = frontStage.getBatch().getBlendSrcFuncAlpha();
+    	
+//    	Gdx.gl.GL_ONE
+    	int i;
+    	System.out.print(blendDstFunc+ blendDstFuncAlpha+ blendSrcFunc+ blendSrcFuncAlpha);
+//    	World world = new World(new Vector2(), false);
+//		// add light
+//    	rayHandler = new RayHandler(world );
+//    	rayHandler.setShadows(false);
+//    	new PointLight(rayHandler, 50, new Color(1,1,1,1),35f, 10, 10);
+////    	rayHandler.poi
+//    	rayHandler.setAmbientLight(1, 0, 0, 0.5f); 
+//    	rayHandler.setBlur(true);
+//    	rayHandler.setBlurNum(30);
+//    	rayHandler.setCombinedMatrix(backStage.getCamera().combined);
+//    	rayHandler.updateAndRender();
 
 	}
 
@@ -145,6 +204,8 @@ public class GameScreen implements Screen {
 		backStage.getViewport().update(width, height, false);
 		backStage.getCamera().position.set(0f, 0f, 0f); // this cam is centered so we can zoom in/out without moving the sun away from center
 		stage.getViewport().update(width, height, false);
+		frontStage.getViewport().update(width, height, false);
+		frontStage.getCamera().position.set(0f, 0f, 0f); // this cam is centered so we can zoom in/out without moving the sun away from center
 	}
 
 	@Override

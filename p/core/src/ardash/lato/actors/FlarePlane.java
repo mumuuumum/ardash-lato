@@ -15,13 +15,13 @@ import com.github.czyzby.kiwi.util.gdx.scene2d.Actors;
 import ardash.lato.EnvColors;
 import ardash.lato.Assets.SceneTexture;
 
-public class SkyPlane extends Group implements StageAccessor, Disposable {
+public class FlarePlane extends Group implements StageAccessor, Disposable {
 
 	private static final float SUN_WIDTH = 2;
 	private ShapeRenderer sr;
 	private Group sunRotor;
 
-	public SkyPlane(float width, float height) {
+	public FlarePlane(float width, float height) {
 		setSize(width, height);
 		moveBy(getWidth()/-2f, 0f);// self center
 		sr = new ShapeRenderer();
@@ -39,12 +39,12 @@ public class SkyPlane extends Group implements StageAccessor, Disposable {
 		sunRotor.moveBy(0, -10);
 
 		// add sun glow
-		Image imgGlow = new Image(getAssets().getSTexture(SceneTexture.GLOW));
+		Image imgGlow = new Image(getAssets().getSTexture(SceneTexture.FLARE));
 		imgGlow.setWidth(SUN_WIDTH*26);
 		imgGlow.setHeight(SUN_WIDTH*26);
 		sunRotor.addActor(imgGlow);
 //		imgGlow.setPosition(0, -15f); // sun rotation radius
-		imgGlow.setColor(new Color(1,1,1,0.5f));
+		imgGlow.setColor(Color.LIGHT_GRAY);
 
 		
 		// add sun shape
@@ -53,6 +53,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable {
 		imgSun.setHeight(SUN_WIDTH);
 		sunRotor.addActor(imgSun);
 		imgSun.setPosition(0, -15f); // sun rotation radius
+		Actors.setAlpha(imgSun, 0f);
 
 		// move glow to sun
 		imgGlow.setPosition(imgSun.getX()-imgGlow.getWidth()/2f, imgSun.getY()-imgGlow.getHeight()/2f);
@@ -70,28 +71,27 @@ public class SkyPlane extends Group implements StageAccessor, Disposable {
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 
-		batch.end();
-
-		Vector2 coords = new Vector2(getX(), getY());
-
-		Color color = new Color(getColor());
-		sr.setProjectionMatrix(batch.getProjectionMatrix());
-		sr.setColor(color.r, color.g, color.b, color.a * parentAlpha);
-
-//		Gdx.gl.glEnable(GL20.GL_BLEND);
-//		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-		sr.begin(ShapeRenderer.ShapeType.Filled);
-
-		sr.rectLine(coords.x, coords.y, coords.x + getWidth(), coords.y, getHeight());
-		sr.rect(coords.x, coords.y, getWidth(), getHeight(), EnvColors.DAY.skyBottom, EnvColors.DAY.skyBottom,
-				EnvColors.DAY.skyTop, EnvColors.DAY.skyTop);
-		sr.end();
+//		batch.end();
+//
+//		Vector2 coords = new Vector2(getX(), getY());
+//
+//		Color color = new Color(getColor());
+//		sr.setProjectionMatrix(batch.getProjectionMatrix());
+//		sr.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+//
+////		Gdx.gl.glEnable(GL20.GL_BLEND);
+////		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+//		sr.begin(ShapeRenderer.ShapeType.Filled);
+//
+//		sr.rectLine(coords.x, coords.y, coords.x + getWidth(), coords.y, getHeight());
+//		sr.rect(coords.x, coords.y, getWidth(), getHeight(), EnvColors.DAY.skyBottom, EnvColors.DAY.skyBottom,
+//				EnvColors.DAY.skyTop, EnvColors.DAY.skyTop);
+//		sr.end();
 //		Gdx.gl.glDisable(GL20.GL_BLEND);
-		Gdx.gl.glLineWidth(1f);
-		sr.setColor(Color.WHITE);
-
-//		batch.setBlendFunction(GL20.GL_ZERO, GL20.GL_ZERO);
-		batch.begin();
+//		Gdx.gl.glLineWidth(1f);
+//		sr.setColor(Color.WHITE);
+//
+//		batch.begin();
 		super.draw(batch, parentAlpha);
 
 	}

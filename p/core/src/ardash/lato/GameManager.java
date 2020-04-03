@@ -1,5 +1,7 @@
 package ardash.lato;
 
+import com.badlogic.gdx.Screen;
+
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
 public class GameManager {
@@ -13,6 +15,14 @@ public class GameManager {
 		this.assets = new Assets();
 		this.am = assets.manager;
 		assets.loadAll();
+	}
+	
+	public Screen getScreen() {
+		return game.getScreen();
+	}
+
+	public GameScreen getGameScreen() {
+		return (GameScreen)game.getScreen();
 	}
 
 }

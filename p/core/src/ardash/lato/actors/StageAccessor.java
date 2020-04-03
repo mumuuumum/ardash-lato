@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import ardash.lato.Assets;
 import ardash.lato.GameManager;
+import ardash.lato.GameScreen;
 import ardash.lato.LatoStage;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
@@ -34,6 +35,11 @@ public interface StageAccessor {
 	public default AnnotationAssetManager getAssetManager()
 	{
 		return getGameManager().am;
+	}
+
+	public default GameScreen getGameScreen()
+	{
+		return getGameManager().getGameScreen();
 	}
 
 	public Stage getStage();
