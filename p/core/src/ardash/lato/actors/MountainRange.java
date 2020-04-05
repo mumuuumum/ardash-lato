@@ -3,6 +3,7 @@ package ardash.lato.actors;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import ardash.lato.Assets.SceneTexture;
@@ -37,6 +38,7 @@ public class MountainRange extends Group implements StageAccessor{
 			img.setScale(MOUNT_SIZE);
 			img.moveBy(distanceBetweenPieces*i + MathUtils.random(-VARIANCE, VARIANCE), MathUtils.random(-VARIANCE, VARIANCE));
 			addActor(img);
+			img.setName("Mountain"+i);
 		}
 		scaleBy(0.5f,0f);  // stretch all sidewards: long mountains
 		
@@ -45,6 +47,8 @@ public class MountainRange extends Group implements StageAccessor{
 		img.setSize(MOUNT_SIZE*numPieces, MOUNT_SIZE*1.4f);
 //		img.moveBy(distanceBetweenPieces*i + MathUtils.random(-VARIANCE, VARIANCE), MathUtils.random(-VARIANCE, VARIANCE));
 		addActor(img);
+		img.setName("groundFogBelowMountains");
+		img.setTouchable(Touchable.disabled);
 //		img.setColor(1f, 0.9f, 0.9f, 1.0f);
 //		img.moveBy(0, 1f);
 	}

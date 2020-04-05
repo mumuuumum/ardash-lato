@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
@@ -26,6 +27,8 @@ public class SkyPlane extends Group implements StageAccessor, Disposable {
 		moveBy(getWidth()/-2f, 0f);// self center
 		sr = new ShapeRenderer();
 		sr.setAutoShapeType(true);
+		setName("skyplane");
+		this.setTouchable(Touchable.childrenOnly);
 	}
 
 	@Override
@@ -45,6 +48,8 @@ public class SkyPlane extends Group implements StageAccessor, Disposable {
 		sunRotor.addActor(imgGlow);
 //		imgGlow.setPosition(0, -15f); // sun rotation radius
 		imgGlow.setColor(new Color(1,1,1,0.5f));
+		imgGlow.setName("sunglow");
+//		imgGlow.setTouchable(Touchable.disabled);
 
 		
 		// add sun shape
@@ -54,6 +59,8 @@ public class SkyPlane extends Group implements StageAccessor, Disposable {
 		sunRotor.addActor(imgSun);
 		imgSun.setPosition(0, -15f); // sun rotation radius
 		spawnFlareInForeground(imgSun, 500f);
+		imgSun.setTouchable(Touchable.enabled);
+		imgSun.setName("sunshape");
 
 		// move glow to sun
 		imgGlow.setPosition(imgSun.getX()-imgGlow.getWidth()/2f, imgSun.getY()-imgGlow.getHeight()/2f);
@@ -63,8 +70,8 @@ public class SkyPlane extends Group implements StageAccessor, Disposable {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		sunRotor.rotateBy(-1);
-		System.out.println("sun rot: " + sunRotor.getRotation());
+		sunRotor.rotateBy(-0.1f);
+//		System.out.println("sun rot: " + sunRotor.getRotation());
 	}
 
 

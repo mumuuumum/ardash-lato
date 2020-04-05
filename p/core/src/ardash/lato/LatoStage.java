@@ -2,10 +2,9 @@ package ardash.lato;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -102,6 +101,10 @@ public class LatoStage extends Stage {
 			if (performer != null)
 				performer.setSpeed(performer.getSpeed()+1);
 		}
+		
+		System.out.print("ppos X: "+Gdx.input.getX());
+		System.out.println("ppos Y: "+Gdx.input.getY());
+
 	}
 	
 	@Override
@@ -112,6 +115,39 @@ public class LatoStage extends Stage {
 			waveDrawer.updateTerrainSegments(performer.getX());
 		}
 		
+	}
+	
+	public Actor getFirstHitActorAt(float screenX, float screenY)
+	{
+		Vector2 tempCoords = new Vector2();
+		screenToStageCoordinates(tempCoords .set(screenX, screenY));
+		Actor target = hit(tempCoords.x, tempCoords.y, true);
+		return target;
+	}
+	
+	/**
+	 * Checks if the center of the Actor is covered by any other actor on the stage.
+	 * This is like a realistic implementation of Actor.isHidden();
+	 * @param a
+	 * @return
+	 */
+	public boolean isActorCovered(Actor a)
+	{
+		if (a == null)
+			throw new RuntimeException("a cannot be null");
+		// Check if the first hit actor at the center coordinated is the actor itself. If not: it is covered by another Actor.
+		Vector2 tempCoords = new Vector2();
+		tempCoords.set(a.getX()+a.getWidth(), a.getY()+a.getHeight());
+		a.localToScreenCoordinates(tempCoords);
+		tempCoords.x = tempCoords.x;
+		tempCoords.y = tempCoords.y;
+		Actor firstHitActor = getFirstHitActorAt(tempCoords.x, tempCoords.y);
+		if (firstHitActor == null)
+			System.out.print("first hit on ["+tempCoords+"] : NONE" );
+		else
+			System.out.print("first hit on ["+tempCoords+"] :" + firstHitActor.getName());
+			
+		return a != firstHitActor;
 	}
 
 	public Performer getPerformer() {

@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.lato.Assets.SceneTexture;
+import ardash.lato.LatoStage;
 
 public class FlarePlane extends Group implements StageAccessor, Disposable {
 
@@ -24,6 +25,7 @@ public class FlarePlane extends Group implements StageAccessor, Disposable {
 		moveBy(getWidth()/-2f, 0f);// self center
 //		sr = new ShapeRenderer();
 //		sr.setAutoShapeType(true);
+		this.setName("flareplane");
 	}
 
 	@Override
@@ -63,6 +65,18 @@ public class FlarePlane extends Group implements StageAccessor, Disposable {
 //				flare.setPosition(tmpV.x, tmpV.y);
 				flare.setPosition(tmpV.x-flare.getWidth()/2f, tmpV.y-flare.getHeight()/2f);
 //				flare.moveBy(-flare.getWidth()/2f, -flare.getWidth()/2f); // move to own origin
+				
+				// hide flare if emitter covered by another actor
+				if (emitter.getStage() != null)
+				{
+					if (emitter.getStage() instanceof LatoStage) {
+						LatoStage st = (LatoStage) emitter.getStage();
+//						if (st.isActorCovered(emitter))
+						{
+							flare.setVisible(!st.isActorCovered(emitter));
+						}
+					}
+				}
 			}
 		}
 		super.act(delta);

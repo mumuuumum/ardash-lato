@@ -5,6 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -81,6 +82,7 @@ public class GameScreen implements Screen {
 			MountainRange mr = new MountainRange(numMountains);
 			backStage.addActor(mr);
 			mr.init();
+			mr.setName("MountainRange"+i);
 //			mr.moveBy(50, 60);
 //			mr.setSpeed(20f);
 			
@@ -92,6 +94,9 @@ public class GameScreen implements Screen {
 			fog.setColor(EnvColors.DAY.fog);
 			fog.getColor().a = 0.225f;
 			Actors.centerActor(fog);
+			fog.setName("fog"+i);
+			fog.setTouchable(Touchable.disabled);
+//			fog.setVisible(false);
 			
 			// subscribe the fog layers to fog colour change
 			weather.addFogColourChangeListener(new ColorChangeListener() {
@@ -181,14 +186,6 @@ public class GameScreen implements Screen {
 //    	stage.draw();
     	frontStage.draw();
     	
-    	final int blendDstFunc = frontStage.getBatch().getBlendDstFunc(); //771 GL_ONE_MINUS_SRC_ALPHA
-    	final int blendSrcFunc = frontStage.getBatch().getBlendSrcFunc(); //770 GL_SRC_ALPHA
-    	final int blendDstFuncAlpha = frontStage.getBatch().getBlendDstFuncAlpha();
-    	final int blendSrcFuncAlpha = frontStage.getBatch().getBlendSrcFuncAlpha();
-    	
-//    	Gdx.gl.GL_ONE
-    	int i;
-    	System.out.print(blendDstFunc+ blendDstFuncAlpha+ blendSrcFunc+ blendSrcFuncAlpha);
 //    	World world = new World(new Vector2(), false);
 //		// add light
 //    	rayHandler = new RayHandler(world );
