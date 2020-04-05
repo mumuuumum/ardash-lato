@@ -70,7 +70,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable {
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		sunRotor.rotateBy(-0.1f);
+		sunRotor.rotateBy(-0.91f);
 //		System.out.println("sun rot: " + sunRotor.getRotation());
 	}
 

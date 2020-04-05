@@ -183,7 +183,7 @@ public class GameScreen implements Screen {
 //    	stage.getCamera().translate(0.1f, -0.15f, 0);
     	
     	backStage.draw();
-//    	stage.draw();
+    	stage.draw();
     	frontStage.draw();
     	
 //    	World world = new World(new Vector2(), false);
