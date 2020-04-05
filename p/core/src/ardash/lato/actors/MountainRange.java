@@ -1,15 +1,18 @@
 package ardash.lato.actors;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import ardash.lato.Assets.SceneTexture;
+import ardash.lato.EnvColors;
 import ardash.lato.GameScreen;
 
-public class MountainRange extends Group implements StageAccessor{
+public class MountainRange extends Group implements StageAccessor, AmbientColorChangeListener, FogColorChangeListener{
 
 	/**
 	 * speed in units per sec
@@ -24,6 +27,8 @@ public class MountainRange extends Group implements StageAccessor{
 	private final float distanceBetweenPieces = MOUNT_SIZE*0.77f; //0.77 of above
 	private final float VARIANCE = (MOUNT_SIZE + distanceBetweenPieces) / 8; //(avg of 2 val above) / 4
 
+	private Color ambientColor = EnvColors.DAY.ambient;
+	
 	public MountainRange(int numPieces) {
 		this.numPieces =numPieces;
 	}
@@ -39,6 +44,7 @@ public class MountainRange extends Group implements StageAccessor{
 			img.moveBy(distanceBetweenPieces*i + MathUtils.random(-VARIANCE, VARIANCE), MathUtils.random(-VARIANCE, VARIANCE));
 			addActor(img);
 			img.setName("Mountain"+i);
+			img.setColor(ambientColor);
 		}
 		scaleBy(0.5f,0f);  // stretch all sidewards: long mountains
 		
@@ -80,5 +86,26 @@ public class MountainRange extends Group implements StageAccessor{
 		
 //		System.out.println(child.getX());
 //		System.out.println(child.getWidth());
+	}
+
+	@Override
+	public void onAmbientColorChangeTriggered(Color target, float seconds) {
+		
+		target = target.cpy();
+		target.mul(2f); // mul == brighter ==> so the actor doesn't become black but just a bit darker
+		// change all pieces, but dont change the last image, since it is a fog/cloud layer
+		for (int i=0; i< numPieces; i++)
+		{
+//			getChild(i).addAction(Actions.color(target, seconds));
+			getChild(i).addAction(Actions.color(target, seconds));
+		}	
+		
+	}
+
+	@Override
+	public void onFogColorChangeTriggered(Color target, float seconds) {
+		// cloud images
+		target.mul(1.1f); // mul == brighter ==> so the actor doesn't become black but just a bit darker
+		getChild(getChildren().size-1).addAction(Actions.color(target, seconds));
 	}
 }

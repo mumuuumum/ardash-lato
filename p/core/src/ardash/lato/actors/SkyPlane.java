@@ -6,8 +6,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
@@ -16,11 +18,13 @@ import com.github.czyzby.kiwi.util.gdx.scene2d.Actors;
 import ardash.lato.EnvColors;
 import ardash.lato.Assets.SceneTexture;
 
-public class SkyPlane extends Group implements StageAccessor, Disposable {
+public class SkyPlane extends Group implements StageAccessor, Disposable, SkyColorChangeListener {
 
 	private static final float SUN_WIDTH = 2;
 	private ShapeRenderer sr;
 	private Group sunRotor;
+	private Actor topColorHolder;
+	private Actor bottomColorHolder;
 
 	public SkyPlane(float width, float height) {
 		setSize(width, height);
@@ -65,6 +69,13 @@ public class SkyPlane extends Group implements StageAccessor, Disposable {
 		// move glow to sun
 		imgGlow.setPosition(imgSun.getX()-imgGlow.getWidth()/2f, imgSun.getY()-imgGlow.getHeight()/2f);
 		
+		// add dummy Actor to hold the color, so the color can be changed by an Action
+		topColorHolder = new Actor();
+		topColorHolder.setColor(EnvColors.DAY.skyTop);
+		bottomColorHolder = new Actor();
+		bottomColorHolder.setColor(EnvColors.DAY.skyBottom);
+		addActor(topColorHolder);
+		addActor(bottomColorHolder);
 	}
 	
 	@Override
@@ -91,8 +102,8 @@ public class SkyPlane extends Group implements StageAccessor, Disposable {
 		sr.begin(ShapeRenderer.ShapeType.Filled);
 
 		sr.rectLine(coords.x, coords.y, coords.x + getWidth(), coords.y, getHeight());
-		sr.rect(coords.x, coords.y, getWidth(), getHeight(), EnvColors.DAY.skyBottom, EnvColors.DAY.skyBottom,
-				EnvColors.DAY.skyTop, EnvColors.DAY.skyTop);
+		sr.rect(coords.x, coords.y, getWidth(), getHeight(), bottomColorHolder.getColor(), bottomColorHolder.getColor(),
+				topColorHolder.getColor(), topColorHolder.getColor());
 		sr.end();
 //		Gdx.gl.glDisable(GL20.GL_BLEND);
 		Gdx.gl.glLineWidth(1f);
@@ -102,6 +113,13 @@ public class SkyPlane extends Group implements StageAccessor, Disposable {
 		batch.begin();
 		super.draw(batch, parentAlpha);
 
+	}
+
+	@Override
+	public void onSkyColorChangeTriggered(Color targetTop, Color targetBottom, float seconds) {
+		topColorHolder.addAction(Actions.color(targetTop, seconds));
+		bottomColorHolder.addAction(Actions.color(targetBottom, seconds));
+		
 	}
 
 	@Override

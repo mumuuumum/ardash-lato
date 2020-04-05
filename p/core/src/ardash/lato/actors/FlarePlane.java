@@ -73,7 +73,7 @@ public class FlarePlane extends Group implements StageAccessor, Disposable {
 						LatoStage st = (LatoStage) emitter.getStage();
 //						if (st.isActorCovered(emitter))
 						{
-							flare.setVisible(!st.isActorCovered(emitter));
+//							flare.setVisible(!st.isActorCovered(emitter));
 						}
 					}
 				}

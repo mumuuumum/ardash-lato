@@ -2,6 +2,10 @@ package ardash.lato.actors;
 
 import java.util.LinkedList;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import ardash.lato.EnvColors;
@@ -23,11 +27,16 @@ public class WeatherProvider extends Actor{
 	 * current Second Of Day. A value from 0 to 24 * SECONDS_PER_HOUR
 	 */
 	float currentSOD = SECONDS_PER_HOUR * 10.5f; // 10.5 = 10:30 am 
+	EnvColors currentColorSchema = EnvColors.DAY;
 	
-	private LinkedList<ColorChangeListener> fogColourChangeListeners;
+	private LinkedList<FogColorChangeListener> fogColourChangeListeners;
+	private LinkedList<AmbientColorChangeListener> ambientColourChangeListeners;
+	private LinkedList<SkyColorChangeListener> skyColourChangeListeners;
 	
 	public WeatherProvider() {
-		fogColourChangeListeners = new LinkedList<ColorChangeListener>();
+		fogColourChangeListeners = new LinkedList<FogColorChangeListener>();
+		ambientColourChangeListeners = new LinkedList<AmbientColorChangeListener>();
+		skyColourChangeListeners = new LinkedList<SkyColorChangeListener>();
 	}
 
 	@Override
@@ -38,14 +47,53 @@ public class WeatherProvider extends Actor{
 			currentSOD =0f; // start new day
 		if (currentSOD > (SECONDS_PER_HOUR * 10.5f)+ 10f)
 		{
-			for (ColorChangeListener colorChangeListener : fogColourChangeListeners) {
-				colorChangeListener.onColorChangeTriggered(EnvColors.DUSK.fog, 5f);
-			}
+//			triggerFogColorChange(EnvColors.DUSK.fog, 5f);
+//			triggerAmbientColorChange(EnvColors.DUSK.ambient, 5f);
+//			triggerSkyColorChange(EnvColors.DUSK.skyTop, EnvColors.DUSK.skyBottom, 5f);
 		}
 	}
 	
-	public void addFogColourChangeListener(ColorChangeListener fogColourChangeListener) {
+	/**
+	 * for keyboard inputs
+	 */
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
+		super.draw(batch, parentAlpha);
+		if (Gdx.input.isKeyJustPressed(Keys.T))
+		{
+			currentColorSchema = currentColorSchema.next();
+			triggerFogColorChange(currentColorSchema.fog, 5f);
+			triggerAmbientColorChange(currentColorSchema.ambient, 5f);
+			triggerSkyColorChange(currentColorSchema.skyTop, currentColorSchema.skyBottom, 5f);
+		}
+	}
+
+	private void triggerFogColorChange(Color target, float duration) {
+		for (FogColorChangeListener colorChangeListener : fogColourChangeListeners) {
+			colorChangeListener.onFogColorChangeTriggered(target, duration);
+		}
+	}
+	
+	private void triggerAmbientColorChange(Color target, float duration) {
+		for (AmbientColorChangeListener colorChangeListener : ambientColourChangeListeners) {
+			colorChangeListener.onAmbientColorChangeTriggered(target, duration);
+		}
+	}
+	
+	private void triggerSkyColorChange(Color targetTop, Color targetBottom, float duration) {
+		for (SkyColorChangeListener colorChangeListener : skyColourChangeListeners) {
+			colorChangeListener.onSkyColorChangeTriggered(targetTop, targetBottom, duration);
+		}
+	}
+	
+	public void addFogColourChangeListener(FogColorChangeListener fogColourChangeListener) {
 		this.fogColourChangeListeners.add(fogColourChangeListener);
+	}
+	public void addAmbientColourChangeListener(AmbientColorChangeListener ambientColourChangeListener) {
+		this.ambientColourChangeListeners.add(ambientColourChangeListener);
+	}
+	public void addSkyColourChangeListener(SkyColorChangeListener skyColourChangeListener) {
+		this.skyColourChangeListeners.add(skyColourChangeListener);
 	}
 
 	

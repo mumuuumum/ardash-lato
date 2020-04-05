@@ -1,14 +1,16 @@
 package ardash.lato.actors;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import ardash.lato.Assets.SceneTexture;
 import ardash.lato.LatoStage;
 
-public class Performer extends Group implements StageAccessor {
+public class Performer extends Group implements StageAccessor, AmbientColorChangeListener {
 
 	private static final float PERFORMER_WIDTH = 1.85f;
 	private static final float MIN_SPEED = 9.3f;
@@ -87,6 +89,15 @@ public class Performer extends Group implements StageAccessor {
 
 	public Vector2 getCamSpot() {
 		return camSpot;
+	}
+
+	@Override
+	public void onAmbientColorChangeTriggered(Color target, float seconds) {
+		// performer is also emitting ambient light in ambient color
+		target = target.cpy();
+		target.mul(4f); // mul == brighter ==> so the actor doesn't become black but just a bit darker
+		getChild(0).addAction(Actions.color(target, seconds));
+		
 	}
 	
 	

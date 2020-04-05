@@ -13,8 +13,8 @@ import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 import com.github.czyzby.kiwi.util.gdx.scene2d.Actors;
 
 import ardash.lato.Assets.SceneTexture;
-import ardash.lato.actors.ColorChangeListener;
 import ardash.lato.actors.FlarePlane;
+import ardash.lato.actors.FogColorChangeListener;
 import ardash.lato.actors.MountainRange;
 import ardash.lato.actors.Performer;
 import ardash.lato.actors.SkyPlane;
@@ -65,6 +65,8 @@ public class GameScreen implements Screen {
 //		backStage.setDebugAll(true);
 //		frontStage.setDebugAll(true);
 //		Gdx.input.setInputProcessor(backStage);
+		
+		backStage.addActor(weather); // weather can be on any stage
 
 		// additive flare plane (must be done first, so actors can spawn the flares)
 		flarePlane = new FlarePlane(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
@@ -75,11 +77,14 @@ public class GameScreen implements Screen {
 		final SkyPlane skyPlane = new SkyPlane(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
 		backStage.addActor(skyPlane);
 		skyPlane.init();
-
+		
+		// subscribe sky to skycolors
+		weather.addSkyColourChangeListener(skyPlane);
+		
 		for (int i = 0; i<4 ; i++)
 		{
 			final int numMountains = 10;
-			MountainRange mr = new MountainRange(numMountains);
+			final MountainRange mr = new MountainRange(numMountains);
 			backStage.addActor(mr);
 			mr.init();
 			mr.setName("MountainRange"+i);
@@ -92,24 +97,11 @@ public class GameScreen implements Screen {
 			backStage.addActor(fog);
 //			fog.setColor(1f, 0.9f, 0.9f, 0.125f);
 			fog.setColor(EnvColors.DAY.fog);
-			fog.getColor().a = 0.225f;
+			fog.getColor().a = 0.525f; // orig 0.225f
 			Actors.centerActor(fog);
 			fog.setName("fog"+i);
 			fog.setTouchable(Touchable.disabled);
 //			fog.setVisible(false);
-			
-			// subscribe the fog layers to fog colour change
-			weather.addFogColourChangeListener(new ColorChangeListener() {
-				
-				@Override
-				public void onColorChangeTriggered(Color target, float seconds) {
-					Color t = target.cpy();
-					t.a = 0.225f;	
-					fog.addAction(Actions.color(t, seconds));
-				}
-			});
-			
-			
 			
 			// range offset
 			mr.moveBy(-MountainRange.MOUNT_SIZE*(i+1), -2f*i-4);
@@ -121,6 +113,20 @@ public class GameScreen implements Screen {
 			// move to center on 0,0
 			mr.moveBy(numMountains/2 * -MountainRange.MOUNT_SIZE,0);
 			
+			// subscribe the fog layers to fog colour change
+			weather.addFogColourChangeListener(new FogColorChangeListener() {
+				
+				@Override
+				public void onFogColorChangeTriggered(Color target, float seconds) {
+					Color t = target.cpy();
+					t.a = 0.225f;	
+					fog.addAction(Actions.color(t, seconds));
+				}
+			});
+
+			// subscribe the mountains layers to ambient colour change
+			weather.addAmbientColourChangeListener(mr);
+			weather.addFogColourChangeListener(mr);
 		}
 		
 //		backStage.addActor(skyPlane);
@@ -138,6 +144,7 @@ public class GameScreen implements Screen {
 //		p.moveBy(4*1.8f, 10f);
 		p.moveBy(8*1.8f, 10f); // tmp becasue no starting groudn yet
 		stage.setPerformer(p); // attach the camera to him
+		weather.addAmbientColourChangeListener(p);
 		
 //		// add ambient light overlay
 //		Image fog = new Image(assets.getSTexture(SceneTexture.FOG_PIX));
@@ -174,7 +181,7 @@ public class GameScreen implements Screen {
     	Gdx.gl20.glBlendFunc(GL20.GL_ONE_MINUS_DST_COLOR, GL20.GL_ONE);
     	Gdx.gl20.glBlendFunc(GL20.GL_ZERO, GL20.GL_ZERO);
 
-    	weather.act(delta);
+//    	weather.act(delta);
     	backStage.act(delta);
     	stage.act(delta);
     	frontStage.act(delta);
