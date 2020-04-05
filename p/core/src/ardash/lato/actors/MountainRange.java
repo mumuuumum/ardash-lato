@@ -1,6 +1,8 @@
 package ardash.lato.actors;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -57,6 +59,8 @@ public class MountainRange extends Group implements StageAccessor, AmbientColorC
 		img.setTouchable(Touchable.disabled);
 //		img.setColor(1f, 0.9f, 0.9f, 1.0f);
 //		img.moveBy(0, 1f);
+		
+//		TODO brigter clouds missing at bottom. otherwise blue-ish clouds too visible, see screenshots
 	}
 
 	public float getSpeed() {
@@ -87,7 +91,7 @@ public class MountainRange extends Group implements StageAccessor, AmbientColorC
 //		System.out.println(child.getX());
 //		System.out.println(child.getWidth());
 	}
-
+	
 	@Override
 	public void onAmbientColorChangeTriggered(Color target, float seconds) {
 		
@@ -96,7 +100,6 @@ public class MountainRange extends Group implements StageAccessor, AmbientColorC
 		// change all pieces, but dont change the last image, since it is a fog/cloud layer
 		for (int i=0; i< numPieces; i++)
 		{
-//			getChild(i).addAction(Actions.color(target, seconds));
 			getChild(i).addAction(Actions.color(target, seconds));
 		}	
 		
@@ -105,7 +108,8 @@ public class MountainRange extends Group implements StageAccessor, AmbientColorC
 	@Override
 	public void onFogColorChangeTriggered(Color target, float seconds) {
 		// cloud images
-		target.mul(1.1f); // mul == brighter ==> so the actor doesn't become black but just a bit darker
+		target = target.cpy();
+		target.mul(1.515f); // mul == brighter ==> so the actor doesn't become black but just a bit darker
 		getChild(getChildren().size-1).addAction(Actions.color(target, seconds));
 	}
 }
