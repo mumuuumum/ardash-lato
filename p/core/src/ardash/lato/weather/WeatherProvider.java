@@ -1,4 +1,4 @@
-package ardash.lato.actors;
+package ardash.lato.weather;
 
 import java.util.LinkedList;
 
@@ -7,8 +7,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-
-import ardash.lato.EnvColors;
 
 public class WeatherProvider extends Actor{
 	public static final float DAYTIME_HOURS = 16f;
@@ -29,14 +27,12 @@ public class WeatherProvider extends Actor{
 	float currentSOD = SECONDS_PER_HOUR * 10.5f; // 10.5 = 10:30 am 
 	EnvColors currentColorSchema = EnvColors.DAY;
 	
-	private LinkedList<FogColorChangeListener> fogColourChangeListeners;
-	private LinkedList<AmbientColorChangeListener> ambientColourChangeListeners;
-	private LinkedList<SkyColorChangeListener> skyColourChangeListeners;
+	private LinkedList<AmbientColorChangeListener> ambientColourChangeListeners = new LinkedList<AmbientColorChangeListener>();
+	private LinkedList<FogColorChangeListener> fogColourChangeListeners = new LinkedList<FogColorChangeListener>();
+	private LinkedList<SkyColorChangeListener> skyColourChangeListeners = new LinkedList<SkyColorChangeListener>();
+	private LinkedList<SunColorChangeListener> sunColourChangeListeners = new LinkedList<SunColorChangeListener>();
 	
 	public WeatherProvider() {
-		fogColourChangeListeners = new LinkedList<FogColorChangeListener>();
-		ambientColourChangeListeners = new LinkedList<AmbientColorChangeListener>();
-		skyColourChangeListeners = new LinkedList<SkyColorChangeListener>();
 	}
 
 	@Override
@@ -58,25 +54,26 @@ public class WeatherProvider extends Actor{
 	 */
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
+		 // input key T
 		if (Gdx.input.isKeyJustPressed(Keys.T))
 		{
 			currentColorSchema = currentColorSchema.next();
-			triggerFogColorChange(currentColorSchema.fog, 5f);
 			triggerAmbientColorChange(currentColorSchema.ambient, 5f);
+			triggerFogColorChange(currentColorSchema.fog, 5f);
 			triggerSkyColorChange(currentColorSchema.skyTop, currentColorSchema.skyBottom, 5f);
+			triggerSunColorChange(currentColorSchema.sun, 5f);
 		}
 	}
 
-	private void triggerFogColorChange(Color target, float duration) {
-		for (FogColorChangeListener colorChangeListener : fogColourChangeListeners) {
-			colorChangeListener.onFogColorChangeTriggered(target, duration);
-		}
-	}
-	
 	private void triggerAmbientColorChange(Color target, float duration) {
 		for (AmbientColorChangeListener colorChangeListener : ambientColourChangeListeners) {
 			colorChangeListener.onAmbientColorChangeTriggered(target, duration);
+		}
+	}
+	
+	private void triggerFogColorChange(Color target, float duration) {
+		for (FogColorChangeListener colorChangeListener : fogColourChangeListeners) {
+			colorChangeListener.onFogColorChangeTriggered(target, duration);
 		}
 	}
 	
@@ -86,14 +83,23 @@ public class WeatherProvider extends Actor{
 		}
 	}
 	
-	public void addFogColourChangeListener(FogColorChangeListener fogColourChangeListener) {
-		this.fogColourChangeListeners.add(fogColourChangeListener);
+	private void triggerSunColorChange(Color target, float duration) {
+		for (SunColorChangeListener colorChangeListener : sunColourChangeListeners) {
+			colorChangeListener.onSunColorChangeTriggered(target, duration);
+		}
 	}
+	
 	public void addAmbientColourChangeListener(AmbientColorChangeListener ambientColourChangeListener) {
 		this.ambientColourChangeListeners.add(ambientColourChangeListener);
 	}
+	public void addFogColourChangeListener(FogColorChangeListener fogColourChangeListener) {
+		this.fogColourChangeListeners.add(fogColourChangeListener);
+	}
 	public void addSkyColourChangeListener(SkyColorChangeListener skyColourChangeListener) {
 		this.skyColourChangeListeners.add(skyColourChangeListener);
+	}
+	public void addSunColourChangeListener(SunColorChangeListener sunColourChangeListener) {
+		this.sunColourChangeListeners.add(sunColourChangeListener);
 	}
 
 	

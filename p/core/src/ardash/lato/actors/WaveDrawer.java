@@ -8,14 +8,16 @@ import com.badlogic.gdx.graphics.glutils.AdvShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.lato.terrain.Downer;
 import ardash.lato.terrain.HomeHill;
 import ardash.lato.terrain.TerrainSegList;
+import ardash.lato.weather.AmbientColorChangeListener;
 
-public class WaveDrawer extends Actor implements Disposable {
+public class WaveDrawer extends Actor implements Disposable, AmbientColorChangeListener {
 
 	private AdvShapeRenderer sr;
 	TerrainSegList terrainSegmentList;
@@ -118,5 +120,10 @@ public class WaveDrawer extends Actor implements Disposable {
 		}
 		
 		
+	}
+
+	@Override
+	public void onAmbientColorChangeTriggered(Color target, float seconds) {
+		addAction(Actions.color(target, seconds));		
 	}
 }

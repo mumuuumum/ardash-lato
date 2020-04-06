@@ -15,14 +15,18 @@ import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 import com.github.czyzby.kiwi.util.gdx.scene2d.Actors;
 
-import ardash.lato.EnvColors;
 import ardash.lato.Assets.SceneTexture;
+import ardash.lato.weather.EnvColors;
+import ardash.lato.weather.SkyColorChangeListener;
+import ardash.lato.weather.SunColorChangeListener;
 
-public class SkyPlane extends Group implements StageAccessor, Disposable, SkyColorChangeListener {
+public class SkyPlane extends Group implements StageAccessor, Disposable, SkyColorChangeListener, SunColorChangeListener {
 
 	private static final float SUN_WIDTH = 2;
 	private ShapeRenderer sr;
 	private Group sunRotor;
+	private Image imgGlow, imgSun;
+	private Actor imgFlare;
 	private Actor topColorHolder;
 	private Actor bottomColorHolder;
 
@@ -46,7 +50,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		sunRotor.moveBy(0, -10);
 
 		// add sun glow
-		Image imgGlow = new Image(getAssets().getSTexture(SceneTexture.GLOW));
+		imgGlow = new Image(getAssets().getSTexture(SceneTexture.GLOW));
 		imgGlow.setWidth(SUN_WIDTH*26);
 		imgGlow.setHeight(SUN_WIDTH*26);
 		sunRotor.addActor(imgGlow);
@@ -57,12 +61,12 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 
 		
 		// add sun shape
-		Image imgSun = new Image(getAssets().getSTexture(SceneTexture.SUN_SHAPE));
+		imgSun = new Image(getAssets().getSTexture(SceneTexture.SUN_SHAPE));
 		imgSun.setWidth(SUN_WIDTH);
 		imgSun.setHeight(SUN_WIDTH);
 		sunRotor.addActor(imgSun);
 		imgSun.setPosition(0, -15f); // sun rotation radius
-		spawnFlareInForeground(imgSun, 500f);
+		imgFlare = spawnFlareInForeground(imgSun, 500f);
 		imgSun.setTouchable(Touchable.enabled);
 		imgSun.setName("sunshape");
 
@@ -120,6 +124,13 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		topColorHolder.addAction(Actions.color(targetTop, seconds));
 		bottomColorHolder.addAction(Actions.color(targetBottom, seconds));
 		
+	}
+
+	@Override
+	public void onSunColorChangeTriggered(Color target, float seconds) {
+		imgGlow.addAction(Actions.color(target, seconds));
+		imgFlare.addAction(Actions.color(target, seconds));
+//		imgSun.addAction(Actions.color(target, seconds));
 	}
 
 	@Override

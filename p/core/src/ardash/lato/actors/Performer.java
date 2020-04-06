@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import ardash.lato.Assets.SceneTexture;
+import ardash.lato.weather.AmbientColorChangeListener;
 import ardash.lato.LatoStage;
 
 public class Performer extends Group implements StageAccessor, AmbientColorChangeListener {

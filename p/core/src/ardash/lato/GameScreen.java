@@ -14,12 +14,13 @@ import com.github.czyzby.kiwi.util.gdx.scene2d.Actors;
 
 import ardash.lato.Assets.SceneTexture;
 import ardash.lato.actors.FlarePlane;
-import ardash.lato.actors.FogColorChangeListener;
 import ardash.lato.actors.MountainRange;
 import ardash.lato.actors.Performer;
 import ardash.lato.actors.SkyPlane;
 import ardash.lato.actors.WaveDrawer;
-import ardash.lato.actors.WeatherProvider;
+import ardash.lato.weather.EnvColors;
+import ardash.lato.weather.FogColorChangeListener;
+import ardash.lato.weather.WeatherProvider;
 import box2dLight.RayHandler;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
@@ -72,12 +73,14 @@ public class GameScreen implements Screen {
 		flarePlane = new FlarePlane(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
 		frontStage.addActor(flarePlane);
 		flarePlane.init();
+		weather.addSunColourChangeListener(flarePlane);
 
 		
 		final SkyPlane skyPlane = new SkyPlane(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
 		backStage.addActor(skyPlane);
 		skyPlane.init();
-		
+		weather.addSunColourChangeListener(skyPlane);
+
 		// subscribe sky to skycolors
 		weather.addSkyColourChangeListener(skyPlane);
 		
@@ -136,6 +139,7 @@ public class GameScreen implements Screen {
 		WaveDrawer hl = new WaveDrawer(EnvColors.DAY.ambient);
 		stage.addActor(hl);
 		stage.setWaveDrawer(hl);
+		weather.addAmbientColourChangeListener(hl);
 		
 		// add performer
 		Performer p = new Performer();

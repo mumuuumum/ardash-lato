@@ -1,4 +1,4 @@
-package ardash.lato.actors;
+package ardash.lato.weather;
 
 import com.badlogic.gdx.graphics.Color;
 

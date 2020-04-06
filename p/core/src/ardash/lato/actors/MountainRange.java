@@ -11,7 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import ardash.lato.Assets.SceneTexture;
-import ardash.lato.EnvColors;
+import ardash.lato.weather.AmbientColorChangeListener;
+import ardash.lato.weather.EnvColors;
+import ardash.lato.weather.FogColorChangeListener;
 import ardash.lato.GameScreen;
 
 public class MountainRange extends Group implements StageAccessor, AmbientColorChangeListener, FogColorChangeListener{

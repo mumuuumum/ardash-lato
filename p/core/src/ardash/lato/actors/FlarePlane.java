@@ -2,6 +2,7 @@ package ardash.lato.actors;
 
 import java.util.Vector;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,8 +15,9 @@ import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.lato.Assets.SceneTexture;
 import ardash.lato.LatoStage;
+import ardash.lato.weather.SunColorChangeListener;
 
-public class FlarePlane extends Group implements StageAccessor, Disposable {
+public class FlarePlane extends Group implements StageAccessor, Disposable, SunColorChangeListener {
 
 	private static final float SUN_WIDTH = 2;
 //	private ShapeRenderer sr;
@@ -82,8 +84,16 @@ public class FlarePlane extends Group implements StageAccessor, Disposable {
 		super.act(delta);
 	}
 
+	@Override
+	public void onSunColorChangeTriggered(Color target, float seconds) {
+		// TODO Auto-generated method stub
+		// TODO continue here: subsribe only the flare of the sun, in the class when it spawns
+	}
 
 	@Override
+	/**
+	 * Draw this actor with additive blending.
+	 */
 	public void draw(Batch batch, float parentAlpha) {
 		batch.setBlendFunction(GL20.GL_ONE_MINUS_DST_COLOR, GL20.GL_ONE);
 		super.draw(batch, parentAlpha);
@@ -93,5 +103,6 @@ public class FlarePlane extends Group implements StageAccessor, Disposable {
 	public void dispose() {
 //		Disposables.gracefullyDisposeOf(sr);
 	}
+
 
 }
