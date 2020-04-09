@@ -113,7 +113,7 @@ public class WeatherProvider extends Actor{
 		for (SODChangeListener listener : sodChangeListeners) {
 			listener.onSODChange(currentSOD, hourOfDay, delta, percentOfDayOver);
 		}
-		System.out.println(String.format("SOD: %+10.4f", currentTOD() ));
+//		System.out.println(String.format("SOD: %+10.4f", currentTOD() ));
 	}
 
 	/**

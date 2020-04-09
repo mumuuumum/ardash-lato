@@ -11,7 +11,7 @@ public class Downer extends TerrainSegList {
 	static final float MIN_WAY_FORWARD = 20f;
 	static final float MAX_WAY_FORWARD = 140f;
 	static final float MIN_WAY_DOWNWARD = 11f;
-	static final float MAX_WAY_DOWNWARD = 170f;
+	static final float MAX_WAY_DOWNWARD = 70f;
 	static final Vector2 currentRandomVector= new Vector2();
 	static final Vector2 prevRandomVector= new Vector2(); // needed to calculate the angle
 	static final float MIN_WAY_STRAIGHT = 0f;

@@ -5,12 +5,19 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 import com.github.czyzby.kiwi.util.gdx.scene2d.Actors;
+import com.github.czyzby.kiwi.util.gdx.viewport.Viewports;
 
 import ardash.lato.Assets.SceneTexture;
 import ardash.lato.actors.FlarePlane;
@@ -44,8 +51,10 @@ public class GameScreen implements Screen {
 	public LatoStage backStage;
 	public LatoStage stage;
 	public LatoStage frontStage;
+	public LatoStage guiStage;
 	private RayHandler rayHandler;
 	public FlarePlane flarePlane;
+	private Performer performer;
 
 	public GameScreen(GameManager gm) {
 		this.gm = gm;
@@ -62,6 +71,7 @@ public class GameScreen implements Screen {
 		stage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), this);
 		frontStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), this);
 		CURRENT_WORLD_WIDTH = backStage.getViewport().getWorldWidth();
+		guiStage = new LatoStage(Viewports.getDensityAwareViewport(), this);
 //		stage.setDebugAll(true);
 //		backStage.setDebugAll(true);
 //		frontStage.setDebugAll(true);
@@ -142,14 +152,13 @@ public class GameScreen implements Screen {
 		stage.setWaveDrawer(hl);
 		weather.addAmbientColourChangeListener(hl);
 		
-		// add performer
-		Performer p = new Performer();
-		stage.addActor(p);
-		p.init();
+		performer = new Performer();
+		stage.addActor(performer);
+		performer.init();
 //		p.moveBy(4*1.8f, 10f);
-		p.moveBy(8*1.8f, 10f); // tmp becasue no starting groudn yet
-		stage.setPerformer(p); // attach the camera to him
-		weather.addAmbientColourChangeListener(p);
+		performer.moveBy(8*1.8f, 10f); // tmp becasue no starting groudn yet
+		stage.setPerformer(performer); // attach the camera to him
+		weather.addAmbientColourChangeListener(performer);
 		
 //		// add ambient light overlay
 //		Image fog = new Image(assets.getSTexture(SceneTexture.FOG_PIX));
@@ -173,8 +182,54 @@ public class GameScreen implements Screen {
 //		frontStage.addActor(flarePlane);
 //		flarePlane.init();
 
+		buildGui();
+	}
 
+	private void buildGui() {
+		Gdx.input.setInputProcessor(guiStage);
+		guiStage.setDebugAll(true);
+		Image img = new Image(assets.getSTexture(SceneTexture.PERFORMER));
+//		guiStage.addActor(img);
+		final LabelStyle lblStyle = new LabelStyle();
+		lblStyle.font = new BitmapFont();
+		Label fps = new Label("fps", lblStyle) {
+			@Override
+			public void act(float delta) {
+				super.act(delta);
+				setText("fps: "+ Gdx.graphics.getFramesPerSecond());
+			}
+		};
+		Table mainTable = new Table();
+		mainTable.setTouchable(Touchable.enabled);
+		mainTable.addListener(new InputListener() {
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				performer.userInput(true);
+				return true;
+			}
+			@Override
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				performer.userInput(false);
+				super.touchUp(event, x, y, pointer, button);
+			}
+		});
+		guiStage.addActor(mainTable);
+		mainTable.setFillParent(true);
+		mainTable.row().colspan(3).expandX().fillX();
+		mainTable.add(fps);
+		mainTable.row().expandY();
+//		mainTable.add(img);
+		mainTable.add();
+		mainTable.row();
 		
+		Image pause = new Image(assets.getSTexture(SceneTexture.PAUSE));
+		pause.setColor(Color.WHITE.cpy());
+		pause.getColor().a = .8f;
+//		pause.setSize(10f, 10f);
+		mainTable.add(pause).height(40f).width(40f).left();
+//		fps.
+
+//		Actors.centerActor(mainTable);
 	}
 
 	@Override
@@ -186,17 +241,15 @@ public class GameScreen implements Screen {
     	Gdx.gl20.glBlendFunc(GL20.GL_ONE_MINUS_DST_COLOR, GL20.GL_ONE);
     	Gdx.gl20.glBlendFunc(GL20.GL_ZERO, GL20.GL_ZERO);
 
-//    	weather.act(delta);
     	backStage.act(delta);
     	stage.act(delta);
     	frontStage.act(delta);
-    	
-    	// move camera before drawing
-//    	stage.getCamera().translate(0.1f, -0.15f, 0);
+    	guiStage.act(delta);
     	
     	backStage.draw();
     	stage.draw();
     	frontStage.draw();
+    	guiStage.draw();
     	
 //    	World world = new World(new Vector2(), false);
 //		// add light
@@ -219,6 +272,7 @@ public class GameScreen implements Screen {
 		stage.getViewport().update(width, height, false);
 		frontStage.getViewport().update(width, height, false);
 		frontStage.getCamera().position.set(0f, 0f, 0f); // this cam is centered so we can zoom in/out without moving the sun away from center
+		guiStage.getViewport().update(width, height, true);
 	}
 
 	@Override
@@ -241,7 +295,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		Disposables.gracefullyDisposeOf(backStage, stage);
+		Disposables.gracefullyDisposeOf(backStage, stage, frontStage, guiStage);
 	}
 
 }

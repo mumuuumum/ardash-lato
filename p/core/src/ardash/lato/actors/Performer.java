@@ -1,24 +1,41 @@
 package ardash.lato.actors;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
+import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import ardash.lato.Assets.SceneTexture;
-import ardash.lato.weather.AmbientColorChangeListener;
+import ardash.lato.actions.MoreActions;
 import ardash.lato.LatoStage;
+import ardash.lato.weather.AmbientColorChangeListener;
 
 public class Performer extends Group implements StageAccessor, AmbientColorChangeListener {
 
+	private static final float ROTATION_SPEED = 180f; // TODO (deg/sec) this could be different for different performers or boards
 	private static final float PERFORMER_WIDTH = 1.85f;
 	private static final float MIN_SPEED = 9.3f;
 	private static final float MAX_SPEED = 19.3f;
 	private float speed = 0f; // speed in m/s
+	private boolean isInAir = false;
+	private boolean isUserInputDown = false;
 //	private float direction = 0f; // current rotation (direction) in degrees
-	private Vector2 velocity = new Vector2();
+	private Vector2 velocity = new Vector2(); // this is only here to safe new-calls
+//	private float gravity = 9.807f; // m/s/s
+	private ParallelAction jumpAction;
+	
+	/**
+	 * vertical speed is intentionally not in a vector with 'speed' because the velocity is handled differently
+	 * depending on if actor is in air or on ground. Physics on ground are not realistic to improve gameplay.
+	 */
+	private float vspeed = 0f; // speed in m/s
 	
 	/**
 	 * A spot in front of the actor, where he wants the camera to look at. Usually a few meters in front of the actor.
@@ -39,40 +56,64 @@ public class Performer extends Group implements StageAccessor, AmbientColorChang
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-//		moveBy(0, -0.01f); // gravity
 		
-		// accelerate
-		// TODO only if on ground
-		final float angleToGround = 360f - velocity.angle(); // 0 or 360 is horizontal, 90 is downward, 45 is ramp down forward
-//		System.out.println(angleToGround);
-		if (angleToGround > 0)
+		// accelerate on ground
+		if (! isInAir)
 		{
-			if (angleToGround < 20f) // TODO adjust here. everything above this angle speeds up
+			final float angleToGround = 360f - velocity.angle(); // 0 or 360 is horizontal, 90 is downward, 45 is ramp down forward
+//			System.out.println(angleToGround);
+			if (angleToGround > 0)
 			{
-				setSpeed(speed-(1.1f*delta));
-			}
-			else if (angleToGround < 90f)
-			{
-				setSpeed(speed+(1.1f*delta));
-			}
-			else
-			{
-				setSpeed(speed-(1.1f*delta));
+				if (angleToGround < 20f) // TODO adjust here. everything above this angle speeds up
+				{
+					setSpeed(speed-(1.1f*delta));
+				}
+				else if (angleToGround < 90f)
+				{
+					setSpeed(speed+(1.1f*delta));
+				}
+				else
+				{
+					setSpeed(speed-(1.1f*delta));
+				}
 			}
 		}
 		
 //		System.out.println(Gdx.graphics.getFramesPerSecond());
 //		System.out.println(speed);
+//		System.out.println(getRotation());
 		
-		// apply the speed into a direction of movement
-		velocity.set(1,1).setLength(speed).setAngle(getRotation());
+		// apply the speed into a direction of movement, which is the direction of the terrain, or straight forward (angle 0) when in air
+		velocity.set(1,1).setLength(speed).setAngle(isInAir ? 0f : getRotation());
 		final float deltaX = velocity.x;
 		moveBy(deltaX*delta, 0); // movement is product of time-delta and speed-delta
 		
 		float heightUnderActor = ((LatoStage)getStage()).getWaveDrawer().getHeightAt(getX()+(PERFORMER_WIDTH/2f));
 		float heightOfMe = getY();
-		moveBy(0, - (getY() - heightUnderActor));
-		setRotation( ((LatoStage)getStage()).getWaveDrawer().getAngleAtX(getX()+(PERFORMER_WIDTH/2f)));
+		// set the height of the terrain under the actor if not in air
+		if (! isInAir)
+		{
+			setOriginY(0);
+			moveBy(0, - (getY() - heightUnderActor));
+			setRotation( ((LatoStage)getStage()).getWaveDrawer().getAngleAtX(getX()+(PERFORMER_WIDTH/2f)));
+		}
+		else
+		{
+			setOriginY(PERFORMER_WIDTH/2f);
+			// if jumping or otherwise flying just apply a bit gravity
+//			moveBy(0, - 0.2f);
+			if (heightUnderActor > heightOfMe) // check if hit the ground
+			{
+				land();
+			}
+			
+			// if touch down rotate counter clockwise, otherwise rotate towards ground
+			if (isUserInputDown)
+			{
+				rotateBy(ROTATION_SPEED*delta);
+//				addAction(Actions.rotateBy(2f));
+			}
+		}
 		camSpot.set(getX()+15f, getY());
 	}
 
@@ -100,7 +141,41 @@ public class Performer extends Group implements StageAccessor, AmbientColorChang
 		getChild(0).addAction(Actions.color(target, seconds));
 		
 	}
+
+	/**
+	 * handle the only possible user input (on the game stage): touch anywhere on the screen
+	 * @param down touch up or touch down
+	 */
+	public void userInput(boolean touchDown) {
+		isUserInputDown = touchDown;
+		if (!isInAir)
+		{
+			if (touchDown)
+			{
+				jump();
+			}
+		}
+		
+	}
+
+	private void jump() {
+		isInAir  = true;
+		final MoveByAction jumpForce = Actions.moveBy(0, 25, 1f, Interpolation.fastSlow);
+//		final MoveByAction accelleratedFall = Actions.moveBy(0, -15f*3, 1f*3, Interpolation.slowFast); // increasing speed due to gravity
+//		final RepeatAction constantFall = Actions.forever(Actions.moveBy(0, -15f*3, 1f*3));
+//		final SequenceAction fall = Actions.sequence(accelleratedFall,constantFall);
+		final GravityAction gravity = MoreActions.gravity();
+		jumpAction = Actions.parallel(jumpForce, gravity );
+		addAction(jumpAction);
+		
+	}
 	
-	
+	/** touching down after a jump or fall*/
+	private void land() {
+		isInAir = false;
+		removeAction(jumpAction); // ensure no more up or down (gravity) is applied
+	}
+
+
 
 }
