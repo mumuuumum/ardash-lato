@@ -17,10 +17,12 @@ import com.github.czyzby.kiwi.util.gdx.scene2d.Actors;
 
 import ardash.lato.Assets.SceneTexture;
 import ardash.lato.weather.EnvColors;
+import ardash.lato.weather.SODChangeListener;
 import ardash.lato.weather.SkyColorChangeListener;
 import ardash.lato.weather.SunColorChangeListener;
+import ardash.lato.weather.WeatherProvider;
 
-public class SkyPlane extends Group implements StageAccessor, Disposable, SkyColorChangeListener, SunColorChangeListener {
+public class SkyPlane extends Group implements StageAccessor, Disposable, SkyColorChangeListener, SunColorChangeListener, SODChangeListener {
 
 	private static final float SUN_WIDTH = 2;
 	private ShapeRenderer sr;
@@ -85,7 +87,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		sunRotor.rotateBy(-0.91f);
+//		sunRotor.rotateBy(-0.91f);
 //		System.out.println("sun rot: " + sunRotor.getRotation());
 	}
 
@@ -129,8 +131,22 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 	@Override
 	public void onSunColorChangeTriggered(Color target, float seconds) {
 		imgGlow.addAction(Actions.color(target, seconds));
-		imgFlare.addAction(Actions.color(target, seconds));
+		if (!getGameScreen().weather.getCurrentColorSchema().equals(EnvColors.NIGHT))
+			imgFlare.addAction(Actions.color(target, seconds));
 //		imgSun.addAction(Actions.color(target, seconds));
+	}
+
+	boolean fading = false;
+	@Override
+	public void onSODChange(float newSOD, float hourOfDay, float delta, float percentOfDayOver) {
+		sunRotor.setRotation(percentOfDayOver * -360f);
+		
+		// fadeOut doesn't work because the flare is not alpha-blended
+		if (hourOfDay < 7 || hourOfDay > 17)
+			imgFlare.setVisible(false);
+		else
+			imgFlare.setVisible(true);
+			
 	}
 
 	@Override

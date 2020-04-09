@@ -83,6 +83,7 @@ public class GameScreen implements Screen {
 
 		// subscribe sky to skycolors
 		weather.addSkyColourChangeListener(skyPlane);
+		weather.addSODChangeListener(skyPlane);
 		
 		for (int i = 0; i<4 ; i++)
 		{

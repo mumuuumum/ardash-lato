@@ -61,7 +61,7 @@ public class Performer extends Group implements StageAccessor, AmbientColorChang
 			}
 		}
 		
-		System.out.println(Gdx.graphics.getFramesPerSecond());
+//		System.out.println(Gdx.graphics.getFramesPerSecond());
 //		System.out.println(speed);
 		
 		// apply the speed into a direction of movement

@@ -9,12 +9,15 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class WeatherProvider extends Actor{
+	
+//	public static final boolean FASTMODE = false;
+	public static final boolean FASTMODE = true;
 	public static final float DAYTIME_HOURS = 16f;
 	public static final float NIGHT_HOURS = 8f;
 	public static final float DAY_HOURS = DAYTIME_HOURS + NIGHT_HOURS;
-	public static final float DUSK_HOURS = 0.5f;
-	public static final float DAWN_HOURS = 0.5f;
-	public static final float SECONDS_PER_DAY = 7f * 60f; // one 24 hours cycle shall have 7 minutes
+	public static final float DUSK_HOURS = 1.84f;
+	public static final float DAWN_HOURS = 1.84f;
+	public static final float SECONDS_PER_DAY = FASTMODE ? 30f : 7f * 60f + 10f; // one 24 hours cycle shall have 7 minutes and 10 seconds (only 180 seconds in FASTMODE)
 	public static final float SECONDS_PER_HOUR = SECONDS_PER_DAY / DAY_HOURS;
 	public static final float DAYTIME_SECONDS = DAYTIME_HOURS * SECONDS_PER_HOUR;
 	public static final float NIGHT_SECONDS = NIGHT_HOURS * SECONDS_PER_HOUR;
@@ -31,6 +34,8 @@ public class WeatherProvider extends Actor{
 	private LinkedList<FogColorChangeListener> fogColourChangeListeners = new LinkedList<FogColorChangeListener>();
 	private LinkedList<SkyColorChangeListener> skyColourChangeListeners = new LinkedList<SkyColorChangeListener>();
 	private LinkedList<SunColorChangeListener> sunColourChangeListeners = new LinkedList<SunColorChangeListener>();
+	private LinkedList<SODChangeListener> sodChangeListeners = new LinkedList<SODChangeListener>();
+	private boolean isInitialised = false;
 	
 	public WeatherProvider() {
 	}
@@ -38,15 +43,85 @@ public class WeatherProvider extends Actor{
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		currentSOD +=delta;
-		if (currentSOD >= SECONDS_PER_DAY)
-			currentSOD =0f; // start new day
+		incSOD(delta);
+		
+		// send initial color, in case someone has been initialised wrongly
+		sendInitialColorsIfNotDoneYet();
+		
+		// change the colour scheme of the day at certain times
+		changeColoursWithAccordingToDaytime();
+		
 		if (currentSOD > (SECONDS_PER_HOUR * 10.5f)+ 10f)
 		{
 //			triggerFogColorChange(EnvColors.DUSK.fog, 5f);
 //			triggerAmbientColorChange(EnvColors.DUSK.ambient, 5f);
 //			triggerSkyColorChange(EnvColors.DUSK.skyTop, EnvColors.DUSK.skyBottom, 5f);
 		}
+	}
+
+	private void changeColoursWithAccordingToDaytime() {
+		switch (currentColorSchema) {
+		case DAY:
+			if (currentTOD()>15.2f)
+			{
+				currentColorSchema = currentColorSchema.next();
+				final float duration = 3f;
+				triggerColorSchemaChange(duration);
+			}
+			break;
+		case DUSK:
+			if (currentTOD()>20.1f)
+			{
+				currentColorSchema = currentColorSchema.next();
+				final float duration = 4f;
+				triggerColorSchemaChange(duration);
+			}
+			break;
+		case NIGHT:
+			if (currentTOD()>3.9f && currentTOD()<12f)
+			{
+				currentColorSchema = currentColorSchema.next();
+				final float duration = 4f;
+				triggerColorSchemaChange(duration);
+			}
+			break;
+		case DAWN:
+			if (currentTOD()>10f)
+			{
+				currentColorSchema = currentColorSchema.next();
+				final float duration = 4f;
+				triggerColorSchemaChange(duration);
+			}
+			break;
+
+		default:
+			break;
+		}
+		
+	}
+
+	/**
+	 * Increment the Second Of Day ('SOD'), reset at midnight and inform all listeners.
+	 * @param delta
+	 */
+	private void incSOD(float delta) {
+		currentSOD +=delta;
+		if (currentSOD >= SECONDS_PER_DAY)
+			currentSOD =0f; // start new day
+		final float percentOfDayOver = currentSOD / SECONDS_PER_DAY;
+		final float hourOfDay = currentSOD / SECONDS_PER_HOUR;
+		for (SODChangeListener listener : sodChangeListeners) {
+			listener.onSODChange(currentSOD, hourOfDay, delta, percentOfDayOver);
+		}
+		System.out.println(String.format("SOD: %+10.4f", currentTOD() ));
+	}
+
+	/**
+	 * converts seconds of day to virtual time of day (0h - 24h)
+	 * @return
+	 */
+	private float currentTOD() {
+		return currentSOD / SECONDS_PER_HOUR;
 	}
 	
 	/**
@@ -58,11 +133,24 @@ public class WeatherProvider extends Actor{
 		if (Gdx.input.isKeyJustPressed(Keys.T))
 		{
 			currentColorSchema = currentColorSchema.next();
-			triggerAmbientColorChange(currentColorSchema.ambient, 5f);
-			triggerFogColorChange(currentColorSchema.fog, 5f);
-			triggerSkyColorChange(currentColorSchema.skyTop, currentColorSchema.skyBottom, 5f);
-			triggerSunColorChange(currentColorSchema.sun, 5f);
+			final float duration = 10f;
+			triggerColorSchemaChange(duration);
 		}
+	}
+
+	private void sendInitialColorsIfNotDoneYet() {
+		if (!isInitialised)
+		{
+			triggerColorSchemaChange(1f);
+			isInitialised = true;
+		}
+	}
+
+	private void triggerColorSchemaChange(final float duration) {
+		triggerAmbientColorChange(currentColorSchema.ambient, duration);
+		triggerFogColorChange(currentColorSchema.fog, duration);
+		triggerSkyColorChange(currentColorSchema.skyTop, currentColorSchema.skyBottom, duration);
+		triggerSunColorChange(currentColorSchema.sun, duration);
 	}
 
 	private void triggerAmbientColorChange(Color target, float duration) {
@@ -100,6 +188,13 @@ public class WeatherProvider extends Actor{
 	}
 	public void addSunColourChangeListener(SunColorChangeListener sunColourChangeListener) {
 		this.sunColourChangeListeners.add(sunColourChangeListener);
+	}
+	public void addSODChangeListener(SODChangeListener sodChangeListener) {
+		this.sodChangeListeners.add(sodChangeListener);
+	}
+
+	public EnvColors getCurrentColorSchema() {
+		return currentColorSchema;
 	}
 
 	

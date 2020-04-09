@@ -102,8 +102,8 @@ public class LatoStage extends Stage {
 				performer.setSpeed(performer.getSpeed()+1);
 		}
 		
-		System.out.print("ppos X: "+Gdx.input.getX());
-		System.out.println("ppos Y: "+Gdx.input.getY());
+//		System.out.print("ppos X: "+Gdx.input.getX());
+//		System.out.println("ppos Y: "+Gdx.input.getY());
 
 	}
 	
