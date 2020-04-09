@@ -164,7 +164,16 @@ public class Performer extends Group implements StageAccessor, AmbientColorChang
 		}
 		
 	}
-
+	
+	@Override
+	public float getRotation() {
+		float rotation = super.getRotation();
+		rotation %= 360f;
+		if (rotation <0f)
+			rotation = 360 + rotation;
+		return rotation;
+	}
+	
 	private void jump() {
 		isInAir  = true;
 		final MoveByAction jumpForce = Actions.moveBy(0, 8, 1f, Interpolation.fastSlow);
