@@ -81,10 +81,11 @@ public class Performer extends Group implements StageAccessor, AmbientColorChang
 		
 //		System.out.println(Gdx.graphics.getFramesPerSecond());
 //		System.out.println(speed);
-//		System.out.println(getRotation());
+		final float rotation = getRotation() < 0f ? getRotation() + 360f : getRotation();
+//		System.out.println(rotation);
 		
 		// apply the speed into a direction of movement, which is the direction of the terrain, or straight forward (angle 0) when in air
-		velocity.set(1,1).setLength(speed).setAngle(isInAir ? 0f : getRotation());
+		velocity.set(1,1).setLength(speed).setAngle(isInAir ? 0f : rotation);
 		final float deltaX = velocity.x;
 		moveBy(deltaX*delta, 0); // movement is product of time-delta and speed-delta
 		
@@ -107,11 +108,17 @@ public class Performer extends Group implements StageAccessor, AmbientColorChang
 				land();
 			}
 			
-			// if touch down rotate counter clockwise, otherwise rotate towards ground
+			// if input touch down rotate counter clockwise, otherwise rotate towards ground
 			if (isUserInputDown)
 			{
 				rotateBy(ROTATION_SPEED*delta);
-//				addAction(Actions.rotateBy(2f));
+			}
+			else
+			{
+//				if (ro)
+				float direction = rotation > 180 ? 1 : -1;
+				rotateBy(ROTATION_SPEED*0.3f*direction*delta);
+				
 			}
 		}
 		camSpot.set(getX()+15f, getY());
@@ -160,7 +167,7 @@ public class Performer extends Group implements StageAccessor, AmbientColorChang
 
 	private void jump() {
 		isInAir  = true;
-		final MoveByAction jumpForce = Actions.moveBy(0, 25, 1f, Interpolation.fastSlow);
+		final MoveByAction jumpForce = Actions.moveBy(0, 8, 1f, Interpolation.fastSlow);
 //		final MoveByAction accelleratedFall = Actions.moveBy(0, -15f*3, 1f*3, Interpolation.slowFast); // increasing speed due to gravity
 //		final RepeatAction constantFall = Actions.forever(Actions.moveBy(0, -15f*3, 1f*3));
 //		final SequenceAction fall = Actions.sequence(accelleratedFall,constantFall);
