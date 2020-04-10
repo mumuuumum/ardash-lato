@@ -1,20 +1,19 @@
 package ardash.lato.actors;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
-import com.badlogic.gdx.scenes.scene2d.actions.RepeatAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import ardash.lato.Assets.SceneTexture;
-import ardash.lato.actions.MoreActions;
 import ardash.lato.LatoStage;
+import ardash.lato.actions.MoreActions;
 import ardash.lato.weather.AmbientColorChangeListener;
 
 public class Performer extends Group implements StageAccessor, AmbientColorChangeListener {
@@ -22,7 +21,7 @@ public class Performer extends Group implements StageAccessor, AmbientColorChang
 	private static final float ROTATION_SPEED = 180f; // TODO (deg/sec) this could be different for different performers or boards
 	private static final float PERFORMER_WIDTH = 1.85f;
 	private static final float MIN_SPEED = 9.3f;
-	private static final float MAX_SPEED = 19.3f;
+	private static final float MAX_SPEED = 29.3f;
 	private float speed = 0f; // speed in m/s
 	private boolean isInAir = false;
 	private boolean isUserInputDown = false;
@@ -30,6 +29,7 @@ public class Performer extends Group implements StageAccessor, AmbientColorChang
 	private Vector2 velocity = new Vector2(); // this is only here to safe new-calls
 //	private float gravity = 9.807f; // m/s/s
 	private ParallelAction jumpAction;
+	private ArrayList<SpeedListener> speedListeners = new ArrayList<SpeedListener>();
 	
 	/**
 	 * vertical speed is intentionally not in a vector with 'speed' because the velocity is handled differently
@@ -134,6 +134,17 @@ public class Performer extends Group implements StageAccessor, AmbientColorChang
 		if (speed > MAX_SPEED)
 			speed = MAX_SPEED;
 		this.speed = speed;
+		
+		// inform listeners
+		for (SpeedListener speedListener : speedListeners) {
+			speedListener.onSpeedChanged(speed, getSpeedPercentage());
+		}
+	}
+
+	public float getSpeedPercentage() {
+		float max = MAX_SPEED - MIN_SPEED;
+		float cur = speed - MIN_SPEED;
+		return cur/max;
 	}
 
 	public Vector2 getCamSpot() {
@@ -190,6 +201,11 @@ public class Performer extends Group implements StageAccessor, AmbientColorChang
 	private void land() {
 		isInAir = false;
 		removeAction(jumpAction); // ensure no more up or down (gravity) is applied
+	}
+	
+	public void addSpeedListener (SpeedListener listener)
+	{
+		speedListeners.add(listener);
 	}
 
 

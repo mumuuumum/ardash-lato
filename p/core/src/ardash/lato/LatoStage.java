@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -13,10 +14,15 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.lato.actors.Performer;
+import ardash.lato.actors.SpeedListener;
 import ardash.lato.actors.WaveDrawer;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
-public class LatoStage extends Stage {
+public class LatoStage extends Stage implements SpeedListener {
+
+	// the valid zoom interval for the camera to be used to interpolate zooming with current speed
+	protected static final float MIN_ZOOM = 1f;
+	protected static final float MAX_ZOOM = 2.08f;
 
 	public final GameScreen screen;
 	public final Assets assets;
@@ -24,6 +30,7 @@ public class LatoStage extends Stage {
 	public final GameManager gm;
 	private Performer performer = null;
 	private WaveDrawer waveDrawer = null;
+	
 
 	public LatoStage(Viewport vp, GameScreen gameScreen) {
 		super(vp);
@@ -65,14 +72,16 @@ public class LatoStage extends Stage {
 		OrthographicCamera cam = (OrthographicCamera)getCamera();
 		if (Gdx.input.isKeyPressed(Keys.Z))
 		{
-			cam.zoom+=0.1f;
+			cam.zoom+=0.01f;
+			System.out.println("zoom: "+cam.zoom);
 		}
 		if (Gdx.input.isKeyPressed(Keys.X))
 		{
-			cam.zoom-=0.1f;
+			cam.zoom-=0.01f;
 			if (cam.zoom < 0f)
 			{
 				cam.zoom =0f;
+				System.out.println("zoom: "+cam.zoom);
 			}
 		}
 		if (Gdx.input.isKeyPressed(Keys.LEFT))
@@ -202,5 +211,12 @@ public class LatoStage extends Stage {
 		if (object instanceof Disposable) {
 			Disposables.gracefullyDisposeOf((Disposable)object);
 		}
+	}
+
+	@Override
+	public void onSpeedChanged(float newSpeed, float percentage) {
+		final float newZoom = MathUtils.lerp(MIN_ZOOM, MAX_ZOOM, percentage);
+		OrthographicCamera cam = (OrthographicCamera)getCamera();
+		cam.zoom = newZoom;
 	}
 }

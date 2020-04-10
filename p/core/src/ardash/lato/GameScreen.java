@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -174,6 +175,11 @@ public class GameScreen implements Screen {
 		performer.moveBy(8*1.8f, 10f); // tmp becasue no starting groudn yet
 		stage.setPerformer(performer); // attach the camera to him
 		weather.addAmbientColourChangeListener(performer);
+		
+		// attach the zoom of some cameras to the speed of the player
+		performer.addSpeedListener(backStage);
+		performer.addSpeedListener(stage);
+		performer.addSpeedListener(frontStage);
 		
 		
 //		// add ambient light overlay

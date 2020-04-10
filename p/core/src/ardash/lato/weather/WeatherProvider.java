@@ -20,8 +20,8 @@ public class WeatherProvider extends Actor{
 		RAIN, SNOW, FOG, CLEAR ; // STORM is a sub-mode of RAIN
 	}
 	
-//	public static final boolean FASTMODE = false;
-	public static final boolean FASTMODE = true;
+	public static final boolean FASTMODE = false;
+//	public static final boolean FASTMODE = true;
 	public static final float DAYTIME_HOURS = 16f;
 	public static final float NIGHT_HOURS = 8f;
 	public static final float DAY_HOURS = DAYTIME_HOURS + NIGHT_HOURS;
@@ -89,14 +89,14 @@ public class WeatherProvider extends Actor{
 			Collections.addAll(nextWeathers, Precipitation.values());
 			
 			// give CLEAR weather a higher changce to win :-) 
-//			nextWeathers.add(Precipitation.CLEAR);
-//			nextWeathers.add(Precipitation.CLEAR);
-//			nextWeathers.add(Precipitation.CLEAR);
-//			nextWeathers.add(Precipitation.CLEAR);
-//			nextWeathers.add(Precipitation.CLEAR);
-//			nextWeathers.add(Precipitation.CLEAR);
-//			nextWeathers.add(Precipitation.CLEAR);
-//			nextWeathers.add(Precipitation.CLEAR);
+			nextWeathers.add(Precipitation.CLEAR);
+			nextWeathers.add(Precipitation.CLEAR);
+			nextWeathers.add(Precipitation.CLEAR);
+			nextWeathers.add(Precipitation.CLEAR);
+			nextWeathers.add(Precipitation.CLEAR);
+			nextWeathers.add(Precipitation.CLEAR);
+			nextWeathers.add(Precipitation.CLEAR);
+			nextWeathers.add(Precipitation.CLEAR);
 			
 			// pick a random next weather from the list
 			int nextWIndex = MathUtils.random(nextWeathers.size()-1);
@@ -123,7 +123,7 @@ public class WeatherProvider extends Actor{
 			} while (!isValid);
 			
 			// let all weather stay for 20 to 30 seconds
-			final float d = MathUtils.random(2f, 3f);
+			final float d = MathUtils.random(20f, 30f);
 			currentPrecipAction = MoreActions.floata(0, d, d);
 			
 			addAction(currentPrecipAction);
@@ -171,7 +171,7 @@ public class WeatherProvider extends Actor{
 			if (currentTOD()>15.2f)
 			{
 				currentColorSchema = currentColorSchema.next();
-				final float duration = 3f;
+				final float duration = 10f;
 				triggerColorSchemaChange(duration);
 			}
 			break;
@@ -179,7 +179,7 @@ public class WeatherProvider extends Actor{
 			if (currentTOD()>20.1f)
 			{
 				currentColorSchema = currentColorSchema.next();
-				final float duration = 4f;
+				final float duration = 10f;
 				triggerColorSchemaChange(duration);
 			}
 			break;
@@ -187,7 +187,7 @@ public class WeatherProvider extends Actor{
 			if (currentTOD()>3.9f && currentTOD()<12f)
 			{
 				currentColorSchema = currentColorSchema.next();
-				final float duration = 4f;
+				final float duration = 10f;
 				triggerColorSchemaChange(duration);
 			}
 			break;
@@ -195,7 +195,7 @@ public class WeatherProvider extends Actor{
 			if (currentTOD()>10f)
 			{
 				currentColorSchema = currentColorSchema.next();
-				final float duration = 4f;
+				final float duration = 10f;
 				triggerColorSchemaChange(duration);
 			}
 			break;
