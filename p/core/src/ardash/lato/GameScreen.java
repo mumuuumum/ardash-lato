@@ -26,6 +26,7 @@ import ardash.lato.actors.FlarePlane;
 import ardash.lato.actors.MountainRange;
 import ardash.lato.actors.ParticlePlane;
 import ardash.lato.actors.Performer;
+import ardash.lato.actors.Scarf;
 import ardash.lato.actors.SkyPlane;
 import ardash.lato.actors.WaveDrawer;
 import ardash.lato.weather.EnvColors;
@@ -181,6 +182,8 @@ public class GameScreen implements Screen {
 		performer.addSpeedListener(stage);
 		performer.addSpeedListener(frontStage);
 		
+		stage.addActor(new Scarf(assets.getSTexture(SceneTexture.FOG_PIX)));
+
 		
 //		// add ambient light overlay
 //		Image fog = new Image(assets.getSTexture(SceneTexture.FOG_PIX));
@@ -265,6 +268,11 @@ public class GameScreen implements Screen {
 
     	backStage.act(delta);
     	stage.act(delta);
+    	
+    	// TODO tmp:
+    	Scarf sc = stage.getRoot().findActor("scarf");
+    	sc.setPosition(performer.getX(), performer.getY());
+    	
     	frontStage.act(delta);
     	guiStage.act(delta);
     	

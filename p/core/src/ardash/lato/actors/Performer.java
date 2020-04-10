@@ -72,6 +72,7 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 		snowSpray.scaleEffect(0.09f);
 		snowSpray.setPosition(-22f, 20f);
 		snowSpray.start();
+		
 	}
 	
 	@Override
