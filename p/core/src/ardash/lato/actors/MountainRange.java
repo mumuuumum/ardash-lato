@@ -55,14 +55,17 @@ public class MountainRange extends Group implements StageAccessor, AmbientColorC
 		// add gradiant fog at bottom
 		Image img = new Image(getAssets().getSTexture(SceneTexture.MOUNTAINFOG));
 		img.setSize(MOUNT_SIZE*numPieces, MOUNT_SIZE*1.4f);
-//		img.moveBy(distanceBetweenPieces*i + MathUtils.random(-VARIANCE, VARIANCE), MathUtils.random(-VARIANCE, VARIANCE));
 		addActor(img);
 		img.setName("groundFogBelowMountains");
 		img.setTouchable(Touchable.disabled);
-//		img.setColor(1f, 0.9f, 0.9f, 1.0f);
-//		img.moveBy(0, 1f);
 		
-//		TODO brigter clouds missing at bottom. otherwise blue-ish clouds too visible, see screenshots
+//		brighter clouds missing at bottom. otherwise blue-ish clouds too visible, see screenshots
+		Image imgBrightClouds = new Image(getAssets().getSTexture(SceneTexture.MOUNTAINFOG));
+		imgBrightClouds.setSize(MOUNT_SIZE*numPieces, MOUNT_SIZE*1.4f);
+		addActor(imgBrightClouds);
+		imgBrightClouds.setName("groundFogBelowMountains");
+		imgBrightClouds.setTouchable(Touchable.disabled);
+		imgBrightClouds.moveBy(0, -5f);
 	}
 
 	public float getSpeed() {
@@ -98,13 +101,17 @@ public class MountainRange extends Group implements StageAccessor, AmbientColorC
 	public void onAmbientColorChangeTriggered(Color target, float seconds) {
 		
 		target = target.cpy();
-		target.mul(2f); // mul == brighter ==> so the actor doesn't become black but just a bit darker
-		// change all pieces, but dont change the last image, since it is a fog/cloud layer
+		target.mul(2.5f); // mul == brighter ==> so the actor doesn't become black but just a bit darker
+		// change all pieces, but don't change the last image, since it is a fog/cloud layer
 		for (int i=0; i< numPieces; i++)
 		{
 			getChild(i).addAction(Actions.color(target, seconds));
-		}	
+		}
 		
+		// cloud images
+//		target = target.cpy();
+//		target.mul(1.515f); // mul == brighter ==> so the actor doesn't become black but just a bit darker
+		getChild(getChildren().size-1).addAction(Actions.color(target, seconds));
 	}
 
 	@Override
@@ -112,6 +119,6 @@ public class MountainRange extends Group implements StageAccessor, AmbientColorC
 		// cloud images
 		target = target.cpy();
 		target.mul(1.515f); // mul == brighter ==> so the actor doesn't become black but just a bit darker
-		getChild(getChildren().size-1).addAction(Actions.color(target, seconds));
+		getChild(getChildren().size-2).addAction(Actions.color(target, seconds));
 	}
 }

@@ -20,6 +20,7 @@ import com.github.czyzby.kiwi.util.gdx.scene2d.Actors;
 import com.github.czyzby.kiwi.util.gdx.viewport.Viewports;
 
 import ardash.lato.Assets.SceneTexture;
+import ardash.lato.actions.MoreActions;
 import ardash.lato.actors.FlarePlane;
 import ardash.lato.actors.MountainRange;
 import ardash.lato.actors.Performer;
@@ -27,6 +28,7 @@ import ardash.lato.actors.SkyPlane;
 import ardash.lato.actors.WaveDrawer;
 import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.FogColorChangeListener;
+import ardash.lato.weather.FogIntensityChangeListener;
 import ardash.lato.weather.WeatherProvider;
 import box2dLight.RayHandler;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
@@ -129,12 +131,18 @@ public class GameScreen implements Screen {
 			
 			// subscribe the fog layers to fog colour change
 			weather.addFogColourChangeListener(new FogColorChangeListener() {
-				
 				@Override
 				public void onFogColorChangeTriggered(Color target, float seconds) {
 					Color t = target.cpy();
 					t.a = 0.225f;	
-					fog.addAction(Actions.color(t, seconds));
+					fog.addAction(MoreActions.noAlphaColor(t, seconds));
+				}
+			});
+			// and to fog intensity
+			weather.addFogIntensityChangeListener(new FogIntensityChangeListener() {
+				@Override
+				public void onFogIntensityChanged(float newIntensity, float duration) {
+					fog.addAction(Actions.alpha(newIntensity, duration));
 				}
 			});
 

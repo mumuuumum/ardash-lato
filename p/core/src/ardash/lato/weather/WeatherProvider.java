@@ -1,17 +1,27 @@
 package ardash.lato.weather;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
+
+import ardash.lato.actions.MoreActions;
 
 public class WeatherProvider extends Actor{
 	
-	public static final boolean FASTMODE = false;
-//	public static final boolean FASTMODE = true;
+	public enum Precipitation {
+		RAIN, SNOW, FOG, CLEAR ; // STORM is a sub-mode of RAIN
+	}
+	
+//	public static final boolean FASTMODE = false;
+	public static final boolean FASTMODE = true;
 	public static final float DAYTIME_HOURS = 16f;
 	public static final float NIGHT_HOURS = 8f;
 	public static final float DAY_HOURS = DAYTIME_HOURS + NIGHT_HOURS;
@@ -23,15 +33,22 @@ public class WeatherProvider extends Actor{
 	public static final float NIGHT_SECONDS = NIGHT_HOURS * SECONDS_PER_HOUR;
 	public static final float DUSK_SECONDS = DUSK_HOURS * SECONDS_PER_HOUR;
 	public static final float DAWN_SECONDS = DAWN_HOURS * SECONDS_PER_HOUR;
+	public static final float MIN_FOG = 0.3f;
+	public static final float MAX_FOG = 0.7f;
+	public static final float MAX_FOG_NO_PRECIPITATION = 0.525f;
 
 	/**
 	 * current Second Of Day. A value from 0 to 24 * SECONDS_PER_HOUR
 	 */
 	float currentSOD = SECONDS_PER_HOUR * 10.5f; // 10.5 = 10:30 am 
 	EnvColors currentColorSchema = EnvColors.DAY;
+	float currentFog = MIN_FOG;
+	Precipitation currentPrecip = Precipitation.CLEAR;
+	FloatAction currentPrecipAction = null;
 	
 	private LinkedList<AmbientColorChangeListener> ambientColourChangeListeners = new LinkedList<AmbientColorChangeListener>();
 	private LinkedList<FogColorChangeListener> fogColourChangeListeners = new LinkedList<FogColorChangeListener>();
+	private LinkedList<FogIntensityChangeListener> fogIntensityChangeListeners = new LinkedList<FogIntensityChangeListener>();
 	private LinkedList<SkyColorChangeListener> skyColourChangeListeners = new LinkedList<SkyColorChangeListener>();
 	private LinkedList<SunColorChangeListener> sunColourChangeListeners = new LinkedList<SunColorChangeListener>();
 	private LinkedList<SODChangeListener> sodChangeListeners = new LinkedList<SODChangeListener>();
@@ -51,12 +68,97 @@ public class WeatherProvider extends Actor{
 		// change the colour scheme of the day at certain times
 		changeColoursWithAccordingToDaytime();
 		
+		adjustPrecipitation();
+		
 		if (currentSOD > (SECONDS_PER_HOUR * 10.5f)+ 10f)
 		{
 //			triggerFogColorChange(EnvColors.DUSK.fog, 5f);
 //			triggerAmbientColorChange(EnvColors.DUSK.ambient, 5f);
 //			triggerSkyColorChange(EnvColors.DUSK.skyTop, EnvColors.DUSK.skyBottom, 5f);
 		}
+	}
+
+	private void adjustPrecipitation() {
+		if (currentPrecipAction == null || ! getActions().contains(currentPrecipAction, true))
+		{
+			// time a for change of weather
+			
+			// list of possible next weathers
+			ArrayList<Precipitation> nextWeathers = new ArrayList<WeatherProvider.Precipitation>();
+			Collections.addAll(nextWeathers, Precipitation.values());
+			
+			// give CLEAR weather a higher changce to win :-) 
+			nextWeathers.add(Precipitation.CLEAR);
+			nextWeathers.add(Precipitation.CLEAR);
+			nextWeathers.add(Precipitation.CLEAR);
+			nextWeathers.add(Precipitation.CLEAR);
+			nextWeathers.add(Precipitation.CLEAR);
+			nextWeathers.add(Precipitation.CLEAR);
+			nextWeathers.add(Precipitation.CLEAR);
+			nextWeathers.add(Precipitation.CLEAR);
+			
+			// pick a random next weather from the list
+			int nextWIndex = MathUtils.random(nextWeathers.size()-1);
+			Precipitation nextWeather = nextWeathers.get(nextWIndex);
+			
+			// pick again until the pick is valid
+			boolean isValid = true;
+			do {
+				nextWIndex = MathUtils.random(nextWeathers.size()-1);
+				nextWeather = nextWeathers.get(nextWIndex);
+				// don't let rain and snow follow each other
+				// don't let anything else than clear sky follow fog (too much fog looks bad and precedes rains, snow anyway)
+				if (currentPrecip == Precipitation.RAIN && nextWeather == Precipitation.SNOW)
+					isValid = false;
+				else if (currentPrecip == Precipitation.SNOW && nextWeather == Precipitation.RAIN)
+					isValid = false;
+				else if (currentPrecip == Precipitation.FOG && nextWeather != Precipitation.CLEAR)
+					isValid = false;
+//				else if (currentPrecip != Precipitation.CLEAR && nextWeather == Precipitation.FOG)
+//					isValid = false;
+				else
+					isValid = true;
+
+			} while (!isValid);
+			
+			// let all weather stay for 20 to 30 seconds
+			final float d = MathUtils.random(2f, 3f);
+			currentPrecipAction = MoreActions.floata(0, d, d);
+			
+			addAction(currentPrecipAction);
+			currentPrecip = nextWeather;
+			System.out.println(String.format("next W %s duration: %+10.4f", nextWeather, d ));
+			
+			// program the specific weather conditions
+			switch (currentPrecip) {
+			case CLEAR:
+				// clear sky has also a small amount of fog
+				currentFog = MathUtils.random(MIN_FOG, MAX_FOG_NO_PRECIPITATION);
+				sendFogIntensityChange(currentFog, d*0.1f);
+				break;
+			case RAIN:
+				currentFog = MathUtils.random(MAX_FOG_NO_PRECIPITATION, MAX_FOG);
+				sendFogIntensityChange(currentFog, d*0.1f);
+				break;
+			case SNOW:
+				currentFog = MathUtils.random(MAX_FOG_NO_PRECIPITATION, MAX_FOG);
+				sendFogIntensityChange(currentFog, d*0.1f);
+				break;
+			case FOG:
+				currentFog = MathUtils.random(MAX_FOG_NO_PRECIPITATION, MAX_FOG);
+				sendFogIntensityChange(currentFog, d);
+				break;
+
+			default:
+				break;
+			}
+		}
+		else
+		{
+			// there was no change and nothing is to be done
+		}
+//		System.out.println("comp "+ currentPrecipAction.isComplete());
+		
 	}
 
 	private void changeColoursWithAccordingToDaytime() {
@@ -136,16 +238,34 @@ public class WeatherProvider extends Actor{
 			final float duration = 10f;
 			triggerColorSchemaChange(duration);
 		}
+		if (Gdx.input.isKeyJustPressed(Keys.F))
+		{
+			currentFog += 0.1f;
+			sendFogIntensityChange(currentFog, 1f);
+			System.out.println(String.format("fog: %+10.4f", currentFog ));
+		}
+		if (Gdx.input.isKeyJustPressed(Keys.G))
+		{
+			currentFog -= 0.1f;
+			sendFogIntensityChange(currentFog, 1f);
+			System.out.println(String.format("fog: %+10.4f", currentFog ));
+		}
 	}
 
 	private void sendInitialColorsIfNotDoneYet() {
 		if (!isInitialised)
 		{
 			triggerColorSchemaChange(1f);
+			sendFogIntensityChange(MIN_FOG, 1f);
 			isInitialised = true;
 		}
 	}
 
+	private void sendFogIntensityChange(float targetIntensity, final float duration) {
+		for (FogIntensityChangeListener listener : fogIntensityChangeListeners) {
+			listener.onFogIntensityChanged(targetIntensity, duration);
+		}
+	}
 	private void triggerColorSchemaChange(final float duration) {
 		triggerAmbientColorChange(currentColorSchema.ambient, duration);
 		triggerFogColorChange(currentColorSchema.fog, duration);
@@ -182,6 +302,9 @@ public class WeatherProvider extends Actor{
 	}
 	public void addFogColourChangeListener(FogColorChangeListener fogColourChangeListener) {
 		this.fogColourChangeListeners.add(fogColourChangeListener);
+	}
+	public void addFogIntensityChangeListener(FogIntensityChangeListener fogIntensityChangeListener) {
+		this.fogIntensityChangeListeners.add(fogIntensityChangeListener);
 	}
 	public void addSkyColourChangeListener(SkyColorChangeListener skyColourChangeListener) {
 		this.skyColourChangeListeners.add(skyColourChangeListener);

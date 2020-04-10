@@ -57,7 +57,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		imgGlow.setHeight(SUN_WIDTH*26);
 		sunRotor.addActor(imgGlow);
 //		imgGlow.setPosition(0, -15f); // sun rotation radius
-		imgGlow.setColor(new Color(1,1,1,0.5f));
+		imgGlow.setColor(new Color(1,1,1,0.9f));
 		imgGlow.setName("sunglow");
 //		imgGlow.setTouchable(Touchable.disabled);
 
