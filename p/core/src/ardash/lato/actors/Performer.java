@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEmitter.GradientColorValue;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
@@ -20,8 +21,8 @@ import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
-import ardash.lato.Assets.SceneTexture;
 import ardash.lato.Assets;
+import ardash.lato.Assets.SceneTexture;
 import ardash.lato.LatoStage;
 import ardash.lato.actions.MoreActions;
 import ardash.lato.weather.AmbientColorChangeListener;
@@ -41,6 +42,7 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 	private ParallelAction jumpAction;
 	private ArrayList<SpeedListener> speedListeners = new ArrayList<SpeedListener>();
 	ParticleEffect snowSpray = new ParticleEffect();
+	private Actor ambientColorContainer = new Actor();
 
 	/**
 	 * vertical speed is intentionally not in a vector with 'speed' because the velocity is handled differently
@@ -62,6 +64,8 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 		setOriginX(PERFORMER_WIDTH/2f);
 		camSpot.set(getX(), getY());
 		setSpeed(MIN_SPEED);
+		
+		addActor(ambientColorContainer);
 		
 		TextureAtlas ta = getAssetManager().get(Assets.uiAtlas);
 		snowSpray.load( Gdx.files.internal("spray.p"), ta);
@@ -159,6 +163,9 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
+		final GradientColorValue tint = snowSpray.getEmitters().get(0).getTint();
+		final Color amb = ambientColorContainer.getColor();
+		tint.setColors(new float[]{amb.r, amb.g, amb.b});
 		snowSpray.draw(batch);
 	}
 	
@@ -191,14 +198,12 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 
 	@Override
 	public void onAmbientColorChangeTriggered(Color target, float seconds) {
+		ambientColorContainer.addAction(Actions.color(target, seconds));		
+
 		// performer is also emitting ambient light in ambient color
 		target = target.cpy();
 		target.mul(4f); // mul == brighter ==> so the actor doesn't become black but just a bit darker
 		getChild(0).addAction(Actions.color(target, seconds));
-//		final GradientColorValue tint = snowSpray.getEmitters().get(0).getTint();
-//		target.mul(0.25f);
-//		target = Color.WHITE.cpy();
-//		tint.setColors(new float[]{target.r, target.g, target.b});
 	}
 
 	/**
