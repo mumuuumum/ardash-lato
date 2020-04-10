@@ -76,8 +76,8 @@ public class GameScreen implements Screen {
 		frontStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), this);
 		CURRENT_WORLD_WIDTH = backStage.getViewport().getWorldWidth();
 		guiStage = new LatoStage(Viewports.getDensityAwareViewport(), this);
-//		stage.setDebugAll(true);
 //		backStage.setDebugAll(true);
+		stage.setDebugAll(true);
 //		frontStage.setDebugAll(true);
 //		Gdx.input.setInputProcessor(backStage);
 		

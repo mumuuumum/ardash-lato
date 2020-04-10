@@ -2,7 +2,12 @@ package ardash.lato.actors;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter.GradientColorValue;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -10,13 +15,18 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.Pool;
+import com.badlogic.gdx.utils.Pools;
+import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.lato.Assets.SceneTexture;
+import ardash.lato.Assets;
 import ardash.lato.LatoStage;
 import ardash.lato.actions.MoreActions;
 import ardash.lato.weather.AmbientColorChangeListener;
 
-public class Performer extends Group implements StageAccessor, AmbientColorChangeListener {
+public class Performer extends Group implements StageAccessor, Disposable, AmbientColorChangeListener {
 
 	private static final float ROTATION_SPEED = 180f; // TODO (deg/sec) this could be different for different performers or boards
 	private static final float PERFORMER_WIDTH = 1.85f;
@@ -30,7 +40,8 @@ public class Performer extends Group implements StageAccessor, AmbientColorChang
 //	private float gravity = 9.807f; // m/s/s
 	private ParallelAction jumpAction;
 	private ArrayList<SpeedListener> speedListeners = new ArrayList<SpeedListener>();
-	
+	ParticleEffect snowSpray = new ParticleEffect();
+
 	/**
 	 * vertical speed is intentionally not in a vector with 'speed' because the velocity is handled differently
 	 * depending on if actor is in air or on ground. Physics on ground are not realistic to improve gameplay.
@@ -51,6 +62,12 @@ public class Performer extends Group implements StageAccessor, AmbientColorChang
 		setOriginX(PERFORMER_WIDTH/2f);
 		camSpot.set(getX(), getY());
 		setSpeed(MIN_SPEED);
+		
+		TextureAtlas ta = getAssetManager().get(Assets.uiAtlas);
+		snowSpray.load( Gdx.files.internal("spray.p"), ta);
+		snowSpray.scaleEffect(0.09f);
+		snowSpray.setPosition(-22f, 20f);
+		snowSpray.start();
 	}
 	
 	@Override
@@ -122,8 +139,29 @@ public class Performer extends Group implements StageAccessor, AmbientColorChang
 			}
 		}
 		camSpot.set(getX()+15f, getY());
+		
+		// move snow spray
+		final Pool<Vector2> vecPool = Pools.get(Vector2.class);
+		Vector2 corner = vecPool.obtain();
+		corner.set(0,0);
+		this.localToParentCoordinates(corner);
+		snowSpray.setPosition(corner.x, corner.y);
+		vecPool.free(corner);
+		snowSpray.update(delta);
+		if (isInAir)
+			snowSpray.allowCompletion();
+		else
+			snowSpray.start();
+			
+
 	}
 
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
+		super.draw(batch, parentAlpha);
+		snowSpray.draw(batch);
+	}
+	
 	public float getSpeed() {
 		return speed;
 	}
@@ -157,7 +195,10 @@ public class Performer extends Group implements StageAccessor, AmbientColorChang
 		target = target.cpy();
 		target.mul(4f); // mul == brighter ==> so the actor doesn't become black but just a bit darker
 		getChild(0).addAction(Actions.color(target, seconds));
-		
+//		final GradientColorValue tint = snowSpray.getEmitters().get(0).getTint();
+//		target.mul(0.25f);
+//		target = Color.WHITE.cpy();
+//		tint.setColors(new float[]{target.r, target.g, target.b});
 	}
 
 	/**
@@ -206,6 +247,11 @@ public class Performer extends Group implements StageAccessor, AmbientColorChang
 	public void addSpeedListener (SpeedListener listener)
 	{
 		speedListeners.add(listener);
+	}
+	
+	@Override
+	public void dispose() {
+		Disposables.gracefullyDisposeOf(snowSpray);
 	}
 
 

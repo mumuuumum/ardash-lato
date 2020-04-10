@@ -20,8 +20,8 @@ public class WeatherProvider extends Actor{
 		RAIN, SNOW, FOG, CLEAR ; // STORM is a sub-mode of RAIN
 	}
 	
-	public static final boolean FASTMODE = false;
-//	public static final boolean FASTMODE = true;
+//	public static final boolean FASTMODE = false;
+	public static final boolean FASTMODE = true;
 	public static final float DAYTIME_HOURS = 16f;
 	public static final float NIGHT_HOURS = 8f;
 	public static final float DAY_HOURS = DAYTIME_HOURS + NIGHT_HOURS;

@@ -1,6 +1,8 @@
 Untitled
 - Delay -
-active: false
+active: true
+lowMin: -100.0
+lowMax: -100.0
 - Duration - 
 lowMin: 10000.0
 lowMax: 10000.0
@@ -20,8 +22,8 @@ timeline0: 0.0
 - Life - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 1000.0
-highMax: 1000.0
+highMin: 500.0
+highMax: 1500.0
 relative: false
 scalingCount: 3
 scaling0: 1.0
@@ -31,7 +33,7 @@ timelineCount: 3
 timeline0: 0.0
 timeline1: 0.66
 timeline2: 1.0
-independent: false
+independent: true
 - Life Offset - 
 active: false
 independent: false
@@ -40,12 +42,12 @@ active: false
 - Y Offset - 
 active: false
 - Spawn Shape - 
-shape: point
+shape: square
 - Spawn Width - 
-lowMin: 150.0
-lowMax: 150.0
-highMin: 600.0
-highMax: 600.0
+lowMin: 0.0
+lowMax: 0.0
+highMin: 2.0
+highMax: 2.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -54,8 +56,8 @@ timeline0: 0.0
 - Spawn Height - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 0.0
-highMax: 0.0
+highMin: 2.0
+highMax: 2.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -63,31 +65,35 @@ timelineCount: 1
 timeline0: 0.0
 - X Scale - 
 lowMin: 1.0
-lowMax: 1.0
-highMin: 2.0
-highMax: 4.0
+lowMax: 3.0
+highMin: 12.0
+highMax: 15.0
 relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
+scalingCount: 2
+scaling0: 0.0
+scaling1: 1.0
+timelineCount: 2
 timeline0: 0.0
+timeline1: 1.0
 - Y Scale - 
 active: false
 - Velocity - 
 active: true
-lowMin: 0.0
-lowMax: 0.0
-highMin: 40.0
-highMax: 40.0
+lowMin: 7.0
+lowMax: 7.0
+highMin: 150.0
+highMax: 170.0
 relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
+scalingCount: 2
+scaling0: 0.36734694
+scaling1: 0.79591835
+timelineCount: 2
 timeline0: 0.0
+timeline1: 1.0
 - Angle - 
 active: true
-lowMin: -180.0
-lowMax: -220.0
+lowMin: -230.0
+lowMax: -270.0
 highMin: 0.0
 highMax: 0.0
 relative: false
@@ -118,8 +124,8 @@ active: false
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: -40.0
-highMax: -40.0
+highMin: -170.0
+highMax: -170.0
 relative: false
 scalingCount: 2
 scaling0: 0.0
@@ -141,13 +147,13 @@ highMin: 1.0
 highMax: 1.0
 relative: false
 scalingCount: 4
-scaling0: 0.49122807
-scaling1: 0.7017544
-scaling2: 0.47368422
+scaling0: 0.2982456
+scaling1: 0.7368421
+scaling2: 0.5263158
 scaling3: 0.49122807
 timelineCount: 4
 timeline0: 0.0
-timeline1: 0.21917808
+timeline1: 0.25342464
 timeline2: 0.7808219
 timeline3: 1.0
 - Options - 
