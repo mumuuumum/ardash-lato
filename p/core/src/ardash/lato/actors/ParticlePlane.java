@@ -15,6 +15,7 @@ import ardash.lato.weather.WeatherProvider.Precipitation;
 
 public class ParticlePlane extends Group implements StageAccessor, Disposable, PrecipitationChangeListener {
 	ParticleEffect rainEffect = new ParticleEffect();
+	ParticleEffect snowEffect = new ParticleEffect();
 
 	public ParticlePlane(float width, float height) {
 		setSize(width, height);
@@ -28,13 +29,18 @@ public class ParticlePlane extends Group implements StageAccessor, Disposable, P
 		rainEffect.load( Gdx.files.internal("rain.p"), ta);
 		rainEffect.scaleEffect(0.05f);
 		rainEffect.setPosition(-22f, 20f);
-//		rainEffect.start();
+
+		snowEffect.load( Gdx.files.internal("snow.p"), ta);
+		snowEffect.scaleEffect(0.08f);
+		snowEffect.setPosition(-23f, 20f);
+		snowEffect.start();
 	}
 	
 	@Override
 	public void act(float delta) {
 		super.act(delta);
 		rainEffect.update(delta);
+		snowEffect.update(delta);
 	}
 
 	@Override
@@ -42,6 +48,7 @@ public class ParticlePlane extends Group implements StageAccessor, Disposable, P
 //		batch.setBlendFunction(GL20.GL_ONE_MINUS_DST_COLOR, GL20.GL_ONE);
 //		super.draw(batch, parentAlpha);
 		rainEffect.draw(batch);
+		snowEffect.draw(batch);
 	}
 	
 	public void startRain(float duration)
@@ -52,9 +59,17 @@ public class ParticlePlane extends Group implements StageAccessor, Disposable, P
 		rainEffect.start();
 	}
 
+	public void startSnow(float duration)
+	{
+		snowEffect.getEmitters().get(0).duration = duration;
+		snowEffect.getEmitters().get(0).durationTimer = 0;
+		snowEffect.getEmitters().get(0).getDuration().setLow(duration*1000f);
+		snowEffect.start();
+	}
+
 	@Override
 	public void dispose() {
-		Disposables.gracefullyDisposeOf(rainEffect);
+		Disposables.gracefullyDisposeOf(rainEffect, snowEffect);
 	}
 
 	@Override
@@ -62,6 +77,9 @@ public class ParticlePlane extends Group implements StageAccessor, Disposable, P
 		switch (targetPrecipitation) {
 		case RAIN:
 			startRain(seconds);
+			break;
+		case SNOW:
+			startSnow(seconds);
 			break;
 		default:
 			break;
