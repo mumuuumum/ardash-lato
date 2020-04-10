@@ -1,0 +1,72 @@
+package ardash.lato.actors;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.utils.Disposable;
+import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
+
+import ardash.lato.Assets;
+import ardash.lato.weather.PrecipitationChangeListener;
+import ardash.lato.weather.WeatherProvider.Precipitation;
+
+public class ParticlePlane extends Group implements StageAccessor, Disposable, PrecipitationChangeListener {
+	ParticleEffect rainEffect = new ParticleEffect();
+
+	public ParticlePlane(float width, float height) {
+		setSize(width, height);
+//		moveBy(getWidth()/-2f, 0f);// self center
+		this.setName("particleplane");
+	}
+
+	@Override
+	public void init() {
+		TextureAtlas ta = getAssetManager().get(Assets.uiAtlas);
+		rainEffect.load( Gdx.files.internal("rain.p"), ta);
+		rainEffect.scaleEffect(0.05f);
+		rainEffect.setPosition(-22f, 20f);
+//		rainEffect.start();
+	}
+	
+	@Override
+	public void act(float delta) {
+		super.act(delta);
+		rainEffect.update(delta);
+	}
+
+	@Override
+	public void draw(Batch batch, float parentAlpha) {
+//		batch.setBlendFunction(GL20.GL_ONE_MINUS_DST_COLOR, GL20.GL_ONE);
+//		super.draw(batch, parentAlpha);
+		rainEffect.draw(batch);
+	}
+	
+	public void startRain(float duration)
+	{
+		rainEffect.getEmitters().get(0).duration = duration;
+		rainEffect.getEmitters().get(0).durationTimer = 0;
+		rainEffect.getEmitters().get(0).getDuration().setLow(duration*1000f);
+		rainEffect.start();
+	}
+
+	@Override
+	public void dispose() {
+		Disposables.gracefullyDisposeOf(rainEffect);
+	}
+
+	@Override
+	public void onPrecipitationChanged(Precipitation targetPrecipitation, float seconds) {
+		switch (targetPrecipitation) {
+		case RAIN:
+			startRain(seconds);
+			break;
+		default:
+			break;
+		}
+	}
+
+
+}

@@ -44,8 +44,8 @@ shape: line
 - Spawn Width - 
 lowMin: 150.0
 lowMax: 150.0
-highMin: 600.0
-highMax: 600.0
+highMin: 1200.0
+highMax: 1200.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -65,7 +65,7 @@ timeline0: 0.0
 lowMin: 1.0
 lowMax: 1.0
 highMin: 1.0
-highMax: 2.0
+highMax: 1.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -166,5 +166,5 @@ behind: false
 premultipliedAlpha: false
 spriteMode: single
 - Image Paths -
-/home/z/devel/lato/sprites/scene/fog_pix.png
+fog_pix.png
 

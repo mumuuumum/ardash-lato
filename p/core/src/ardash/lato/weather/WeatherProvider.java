@@ -49,6 +49,7 @@ public class WeatherProvider extends Actor{
 	private LinkedList<AmbientColorChangeListener> ambientColourChangeListeners = new LinkedList<AmbientColorChangeListener>();
 	private LinkedList<FogColorChangeListener> fogColourChangeListeners = new LinkedList<FogColorChangeListener>();
 	private LinkedList<FogIntensityChangeListener> fogIntensityChangeListeners = new LinkedList<FogIntensityChangeListener>();
+	private LinkedList<PrecipitationChangeListener> precipitationChangeListeners = new LinkedList<PrecipitationChangeListener>();
 	private LinkedList<SkyColorChangeListener> skyColourChangeListeners = new LinkedList<SkyColorChangeListener>();
 	private LinkedList<SunColorChangeListener> sunColourChangeListeners = new LinkedList<SunColorChangeListener>();
 	private LinkedList<SODChangeListener> sodChangeListeners = new LinkedList<SODChangeListener>();
@@ -88,14 +89,14 @@ public class WeatherProvider extends Actor{
 			Collections.addAll(nextWeathers, Precipitation.values());
 			
 			// give CLEAR weather a higher changce to win :-) 
-			nextWeathers.add(Precipitation.CLEAR);
-			nextWeathers.add(Precipitation.CLEAR);
-			nextWeathers.add(Precipitation.CLEAR);
-			nextWeathers.add(Precipitation.CLEAR);
-			nextWeathers.add(Precipitation.CLEAR);
-			nextWeathers.add(Precipitation.CLEAR);
-			nextWeathers.add(Precipitation.CLEAR);
-			nextWeathers.add(Precipitation.CLEAR);
+//			nextWeathers.add(Precipitation.CLEAR);
+//			nextWeathers.add(Precipitation.CLEAR);
+//			nextWeathers.add(Precipitation.CLEAR);
+//			nextWeathers.add(Precipitation.CLEAR);
+//			nextWeathers.add(Precipitation.CLEAR);
+//			nextWeathers.add(Precipitation.CLEAR);
+//			nextWeathers.add(Precipitation.CLEAR);
+//			nextWeathers.add(Precipitation.CLEAR);
 			
 			// pick a random next weather from the list
 			int nextWIndex = MathUtils.random(nextWeathers.size()-1);
@@ -152,6 +153,9 @@ public class WeatherProvider extends Actor{
 			default:
 				break;
 			}
+			
+			// inform listeners
+			sendPrecipChange(currentPrecip, d);
 		}
 		else
 		{
@@ -266,6 +270,13 @@ public class WeatherProvider extends Actor{
 			listener.onFogIntensityChanged(targetIntensity, duration);
 		}
 	}
+
+	private void sendPrecipChange(Precipitation targetPrecip, final float duration) {
+		for (PrecipitationChangeListener listener : precipitationChangeListeners) {
+			listener.onPrecipitationChanged(targetPrecip, duration);
+		}
+	}
+
 	private void triggerColorSchemaChange(final float duration) {
 		triggerAmbientColorChange(currentColorSchema.ambient, duration);
 		triggerFogColorChange(currentColorSchema.fog, duration);
@@ -305,6 +316,9 @@ public class WeatherProvider extends Actor{
 	}
 	public void addFogIntensityChangeListener(FogIntensityChangeListener fogIntensityChangeListener) {
 		this.fogIntensityChangeListeners.add(fogIntensityChangeListener);
+	}
+	public void addPrecipChangeListener(PrecipitationChangeListener precipitationChangeListener) {
+		this.precipitationChangeListeners.add(precipitationChangeListener);
 	}
 	public void addSkyColourChangeListener(SkyColorChangeListener skyColourChangeListener) {
 		this.skyColourChangeListeners.add(skyColourChangeListener);

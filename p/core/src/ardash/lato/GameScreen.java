@@ -23,6 +23,7 @@ import ardash.lato.Assets.SceneTexture;
 import ardash.lato.actions.MoreActions;
 import ardash.lato.actors.FlarePlane;
 import ardash.lato.actors.MountainRange;
+import ardash.lato.actors.ParticlePlane;
 import ardash.lato.actors.Performer;
 import ardash.lato.actors.SkyPlane;
 import ardash.lato.actors.WaveDrawer;
@@ -81,6 +82,12 @@ public class GameScreen implements Screen {
 		
 		backStage.addActor(weather); // weather can be on any stage
 
+		// particle plane must be drawn under flare plane
+		final ParticlePlane particlePlane = new ParticlePlane(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
+		frontStage.addActor(particlePlane);
+		particlePlane.init();
+		weather.addPrecipChangeListener(particlePlane);
+		
 		// additive flare plane (must be done first, so actors can spawn the flares)
 		flarePlane = new FlarePlane(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
 		frontStage.addActor(flarePlane);
@@ -167,6 +174,7 @@ public class GameScreen implements Screen {
 		performer.moveBy(8*1.8f, 10f); // tmp becasue no starting groudn yet
 		stage.setPerformer(performer); // attach the camera to him
 		weather.addAmbientColourChangeListener(performer);
+		
 		
 //		// add ambient light overlay
 //		Image fog = new Image(assets.getSTexture(SceneTexture.FOG_PIX));
