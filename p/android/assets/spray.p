@@ -10,8 +10,8 @@ max: 2000
 - Emission - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 20.0
-highMax: 20.0
+highMin: 50.0
+highMax: 50.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -20,8 +20,8 @@ timeline0: 0.0
 - Life - 
 lowMin: 0.0
 lowMax: 0.0
-highMin: 4500.0
-highMax: 4500.0
+highMin: 1000.0
+highMax: 1000.0
 relative: false
 scalingCount: 3
 scaling0: 1.0
@@ -40,7 +40,7 @@ active: false
 - Y Offset - 
 active: false
 - Spawn Shape - 
-shape: line
+shape: point
 - Spawn Width - 
 lowMin: 150.0
 lowMax: 150.0
@@ -78,7 +78,7 @@ active: true
 lowMin: 0.0
 lowMax: 0.0
 highMin: 40.0
-highMax: 100.0
+highMax: 40.0
 relative: false
 scalingCount: 1
 scaling0: 1.0
@@ -86,10 +86,10 @@ timelineCount: 1
 timeline0: 0.0
 - Angle - 
 active: true
-lowMin: -110.0
-lowMax: -110.0
-highMin: -90.0
-highMax: -90.0
+lowMin: -180.0
+lowMax: -220.0
+highMin: 0.0
+highMax: 0.0
 relative: false
 scalingCount: 3
 scaling0: 0.0
@@ -113,18 +113,20 @@ timelineCount: 2
 timeline0: 0.0
 timeline1: 1.0
 - Wind - 
+active: false
+- Gravity - 
 active: true
 lowMin: 0.0
 lowMax: 0.0
-highMin: 20.0
-highMax: 20.0
+highMin: -40.0
+highMax: -40.0
 relative: false
-scalingCount: 1
-scaling0: 1.0
-timelineCount: 1
+scalingCount: 2
+scaling0: 0.0
+scaling1: 1.0
+timelineCount: 2
 timeline0: 0.0
-- Gravity - 
-active: false
+timeline1: 1.0
 - Tint - 
 colorsCount: 3
 colors0: 1.0
