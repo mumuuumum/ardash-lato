@@ -35,5 +35,6 @@ public class DesktopLauncher {
 		TexturePacker t; // keep this here, otherwise import gets always removed
 		
 		new LwjglApplication(new LatoGame(), config);
+//		new LwjglApplication(new Lato3DGame(), config);
 	}
 }

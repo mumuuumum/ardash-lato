@@ -10,10 +10,14 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
+import ardash.gdx.scenes.scene3d.Stage3D;
+
 public class Scarf extends Group implements StageAccessor {
 	
 	public static final float SEG_LEN=0.3f;
 	public static final float SEG_THICK=0.1f;
+	
+	Stage3D s;
 	
 	AdvShapeRenderer sr = new AdvShapeRenderer();
 	

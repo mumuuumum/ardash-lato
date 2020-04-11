@@ -1,11 +1,20 @@
 package ardash.lato;
 
+import java.beans.PersistenceDelegate;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g3d.Material;
+import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelCache;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -20,6 +29,10 @@ import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 import com.github.czyzby.kiwi.util.gdx.scene2d.Actors;
 import com.github.czyzby.kiwi.util.gdx.viewport.Viewports;
 
+import ardash.gdx.scenes.scene3d.Actor3D;
+import ardash.gdx.scenes.scene3d.Stage3D;
+import ardash.gdx.scenes.scene3d.Stage3DAdapterActor;
+import ardash.gdx.scenes.scene3d.shape.CubeActor3D;
 import ardash.lato.Assets.SceneTexture;
 import ardash.lato.actions.MoreActions;
 import ardash.lato.actors.FlarePlane;
@@ -57,6 +70,7 @@ public class GameScreen implements Screen {
 	public LatoStage stage;
 	public LatoStage frontStage;
 	public LatoStage guiStage;
+	public Stage3D stage3d;
 	private RayHandler rayHandler;
 	public FlarePlane flarePlane;
 	private Performer performer;
@@ -77,6 +91,7 @@ public class GameScreen implements Screen {
 		frontStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), this);
 		CURRENT_WORLD_WIDTH = backStage.getViewport().getWorldWidth();
 		guiStage = new LatoStage(Viewports.getDensityAwareViewport(), this);
+		stage3d = new Stage3D();
 //		backStage.setDebugAll(true);
 		stage.setDebugAll(true);
 //		frontStage.setDebugAll(true);
@@ -182,9 +197,35 @@ public class GameScreen implements Screen {
 		performer.addSpeedListener(stage);
 		performer.addSpeedListener(frontStage);
 		
-		stage.addActor(new Scarf(assets.getSTexture(SceneTexture.FOG_PIX)));
+//		stage.addActor(new Scarf(assets.getSTexture(SceneTexture.FOG_PIX)));
 
+//		final Stage3DAdapterActor stage3d = new Stage3DAdapterActor();
+//		guiStage.addActor(stage3d);
 		
+		stage3d.getCamera().update();
+		
+//		stage3d.addActor(new CubeActor3D(1, 1, 1));
+//		ModelBuilder mb = new ModelBuilder();
+//		stage3d.addActor(new Actor3D(mb.createBox(1, 1, 1, new Material(), 1)));
+		
+        ModelBuilder mb = new ModelBuilder();
+        Model model  = mb.createBox(1, 1, 1, new Material(), 1);
+        model = mb.createBox(5f, 5f, 5f, new Material(ColorAttribute.createDiffuse(Color.GREEN)), Usage.Position
+    			| Usage.Normal);
+        
+        stage3d.addActor(new Actor3D(model));
+//		stage3d.setPosition(1, 1);
+//		stage3d.setScale(10);
+		stage3d.getRoot().setVisible(true);
+		stage3d.getCamera().moveTo(10, 10, 100, 10f);
+		stage3d.getCamera().lookAt(0, 0, 0);
+        stage3d.getCamera().near = 0.00001f;
+        stage3d.getCamera().far = 130f;
+        stage3d.getCamera().update();
+
+		stage3d.setDebug(true, true);
+		stage3d.getCamera().update();
+
 //		// add ambient light overlay
 //		Image fog = new Image(assets.getSTexture(SceneTexture.FOG_PIX));
 //		fog.setSize(204, 204); // TODO reduce to display size
@@ -260,26 +301,40 @@ public class GameScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		//draw something nice to look at
-        Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
-    	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-    	Gdx.gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-    	Gdx.gl20.glBlendFunc(GL20.GL_ONE_MINUS_DST_COLOR, GL20.GL_ONE);
-    	Gdx.gl20.glBlendFunc(GL20.GL_ZERO, GL20.GL_ZERO);
-
-    	backStage.act(delta);
-    	stage.act(delta);
+//        Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
+//    	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+//    	Gdx.gl20.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        Gdx.gl.glClearColor(0, 0, 0, 0);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        Gdx.gl.glEnable (Gdx.gl.GL_DEPTH_TEST);
+//    	Gdx.gl20.glBlendFunc(GL20.GL_ONE_MINUS_DST_COLOR, GL20.GL_ONE);
+//    	Gdx.gl20.glBlendFunc(GL20.GL_ZERO, GL20.GL_ZERO);
+//
+//    	backStage.act(delta);
+//    	stage.act(delta);
     	
     	// TODO tmp:
-    	Scarf sc = stage.getRoot().findActor("scarf");
-    	sc.setPosition(performer.getX(), performer.getY());
+//    	Scarf sc = stage.getRoot().findActor("scarf");
+//    	sc.setPosition(performer.getX(), performer.getY());
     	
-    	frontStage.act(delta);
-    	guiStage.act(delta);
+//    	frontStage.act(delta);
+//    	guiStage.act(delta);
+
     	
-    	backStage.draw();
-    	stage.draw();
-    	frontStage.draw();
-    	guiStage.draw();
+//    	backStage.draw();
+//    	stage.draw();
+//    	frontStage.draw();
+//    	guiStage.draw();
+    	stage3d.act(delta);
+//		stage3d.getCamera().update();
+    	stage3d.draw();
+//    	stage3d.getCamera().
+//    	stage3d.getModelBatch().setCamera(stage3d.getCamera());
+//    	((PerspectiveCamera)stage3d.getCamera()).
+//    	Stage3D s3d = new Stage3D(50, 50);
+//    	s3d.addActor(new CubeActor3D(2, 3, 4));
+//    	s3d.act();
+//    	s3d.dr
     	
 //    	World world = new World(new Vector2(), false);
 //		// add light
