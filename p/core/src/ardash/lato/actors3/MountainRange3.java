@@ -1,11 +1,13 @@
 package ardash.lato.actors3;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.gdx.scenes.scene3d.Group3D;
+import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.gdx.scenes.scene3d.shape.Triangle3D;
 import ardash.lato.GameScreen;
 import ardash.lato.weather.EnvColors;
@@ -21,7 +23,7 @@ public class MountainRange3 extends Group3D{
 	 * number of mountains in the mountain range
 	 */
 	private final int numPieces;
-	public static final float MOUNT_SIZE = 400f;
+	public static final float MOUNT_SIZE = 500f;
 	private final float distanceBetweenPieces = MOUNT_SIZE*0.77f; //0.77 of above
 	private final float VARIANCE = (MOUNT_SIZE + distanceBetweenPieces) / 16f; //(avg of 2 val above) / 4
 
@@ -31,18 +33,19 @@ public class MountainRange3 extends Group3D{
 		this.numPieces =numPieces;
 		for (int i=0; i< numPieces; i++)
 		{
-			Triangle3D img = new Triangle3D(new Vector3(0, 0, 0), Color.LIGHT_GRAY,new Vector3(1, 0, 0), Color.WHITE,new Vector3(0, 1, 0), Color.WHITE, null);
+//			Triangle3D img = new Triangle3D(new Vector3(0, 0, 0), Color.WHITE,new Vector3(1, 0, 0), Color.WHITE,new Vector3(0, 1, 0), Color.WHITE, null);
+			Image3D img = new Image3D(1, 1, Color.WHITE, new ModelBuilder());
 			img.rotateYaw(45f+180f);
 			img.rotateYaw(MathUtils.random(-2f, 2f));
 			img.setScale(MOUNT_SIZE);
-			img.translate(distanceBetweenPieces*i + MathUtils.random(-VARIANCE, VARIANCE), MathUtils.random(-VARIANCE, VARIANCE), 0);
+			img.translate(distanceBetweenPieces*i + MathUtils.random(-VARIANCE, VARIANCE), MathUtils.random(-VARIANCE, VARIANCE), i%2);
 //			img.translate(MOUNT_SIZE*i,0, 0);
 //			img.rotateYaw(20);
 			addActor(img);
 			img.setName("Mountain"+i);
-			img.setColor(ambientColor);
+//			img.setColor(ambientColor);
 		}
-		setScale(1f,1f,1f);  // stretch all sidewards: long mountains
+		setScale(1.5f,1f,1f);  // stretch all sidewards: long mountains
 //		rotateYaw(45f);
 //		scale(0.00500f);
 //		translate(60, -60, 0);
