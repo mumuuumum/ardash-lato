@@ -23,7 +23,7 @@ public class MountainRange3 extends Group3D{
 	 * number of mountains in the mountain range
 	 */
 	private final int numPieces;
-	public static final float MOUNT_SIZE = 500f;
+	public static final float MOUNT_SIZE = GameScreen.WORLD_WIDTH * 0.275f;
 	private final float distanceBetweenPieces = MOUNT_SIZE*0.77f; //0.77 of above
 	private final float VARIANCE = (MOUNT_SIZE + distanceBetweenPieces) / 16f; //(avg of 2 val above) / 4
 

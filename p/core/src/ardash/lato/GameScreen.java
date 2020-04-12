@@ -135,8 +135,8 @@ public class GameScreen implements Screen {
 ////			fog.setVisible(false);
 			
 			// range offset
-			mr.translate(-MountainRange3.MOUNT_SIZE*(i+1), -30f*i-4, 0+i*100);
-			mr.setSpeed((i*i+1)*02.2f);
+			mr.translate(-MountainRange3.MOUNT_SIZE*(i+1), -2f*i+2, 1+i*2);
+			mr.setSpeed((i*i+1)*0.2f);
 			
 			// the collection a bit higher
 //			mr.moveBy(0,-1f);
@@ -219,10 +219,10 @@ public class GameScreen implements Screen {
 //		stage3d.setPosition(1, 1);
 //		stage3d.setScale(10);
 		stage3d.getRoot().setVisible(true);
-		stage3d.getCamera().moveTo(0, 0, 1000, 1f);
+		stage3d.getCamera().moveTo(0, 0, 30, 1f);
 		stage3d.getCamera().lookAt(0, 0, 0);
         stage3d.getCamera().near = 0.1f;
-        stage3d.getCamera().far = 1510f;
+        stage3d.getCamera().far = 50f;
         stage3d.getCamera().update();
 
 //		stage3d.setDebug(true, true);
