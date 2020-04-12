@@ -1,22 +1,16 @@
 package ardash.lato;
 
-import java.beans.PersistenceDelegate;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.ModelCache;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -30,22 +24,16 @@ import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 import com.github.czyzby.kiwi.util.gdx.scene2d.Actors;
 import com.github.czyzby.kiwi.util.gdx.viewport.Viewports;
 
-import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.gdx.scenes.scene3d.Stage3D;
-import ardash.gdx.scenes.scene3d.Stage3DAdapterActor;
-import ardash.gdx.scenes.scene3d.shape.Circle3D;
-import ardash.gdx.scenes.scene3d.shape.CubeActor3D;
-import ardash.gdx.scenes.scene3d.shape.Image3D;
-import ardash.gdx.scenes.scene3d.shape.Triangle3D;
 import ardash.lato.Assets.SceneTexture;
 import ardash.lato.actions.MoreActions;
 import ardash.lato.actors.FlarePlane;
 import ardash.lato.actors.MountainRange;
 import ardash.lato.actors.ParticlePlane;
 import ardash.lato.actors.Performer;
-import ardash.lato.actors.Scarf;
 import ardash.lato.actors.SkyPlane;
 import ardash.lato.actors.WaveDrawer;
+import ardash.lato.actors3.MountainRange3;
 import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.FogColorChangeListener;
 import ardash.lato.weather.FogIntensityChangeListener;
@@ -127,56 +115,56 @@ public class GameScreen implements Screen {
 		
 		for (int i = 0; i<4 ; i++)
 		{
-			final int numMountains = 10;
-			final MountainRange mr = new MountainRange(numMountains);
-			backStage.addActor(mr);
-			mr.init();
+			final int numMountains = 20;
+			final MountainRange3 mr = new MountainRange3(numMountains);
+			stage3d.addActor(mr);
 			mr.setName("MountainRange"+i);
 //			mr.moveBy(50, 60);
 //			mr.setSpeed(20f);
 			
-			// fog layer
-			final Image fog = new Image(assets.getSTexture(SceneTexture.FOG_PIX));
-			fog.setSize(204, 204); // TODO reduce to display size
-			backStage.addActor(fog);
-//			fog.setColor(1f, 0.9f, 0.9f, 0.125f);
-			fog.setColor(EnvColors.DAY.fog);
-			fog.getColor().a = 0.525f; // orig 0.225f
-			Actors.centerActor(fog);
-			fog.setName("fog"+i);
-			fog.setTouchable(Touchable.disabled);
-//			fog.setVisible(false);
+//			// fog layer
+//			final Image fog = new Image(assets.getSTexture(SceneTexture.FOG_PIX));
+//			fog.setSize(204, 204); // TODO reduce to display size
+//			backStage.addActor(fog);
+////			fog.setColor(1f, 0.9f, 0.9f, 0.125f);
+//			fog.setColor(EnvColors.DAY.fog);
+//			fog.getColor().a = 0.525f; // orig 0.225f
+//			Actors.centerActor(fog);
+//			fog.setName("fog"+i);
+//			fog.setTouchable(Touchable.disabled);
+////			fog.setVisible(false);
 			
 			// range offset
-			mr.moveBy(-MountainRange.MOUNT_SIZE*(i+1), -2f*i-4);
-			mr.setSpeed((i*i+1)*0.2f);
+			mr.translate(-MountainRange3.MOUNT_SIZE*(i+1), -30f*i-4, 0+i*10);
+			mr.setSpeed((i*i+1)*02.2f);
 			
 			// the collection a bit higher
-			mr.moveBy(0,-1f);
+//			mr.moveBy(0,-1f);
 			
 			// move to center on 0,0
-			mr.moveBy(numMountains/2 * -MountainRange.MOUNT_SIZE,0);
+			mr.translate(numMountains/2 * -MountainRange.MOUNT_SIZE,0,0);
+//			mr.translate(-600, 0, 0);
 			
-			// subscribe the fog layers to fog colour change
-			weather.addFogColourChangeListener(new FogColorChangeListener() {
-				@Override
-				public void onFogColorChangeTriggered(Color target, float seconds) {
-					Color t = target.cpy();
-					t.a = 0.225f;	
-					fog.addAction(MoreActions.noAlphaColor(t, seconds));
-				}
-			});
-			// and to fog intensity
-			weather.addFogIntensityChangeListener(new FogIntensityChangeListener() {
-				@Override
-				public void onFogIntensityChanged(float newIntensity, float duration) {
-					fog.addAction(Actions.alpha(newIntensity, duration));
-				}
-			});
+//			// subscribe the fog layers to fog colour change
+//			weather.addFogColourChangeListener(new FogColorChangeListener() {
+//				@Override
+//				public void onFogColorChangeTriggered(Color target, float seconds) {
+//					Color t = target.cpy();
+//					t.a = 0.225f;	
+//					fog.addAction(MoreActions.noAlphaColor(t, seconds));
+//				}
+//			});
+//			// and to fog intensity
+//			weather.addFogIntensityChangeListener(new FogIntensityChangeListener() {
+//				@Override
+//				public void onFogIntensityChanged(float newIntensity, float duration) {
+//					fog.addAction(Actions.alpha(newIntensity, duration));
+//				}
+//			});
 
 			// subscribe the mountains layers to ambient colour change
-			weather.addAmbientColourChangeListener(mr);
-			weather.addFogColourChangeListener(mr);
+//			weather.addAmbientColourChangeListener(mr);
+//			weather.addFogColourChangeListener(mr);
 		}
 		
 //		backStage.addActor(skyPlane);
@@ -219,25 +207,25 @@ public class GameScreen implements Screen {
         
 //        stage3d.addActor(new Actor3D(model));
         
-        Image3D i3d = new Image3D(40, 40, assets.getSTexture(SceneTexture.PERFORMER), new ModelBuilder(), 20);
+//        Image3D i3d = new Image3D(40, 40, assets.getSTexture(SceneTexture.PERFORMER), new ModelBuilder(), 20);
 //        Image3D i3d = new Image3D(40, 40, Color.WHITE, new ModelBuilder());
         
 //        Triangle3D i3d = new Triangle3D(new Vector3(0, 0, 0), Color.WHITE,new Vector3(10, 0, 0), Color.BLUE,new Vector3(0, 10, 0), Color.BLACK, new ModelBuilder());
 //        Circle3D i3d = new Circle3D(10, 20, new Vector3(), new ModelBuilder());
-        stage3d.addActor(i3d);
+//        stage3d.addActor(i3d);
 //        i3d.scale (1f, 0.5f, 0);
 //        i3d.scale (40f, 40f, 0);
         
 //		stage3d.setPosition(1, 1);
 //		stage3d.setScale(10);
 		stage3d.getRoot().setVisible(true);
-		stage3d.getCamera().moveTo(10, 10, 100, 10f);
+		stage3d.getCamera().moveTo(0, 0, 500, 1f);
 		stage3d.getCamera().lookAt(0, 0, 0);
-        stage3d.getCamera().near = 0.00001f;
-        stage3d.getCamera().far = 130f;
+        stage3d.getCamera().near = 0.1f;
+        stage3d.getCamera().far = 810f;
         stage3d.getCamera().update();
 
-		stage3d.setDebug(true, true);
+//		stage3d.setDebug(true, true);
 		stage3d.getCamera().update();
 
 //		// add ambient light overlay

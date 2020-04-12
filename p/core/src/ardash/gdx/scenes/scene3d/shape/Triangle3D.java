@@ -49,7 +49,7 @@ public class Triangle3D extends Actor3D {
         material.set(new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA, 1.0f));
 
 //        Gdx.gl20.glPolygonOffset(factor, units);
-        AdvModelBuilder mb = new AdvModelBuilder();
+        AdvModelBuilder mb = new AdvModelBuilder(); // TODO mb = input parameter
         return mb.createTria(p1, c1, p2, c2, p3, c3, material, usageCode);
 //        return modelBuilder.createRect(0, 0, 0, width, 0, 0, width, height, 0, 0, height, 0, 0, 0, 1, material, usageCode) ;
     }
