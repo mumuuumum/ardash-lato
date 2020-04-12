@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g3d.ModelCache;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -32,7 +33,10 @@ import com.github.czyzby.kiwi.util.gdx.viewport.Viewports;
 import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.gdx.scenes.scene3d.Stage3D;
 import ardash.gdx.scenes.scene3d.Stage3DAdapterActor;
+import ardash.gdx.scenes.scene3d.shape.Circle3D;
 import ardash.gdx.scenes.scene3d.shape.CubeActor3D;
+import ardash.gdx.scenes.scene3d.shape.Image3D;
+import ardash.gdx.scenes.scene3d.shape.Triangle3D;
 import ardash.lato.Assets.SceneTexture;
 import ardash.lato.actions.MoreActions;
 import ardash.lato.actors.FlarePlane;
@@ -213,7 +217,17 @@ public class GameScreen implements Screen {
         model = mb.createBox(5f, 5f, 5f, new Material(ColorAttribute.createDiffuse(Color.GREEN)), Usage.Position
     			| Usage.Normal);
         
-        stage3d.addActor(new Actor3D(model));
+//        stage3d.addActor(new Actor3D(model));
+        
+        Image3D i3d = new Image3D(40, 40, assets.getSTexture(SceneTexture.PERFORMER), new ModelBuilder(), 20);
+//        Image3D i3d = new Image3D(40, 40, Color.WHITE, new ModelBuilder());
+        
+//        Triangle3D i3d = new Triangle3D(new Vector3(0, 0, 0), Color.WHITE,new Vector3(10, 0, 0), Color.BLUE,new Vector3(0, 10, 0), Color.BLACK, new ModelBuilder());
+//        Circle3D i3d = new Circle3D(10, 20, new Vector3(), new ModelBuilder());
+        stage3d.addActor(i3d);
+//        i3d.scale (1f, 0.5f, 0);
+//        i3d.scale (40f, 40f, 0);
+        
 //		stage3d.setPosition(1, 1);
 //		stage3d.setScale(10);
 		stage3d.getRoot().setVisible(true);
