@@ -25,7 +25,6 @@ import com.github.czyzby.kiwi.util.gdx.viewport.Viewports;
 import ardash.gdx.scenes.scene3d.Stage3D;
 import ardash.lato.Assets.SceneTexture;
 import ardash.lato.actors.FlarePlane;
-import ardash.lato.actors.MountainRange;
 import ardash.lato.actors.ParticlePlane;
 import ardash.lato.actors.Performer;
 import ardash.lato.actors.WaveDrawer;
@@ -128,7 +127,7 @@ public class GameScreen implements Screen {
 			mr.setSpeed((i*i+1)*0.2f);
 			
 			// move to center on 0,0
-			mr.translate(numMountains/2 * -MountainRange.MOUNT_SIZE,0,0);
+			mr.translate(numMountains/2 * -MountainRange3.MOUNT_SIZE,0,0);
 
 //			mr.setVisible(false);
 //			// subscribe the fog layers to fog colour change

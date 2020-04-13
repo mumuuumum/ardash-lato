@@ -63,22 +63,8 @@ public class SkyPlane3 extends Group3D implements Disposable , SODChangeListener
 		imgSun.setName("sunshape");
 
 		
-//		// add sun flare
-////		imgGlows = new Image(getAssets().getSTexture(SceneTexture.GLOW));
-////		imgFlare = new Image3D(SUN_WIDTH*26,SUN_WIDTH*26,getAssets().getSTexture(SceneTexture.ADD_FLARE),new ModelBuilder()
-////				,new BlendingAttribute(GL20.GL_ONE_MINUS_DST_COLOR, GL20.GL_ONE, 1.0f));
-////		,new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE, 1.0f));
-//		imgFlare = new Image3D(SUN_WIDTH*26,SUN_WIDTH*26,getAssets().getSTexture(SceneTexture.FLARE),new ModelBuilder());
-//
-//		sunRotor.addActor(imgFlare);
-//		imgFlare.setZ(30f);
-////		imgFlare.translate(0, 10, 10000);
-////		imgFlare.setColor(new Color(1,1,1,0.9f));
-//		imgFlare.setName("sunflare3d");
-
 		// move glow to sun
 		imgGlow.setPosition(imgSun.getX()+imgSun.getWidth()/2f -imgGlow.getWidth()/2f, imgSun.getY()+imgSun.getHeight()/2f  -imgGlow.getHeight()/2f);
-//		imgFlare.setPosition(imgSun.getX()+imgSun.getWidth()/2f -imgFlare.getWidth()/2f, imgSun.getY()+imgSun.getHeight()/2f  -imgFlare.getHeight()/2f);
 		
 		// add dummy Actor to hold the color, so the color can be changed by an Action
 		topColorHolder = new Actor();

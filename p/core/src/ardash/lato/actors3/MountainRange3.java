@@ -50,6 +50,7 @@ public class MountainRange3 extends Group3D{
 //		scale(0.00500f);
 //		translate(60, -60, 0);
 	
+		// TODO bring the fog sprites back
 //		// add gradiant fog at bottom
 //		Image img = new Image(getAssets().getSTexture(SceneTexture.MOUNTAINFOG));
 //		img.setSize(MOUNT_SIZE*numPieces, MOUNT_SIZE*1.4f);
