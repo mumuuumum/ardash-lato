@@ -48,13 +48,23 @@ public class Stage3D extends InputAdapter implements Disposable {
         this(width, height, new Environment());
 
 //        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.14f, 0.94f, 1f));
-        final Color ambient = EnvColors.DAY.ambient;
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, ambient.r, ambient.g, ambient.b, 0.51f));
+//        final Color ambient = EnvColors.DAY.ambient;
+//        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, ambient.r, ambient.g, ambient.b, 0.51f));
 //        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 //        environment.set(new ColorAttribute(ColorAttribute.Fog, 1f, 1f, 1f, 0.1f));
-        final Color fog = EnvColors.DAY.fog;
-        environment.set(new ColorAttribute(ColorAttribute.Fog, fog.r, fog.g, fog.b, 0.1f));
+//        final Color fog = EnvColors.DAY.fog;
+//        environment.set(new ColorAttribute(ColorAttribute.Fog, fog.r, fog.g, fog.b, 1f));
         
+    }
+    
+    public void setAmbientLight (Color c)
+    {
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, c.r, c.g, c.b, 0.51f));
+    }
+
+    public void setFog (Color c)
+    {
+        environment.set(new ColorAttribute(ColorAttribute.Fog, c.r, c.g, c.b, 0.51f));
     }
 
     public Stage3D(float width, float height, Environment environment) {

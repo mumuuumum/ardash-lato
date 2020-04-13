@@ -107,7 +107,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 //		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		sr.begin(ShapeRenderer.ShapeType.Filled);
 
-		sr.rectLine(coords.x, coords.y, coords.x + getWidth(), coords.y, getHeight());
+//		sr.rectLine(coords.x, coords.y, coords.x + getWidth(), coords.y, getHeight());
 		sr.rect(coords.x, coords.y, getWidth(), getHeight(), bottomColorHolder.getColor(), bottomColorHolder.getColor(),
 				topColorHolder.getColor(), topColorHolder.getColor());
 		sr.end();

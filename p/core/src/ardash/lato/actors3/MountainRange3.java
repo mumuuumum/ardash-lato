@@ -26,7 +26,7 @@ public class MountainRange3 extends Group3D{
 	public static final float MOUNT_SIZE = GameScreen.WORLD_WIDTH * 0.275f;
 	private final float distanceBetweenPieces = MOUNT_SIZE*0.77f; //0.77 of above
 	private final float VARIANCE = (MOUNT_SIZE + distanceBetweenPieces) / 16f; //(avg of 2 val above) / 4
-
+	private final Color MOUNT_COLOR = new Color(68 / 255f, 145 / 255f, 140 / 255f, 1f);
 	private Color ambientColor = EnvColors.DAY.ambient;
 	
 	public MountainRange3(int numPieces) {
@@ -34,7 +34,7 @@ public class MountainRange3 extends Group3D{
 		for (int i=0; i< numPieces; i++)
 		{
 //			Triangle3D img = new Triangle3D(new Vector3(0, 0, 0), Color.WHITE,new Vector3(1, 0, 0), Color.WHITE,new Vector3(0, 1, 0), Color.WHITE, null);
-			Image3D img = new Image3D(1, 1, Color.WHITE, new ModelBuilder());
+			Image3D img = new Image3D(1, 1, MOUNT_COLOR, new ModelBuilder());
 			img.rotateYaw(45f+180f);
 			img.rotateYaw(MathUtils.random(-2f, 2f));
 			img.setScale(MOUNT_SIZE);
