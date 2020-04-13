@@ -14,29 +14,24 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
-import com.github.czyzby.kiwi.util.gdx.scene2d.Actors;
 import com.github.czyzby.kiwi.util.gdx.viewport.Viewports;
 
 import ardash.gdx.scenes.scene3d.Stage3D;
 import ardash.lato.Assets.SceneTexture;
-import ardash.lato.actions.MoreActions;
 import ardash.lato.actors.FlarePlane;
 import ardash.lato.actors.MountainRange;
 import ardash.lato.actors.ParticlePlane;
 import ardash.lato.actors.Performer;
-import ardash.lato.actors.SkyPlane;
 import ardash.lato.actors.WaveDrawer;
 import ardash.lato.actors3.MountainRange3;
+import ardash.lato.actors3.SkyPlane3;
 import ardash.lato.weather.EnvColors;
-import ardash.lato.weather.FogColorChangeListener;
-import ardash.lato.weather.FogIntensityChangeListener;
 import ardash.lato.weather.WeatherProvider;
 import box2dLight.RayHandler;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
@@ -83,13 +78,14 @@ public class GameScreen implements Screen {
 		frontStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), this);
 		CURRENT_WORLD_WIDTH = backStage.getViewport().getWorldWidth();
 		guiStage = new LatoStage(Viewports.getDensityAwareViewport(), this);
-		stage3d = new Stage3D();
+		stage3d = new Stage3D(this);
 //		backStage.setDebugAll(true);
 		stage.setDebugAll(true);
 //		frontStage.setDebugAll(true);
+//		stage3d.setDebug(true, true);
 //		Gdx.input.setInputProcessor(backStage);
 		
-		backStage.addActor(weather); // weather can be on any stage
+		guiStage.addActor(weather); // weather can be on any stage
 
 		// particle plane must be drawn under flare plane
 		final ParticlePlane particlePlane = new ParticlePlane(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
@@ -104,12 +100,12 @@ public class GameScreen implements Screen {
 		weather.addSunColourChangeListener(flarePlane);
 
 		
-		final SkyPlane skyPlane = new SkyPlane(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
-		backStage.addActor(skyPlane);
-		skyPlane.init();
-		weather.addSunColourChangeListener(skyPlane);
-
-		// subscribe sky to skycolors
+		final SkyPlane3 skyPlane = new SkyPlane3(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
+		stage3d.addActor(skyPlane);
+//		skyPlane.init();
+//		weather.addSunColourChangeListener(skyPlane);
+//
+//		// subscribe sky to skycolors
 		weather.addSkyColourChangeListener(skyPlane);
 		weather.addSODChangeListener(skyPlane);
 		
@@ -119,32 +115,15 @@ public class GameScreen implements Screen {
 			final MountainRange3 mr = new MountainRange3(numMountains);
 			stage3d.addActor(mr);
 			mr.setName("MountainRange"+i);
-//			mr.moveBy(50, 60);
-//			mr.setSpeed(20f);
-			
-//			// fog layer
-//			final Image fog = new Image(assets.getSTexture(SceneTexture.FOG_PIX));
-//			fog.setSize(204, 204); // TODO reduce to display size
-//			backStage.addActor(fog);
-////			fog.setColor(1f, 0.9f, 0.9f, 0.125f);
-//			fog.setColor(EnvColors.DAY.fog);
-//			fog.getColor().a = 0.525f; // orig 0.225f
-//			Actors.centerActor(fog);
-//			fog.setName("fog"+i);
-//			fog.setTouchable(Touchable.disabled);
-////			fog.setVisible(false);
 			
 			// range offset
 			mr.translate(-MountainRange3.MOUNT_SIZE*(i+1), -2f*i+2, 1+i*2);
 			mr.setSpeed((i*i+1)*0.2f);
 			
-			// the collection a bit higher
-//			mr.moveBy(0,-1f);
-			
 			// move to center on 0,0
 			mr.translate(numMountains/2 * -MountainRange.MOUNT_SIZE,0,0);
-//			mr.translate(-600, 0, 0);
-			
+
+//			mr.setVisible(false);
 //			// subscribe the fog layers to fog colour change
 //			weather.addFogColourChangeListener(new FogColorChangeListener() {
 //				@Override
@@ -224,8 +203,6 @@ public class GameScreen implements Screen {
         stage3d.getCamera().near = 0.1f;
         stage3d.getCamera().far = 50f;
         stage3d.getCamera().update();
-
-//		stage3d.setDebug(true, true);
 		stage3d.getCamera().update();
 
 //		// add ambient light overlay
@@ -309,7 +286,8 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         Gdx.gl.glEnable (Gdx.gl.GL_DEPTH_TEST);
-//    	Gdx.gl20.glBlendFunc(GL20.GL_ONE_MINUS_DST_COLOR, GL20.GL_ONE);
+        Gdx.gl.glEnable (Gdx.gl.GL_BLEND);
+    	Gdx.gl20.glBlendFunc(GL20.GL_ONE_MINUS_DST_COLOR, GL20.GL_ONE);
 //    	Gdx.gl20.glBlendFunc(GL20.GL_ZERO, GL20.GL_ZERO);
 //
 //    	backStage.act(delta);
@@ -320,13 +298,13 @@ public class GameScreen implements Screen {
 //    	sc.setPosition(performer.getX(), performer.getY());
     	
 //    	frontStage.act(delta);
-//    	guiStage.act(delta);
+    	guiStage.act(delta);
 
     	
 //    	backStage.draw();
 //    	stage.draw();
 //    	frontStage.draw();
-//    	guiStage.draw();
+    	guiStage.draw();
     	stage3d.act(delta);
 //		stage3d.getCamera().update();
     	stage3d.draw();

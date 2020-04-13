@@ -26,7 +26,7 @@ public class Stage3DAdapterActor extends Actor implements Disposable {
 
     public Stage3DAdapterActor() {
         viewportBounds = BufferUtils.newIntBuffer(16);
-        stage = new Stage3D();
+        stage = new Stage3D(null);
     }
 
     @Override

@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 public class LatoGame extends Game {
-	GameManager gm;
+	public GameManager gm;
 //	Assets assets;
     //create paths
     private CatmullRomSpline<Vector2> path1; 

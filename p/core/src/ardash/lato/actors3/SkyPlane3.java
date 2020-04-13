@@ -2,113 +2,126 @@ package ardash.lato.actors3;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
-import com.github.czyzby.kiwi.util.gdx.scene2d.Actors;
 
+import ardash.gdx.scenes.scene3d.Group3D;
+import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.Assets.SceneTexture;
 import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.SODChangeListener;
 import ardash.lato.weather.SkyColorChangeListener;
-import ardash.lato.weather.SunColorChangeListener;
-import ardash.lato.weather.WeatherProvider;
 
-public class SkyPlane3 extends Group implements Disposable , SODChangeListener { //, SkyColorChangeListener, SunColorChangeListener,  {
+public class SkyPlane3 extends Group3D implements Disposable , SODChangeListener, SkyColorChangeListener {//, SunColorChangeListener,  {
 
 	private static final float SUN_WIDTH = 2;
 	private ShapeRenderer sr;
-	private Group sunRotor;
-	private Image imgGlow, imgSun;
-	private Actor imgFlare;
+	private Group3D sunRotor;
+	private Image3D imgGlow, imgSun;
+	private Image3D imgFlare;
 	private Actor topColorHolder;
 	private Actor bottomColorHolder;
 
 	public SkyPlane3(float width, float height) {
-		setSize(width, height);
-		moveBy(getWidth()/-2f, 0f);// self center
+//		setSize(width, height);
+//		translate(width/-2f, 0f, 0f);// self center
 		sr = new ShapeRenderer();
 		sr.setAutoShapeType(true);
 		setName("skyplane");
-		this.setTouchable(Touchable.childrenOnly);
-		init();
-	}
-
-	public void init() {
+//		this.setTouchable(Touchable.childrenOnly);
 		
-		sunRotor = new Group();
+		sunRotor = new Group3D();
 		addActor(sunRotor);
-		sunRotor.setPosition(getWidth()/2f, getHeight()/2f); // center on plane
+//		sunRotor.translate(width/2f, height/2f, 0); // center on plane
 		
 		// move a bit down, so sun moved behind mountains
-		sunRotor.moveBy(0, -10);
+//		sunRotor.moveBy(0, -10);
 
 		// add sun glow
-//		imgGlow = new Image(getAssets().getSTexture(SceneTexture.GLOW));
-//		imgGlow.setWidth(SUN_WIDTH*26);
-//		imgGlow.setHeight(SUN_WIDTH*26);
-//		sunRotor.addActor(imgGlow);
-////		imgGlow.setPosition(0, -15f); // sun rotation radius
-//		imgGlow.setColor(new Color(1,1,1,0.9f));
-//		imgGlow.setName("sunglow");
-////		imgGlow.setTouchable(Touchable.disabled);
-//
-//		
-//		// add sun shape
-//		imgSun = new Image(getAssets().getSTexture(SceneTexture.SUN_SHAPE));
-//		imgSun.setWidth(SUN_WIDTH);
-//		imgSun.setHeight(SUN_WIDTH);
-//		sunRotor.addActor(imgSun);
-//		imgSun.setPosition(0, -15f); // sun rotation radius
+//		imgGlows = new Image(getAssets().getSTexture(SceneTexture.GLOW));
+		imgGlow = new Image3D(SUN_WIDTH*26,SUN_WIDTH*26,getAssets().getSTexture(SceneTexture.GLOW),new ModelBuilder());
+		sunRotor.addActor(imgGlow);
+		imgGlow.setColor(new Color(1,1,1,0.9f));
+		imgGlow.setName("sunglow");
+
+		// add sun shape
+		imgSun = new Image3D(SUN_WIDTH,SUN_WIDTH,getAssets().getSTexture(SceneTexture.SUN_SHAPE),new ModelBuilder());
+		imgSun.moveBy(-SUN_WIDTH/2f, -SUN_WIDTH/2f);
+		sunRotor.addActor(imgSun);
+		imgSun.moveBy(0, -15f); // sun rotation radius
+		imgSun.setZ(1f);
 //		imgFlare = spawnFlareInForeground(imgSun, 500f);
 //		imgSun.setTouchable(Touchable.enabled);
-//		imgSun.setName("sunshape");
+		imgSun.setName("sunshape");
+
+		
+		// add sun flare
+//		imgGlows = new Image(getAssets().getSTexture(SceneTexture.GLOW));
+//		imgFlare = new Image3D(SUN_WIDTH*26,SUN_WIDTH*26,getAssets().getSTexture(SceneTexture.ADD_FLARE),new ModelBuilder()
+//				,new BlendingAttribute(GL20.GL_ONE_MINUS_DST_COLOR, GL20.GL_ONE, 1.0f));
+//		,new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE, 1.0f));
+		imgFlare = new Image3D(SUN_WIDTH*26,SUN_WIDTH*26,getAssets().getSTexture(SceneTexture.FLARE),new ModelBuilder());
+
+		sunRotor.addActor(imgFlare);
+		imgFlare.setZ(10f);
+//		imgFlare.translate(0, 10, 10000);
+//		imgFlare.setColor(new Color(1,1,1,0.9f));
+		imgFlare.setName("sunflare3d");
 
 		// move glow to sun
-		imgGlow.setPosition(imgSun.getX()-imgGlow.getWidth()/2f, imgSun.getY()-imgGlow.getHeight()/2f);
+		imgGlow.setPosition(imgSun.getX()+imgSun.getWidth()/2f -imgGlow.getWidth()/2f, imgSun.getY()+imgSun.getHeight()/2f  -imgGlow.getHeight()/2f);
+		imgFlare.setPosition(imgSun.getX()+imgSun.getWidth()/2f -imgFlare.getWidth()/2f, imgSun.getY()+imgSun.getHeight()/2f  -imgFlare.getHeight()/2f);
 		
 		// add dummy Actor to hold the color, so the color can be changed by an Action
 		topColorHolder = new Actor();
 		topColorHolder.setColor(EnvColors.DAY.skyTop);
 		bottomColorHolder = new Actor();
 		bottomColorHolder.setColor(EnvColors.DAY.skyBottom);
-		addActor(topColorHolder);
-		addActor(bottomColorHolder);
+//		addActor(topColorHolder);
+//		addActor(bottomColorHolder);
+		
+		
 	}
 	
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-//		sunRotor.rotateBy(-0.91f);
-//		System.out.println("sun rot: " + sunRotor.getRotation());
+		topColorHolder.act(delta);
+		bottomColorHolder.act(delta);
+//		sunRotor.rotateBy(-360f/60f);
+		System.out.println("sun rot: " + sunRotor.getRotation());
+//		getStage().getCamera().lookAt(getPosition());
+//		getStage().getCamera().moveTo(10, 10, 10, 1f);
+		
 	}
 
-
+	
 	@Override
-	public void draw(Batch batch, float parentAlpha) {
-
-		batch.end();
+		public void draw(ModelBatch modelBatch, Environment environment) {
+		
+		modelBatch.end();
 
 		Vector2 coords = new Vector2(getX(), getY());
 
-		Color color = new Color(getColor());
-		sr.setProjectionMatrix(batch.getProjectionMatrix());
-		sr.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+//		Color color = new Color(getColor());
+//		sr.setProjectionMatrix(batch.getProjectionMatrix());
+		
+//		sr.setProjectionMatrix(transform);
+//		sr.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
 //		Gdx.gl.glEnable(GL20.GL_BLEND);
 //		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		sr.begin(ShapeRenderer.ShapeType.Filled);
 
-		sr.rectLine(coords.x, coords.y, coords.x + getWidth(), coords.y, getHeight());
-		sr.rect(coords.x, coords.y, getWidth(), getHeight(), bottomColorHolder.getColor(), bottomColorHolder.getColor(),
+//		sr.rectLine(coords.x, coords.y, coords.x + getWidth(), coords.y, getHeight());
+		sr.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()*1.5f, bottomColorHolder.getColor(), bottomColorHolder.getColor(),
 				topColorHolder.getColor(), topColorHolder.getColor());
 		sr.end();
 //		Gdx.gl.glDisable(GL20.GL_BLEND);
@@ -116,17 +129,46 @@ public class SkyPlane3 extends Group implements Disposable , SODChangeListener {
 		sr.setColor(Color.WHITE);
 
 //		batch.setBlendFunction(GL20.GL_ZERO, GL20.GL_ZERO);
-		batch.begin();
-		super.draw(batch, parentAlpha);
+		modelBatch.begin(getStage().getCamera());
+		super.draw(modelBatch, environment);
 
-	}
+		}
 
 //	@Override
-//	public void onSkyColorChangeTriggered(Color targetTop, Color targetBottom, float seconds) {
-//		topColorHolder.addAction(Actions.color(targetTop, seconds));
-//		bottomColorHolder.addAction(Actions.color(targetBottom, seconds));
-//		
+//	public void draw(Batch batch, float parentAlpha) {
+//
+//		batch.end();
+//
+//		Vector2 coords = new Vector2(getX(), getY());
+//
+//		Color color = new Color(getColor());
+//		sr.setProjectionMatrix(batch.getProjectionMatrix());
+//		sr.setColor(color.r, color.g, color.b, color.a * parentAlpha);
+//
+////		Gdx.gl.glEnable(GL20.GL_BLEND);
+////		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+//		sr.begin(ShapeRenderer.ShapeType.Filled);
+//
+//		sr.rectLine(coords.x, coords.y, coords.x + getWidth(), coords.y, getHeight());
+//		sr.rect(coords.x, coords.y, getWidth(), getHeight(), bottomColorHolder.getColor(), bottomColorHolder.getColor(),
+//				topColorHolder.getColor(), topColorHolder.getColor());
+//		sr.end();
+////		Gdx.gl.glDisable(GL20.GL_BLEND);
+//		Gdx.gl.glLineWidth(1f);
+//		sr.setColor(Color.WHITE);
+//
+////		batch.setBlendFunction(GL20.GL_ZERO, GL20.GL_ZERO);
+//		batch.begin();
+//		super.draw(batch, parentAlpha);
+//
 //	}
+
+	@Override
+	public void onSkyColorChangeTriggered(Color targetTop, Color targetBottom, float seconds) {
+		topColorHolder.addAction(Actions.color(targetTop, seconds));
+		bottomColorHolder.addAction(Actions.color(targetBottom, seconds));
+		
+	}
 //
 //	@Override
 //	public void onSunColorChangeTriggered(Color target, float seconds) {
@@ -142,10 +184,10 @@ public class SkyPlane3 extends Group implements Disposable , SODChangeListener {
 		sunRotor.setRotation(percentOfDayOver * -360f);
 		
 		// fadeOut doesn't work because the flare is not alpha-blended
-		if (hourOfDay < 7 || hourOfDay > 17)
-			imgFlare.setVisible(false);
-		else
-			imgFlare.setVisible(true);
+//		if (hourOfDay < 7 || hourOfDay > 17)
+//			imgFlare.setVisible(false);
+//		else
+//			imgFlare.setVisible(true);
 			
 	}
 

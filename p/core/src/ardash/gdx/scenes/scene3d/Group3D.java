@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.utils.Array;
@@ -16,10 +17,12 @@ public class Group3D extends Actor3D {
 
     public Group3D(){
         super();
+        setScale(1, 1, 1);
     }
 
     public Group3D(Model model){
         super(model);
+        setScale(1, 1, 1);
     }
 
     public void act (float delta) {
@@ -195,4 +198,5 @@ public class Group3D extends Actor3D {
         for (Actor3D actor3D : children)
             actor3D.dispose();
     }
+
 }

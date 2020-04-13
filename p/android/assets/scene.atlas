@@ -11,9 +11,16 @@ add_flare
   orig: 256, 256
   offset: 0, 0
   index: -1
-flare
+add_flare_a
   rotate: false
   xy: 516, 746
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+flare
+  rotate: false
+  xy: 260, 232
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
@@ -41,14 +48,14 @@ mount
   index: -1
 mount_pix
   rotate: false
-  xy: 774, 871
+  xy: 904, 1001
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 mount_pix2
   rotate: false
-  xy: 904, 1001
+  xy: 774, 871
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -76,14 +83,14 @@ performer
   index: -1
 sun_shape
   rotate: false
-  xy: 260, 232
+  xy: 518, 358
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 tree_bg_pix
   rotate: false
-  xy: 516, 613
+  xy: 518, 355
   size: 1, 1
   orig: 1, 1
   offset: 0, 0

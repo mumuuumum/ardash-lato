@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -19,6 +20,13 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.SnapshotArray;
 
+import ardash.lato.Assets;
+import ardash.lato.GameManager;
+import ardash.lato.GameScreen;
+import ardash.lato.LatoStage;
+import ardash.lato.weather.EnvColors;
+import net.dermetfan.gdx.assets.AnnotationAssetManager;
+
 public class Stage3D extends InputAdapter implements Disposable {
     private final ModelBatch modelBatch;
     private Environment environment;
@@ -28,8 +36,9 @@ public class Stage3D extends InputAdapter implements Disposable {
     private final Group3D root;
 
     /** Creates a stage with a viewport equal to the device screen resolution. The stage
-     * will use its own {@link SpriteBatch}. */
-    public Stage3D() {
+     * will use its own {@link SpriteBatch}. 
+     * @param gameScreen */
+    public Stage3D(GameScreen gameScreen) {
         this(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
     }
 
@@ -39,10 +48,12 @@ public class Stage3D extends InputAdapter implements Disposable {
         this(width, height, new Environment());
 
 //        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.14f, 0.94f, 1f));
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1f, 1f, 1f, 1f));
+        final Color ambient = EnvColors.DAY.ambient;
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, ambient.r, ambient.g, ambient.b, 0.51f));
 //        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 //        environment.set(new ColorAttribute(ColorAttribute.Fog, 1f, 1f, 1f, 0.1f));
-        environment.set(new ColorAttribute(ColorAttribute.Fog, 0.13f, 0.913f, 0.913f, 0.1f));
+        final Color fog = EnvColors.DAY.fog;
+        environment.set(new ColorAttribute(ColorAttribute.Fog, fog.r, fog.g, fog.b, 0.1f));
         
     }
 
@@ -191,4 +202,6 @@ public class Stage3D extends InputAdapter implements Disposable {
         root.dispose();
         clear();
     }
+    
+
 }

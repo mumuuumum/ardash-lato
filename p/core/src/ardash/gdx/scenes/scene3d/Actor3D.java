@@ -13,16 +13,26 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.Disposable;
+
+import ardash.lato.Assets;
+import ardash.lato.GameManager;
+import ardash.lato.GameScreen;
+import ardash.lato.LatoGame;
+import ardash.lato.LatoStage;
+import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
 public class Actor3D extends ModelInstance implements Disposable {
     private Stage3D stage3D;
@@ -244,7 +254,7 @@ public class Actor3D extends ModelInstance implements Disposable {
         transform.setToTranslationAndScaling(this.x, this.y, this.z, scaleX, scaleY, scaleZ);
         transform.mul(rotationMatrix);
     }
-
+    
     /*
      *  Set the actor's rotation values to new yaw, pitch and roll
      *  @param newYaw, newPitch, newRoll these values must be within 360 degrees
@@ -532,4 +542,71 @@ public class Actor3D extends ModelInstance implements Disposable {
     public void dispose() {
         if (axis != null) axis.model.dispose();
     }
+    
+    public void moveBy (float x, float y)
+    {
+    	translate(x, y, z);
+    }
+
+    public void setPosition (float x, float y)
+    {
+    	setPosition(x, y, z);
+    }
+    
+    public static Vector3 getPosition() {
+		return position;
+	}
+    
+	public void setRotation(float f) {
+		setYaw(f); // TODO wrong
+//		setYaw(f*MathUtils.degreesToRadians); // TODO wrong
+	}
+
+    public void rotateBy(float degrees)
+    {
+    	rotateYaw(degrees); // TODO wrong
+    }
+    
+    public float getRotation()
+    {
+    	return getYaw();
+//    	return getYaw()*MathUtils.radiansToDegrees;
+    }
+
+    
+	public GameManager getGameManager()
+	{
+//		final Stage3D stage = stage3D;
+		LatoGame game = (LatoGame) Gdx.app.getApplicationListener();
+		return game.gm;
+//		if (stage == null)
+//			throw new RuntimeException("Actor must be added to a stage first.");
+//		if (stage instanceof LatoStage) {
+//			LatoStage ls = (LatoStage) stage;
+//			return ls.gm;
+//		}
+//		else
+//			throw new RuntimeException("Stage was wrong type.");
+	}
+	
+	public Assets getAssets()
+	{
+		return getGameManager().assets;
+	}
+
+	public AnnotationAssetManager getAssetManager()
+	{
+		return getGameManager().am;
+	}
+
+	public GameScreen getGameScreen()
+	{
+		return getGameManager().getGameScreen();
+	}
+	
+	public Actor spawnFlareInForeground(Actor emitter, float size)
+	{
+		return getGameScreen().flarePlane.spawnFlare(emitter, size);
+	}
+
 }
