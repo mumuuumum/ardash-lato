@@ -3,6 +3,7 @@ package ardash.gdx.scenes.scene3d;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -99,13 +100,13 @@ public class Stage3DAdapterActor extends Actor implements Disposable {
         return stage.getModelBatch();
     }
 
-    public Camera3D getCamera () {
+    public Camera getCamera () {
         return stage.getCamera();
     }
 
-    public void setCamera (Camera3D camera) {
-        stage.setCamera(camera);
-    }
+//    public void setCamera (OrthographicCamera camera) {
+//        stage.setCamera(camera);
+//    }
 
     public Group3D getRoot () {
         return stage.getRoot();

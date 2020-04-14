@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.math.collision.Ray;
@@ -27,11 +28,13 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.Disposable;
 
+import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.Assets;
 import ardash.lato.GameManager;
 import ardash.lato.GameScreen;
 import ardash.lato.LatoGame;
 import ardash.lato.LatoStage;
+import ardash.lato.Assets.SceneTexture;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
 public class Actor3D extends ModelInstance implements Disposable {
@@ -604,9 +607,62 @@ public class Actor3D extends ModelInstance implements Disposable {
 		return getGameManager().getGameScreen();
 	}
 	
-	public Actor spawnFlareInForeground(Actor emitter, float size)
+	public Actor spawnFlareInForeground(Actor3D emitter, float size)
 	{
 		return getGameScreen().flarePlane.spawnFlare(emitter, size);
+	}
+
+	public Image3D spawnFlareOnFlareStage(Actor3D emitter, float size)
+	{
+//		Actor3D imgGlow = new Image3D(SUN_WIDTH*26,SUN_WIDTH*26,getAssets().getSTexture(SceneTexture.GLOW),new ModelBuilder());
+		Image3D imgGlow = new Image3D(2*26,2*26,getAssets().getSTexture(SceneTexture.ADD_FLARE),new ModelBuilder());
+		getGameScreen().flareStage3d.addActor(imgGlow);
+		imgGlow.setColor(new Color(1,1,1,0.5f));
+		imgGlow.setZ(emitter.z);
+//		imgGlow.setColor(Color.YELLOW);
+		imgGlow.setName("sunflare");
+		return imgGlow;
+
+//		return getGameScreen().flarePlane.spawnFlare(emitter, size);
+	}
+
+	public float getHeight() {
+		throw new RuntimeException("getHeight not implemented");
+	}
+
+	public float getWidth() {
+		throw new RuntimeException("getWidth not implemented");
+	}
+	
+	public Vector3 getGlobalPosition()
+	{
+		Vector2 ret = new Vector2();
+		Vector3 pos3d = new Vector3();
+		transform.getTranslation(pos3d );
+		
+		  //tmp add half of sun widht
+//		pos3d.add(-1, -1, 0);
+		return pos3d;
+	}
+	
+	public void lookAtMe() {
+		getStage().getCamera().lookAt(getGlobalPosition());
+	}
+
+	public void localToScreenCoordinates(Vector2 v) {		
+		Vector3 position = new Vector3();
+//		System.out.println(center);
+//		transform.getTranslation(position);
+//		v.add(position.x, position.y);
+		
+		Matrix4 tmp = transform.cpy();
+		getStage().getCamera().update();
+		tmp.mul(getStage().getCamera().combined);
+		tmp.getTranslation(position);
+		v.add(position.x, position.y);
+		
+//		hit(visibleCount, visibleCount)
+//		coo
 	}
 
 }

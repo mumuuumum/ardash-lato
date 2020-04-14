@@ -87,11 +87,12 @@ public class Image3D extends Actor3D {
     }
     
     
-    
+    @Override
     public float getWidth() {
 		return width;
 	}
 
+    @Override
 	public float getHeight() {
 		return height;
 	}

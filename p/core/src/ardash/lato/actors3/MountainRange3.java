@@ -38,7 +38,7 @@ public class MountainRange3 extends Group3D{
 			img.rotateYaw(45f+180f);
 			img.rotateYaw(MathUtils.random(-2f, 2f));
 			img.setScale(MOUNT_SIZE);
-			img.translate(distanceBetweenPieces*i + MathUtils.random(-VARIANCE, VARIANCE), MathUtils.random(-VARIANCE, VARIANCE), i%2);
+			img.translate(distanceBetweenPieces*i + MathUtils.random(-VARIANCE, VARIANCE), MathUtils.random(-VARIANCE, VARIANCE), 3+i%2);
 //			img.translate(MOUNT_SIZE*i,0, 0);
 //			img.rotateYaw(20);
 			addActor(img);
@@ -95,6 +95,9 @@ public class MountainRange3 extends Group3D{
 			
 		}
 		
+		final Vector3 gp = getChild(2).getGlobalPosition();
+		System.out.println("GP XXXXXXXXXXXXXXOOOOO: " + gp);
+
 //		System.out.println(child.getX());
 //		System.out.println(child.getWidth());
 	}

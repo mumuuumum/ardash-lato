@@ -2,9 +2,11 @@ package ardash.gdx.scenes.scene3d;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -19,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.SnapshotArray;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import ardash.lato.Assets;
 import ardash.lato.GameManager;
@@ -31,31 +34,33 @@ public class Stage3D extends InputAdapter implements Disposable {
     private final ModelBatch modelBatch;
     private Environment environment;
 
-    private Camera3D camera;
+//    private Camera3D camera;
+//    private OrthographicCamera camera;
+	private Viewport viewport;
 
     private final Group3D root;
 
     /** Creates a stage with a viewport equal to the device screen resolution. The stage
      * will use its own {@link SpriteBatch}. 
      * @param gameScreen */
-    public Stage3D(GameScreen gameScreen) {
-        this(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    public Stage3D(Viewport v) {
+        this(v, new Environment());
     }
 
-    /** Creates a stage with the specified viewport that doesn't keep the aspect ratio.
-     * The stage will use its own {@link SpriteBatch}, which will be disposed when the stage is disposed. */
-    public Stage3D(float width, float height) {
-        this(width, height, new Environment());
-
-//        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.14f, 0.94f, 1f));
-//        final Color ambient = EnvColors.DAY.ambient;
-//        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, ambient.r, ambient.g, ambient.b, 0.51f));
-//        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
-//        environment.set(new ColorAttribute(ColorAttribute.Fog, 1f, 1f, 1f, 0.1f));
-//        final Color fog = EnvColors.DAY.fog;
-//        environment.set(new ColorAttribute(ColorAttribute.Fog, fog.r, fog.g, fog.b, 1f));
-        
-    }
+//    /** Creates a stage with the specified viewport that doesn't keep the aspect ratio.
+//     * The stage will use its own {@link SpriteBatch}, which will be disposed when the stage is disposed. */
+//    public Stage3D(float width, float height) {
+//        this(width, height, new Environment());
+//
+////        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.14f, 0.94f, 1f));
+////        final Color ambient = EnvColors.DAY.ambient;
+////        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, ambient.r, ambient.g, ambient.b, 0.51f));
+////        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+////        environment.set(new ColorAttribute(ColorAttribute.Fog, 1f, 1f, 1f, 0.1f));
+////        final Color fog = EnvColors.DAY.fog;
+////        environment.set(new ColorAttribute(ColorAttribute.Fog, fog.r, fog.g, fog.b, 1f));
+//        
+//    }
     
     public void setAmbientLight (Color c)
     {
@@ -67,24 +72,50 @@ public class Stage3D extends InputAdapter implements Disposable {
         environment.set(new ColorAttribute(ColorAttribute.Fog, c.r, c.g, c.b, 0.51f));
     }
 
-    public Stage3D(float width, float height, Environment environment) {
+    public Stage3D(Viewport v, Environment environment) {
         root = new Group3D();
         root.setStage(this);
 
         modelBatch = new ModelBatch();
 
-        camera =  new Camera3D(width, height);
+        this.viewport =v;
         this.environment = environment;
     }
+//    public Stage3D(float width, float height, Environment environment) {
+//        root = new Group3D();
+//        root.setStage(this);
+//
+//        modelBatch = new ModelBatch();
+//
+//        camera =  new OrthographicCamera(width, height);
+//        this.environment = environment;
+//    }
 
     public void draw(){
-        camera.update();
+        Camera camera = viewport.getCamera();
+		camera .update();
         if (!root.isVisible()) return;
         modelBatch.begin(camera);
     	getModelBatch().setCamera(getCamera());
 
         root.draw(modelBatch, environment);
         modelBatch.end();
+        
+        
+        // check user inputs
+        if (Gdx.input.isKeyJustPressed(Keys.Z))
+        {
+//        	getCamera().zoom+=1;
+//        	camera.zoom+=1;
+        	camera.translate(0, 0, 1);
+        }
+        if (Gdx.input.isKeyJustPressed(Keys.X))
+        {
+//        	getCamera().zoom-=1;
+//        	camera.zoom-=1;
+        	camera.translate(0, 0, -1);
+        }
+    	System.out.println("cam z "+ camera.position.z);
     }
 
     /** Calls {@link #act(float)} with {@link Graphics#getDeltaTime()}. */
@@ -139,15 +170,20 @@ public class Stage3D extends InputAdapter implements Disposable {
         return modelBatch;
     }
 
-    public Camera3D getCamera () {
+    public Viewport getViewport () {
+        return viewport;
+    }
+
+    public Camera getCamera () {
+        Camera camera = viewport.getCamera();
         return camera;
     }
 
-    /** Sets the stage's camera. The camera must be configured properly. {@link Stage#draw()} will call {@link Camera#update()} and use the {@link Camera#combined} matrix
-     * for the SpriteBatch {@link SpriteBatch#setProjectionMatrix(com.badlogic.gdx.math.Matrix4) projection matrix}. */
-    public void setCamera (Camera3D camera) {
-        this.camera = camera;
-    }
+//    /** Sets the stage's camera. The camera must be configured properly. {@link Stage#draw()} will call {@link Camera#update()} and use the {@link Camera#combined} matrix
+//     * for the SpriteBatch {@link SpriteBatch#setProjectionMatrix(com.badlogic.gdx.math.Matrix4) projection matrix}. */
+//    public void setCamera (OrthographicCamera camera) {
+//        this.camera = camera;
+//    }
 
     /** Returns the root group which holds all actors in the stage. */
     public Group3D getRoot () {
@@ -176,6 +212,7 @@ public class Stage3D extends InputAdapter implements Disposable {
     }
     
     public Actor3D hit(int screenX, int screenY, Actor3D actor3D) {
+        Camera camera = viewport.getCamera();
         Ray ray = camera.getPickRay(screenX, screenY);
         final float dist2 = actor3D.intersects(ray);
         if (dist2 >= 0) {
