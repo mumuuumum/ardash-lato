@@ -315,12 +315,13 @@ public class GameScreen implements Screen {
     	
     	backStage.act();
     	backStage.draw();
-//    	stage.draw();
 //    	skyStage3d.act(delta);
 //    	skyStage3d.draw();
     	stage3d.act(delta);
     	stage3d.draw();
 
+    	stage.act();
+    	stage.draw();
     	frontStage.act(delta);
     	frontStage.draw();
 //    	flareStage3d.act(delta);
