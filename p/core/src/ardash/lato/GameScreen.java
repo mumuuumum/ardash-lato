@@ -43,8 +43,6 @@ public class GameScreen implements Screen {
 //	The world adjusted to MDPI/10 , the smallest expectable device.
 	public static float WORLD_WIDTH=35.59f; // visible meters from left to right, with default zoom on smallest display
 	public static float WORLD_HEIGHT=26.76f;
-//	public static float WORLD_WIDTH=Gdx.graphics.getWidth(); // visible meters from left to right, with default zoom on smallest display
-//	public static float WORLD_HEIGHT=Gdx.graphics.getHeight();
 	public static float SNOWBOARD_LENGTH=1.85f; // length of snowboard in meters 
 
 	/**
