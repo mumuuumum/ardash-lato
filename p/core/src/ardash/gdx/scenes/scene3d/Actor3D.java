@@ -13,7 +13,6 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -22,19 +21,15 @@ import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.Disposable;
 
-import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.Assets;
 import ardash.lato.GameManager;
 import ardash.lato.GameScreen;
 import ardash.lato.LatoGame;
-import ardash.lato.LatoStage;
-import ardash.lato.Assets.SceneTexture;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
 public class Actor3D extends ModelInstance implements Disposable {
@@ -610,20 +605,6 @@ public class Actor3D extends ModelInstance implements Disposable {
 	public Actor spawnFlareInForeground(Actor3D emitter, float size)
 	{
 		return getGameScreen().flarePlane.spawnFlare(emitter, size);
-	}
-
-	public Image3D spawnFlareOnFlareStage(Actor3D emitter, float size)
-	{
-//		Actor3D imgGlow = new Image3D(SUN_WIDTH*26,SUN_WIDTH*26,getAssets().getSTexture(SceneTexture.GLOW),new ModelBuilder());
-		Image3D imgGlow = new Image3D(2*26,2*26,getAssets().getSTexture(SceneTexture.ADD_FLARE),new ModelBuilder());
-		getGameScreen().flareStage3d.addActor(imgGlow);
-		imgGlow.setColor(new Color(1,1,1,0.5f));
-		imgGlow.setZ(emitter.z);
-//		imgGlow.setColor(Color.YELLOW);
-		imgGlow.setName("sunflare");
-		return imgGlow;
-
-//		return getGameScreen().flarePlane.spawnFlare(emitter, size);
 	}
 
 	public float getHeight() {

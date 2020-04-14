@@ -27,15 +27,15 @@ public class WeatherProvider extends Actor{
 	public static final float DAY_HOURS = DAYTIME_HOURS + NIGHT_HOURS;
 	public static final float DUSK_HOURS = 1.84f;
 	public static final float DAWN_HOURS = 1.84f;
-	public static final float SECONDS_PER_DAY = FASTMODE ? 30f : 7f * 60f + 10f; // one 24 hours cycle shall have 7 minutes and 10 seconds (only 180 seconds in FASTMODE)
+	public static final float SECONDS_PER_DAY = FASTMODE ? 60f : 7f * 60f + 10f; // one 24 hours cycle shall have 7 minutes and 10 seconds (only 180 seconds in FASTMODE)
 	public static final float SECONDS_PER_HOUR = SECONDS_PER_DAY / DAY_HOURS;
 	public static final float DAYTIME_SECONDS = DAYTIME_HOURS * SECONDS_PER_HOUR;
 	public static final float NIGHT_SECONDS = NIGHT_HOURS * SECONDS_PER_HOUR;
 	public static final float DUSK_SECONDS = DUSK_HOURS * SECONDS_PER_HOUR;
 	public static final float DAWN_SECONDS = DAWN_HOURS * SECONDS_PER_HOUR;
-	public static final float MIN_FOG = 0.3f;
-	public static final float MAX_FOG = 0.7f;
-	public static final float MAX_FOG_NO_PRECIPITATION = 0.525f;
+	public static final float MIN_FOG = 0.0f;
+	public static final float MAX_FOG = 1.0f;
+	public static final float MAX_FOG_NO_PRECIPITATION = 0.425f;
 
 	/**
 	 * current Second Of Day. A value from 0 to 24 * SECONDS_PER_HOUR
@@ -90,12 +90,12 @@ public class WeatherProvider extends Actor{
 			
 			// give CLEAR weather a higher changce to win :-) 
 			nextWeathers.add(Precipitation.CLEAR);
-			nextWeathers.add(Precipitation.CLEAR);
-			nextWeathers.add(Precipitation.CLEAR);
-			nextWeathers.add(Precipitation.CLEAR);
-			nextWeathers.add(Precipitation.CLEAR);
-			nextWeathers.add(Precipitation.CLEAR);
-			nextWeathers.add(Precipitation.CLEAR);
+//			nextWeathers.add(Precipitation.CLEAR);
+//			nextWeathers.add(Precipitation.CLEAR);
+//			nextWeathers.add(Precipitation.CLEAR);
+//			nextWeathers.add(Precipitation.CLEAR);
+//			nextWeathers.add(Precipitation.CLEAR);
+//			nextWeathers.add(Precipitation.CLEAR);
 			nextWeathers.add(Precipitation.CLEAR);
 			
 			// pick a random next weather from the list
@@ -134,20 +134,16 @@ public class WeatherProvider extends Actor{
 			switch (currentPrecip) {
 			case CLEAR:
 				// clear sky has also a small amount of fog
-				currentFog = MathUtils.random(MIN_FOG, MAX_FOG_NO_PRECIPITATION);
-				sendFogIntensityChange(currentFog, d*0.1f);
+				sendFogIntensityChange(MathUtils.random(MIN_FOG, MAX_FOG_NO_PRECIPITATION), d*0.2f);
 				break;
 			case RAIN:
-				currentFog = MathUtils.random(MAX_FOG_NO_PRECIPITATION, MAX_FOG);
-				sendFogIntensityChange(currentFog, d*0.1f);
+				sendFogIntensityChange(MathUtils.random(MAX_FOG_NO_PRECIPITATION, MAX_FOG), d*0.2f);
 				break;
 			case SNOW:
-				currentFog = MathUtils.random(MAX_FOG_NO_PRECIPITATION, MAX_FOG);
-				sendFogIntensityChange(currentFog, d*0.1f);
+				sendFogIntensityChange(MathUtils.random(MAX_FOG_NO_PRECIPITATION, MAX_FOG), d*0.2f);
 				break;
 			case FOG:
-				currentFog = MathUtils.random(MAX_FOG_NO_PRECIPITATION, MAX_FOG);
-				sendFogIntensityChange(currentFog, d);
+				sendFogIntensityChange(MathUtils.random(MAX_FOG_NO_PRECIPITATION, MAX_FOG), d);
 				break;
 
 			default:
@@ -244,14 +240,12 @@ public class WeatherProvider extends Actor{
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.F))
 		{
-			currentFog += 0.1f;
-			sendFogIntensityChange(currentFog, 1f);
+			sendFogIntensityChange(currentFog + 0.1f, 1f);
 			System.out.println(String.format("fog: %+10.4f", currentFog ));
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.G))
 		{
-			currentFog -= 0.1f;
-			sendFogIntensityChange(currentFog, 1f);
+			sendFogIntensityChange(currentFog - 0.1f, 1f);
 			System.out.println(String.format("fog: %+10.4f", currentFog ));
 		}
 	}
@@ -266,9 +260,11 @@ public class WeatherProvider extends Actor{
 	}
 
 	private void sendFogIntensityChange(float targetIntensity, final float duration) {
+		System.out.println("Ordering fog intensity "+targetIntensity+" in "+duration+" sconds");
 		for (FogIntensityChangeListener listener : fogIntensityChangeListeners) {
-			listener.onFogIntensityChanged(targetIntensity, duration);
+			listener.onFogIntensityChanged(currentFog, targetIntensity, duration);
 		}
+		currentFog = targetIntensity;
 	}
 
 	private void sendPrecipChange(Precipitation targetPrecip, final float duration) {

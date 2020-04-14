@@ -6,33 +6,45 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-import ardash.lato.Assets;
-import ardash.lato.GameManager;
-import ardash.lato.GameScreen;
-import ardash.lato.LatoStage;
+import ardash.gdx.scenes.scene3d.actions.Actions3D;
+import ardash.gdx.scenes.scene3d.actions.ColorAction;
+import ardash.gdx.scenes.scene3d.actions.FloatAction;
+import ardash.lato.weather.AmbientColorChangeListener;
 import ardash.lato.weather.EnvColors;
-import net.dermetfan.gdx.assets.AnnotationAssetManager;
+import ardash.lato.weather.FogColorChangeListener;
+import ardash.lato.weather.FogIntensityChangeListener;
 
-public class Stage3D extends InputAdapter implements Disposable {
+public class Stage3D extends InputAdapter implements Disposable, FogIntensityChangeListener, FogColorChangeListener, AmbientColorChangeListener {
+	public static final float MAX_FOG_FAR = 30f;
+	public static final float MIN_FOG_FAR = 50f;
+
     private final ModelBatch modelBatch;
     private Environment environment;
+    
+    /**
+     * A color instance that hold the current fog colour. It will be changed and applied to the enviroment every frame.
+     */
+    private Color fogColor = EnvColors.DAY.fog.cpy();
+
+    /**
+     * A color instance that hold the current ambient colour. It will be changed and applied to the enviroment every frame.
+     */
+    private Color ambientColor = EnvColors.DAY.ambient.cpy();
 
 //    private Camera3D camera;
 //    private OrthographicCamera camera;
@@ -62,12 +74,12 @@ public class Stage3D extends InputAdapter implements Disposable {
 //        
 //    }
     
-    public void setAmbientLight (Color c)
+    private void setAmbientLightColor (Color c)
     {
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, c.r, c.g, c.b, 0.51f));
     }
 
-    public void setFog (Color c)
+    private void setFogColor (Color c)
     {
         environment.set(new ColorAttribute(ColorAttribute.Fog, c.r, c.g, c.b, 0.51f));
     }
@@ -115,7 +127,7 @@ public class Stage3D extends InputAdapter implements Disposable {
 //        	camera.zoom-=1;
         	camera.translate(0, 0, -1);
         }
-    	System.out.println("cam z "+ camera.position.z);
+//    	System.out.println("cam z "+ camera.position.z);
     }
 
     /** Calls {@link #act(float)} with {@link Graphics#getDeltaTime()}. */
@@ -128,6 +140,10 @@ public class Stage3D extends InputAdapter implements Disposable {
      * @param delta Time in seconds since the last frame. */
     public void act(float delta) {
         root.act(delta);
+        
+        // apply the current fog and ambient color
+        setFogColor(fogColor);
+        setAmbientLightColor(ambientColor);
     }
 
     /** Adds an actor to the root of the stage.
@@ -249,6 +265,33 @@ public class Stage3D extends InputAdapter implements Disposable {
         root.dispose();
         clear();
     }
-    
 
+	@Override
+	public void onFogIntensityChanged(float currentFog, float newIntensity, float duration) {
+		newIntensity = MathUtils.clamp(newIntensity, 0.0f, 1.0f);
+		final float newFarValue = MathUtils.lerp(MIN_FOG_FAR, MAX_FOG_FAR, newIntensity);
+		FloatAction action = new FloatAction(getCamera().far, newFarValue, duration) {
+			@Override
+			protected void update(float percent) {
+				super.update(percent);
+				actor.getStage().getCamera().far = getValue();
+				actor.getStage().getCamera().update();
+			}
+		};
+		addAction(action);
+	}
+
+	@Override
+	public void onFogColorChangeTriggered(Color target, float seconds) {
+		final ColorAction action = Actions3D.color(target, seconds);
+		action.setColor(fogColor);
+		addAction(action);
+	}
+
+	@Override
+	public void onAmbientColorChangeTriggered(Color target, float seconds) {
+		final ColorAction action = Actions3D.color(target, seconds);
+		action.setColor(ambientColor);
+		addAction(action);
+	}
 }

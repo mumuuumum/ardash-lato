@@ -1,12 +1,14 @@
 package ardash.lato.actors;
 
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import ardash.lato.Assets;
 import ardash.lato.GameManager;
 import ardash.lato.GameScreen;
-import ardash.lato.LatoStage;
+import ardash.lato.LatoGame;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
 /**
@@ -17,15 +19,9 @@ import net.dermetfan.gdx.assets.AnnotationAssetManager;
 public interface StageAccessor {
 	public default GameManager getGameManager()
 	{
-		final Stage stage = getStage();
-		if (stage == null)
-			throw new RuntimeException("Actor must be added to a stage first.");
-		if (stage instanceof LatoStage) {
-			LatoStage ls = (LatoStage) stage;
-			return ls.gm;
-		}
-		else
-			throw new RuntimeException("Stage was wrong type.");
+		final ApplicationListener al = Gdx.app.getApplicationListener();
+		LatoGame game = (LatoGame)al;
+		return game.gm;
 	}
 	
 	public default Assets getAssets()

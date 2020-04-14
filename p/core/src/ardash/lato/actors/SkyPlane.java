@@ -32,6 +32,11 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 	private Actor topColorHolder;
 	private Actor bottomColorHolder;
 
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
+	}
 	public SkyPlane(float width, float height) {
 		setSize(width, height);
 		moveBy(getWidth()/-2f, 0f);// self center
@@ -39,10 +44,6 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		sr.setAutoShapeType(true);
 		setName("skyplane");
 		this.setTouchable(Touchable.childrenOnly);
-	}
-
-	@Override
-	public void init() {
 		
 		sunRotor = new Group();
 		addActor(sunRotor);
@@ -57,7 +58,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		imgGlow.setHeight(SUN_WIDTH*26);
 		sunRotor.addActor(imgGlow);
 //		imgGlow.setPosition(0, -15f); // sun rotation radius
-		imgGlow.setColor(new Color(1,1,1,0.9f));
+		imgGlow.setColor(new Color(1,1,1,0.1f)); // adjusting glow intensity here, changes apperence of max fog
 		imgGlow.setName("sunglow");
 //		imgGlow.setTouchable(Touchable.disabled);
 
@@ -100,7 +101,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		Vector2 coords = new Vector2(getX(), getY());
 
 		Color color = new Color(getColor());
-		sr.setProjectionMatrix(batch.getProjectionMatrix());
+//		sr.setProjectionMatrix(batch.getProjectionMatrix());
 		sr.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
 //		Gdx.gl.glEnable(GL20.GL_BLEND);
@@ -108,8 +109,10 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		sr.begin(ShapeRenderer.ShapeType.Filled);
 
 //		sr.rectLine(coords.x, coords.y, coords.x + getWidth(), coords.y, getHeight());
-		sr.rect(coords.x, coords.y, getWidth(), getHeight(), bottomColorHolder.getColor(), bottomColorHolder.getColor(),
-				topColorHolder.getColor(), topColorHolder.getColor());
+		final Color fog = EnvColors.DAY.fog;
+//		sr.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), bottomColorHolder.getColor(), bottomColorHolder.getColor(),
+//				topColorHolder.getColor(), topColorHolder.getColor());
+		sr.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), fog, fog, fog, fog);
 		sr.end();
 //		Gdx.gl.glDisable(GL20.GL_BLEND);
 		Gdx.gl.glLineWidth(1f);

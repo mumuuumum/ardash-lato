@@ -12,11 +12,17 @@ public class FloatAction extends TemporalAction {
                 end = 1;
         }
 
-        /** Creates a FloatAction that transitions from start to end. */
-        public FloatAction (float start, float end) {
-                this.start = start;
-                this.end = end;
-        }
+//        /** Creates a FloatAction that transitions from start to end. */
+//        public FloatAction (float start, float end) {
+//                this.start = start;
+//                this.end = end;
+//        }
+        
+    	public FloatAction (float start, float end, float duration) {
+    		super(duration);
+    		this.start = start;
+    		this.end = end;
+    	}
 
         @Override
         protected void begin () {

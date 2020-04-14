@@ -1,5 +1,6 @@
 package ardash.gdx.scenes.scene3d.actions;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
@@ -312,5 +313,25 @@ public class Actions3D {
         afterAction.setAction(action);
         return afterAction;
     }
+    
+	/** Sets the actor's color instantly. */
+	static public ColorAction color (Color color) {
+		return color(color, 0, null);
+	}
+
+	/** Transitions from the color at the time this action starts to the specified color. */
+	static public ColorAction color (Color color, float duration) {
+		return color(color, duration, null);
+	}
+
+	/** Transitions from the color at the time this action starts to the specified color. */
+	static public ColorAction color (Color color, float duration, Interpolation interpolation) {
+		ColorAction action = action3d(ColorAction.class);
+		action.setEndColor(color);
+		action.setDuration(duration);
+		action.setInterpolation(interpolation);
+		return action;
+	}
+
 
 }

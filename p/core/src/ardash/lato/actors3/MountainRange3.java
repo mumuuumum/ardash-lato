@@ -96,7 +96,7 @@ public class MountainRange3 extends Group3D{
 		}
 		
 		final Vector3 gp = getChild(2).getGlobalPosition();
-		System.out.println("GP XXXXXXXXXXXXXXOOOOO: " + gp);
+//		System.out.println("GP XXXXXXXXXXXXXXOOOOO: " + gp);
 
 //		System.out.println(child.getX());
 //		System.out.println(child.getWidth());

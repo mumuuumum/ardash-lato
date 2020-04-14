@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -20,7 +19,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 import com.github.czyzby.kiwi.util.gdx.viewport.Viewports;
 
@@ -30,12 +28,11 @@ import ardash.lato.Assets.SceneTexture;
 import ardash.lato.actors.FlarePlane;
 import ardash.lato.actors.ParticlePlane;
 import ardash.lato.actors.Performer;
+import ardash.lato.actors.SkyPlane;
 import ardash.lato.actors.WaveDrawer;
 import ardash.lato.actors3.MountainRange3;
-import ardash.lato.actors3.SkyPlane3;
 import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.WeatherProvider;
-import box2dLight.RayHandler;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
 public class GameScreen implements Screen {
@@ -59,10 +56,7 @@ public class GameScreen implements Screen {
 	public LatoStage stage;
 	public LatoStage frontStage;
 	public LatoStage guiStage;
-	public Stage3D skyStage3d;
 	public Stage3D stage3d;
-	public Stage3D flareStage3d;
-	private RayHandler rayHandler;
 	public FlarePlane flarePlane;
 	private Performer performer;
 
@@ -90,22 +84,11 @@ public class GameScreen implements Screen {
 		CURRENT_WORLD_WIDTH = backStage.getViewport().getWorldWidth();
 		guiStage = new LatoStage(Viewports.getDensityAwareViewport(), this);
 		stage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D())); // perspective camera draws correctly behind each other
-//		stage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new PerspectiveCamera())); // perspective camera draws correctly behind each other
-		skyStage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D())); // 2 3D-cams on top of each other work fine
-//		skyStage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT)); // ortho cam draws higher depth
-		flareStage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT));
-		
-		stage3d.setAmbientLight(EnvColors.DAY.ambient);
-		stage3d.setFog(EnvColors.DAY.fog);
-		skyStage3d.setAmbientLight(EnvColors.DAY.ambient);
-//		skyStage3d.setFog(EnvColors.DAY.fog);
-		flareStage3d.setAmbientLight(EnvColors.DAY.ambient);
 		
 //		backStage.setDebugAll(true);
 		stage.setDebugAll(true);
 //		frontStage.setDebugAll(true);
 //		stage3d.setDebug(true, true);
-		skyStage3d.setDebug(true, true);
 //		Gdx.input.setInputProcessor(backStage);
 		
 		guiStage.addActor(weather); // weather can be on any stage
@@ -123,9 +106,8 @@ public class GameScreen implements Screen {
 		weather.addSunColourChangeListener(flarePlane);
 
 		
-		final SkyPlane3 skyPlane = new SkyPlane3(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
-		skyStage3d.addActor(skyPlane);
-		skyPlane.setZ(-200f);
+		final SkyPlane skyPlane = new SkyPlane(MAX_WORLD_WIDTH,WORLD_HEIGHT);
+		backStage.addActor(skyPlane);
 //		weather.addSunColourChangeListener(skyPlane);
 //
 //		// subscribe sky to skycolors
@@ -140,33 +122,12 @@ public class GameScreen implements Screen {
 			mr.setName("MountainRange"+i);
 			
 			// range offset
-			mr.translate(-MountainRange3.MOUNT_SIZE*(i+1), -2f*i+2, 2+i*2);
+			mr.translate(-MountainRange3.MOUNT_SIZE*(i+1), -2f*i+2, 0+i*2);
 			mr.setSpeed((i*i+1)*0.2f);
 			
 			// move to center on 0,0
 			mr.translate(numMountains/2 * -MountainRange3.MOUNT_SIZE,0,0);
 
-//			mr.setVisible(false);
-//			// subscribe the fog layers to fog colour change
-//			weather.addFogColourChangeListener(new FogColorChangeListener() {
-//				@Override
-//				public void onFogColorChangeTriggered(Color target, float seconds) {
-//					Color t = target.cpy();
-//					t.a = 0.225f;	
-//					fog.addAction(MoreActions.noAlphaColor(t, seconds));
-//				}
-//			});
-//			// and to fog intensity
-//			weather.addFogIntensityChangeListener(new FogIntensityChangeListener() {
-//				@Override
-//				public void onFogIntensityChanged(float newIntensity, float duration) {
-//					fog.addAction(Actions.alpha(newIntensity, duration));
-//				}
-//			});
-
-			// subscribe the mountains layers to ambient colour change
-//			weather.addAmbientColourChangeListener(mr);
-//			weather.addFogColourChangeListener(mr);
 		}
 		
 //		backStage.addActor(skyPlane);
@@ -185,6 +146,7 @@ public class GameScreen implements Screen {
 		performer.moveBy(8*1.8f, 10f); // tmp becasue no starting groudn yet
 		stage.setPerformer(performer); // attach the camera to him
 		weather.addAmbientColourChangeListener(performer);
+		weather.addAmbientColourChangeListener(performer);
 		
 		// attach the zoom of some cameras to the speed of the player
 		performer.addSpeedListener(backStage);
@@ -197,8 +159,8 @@ public class GameScreen implements Screen {
 //		guiStage.addActor(stage3d);
 		
 		stage3d.getCamera().update();
-		skyStage3d.getCamera().update();
-		flareStage3d.getCamera().update();
+//		skyStage3d.getCamera().update();
+//		flareStage3d.getCamera().update();
 		
 //		stage3d.addActor(new CubeActor3D(1, 1, 1));
 //		ModelBuilder mb = new ModelBuilder();
@@ -219,14 +181,14 @@ public class GameScreen implements Screen {
 //        stage3d.addActor(i3d);
 //        i3d.scale (1f, 0.5f, 0);
 //        i3d.scale (40f, 40f, 0);
-        
-        skyStage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        skyStage3d.getCamera().lookAt(0, 0, 0);
-        skyStage3d.getCamera().translate(0, 0, 30);
-//		skyStage3d.getCamera().moveTo(0, 0, 30, 1f);
-		skyStage3d.getCamera().near = 0.1f;
-		skyStage3d.getCamera().far = 35f;
-		skyStage3d.getCamera().update();
+//        
+//        skyStage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//        skyStage3d.getCamera().lookAt(0, 0, 0);
+//        skyStage3d.getCamera().translate(0, 0, 30);
+////		skyStage3d.getCamera().moveTo(0, 0, 30, 1f);
+//		skyStage3d.getCamera().near = 0.1f;
+//		skyStage3d.getCamera().far = 35f;
+//		skyStage3d.getCamera().update();
 
 //		stage3d.setPosition(1, 1);
 //		stage3d.setScale(10);
@@ -237,15 +199,19 @@ public class GameScreen implements Screen {
 		stage3d.getCamera().translate(0, 0, 30);
 		
         stage3d.getCamera().near = 0.1f;
-        stage3d.getCamera().far = 35f; // TODO adjust fog intensity here
+        stage3d.getCamera().far = 50f; // TODO adjust fog intensity here
         stage3d.getCamera().update();
+        
+        weather.addFogIntensityChangeListener(stage3d);
+        weather.addFogColourChangeListener(stage3d);
+        weather.addAmbientColourChangeListener(stage3d);
 
-		flareStage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		flareStage3d.getCamera().translate(0, 0, 30);
-//		flareStage3d.getCamera().moveTo(0, 0, 30, 1f);
-		flareStage3d.getCamera().near = 0.1f;
-		flareStage3d.getCamera().far = 35f;
-		flareStage3d.getCamera().update();
+//		flareStage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+//		flareStage3d.getCamera().translate(0, 0, 30);
+////		flareStage3d.getCamera().moveTo(0, 0, 30, 1f);
+//		flareStage3d.getCamera().near = 0.1f;
+//		flareStage3d.getCamera().far = 35f;
+//		flareStage3d.getCamera().update();
 		
 		
 //		// add ambient light overlay
@@ -349,16 +315,17 @@ public class GameScreen implements Screen {
 
 //    	frontStage.draw();
     	
-//    	backStage.draw();
+    	backStage.act();
+    	backStage.draw();
 //    	stage.draw();
-    	skyStage3d.act(delta);
-    	skyStage3d.draw();
+//    	skyStage3d.act(delta);
+//    	skyStage3d.draw();
     	stage3d.act(delta);
     	stage3d.draw();
 
     	frontStage.act(delta);
     	frontStage.draw();
-    	flareStage3d.act(delta);
+//    	flareStage3d.act(delta);
 //    	flareStage3d.draw();
 
     	guiStage.draw();
