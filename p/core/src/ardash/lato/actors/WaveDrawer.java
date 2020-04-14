@@ -12,13 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
+import ardash.lato.LatoStage;
 import ardash.lato.terrain.Downer;
 import ardash.lato.terrain.HomeHill;
 import ardash.lato.terrain.TerrainSegList;
 import ardash.lato.weather.AmbientColorChangeListener;
 
-public class WaveDrawer extends Actor implements Disposable, AmbientColorChangeListener {
-
+public class WaveDrawer extends Actor implements Disposable, StageAccessor, AmbientColorChangeListener {
 	private AdvShapeRenderer sr;
 	TerrainSegList terrainSegmentList;
 	Vector2 tmpVector = new Vector2(); // can be used by one method atomically
@@ -36,24 +36,39 @@ public class WaveDrawer extends Actor implements Disposable, AmbientColorChangeL
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-
 		batch.end();
 
 		sr.begin();
 		sr.setColor(getColor());
 		sr.set(ShapeType.Filled);
+//		sr.set(ShapeType.Line);
 		sr.setProjectionMatrix(batch.getProjectionMatrix());
-
-		final float drawSteps=0.2f;
-		for (float x = terrainSegmentList.first().x; x<terrainSegmentList.last().x-drawSteps ; x+=drawSteps)
+//
+		float performerY = ((LatoStage)getStage()).getPerformer().getY();
+		int counter = 0;
+		long startTime = System.currentTimeMillis();
+		final float drawSteps=0.8f;
+		float lastX = terrainSegmentList.last().x;
+		for (float x = terrainSegmentList.first().x; x<lastX-drawSteps ; x+=drawSteps)
 		{
 			float y = terrainSegmentList.heightAt(x);
 			float toX = x+drawSteps;
 			float toY = terrainSegmentList.heightAt(toX);
+			
+			// culling based on X value. Y value is just the current Y of the performer
+			if ( !getStage().getCamera().frustum.pointInFrustum(x, performerY, 0) 
+					&& !getStage().getCamera().frustum.pointInFrustum(toX, performerY, 0))
+			{
+				continue;
+			}
 			float[] fa = {x,y, toX,toY, toX,y-500f, x, y-500f};
 			sr.polygon(fa);
+			counter ++;
 		}
-
+		long endTime = System.currentTimeMillis()+1;
+		long drawTime = endTime-startTime;
+		System.out.println(String.format("%f PPS. Drawn %d in %d ms", (float)counter/(float)drawTime, counter, drawTime));
+//
 		sr.end();
 
 		batch.begin();

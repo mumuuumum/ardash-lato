@@ -36,10 +36,6 @@ public class Scarf extends Group implements StageAccessor {
 		
 	}
 
-	@Override
-	public void init() {
-	}
-
 	float[] x = new float[20];
 	float[] y = new float[20];
 	float segLength = SEG_LEN;

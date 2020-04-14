@@ -102,7 +102,7 @@ public class GameScreen implements Screen {
 		// additive flare plane (must be created first, so actors can spawn the flares)
 		flarePlane = new FlarePlane(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
 		frontStage.addActor(flarePlane);
-		flarePlane.init();
+//		flarePlane.init();
 		weather.addSunColourChangeListener(flarePlane);
 
 		

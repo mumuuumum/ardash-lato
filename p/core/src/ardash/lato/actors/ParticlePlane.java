@@ -23,7 +23,7 @@ public class ParticlePlane extends Group implements StageAccessor, Disposable, P
 		this.setName("particleplane");
 	}
 
-	@Override
+//	@Override
 	public void init() {
 		TextureAtlas ta = getAssetManager().get(Assets.uiAtlas);
 		rainEffect.load( Gdx.files.internal("rain.p"), ta);

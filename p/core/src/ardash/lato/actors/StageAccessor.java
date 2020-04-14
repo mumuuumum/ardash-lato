@@ -55,9 +55,9 @@ public interface StageAccessor {
 
 	public Stage getStage();
 	
-	/**
-	 * Call this after the Actor has been added to a stage.
-	 */
-	public void init();
+//	/**
+//	 * Call this after the Actor has been added to a stage.
+//	 */
+//	public void init();
 
 }

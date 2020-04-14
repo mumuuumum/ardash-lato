@@ -33,11 +33,6 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 	private Actor topColorHolder;
 	private Actor bottomColorHolder;
 
-	@Override
-	public void init() {
-		// TODO Auto-generated method stub
-		
-	}
 	public SkyPlane(float width, float height) {
 		setSize(width, height);
 		moveBy(getWidth()/-2f, 0f);// self center

@@ -32,11 +32,6 @@ public class FlarePlane extends Group implements StageAccessor, Disposable, SunC
 		this.setName("flareplane");
 	}
 
-	@Override
-	public void init() {
-//		spawnFlare(null, 0, 0, 60);
-		
-	}
 	
 	public Actor spawnFlare(Actor emitter, float size)
 	{

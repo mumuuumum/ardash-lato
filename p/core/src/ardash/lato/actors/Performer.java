@@ -55,7 +55,7 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 	 */
 	private Vector2 camSpot = new Vector2();
 
-	@Override
+//	@Override
 	public void init() {
 		Image img = new Image(getAssets().getSTexture(SceneTexture.PERFORMER));
 		img.setWidth(PERFORMER_WIDTH);
