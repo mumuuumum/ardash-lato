@@ -108,10 +108,8 @@ public class GameScreen implements Screen {
 		
 		final SkyPlane skyPlane = new SkyPlane(MAX_WORLD_WIDTH,WORLD_HEIGHT);
 		backStage.addActor(skyPlane);
-//		weather.addSunColourChangeListener(skyPlane);
-//
-//		// subscribe sky to skycolors
-//		weather.addSkyColourChangeListener(skyPlane);
+		weather.addSkyColourChangeListener(skyPlane);
+		weather.addSunColourChangeListener(skyPlane);
 		weather.addSODChangeListener(skyPlane);
 		
 		for (int i = 0; i<4 ; i++)

@@ -16,6 +16,7 @@ import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 import com.github.czyzby.kiwi.util.gdx.scene2d.Actors;
 
 import ardash.lato.Assets.SceneTexture;
+import ardash.lato.actions.MoreActions;
 import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.SODChangeListener;
 import ardash.lato.weather.SkyColorChangeListener;
@@ -50,7 +51,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		sunRotor.setPosition(getWidth()/2f, getHeight()/2f); // center on plane
 		
 		// move a bit down, so sun moved behind mountains
-		sunRotor.moveBy(0, -10);
+		sunRotor.moveBy(0, -15);
 
 		// add sun glow
 		imgGlow = new Image(getAssets().getSTexture(SceneTexture.GLOW));
@@ -68,7 +69,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		imgSun.setWidth(SUN_WIDTH);
 		imgSun.setHeight(SUN_WIDTH);
 		sunRotor.addActor(imgSun);
-		imgSun.setPosition(0, -15f); // sun rotation radius
+		imgSun.setPosition(0, -20f); // sun rotation radius
 		imgFlare = spawnFlareInForeground(imgSun, 500f);
 		imgSun.setTouchable(Touchable.enabled);
 		imgSun.setName("sunshape");
@@ -110,9 +111,9 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 
 //		sr.rectLine(coords.x, coords.y, coords.x + getWidth(), coords.y, getHeight());
 		final Color fog = EnvColors.DAY.fog;
-//		sr.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), bottomColorHolder.getColor(), bottomColorHolder.getColor(),
-//				topColorHolder.getColor(), topColorHolder.getColor());
-		sr.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), fog, fog, fog, fog);
+		sr.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()*10f, bottomColorHolder.getColor(), bottomColorHolder.getColor(),
+				topColorHolder.getColor(), topColorHolder.getColor());
+//		sr.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), fog, fog, fog, fog);
 		sr.end();
 //		Gdx.gl.glDisable(GL20.GL_BLEND);
 		Gdx.gl.glLineWidth(1f);
@@ -133,9 +134,9 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 
 	@Override
 	public void onSunColorChangeTriggered(Color target, float seconds) {
-		imgGlow.addAction(Actions.color(target, seconds));
+		imgGlow.addAction(MoreActions.noAlphaColor(target, seconds));
 		if (!getGameScreen().weather.getCurrentColorSchema().equals(EnvColors.NIGHT))
-			imgFlare.addAction(Actions.color(target, seconds));
+			imgFlare.addAction(MoreActions.noAlphaColor(target, seconds));
 //		imgSun.addAction(Actions.color(target, seconds));
 	}
 

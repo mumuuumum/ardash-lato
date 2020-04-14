@@ -276,7 +276,8 @@ public class WeatherProvider extends Actor{
 	private void triggerColorSchemaChange(final float duration) {
 		triggerAmbientColorChange(currentColorSchema.ambient, duration);
 		triggerFogColorChange(currentColorSchema.fog, duration);
-		triggerSkyColorChange(currentColorSchema.skyTop, currentColorSchema.skyBottom, duration);
+//		triggerSkyColorChange(currentColorSchema.skyTop, currentColorSchema.skyBottom, duration);
+		triggerSkyColorChange(currentColorSchema.skyTop, currentColorSchema.fog, duration);
 		triggerSunColorChange(currentColorSchema.sun, duration);
 	}
 
