@@ -75,6 +75,12 @@ public class GameScreen implements Screen {
 	}
 
 	@Override
+	/**
+	 * layers:
+	 * skyStage (skyPlane)
+	 * stage3D (MountainRange3)
+	 * frontStage (ParticlePlane, Flareplane)
+	 */
 	public void show() {
 		Texture ball = am.get(Assets.ball); // Assets.ball is a String
 
@@ -87,7 +93,8 @@ public class GameScreen implements Screen {
 		guiStage = new LatoStage(Viewports.getDensityAwareViewport(), this);
 		stage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D())); // perspective camera draws correctly behind each other
 //		stage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new PerspectiveCamera())); // perspective camera draws correctly behind each other
-		skyStage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT)); // ortho cam draws higher depth
+		skyStage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D())); // 2 3D-cams on top of each other work fine
+//		skyStage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT)); // ortho cam draws higher depth
 		flareStage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT));
 		
 		stage3d.setAmbientLight(EnvColors.DAY.ambient);
@@ -120,6 +127,7 @@ public class GameScreen implements Screen {
 		
 		final SkyPlane3 skyPlane = new SkyPlane3(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
 		skyStage3d.addActor(skyPlane);
+		skyPlane.setZ(-200f);
 //		weather.addSunColourChangeListener(skyPlane);
 //
 //		// subscribe sky to skycolors
@@ -216,7 +224,7 @@ public class GameScreen implements Screen {
         
         skyStage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         skyStage3d.getCamera().lookAt(0, 0, 0);
-        skyStage3d.getCamera().translate(0, 0, 3);
+        skyStage3d.getCamera().translate(0, 0, 30);
 //		skyStage3d.getCamera().moveTo(0, 0, 30, 1f);
 		skyStage3d.getCamera().near = 0.1f;
 		skyStage3d.getCamera().far = 35f;
@@ -323,7 +331,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(1, 0, 1, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 //        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT );
-        Gdx.gl.glDisable(Gdx.gl.GL_DEPTH_TEST);
+//        Gdx.gl.glDisable(Gdx.gl.GL_DEPTH_TEST);
 //        Gdx.gl.glEnable (Gdx.gl.GL_DEPTH_TEST);
 //        Gdx.gl.glDepthFunc(Gdx.gl.GL_GREATER);
 //        Gdx.gl.glDepthFunc(Gdx.gl.GL_LESS);
@@ -341,7 +349,7 @@ public class GameScreen implements Screen {
     	
     	guiStage.act(delta); // contains weather provider
 
-    	frontStage.draw();
+//    	frontStage.draw();
     	
 //    	backStage.draw();
 //    	stage.draw();
@@ -351,7 +359,7 @@ public class GameScreen implements Screen {
     	stage3d.draw();
 
     	frontStage.act(delta);
-//    	frontStage.draw();
+    	frontStage.draw();
     	flareStage3d.act(delta);
 //    	flareStage3d.draw();
 
