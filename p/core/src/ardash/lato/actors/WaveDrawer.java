@@ -1,5 +1,8 @@
 package ardash.lato.actors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -17,6 +20,7 @@ import ardash.lato.terrain.Downer;
 import ardash.lato.terrain.HomeHill;
 import ardash.lato.terrain.TerrainSegList;
 import ardash.lato.weather.AmbientColorChangeListener;
+import net.dermetfan.gdx.utils.ArrayUtils;
 
 public class WaveDrawer extends Actor implements Disposable, StageAccessor, AmbientColorChangeListener {
 	private AdvShapeRenderer sr;
@@ -48,23 +52,45 @@ public class WaveDrawer extends Actor implements Disposable, StageAccessor, Ambi
 		int counter = 0;
 		long startTime = System.currentTimeMillis();
 		final float drawSteps=0.8f;
+		float firstX = terrainSegmentList.first().x;
 		float lastX = terrainSegmentList.last().x;
-		for (float x = terrainSegmentList.first().x; x<lastX-drawSteps ; x+=drawSteps)
+		List<Float> polygonPoints = new ArrayList<Float>(100);
+		for (float x = firstX; x<lastX-drawSteps ; x+=drawSteps)
 		{
-			float y = terrainSegmentList.heightAt(x);
-			float toX = x+drawSteps;
-			float toY = terrainSegmentList.heightAt(toX);
+			float toX = x-drawSteps;
+//			float toY = terrainSegmentList.heightAt(toX);
 			
 			// culling based on X value. Y value is just the current Y of the performer
-			if ( !getStage().getCamera().frustum.pointInFrustum(x, performerY, 0) 
-					&& !getStage().getCamera().frustum.pointInFrustum(toX, performerY, 0))
+			if ( !getStage().getCamera().frustum.pointInFrustum(x-drawSteps*2f, performerY, 0) 
+					&& !getStage().getCamera().frustum.pointInFrustum(x+drawSteps*2f, performerY, 0))
 			{
 				continue;
 			}
-			float[] fa = {x,y, toX,toY, toX,y-500f, x, y-500f};
-			sr.polygon(fa);
+			
+			float y = terrainSegmentList.heightAt(x);
+			polygonPoints.add(x);
+			polygonPoints.add(y);
+			
+//			float[] fa = {x,y, toX,toY, toX,y-500f, x, y-500f};
+//			sr.polygon(fa);
 			counter ++;
 		}
+		
+		// close polygon
+		polygonPoints.add(polygonPoints.get(polygonPoints.size()-2));
+		polygonPoints.add(polygonPoints.get(polygonPoints.size()-2)-500f);
+		polygonPoints.add(firstX);
+		polygonPoints.add(polygonPoints.get(polygonPoints.size()-2)-500f);
+
+		// convert and draw
+		float[] fa = new float[polygonPoints.size()];
+		int i = 0;
+		for (Float f : polygonPoints) {
+		    fa[i++] = (f != null ? f : Float.NaN); // Or whatever default you want.
+		}
+		
+		sr.polygon(fa);
+		
 		long endTime = System.currentTimeMillis()+1;
 		long drawTime = endTime-startTime;
 		System.out.println(String.format("%f PPS. Drawn %d in %d ms", (float)counter/(float)drawTime, counter, drawTime));
