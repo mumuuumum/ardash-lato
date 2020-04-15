@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.collision.Ray;
@@ -67,16 +68,21 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
 ////        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.14f, 0.94f, 1f));
 ////        final Color ambient = EnvColors.DAY.ambient;
 ////        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, ambient.r, ambient.g, ambient.b, 0.51f));
-////        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+//        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 ////        environment.set(new ColorAttribute(ColorAttribute.Fog, 1f, 1f, 1f, 0.1f));
 ////        final Color fog = EnvColors.DAY.fog;
 ////        environment.set(new ColorAttribute(ColorAttribute.Fog, fog.r, fog.g, fog.b, 1f));
 //        
 //    }
     
-    private void setAmbientLightColor (Color c)
+    public void setAmbientLightColor (Color c)
     {
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, c.r, c.g, c.b, 0.51f));
+    }
+
+    public void setDirectionalLight (Color c)
+    {
+        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
     }
 
     private void setFogColor (Color c)

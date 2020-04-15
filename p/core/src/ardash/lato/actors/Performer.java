@@ -1,6 +1,7 @@
 package ardash.lato.actors;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -43,6 +44,7 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 	private ArrayList<SpeedListener> speedListeners = new ArrayList<SpeedListener>();
 	ParticleEffect snowSpray = new ParticleEffect();
 	private Actor ambientColorContainer = new Actor();
+	private List<PerformerListener> listeners = new ArrayList<Performer.PerformerListener>();
 
 	/**
 	 * vertical speed is intentionally not in a vector with 'speed' because the velocity is handled differently
@@ -54,6 +56,10 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 	 * A spot in front of the actor, where he wants the camera to look at. Usually a few meters in front of the actor.
 	 */
 	private Vector2 camSpot = new Vector2();
+	
+	public interface PerformerListener{
+		void onPositionChange(float newX, float newY);
+	}
 
 //	@Override
 	public void init() {
@@ -158,6 +164,11 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 		else
 			snowSpray.start();
 			
+		// inform listeners about new position
+		System.out.println("Performer is at: "+ getX() + ","+ getY());
+		for (PerformerListener listener : listeners) {
+			listener.onPositionChange(getX(), getY());
+		}
 
 	}
 
@@ -253,6 +264,11 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 	public void addSpeedListener (SpeedListener listener)
 	{
 		speedListeners.add(listener);
+	}
+
+	public void addListener (PerformerListener listener)
+	{
+		listeners.add(listener);
 	}
 	
 	@Override

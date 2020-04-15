@@ -51,22 +51,22 @@ public class LatoStage extends Stage implements SpeedListener {
 		super.draw();
     	Gdx.gl20.glBlendFunc(GL20.GL_ZERO, GL20.GL_ZERO);
 
-		// performer has moved, the camera shall follow on the y axis
-		if (performer != null)
-		{
-//			System.out.print("cam Y: "+getCamera().position.y);
-//			System.out.println(" per Y: "+performer.getY());
-//			getCamera().position.y;
-//			getCamera().translate(0, -(getCamera().position.y - performer.getY()), 0);
-//			System.out.print("pcam Y: "+getCamera().position.y);
-//			System.out.println("p per Y: "+performer.getY());
-			
-			// point camera to the camspot
-			getCamera().translate(-(getCamera().position.x - performer.getCamSpot().x)
-					, -(getCamera().position.y - performer.getCamSpot().y), 0);
-//			getCamera().update();
-//			getViewport().apply(false);
-		}
+//		// performer has moved, the camera shall follow on the y axis
+//		if (performer != null)
+//		{
+////			System.out.print("cam Y: "+getCamera().position.y);
+////			System.out.println(" per Y: "+performer.getY());
+////			getCamera().position.y;
+////			getCamera().translate(0, -(getCamera().position.y - performer.getY()), 0);
+////			System.out.print("pcam Y: "+getCamera().position.y);
+////			System.out.println("p per Y: "+performer.getY());
+//			
+//			// point camera to the camspot
+//			getCamera().translate(-(getCamera().position.x - performer.getCamSpot().x)
+//					, -(getCamera().position.y - performer.getCamSpot().y), 0);
+////			getCamera().update();
+////			getViewport().apply(false);
+//		}
 
 		
 		OrthographicCamera cam = (OrthographicCamera)getCamera();

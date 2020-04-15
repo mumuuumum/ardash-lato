@@ -75,21 +75,24 @@ public class WaveDrawer extends Actor implements Disposable, StageAccessor, Ambi
 //			sr.polygon(fa);
 			counter ++;
 		}
-		
-		// close polygon
-		polygonPoints.add(polygonPoints.get(polygonPoints.size()-2));
-		polygonPoints.add(polygonPoints.get(polygonPoints.size()-2)-500f);
-		polygonPoints.add(firstX);
-		polygonPoints.add(polygonPoints.get(polygonPoints.size()-2)-500f);
+		if (!polygonPoints.isEmpty())
+		{
+			// close polygon
+			polygonPoints.add(polygonPoints.get(polygonPoints.size()-2));
+			polygonPoints.add(polygonPoints.get(polygonPoints.size()-2)-500f);
+			polygonPoints.add(firstX);
+			polygonPoints.add(polygonPoints.get(polygonPoints.size()-2)-500f);
 
-		// convert and draw
-		float[] fa = new float[polygonPoints.size()];
-		int i = 0;
-		for (Float f : polygonPoints) {
-		    fa[i++] = (f != null ? f : Float.NaN); // Or whatever default you want.
+			// convert and draw
+			float[] fa = new float[polygonPoints.size()];
+			int i = 0;
+			for (Float f : polygonPoints) {
+			    fa[i++] = (f != null ? f : Float.NaN); // Or whatever default you want.
+			}
+			
+			sr.polygon(fa);
+			
 		}
-		
-		sr.polygon(fa);
 		
 		long endTime = System.currentTimeMillis()+1;
 		long drawTime = endTime-startTime;

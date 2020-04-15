@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g3d.Model;
 
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
 import net.dermetfan.gdx.assets.AnnotationAssetManager.Asset;
@@ -20,6 +21,11 @@ public class Assets {
 	
 	@Asset(TextureAtlas.class)
     public static final String uiAtlas = "scene.atlas";
+	
+	@Asset(Model.class)
+    public static final String toon_house = "toon_house.g3db";
+	
+	
 //	public static final AssetDescriptor<TextureAtlas> uiAtlas = new AssetDescriptor<TextureAtlas>("scene.atlas",
 //	TextureAtlas.class);
 
