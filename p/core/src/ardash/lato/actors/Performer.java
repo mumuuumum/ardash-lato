@@ -1,7 +1,9 @@
 package ardash.lato.actors;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -29,6 +31,10 @@ import ardash.lato.actions.MoreActions;
 import ardash.lato.weather.AmbientColorChangeListener;
 
 public class Performer extends Group implements StageAccessor, Disposable, AmbientColorChangeListener {
+	
+	private enum Pose {
+		RIDE, DUCK, JUMP//, ROLL, FLY, CRASHED, GRIND
+	}
 
 	private static final float ROTATION_SPEED = 180f; // TODO (deg/sec) this could be different for different performers or boards
 	private static final float PERFORMER_WIDTH = 1.85f;
@@ -45,7 +51,9 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 	ParticleEffect snowSpray = new ParticleEffect();
 	private Actor ambientColorContainer = new Actor();
 	private List<PerformerListener> listeners = new ArrayList<Performer.PerformerListener>();
-
+	private Map<Pose,Image> poses = new EnumMap<Pose, Image>(Pose.class);
+	protected Pose pose = Pose.RIDE;
+	
 	/**
 	 * vertical speed is intentionally not in a vector with 'speed' because the velocity is handled differently
 	 * depending on if actor is in air or on ground. Physics on ground are not realistic to improve gameplay.
@@ -63,10 +71,16 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 
 //	@Override
 	public void init() {
-		Image img = new Image(getAssets().getSTexture(SceneTexture.P1_RIDE));
-		img.setWidth(PERFORMER_WIDTH);
-		img.setHeight(PERFORMER_WIDTH);
-		addActor(img);
+		for (Pose pose : Pose.values()) {
+			String performer = "P1";
+			SceneTexture sprite = SceneTexture.valueOf(performer+"_"+pose.name().toUpperCase());
+			Image img = new Image(getAssets().getSTexture(sprite));
+			img.setWidth(PERFORMER_WIDTH);
+			img.setHeight(PERFORMER_WIDTH);
+			addActor(img);
+			poses.put(pose, img);
+		}
+		setPose(Pose.RIDE);
 		setOriginX(PERFORMER_WIDTH/2f);
 		camSpot.set(getX(), getY());
 		setSpeed(MIN_SPEED);
@@ -181,6 +195,18 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 		snowSpray.draw(batch);
 	}
 	
+	public void setPose(Pose pose) {
+		this.pose = pose;
+		for (Actor a : getChildren()) {
+			a.setVisible(false);
+			poses.get(pose).setVisible(true);
+		}
+	}
+	
+	public Pose getPose() {
+		return pose;
+	}
+	
 	public float getSpeed() {
 		return speed;
 	}
@@ -252,13 +278,14 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 		final GravityAction gravity = MoreActions.gravity();
 		jumpAction = Actions.parallel(jumpForce, gravity );
 		addAction(jumpAction);
-		
+		setPose(Pose.JUMP);
 	}
 	
 	/** touching down after a jump or fall*/
 	private void land() {
 		isInAir = false;
 		removeAction(jumpAction); // ensure no more up or down (gravity) is applied
+		setPose(Pose.DUCK);
 	}
 	
 	public void addSpeedListener (SpeedListener listener)
