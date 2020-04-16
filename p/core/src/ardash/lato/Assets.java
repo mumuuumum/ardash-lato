@@ -12,7 +12,7 @@ import net.dermetfan.gdx.assets.AnnotationAssetManager.Asset;
 public class Assets {
 	
 	public enum SceneTexture{
-			MOUNT,MOUNT_PIX,MOUNT_PIX2, MOUNTAINFOG, FOG_PIX, PERFORMER, SUN_SHAPE, GLOW, FLARE, ADD_FLARE, PAUSE, ADD_FLARE_A;
+			MOUNT,MOUNT_PIX,MOUNT_PIX2, MOUNTAINFOG, FOG_PIX, P1_RIDE, P1_JUMP, P1_DUCK, SUN_SHAPE, GLOW, FLARE, ADD_FLARE, PAUSE, ADD_FLARE_A;
 	}
 	public final AnnotationAssetManager manager = new AnnotationAssetManager(new InternalFileHandleResolver());
 	

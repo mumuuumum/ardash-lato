@@ -1,6 +1,6 @@
 
 scene.png
-size: 1024,1024
+size: 2048,1024
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -20,7 +20,7 @@ add_flare_a
   index: -1
 flare
   rotate: false
-  xy: 260, 232
+  xy: 774, 746
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
@@ -41,21 +41,21 @@ glow
   index: -1
 mount
   rotate: false
-  xy: 774, 874
+  xy: 1806, 874
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 mount_pix
   rotate: false
-  xy: 904, 1001
+  xy: 229, 229
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 mount_pix2
   rotate: false
-  xy: 774, 871
+  xy: 1806, 871
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -67,6 +67,27 @@ mountainfog
   orig: 128, 128
   offset: 0, 0
   index: -1
+p1_duck
+  rotate: false
+  xy: 1032, 746
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+p1_jump
+  rotate: false
+  xy: 1290, 746
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+p1_ride
+  rotate: false
+  xy: 1548, 746
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
 pause
   rotate: false
   xy: 2, 5
@@ -74,30 +95,23 @@ pause
   orig: 225, 225
   offset: 0, 0
   index: -1
-performer
-  rotate: false
-  xy: 518, 358
-  size: 256, 256
-  orig: 256, 256
-  offset: 0, 0
-  index: -1
 sun_shape
   rotate: false
-  xy: 518, 100
+  xy: 260, 232
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 tree_bg_pix
   rotate: false
-  xy: 646, 743
+  xy: 1936, 1001
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 tree_fg_pix
   rotate: false
-  xy: 229, 229
+  xy: 516, 613
   size: 1, 1
   orig: 1, 1
   offset: 0, 0

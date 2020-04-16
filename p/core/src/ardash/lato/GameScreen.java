@@ -280,7 +280,7 @@ public class GameScreen implements Screen {
 	private void buildGui() {
 		Gdx.input.setInputProcessor(guiStage);
 		guiStage.setDebugAll(true);
-		Image img = new Image(assets.getSTexture(SceneTexture.PERFORMER));
+		Image img = new Image(assets.getSTexture(SceneTexture.P1_RIDE));
 //		guiStage.addActor(img);
 		final LabelStyle lblStyle = new LabelStyle();
 		lblStyle.font = new BitmapFont();

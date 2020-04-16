@@ -63,7 +63,7 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 
 //	@Override
 	public void init() {
-		Image img = new Image(getAssets().getSTexture(SceneTexture.PERFORMER));
+		Image img = new Image(getAssets().getSTexture(SceneTexture.P1_RIDE));
 		img.setWidth(PERFORMER_WIDTH);
 		img.setHeight(PERFORMER_WIDTH);
 		addActor(img);
