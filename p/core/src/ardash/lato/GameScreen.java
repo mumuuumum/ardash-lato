@@ -90,7 +90,7 @@ public class GameScreen implements Screen {
 		backStage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D())); 
 
 //		backStage.setDebugAll(true);
-		stage.setDebugAll(true);
+//		stage.setDebugAll(true);
 //		frontStage.setDebugAll(true);
 //		stage3d.setDebug(true, true);
 //		Gdx.input.setInputProcessor(backStage);
