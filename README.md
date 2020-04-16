@@ -15,6 +15,14 @@ in LIBGDX.
 
 If you are a game maker too, please feel free to copy everyhing you need from this project. If you are a gamer, please enjoy this game for free, no ads, no optional payments, pure fun.
 
+All parts of this project are meant to be developed with FLOSS software.
 
+Engine: LibGDX
+Targer Platforms: Android, Linux
+Dev PC: Ubuntu Linux
+IDE: Enclipse
+Sprite drawing: Inkscape
+Animations and rigging: Synfig Studio
+Pixeling: Gimp
 
 
