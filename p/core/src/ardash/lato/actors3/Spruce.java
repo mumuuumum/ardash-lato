@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.weather.EnvColors;
 
-public class Spruce extends Image3D {
+public class Spruce extends Image3D implements TerrainItem {
 	
 	public Spruce() {
 		super(5,5,new Color(48 / 255f, 105 / 255f, 105 / 255f, 1f) ); //back color

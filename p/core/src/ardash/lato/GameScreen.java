@@ -60,7 +60,7 @@ public class GameScreen implements Screen {
 	public Stage3D mountainStage3d;
 	public LatoStage3D backStage3d;
 	public FlarePlane flarePlane;
-	private Performer performer;
+	public Performer performer;
 
 	public GameScreen(GameManager gm) {
 		this.gm = gm;
@@ -296,7 +296,13 @@ public class GameScreen implements Screen {
 			@Override
 			public void act(float delta) {
 				super.act(delta);
-				setText("fps: "+ Gdx.graphics.getFramesPerSecond());
+				String lblText = "fps: "+ Gdx.graphics.getFramesPerSecond();
+				lblText += "\nactors: "+backStage3d.getRoot().getChildren().size;
+				lblText += String.format("\nposition: %.2f %.2f", performer.getX(), performer.getY());
+				lblText += "\nt-sections: "+gm.tm.getSections().size();
+				lblText += String.format("\ntime of day: %.2f %s %s fogginess: %.2f"
+						, weather.currentTOD(), weather.getCurrentColorSchema(), weather.getCurrentPrecip(), weather.getCurrentFog());
+				setText(lblText);
 			}
 		};
 		Table mainTable = new Table();

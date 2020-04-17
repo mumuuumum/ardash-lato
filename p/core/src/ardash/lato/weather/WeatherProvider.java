@@ -222,7 +222,7 @@ public class WeatherProvider extends Actor{
 	 * converts seconds of day to virtual time of day (0h - 24h)
 	 * @return
 	 */
-	private float currentTOD() {
+	public float currentTOD() {
 		return currentSOD / SECONDS_PER_HOUR;
 	}
 	
@@ -329,6 +329,14 @@ public class WeatherProvider extends Actor{
 
 	public EnvColors getCurrentColorSchema() {
 		return currentColorSchema;
+	}
+	
+	public float getCurrentFog() {
+		return currentFog;
+	}
+	
+	public Precipitation getCurrentPrecip() {
+		return currentPrecip;
 	}
 
 	

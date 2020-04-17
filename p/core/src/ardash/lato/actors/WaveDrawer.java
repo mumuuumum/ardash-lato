@@ -21,6 +21,17 @@ import ardash.lato.terrain.HomeHill;
 import ardash.lato.terrain.TerrainSegList;
 
 public class WaveDrawer extends Group3D implements Disposable { //StageAccessor, AmbientColorChangeListener {
+	/**
+	 * Everything that is more than this far behind the Performer can be deleted form the stage
+	 */
+	public static final float PASSED_TERRAIN = 200f; // longest possible terrain
+
+	/**
+	 * If there is not terrain this much in front of the Performer, new Terrain shoudl be created.
+	 */
+	public static final float FUTURE_TERRAIN = 200f;
+	
+
 	private final ModelBuilder modelBuilder = new ModelBuilder();
 		private AdvShapeRenderer sr;
 	TerrainSegList terrainSegmentList;
@@ -150,9 +161,6 @@ public class WaveDrawer extends Group3D implements Disposable { //StageAccessor,
 		final float currentMin = terrainSegmentList.first().x;
 		final float currentMax = terrainSegmentList.last().x;
 		
-		final float PASSED_TERRAIN = 200f; // longest possible terrain
-		final float FUTURE_TERRAIN = 200f;
-		
 		if (currentMin+PASSED_TERRAIN < x)
 		{
 			// old terrain can be removed
@@ -166,8 +174,12 @@ public class WaveDrawer extends Group3D implements Disposable { //StageAccessor,
 			terrainSegmentList.addAll(getGameManager().tm.getLastSection());
 		}
 		
-		
 	}
+	
+//	@Override
+//		public boolean remove() {
+//			throw new RuntimeException("ERROR: don't remove the wave drawer!");
+//		}
 
 //	@Override
 //	public void onAmbientColorChangeTriggered(Color target, float seconds) {

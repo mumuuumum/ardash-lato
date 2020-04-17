@@ -51,5 +51,9 @@ public class TerrainManager {
 	public void addListener(TerrainListener listener) {
 		this.listeners.add(listener);
 	}
+	
+	public List<Section> getSections() {
+		return sections;
+	}
 
 }
