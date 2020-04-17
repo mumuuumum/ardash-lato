@@ -96,7 +96,7 @@ public class WaveDrawer extends Actor implements Disposable, StageAccessor, Ambi
 		
 		long endTime = System.currentTimeMillis()+1;
 		long drawTime = endTime-startTime;
-		System.out.println(String.format("%f PPS. Drawn %d in %d ms", (float)counter/(float)drawTime, counter, drawTime));
+//		System.out.println(String.format("%f PPS. Drawn %d in %d ms", (float)counter/(float)drawTime, counter, drawTime));
 //
 		sr.end();
 
@@ -160,7 +160,9 @@ public class WaveDrawer extends Actor implements Disposable, StageAccessor, Ambi
 		if (currentMax-FUTURE_TERRAIN < x)
 		{
 			// new terrain must be added
-			terrainSegmentList.addAll(new Downer());
+//			terrainSegmentList.addAll(new Downer());
+			getGameManager().tm.createNewSection(terrainSegmentList.last());
+			terrainSegmentList.addAll(getGameManager().tm.getLastSection());
 		}
 		
 		

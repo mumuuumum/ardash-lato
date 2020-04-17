@@ -7,7 +7,8 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 
 public class TerrainSegList extends ArrayList<TerrainSeg>{
-	
+	private static final long serialVersionUID = 607986145672323254L;
+
 	private RangeMap<Float, TerrainSeg> rm = new RangeMap<Float, TerrainSeg>();
 	
 	/**
@@ -59,6 +60,14 @@ public class TerrainSegList extends ArrayList<TerrainSeg>{
 		return get(size()-1).toPoint;
 	}
 	
+	public float firstX() {
+		return first().x;
+	}
+	
+	public float lastX() {
+		return last().x;
+	}
+	
 	public void removeFirst() {
 		super.remove(0);
 		updateSearchIndex();
@@ -83,8 +92,8 @@ public class TerrainSegList extends ArrayList<TerrainSeg>{
 	
 	@Override
 	public boolean addAll(Collection<? extends TerrainSeg> c) {
-		
-		// add current last point as offset to all of them
+		// add current last point as offset to all of them. All sections are modeled relatively.
+		// This is the part of the code that attaches the new piece to the previous piece.
 		final Vector2 offset = last();
 		for (TerrainSeg ts : c) {
 			ts.fromPoint.add(offset);

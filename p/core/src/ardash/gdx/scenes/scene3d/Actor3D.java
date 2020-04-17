@@ -543,7 +543,8 @@ public class Actor3D extends ModelInstance implements Disposable {
     
     public void moveBy (float x, float y)
     {
-    	translate(x, y, z);
+//    	translate(x, y, z);
+    	translate(x, y, 0);
     }
 
     public void setPosition (float x, float y)

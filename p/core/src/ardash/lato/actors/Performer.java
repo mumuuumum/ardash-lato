@@ -179,7 +179,7 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 			snowSpray.start();
 			
 		// inform listeners about new position
-		System.out.println("Performer is at: "+ getX() + ","+ getY());
+//		System.out.println("Performer is at: "+ getX() + ","+ getY());
 		for (PerformerListener listener : listeners) {
 			listener.onPositionChange(getX(), getY());
 		}

@@ -5,12 +5,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
-import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -27,6 +23,7 @@ import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.Stage3D;
 import ardash.gdx.scenes.scene3d.shape.CubeActor3D;
 import ardash.lato.Assets.SceneTexture;
+import ardash.lato.LatoStage3D.Type;
 import ardash.lato.actors.FlarePlane;
 import ardash.lato.actors.ParticlePlane;
 import ardash.lato.actors.Performer;
@@ -34,6 +31,7 @@ import ardash.lato.actors.Performer.PerformerListener;
 import ardash.lato.actors.SkyPlane;
 import ardash.lato.actors.WaveDrawer;
 import ardash.lato.actors3.MountainRange3;
+import ardash.lato.actors3.Spruce;
 import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.WeatherProvider;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
@@ -59,7 +57,8 @@ public class GameScreen implements Screen {
 	public LatoStage stage;
 	public LatoStage frontStage;
 	public LatoStage guiStage;
-	public Stage3D stage3d, backStage3d;
+	public Stage3D stage3d;
+	public LatoStage3D frontStage3d, backStage3d;
 	public FlarePlane flarePlane;
 	private Performer performer;
 
@@ -87,7 +86,8 @@ public class GameScreen implements Screen {
 		CURRENT_WORLD_WIDTH = backStage.getViewport().getWorldWidth();
 		guiStage = new LatoStage(Viewports.getDensityAwareViewport(), this);
 		stage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D())); // perspective camera draws correctly behind each other
-		backStage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D())); 
+		backStage3d = new LatoStage3D(Type.BACKGROUND,new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D(30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
+		frontStage3d = new LatoStage3D(Type.FOREGROUND,new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D(30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
 
 //		backStage.setDebugAll(true);
 //		stage.setDebugAll(true);
@@ -140,6 +140,10 @@ public class GameScreen implements Screen {
 		stage.addActor(hl);
 		stage.setWaveDrawer(hl);
 		weather.addAmbientColourChangeListener(hl);
+		
+		Spruce testTree = new Spruce();
+		testTree.translate(55, 0, 0);
+		backStage3d.addActor(testTree);
 		
 		performer = new Performer();
 		stage.addActor(performer);
@@ -210,10 +214,21 @@ public class GameScreen implements Screen {
         
         backStage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         backStage3d.getCamera().lookAt(0, 0, 0);
-        backStage3d.getCamera().translate(0, 0, 10);
+        backStage3d.getCamera().translate(0, 0, 30);
         backStage3d.getCamera().near = 0.1f;
-        backStage3d.getCamera().far = 50f; // TODO adjust fog intensity here
+        backStage3d.getCamera().far = 500f; // TODO adjust fog intensity here
+        ((Camera3D)(backStage3d.getCamera())).fieldOfView =90f;
         backStage3d.getCamera().update();
+        gm.tm.addListener(backStage3d);
+        
+        frontStage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        frontStage3d.getCamera().lookAt(0, 0, 0);
+        frontStage3d.getCamera().translate(0, 0, 30);
+        frontStage3d.getCamera().near = 0.1f;
+        frontStage3d.getCamera().far = 500f; // TODO adjust fog intensity here
+        ((Camera3D)(frontStage3d.getCamera())).fieldOfView =90f;
+        frontStage3d.getCamera().update();
+        gm.tm.addListener(frontStage3d);
         
         CubeActor3D ca = new CubeActor3D(1, 1, 1);
 //        backStage3d.addActor(ca);
@@ -224,7 +239,7 @@ public class GameScreen implements Screen {
         backStage3d.addActor(ma);
         backStage3d.setAmbientLightColor(Color.WHITE.cpy());
         backStage3d.setDirectionalLight(null);
-        ma.setScale(1, 1, 1);
+//        ma.setScale(1, 1, 1);
         ma.setScale(0.002f, 0.002f, 0.002f);
         ma.translate(55, 0, 0);
 		
@@ -240,6 +255,10 @@ public class GameScreen implements Screen {
 				backStage3d.getCamera().translate(-(backStage3d.getCamera().position.x - performer.getCamSpot().x)
 						, -(backStage3d.getCamera().position.y - performer.getCamSpot().y), 0);
 				backStage3d.getCamera().update();
+
+				frontStage3d.getCamera().translate(-(frontStage3d.getCamera().position.x - performer.getCamSpot().x)
+						, -(backStage3d.getCamera().position.y - performer.getCamSpot().y), 0);
+				frontStage3d.getCamera().update();
 			}
 		});
 
@@ -360,12 +379,14 @@ public class GameScreen implements Screen {
     	stage3d.act(delta);
     	stage3d.draw();
 
+    	backStage3d.act(delta);
+    	backStage3d.draw();
 
     	stage.act();
     	stage.draw();
     	
-    	backStage3d.act(delta);
-    	backStage3d.draw();
+    	frontStage3d.act(delta);
+    	frontStage3d.draw();
     	
     	frontStage.act(delta);
     	frontStage.draw();
