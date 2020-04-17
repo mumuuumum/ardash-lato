@@ -509,10 +509,14 @@ public class Actor3D extends ModelInstance implements Disposable {
     }
 
     public Color getColor(){
+    	if (materials.isEmpty())
+    		throw new RuntimeException("Actor has no material, so cannot get color");
         return ((ColorAttribute)materials.get(0).get(ColorAttribute.Diffuse)).color;
     }
 
     public void setColor(Color color){
+    	if (materials.isEmpty())
+    		throw new RuntimeException("Actor has no material, so cannot set color");
         materials.get(0).set(ColorAttribute.createDiffuse(color));
     }
 

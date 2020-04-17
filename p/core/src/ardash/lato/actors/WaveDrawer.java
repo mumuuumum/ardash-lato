@@ -6,49 +6,57 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.AdvShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
-import ardash.lato.LatoStage;
+import ardash.gdx.scenes.scene3d.Group3D;
+import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.terrain.Downer;
 import ardash.lato.terrain.HomeHill;
 import ardash.lato.terrain.TerrainSegList;
-import ardash.lato.weather.AmbientColorChangeListener;
-import net.dermetfan.gdx.utils.ArrayUtils;
 
-public class WaveDrawer extends Actor implements Disposable, StageAccessor, AmbientColorChangeListener {
-	private AdvShapeRenderer sr;
+public class WaveDrawer extends Group3D implements Disposable { //StageAccessor, AmbientColorChangeListener {
+	private final ModelBuilder modelBuilder = new ModelBuilder();
+		private AdvShapeRenderer sr;
 	TerrainSegList terrainSegmentList;
 	Vector2 tmpVector = new Vector2(); // can be used by one method atomically
 
 	public WaveDrawer(Color color) {
-		setColor(color);
+//		setColor(color);
 		sr = new AdvShapeRenderer();
 		sr.setAutoShapeType(true); // TODO check what types we draw
 
 		// path setup
 		terrainSegmentList = new TerrainSegList();
 		terrainSegmentList.addAllNoOffset(new HomeHill()); // TODO init starting area of terrain
+		
+		Image3D img = new Image3D(1.85f, 10, Color.GOLD, null, modelBuilder, 0);
+		addActor(img);
+		img = new Image3D(10, 10, Color.GOLD, null, modelBuilder, -5);
+		addActor(img);
 	}
-
+	
 	@Override
-	public void draw(Batch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
+	public void draw(ModelBatch batch, Environment environment) {
+		super.draw(batch, environment);
 		batch.end();
 
 		sr.begin();
-		sr.setColor(getColor());
+//		sr.setColor(getColor());
 		sr.set(ShapeType.Filled);
 //		sr.set(ShapeType.Line);
-		sr.setProjectionMatrix(batch.getProjectionMatrix());
+		
+		sr.setProjectionMatrix(getStage().getCamera().combined);
 //
-		float performerY = ((LatoStage)getStage()).getPerformer().getY();
+		
+		float performerY = getGameScreen().stage.getPerformer().getY();
 		int counter = 0;
 		long startTime = System.currentTimeMillis();
 		final float drawSteps=0.8f;
@@ -100,7 +108,7 @@ public class WaveDrawer extends Actor implements Disposable, StageAccessor, Ambi
 //
 		sr.end();
 
-		batch.begin();
+		batch.begin(getStage().getCamera());
 
 		if (Gdx.input.isKeyJustPressed(Keys.T))
 		{
@@ -113,6 +121,17 @@ public class WaveDrawer extends Actor implements Disposable, StageAccessor, Ambi
 		super.act(delta);
 //		updateTerrainSegments();
 //		moveBy(-0.1f, 0f); // TODO add speed
+		getChildren().clear();
+		for (int i = 0 ; i <10 ; i++)
+		{
+			float x = MathUtils.random(5, 10);
+			float y = MathUtils.random(5, 10);
+			float s = MathUtils.random(5, 10);
+			
+			Image3D img = new Image3D(x,y, Color.GOLD, null, modelBuilder, s);
+			addActor(img);
+
+		}
 	}
 	
 	public float getHeightAt(final float x)
@@ -168,8 +187,8 @@ public class WaveDrawer extends Actor implements Disposable, StageAccessor, Ambi
 		
 	}
 
-	@Override
-	public void onAmbientColorChangeTriggered(Color target, float seconds) {
-		addAction(Actions.color(target, seconds));		
-	}
+//	@Override
+//	public void onAmbientColorChangeTriggered(Color target, float seconds) {
+//		addAction(Actions.color(target, seconds));		
+//	}
 }
