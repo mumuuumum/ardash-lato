@@ -28,10 +28,10 @@ import ardash.lato.actors.FlarePlane;
 import ardash.lato.actors.ParticlePlane;
 import ardash.lato.actors.Performer;
 import ardash.lato.actors.Performer.PerformerListener;
+import ardash.lato.actors.Scarf;
 import ardash.lato.actors.SkyPlane;
 import ardash.lato.actors.WaveDrawer;
 import ardash.lato.actors3.MountainRange3;
-import ardash.lato.actors3.Spruce;
 import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.WeatherProvider;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
@@ -159,7 +159,7 @@ public class GameScreen implements Screen {
 		performer.addSpeedListener(stage);
 		performer.addSpeedListener(frontStage);
 		
-//		stage.addActor(new Scarf(assets.getSTexture(SceneTexture.FOG_PIX)));
+		stage.addActor(new Scarf(assets.getSTexture(SceneTexture.FOG_PIX)));
 
 //		final Stage3DAdapterActor stage3d = new Stage3DAdapterActor();
 //		guiStage.addActor(stage3d);
@@ -360,8 +360,8 @@ public class GameScreen implements Screen {
 //    	stage.act(delta);
     	
     	// TODO tmp:
-//    	Scarf sc = stage.getRoot().findActor("scarf");
-//    	sc.setPosition(performer.getX(), performer.getY());
+    	Scarf sc = stage.getRoot().findActor("scarf");
+    	sc.setPosition(performer.getX(), performer.getY());
     	
     	guiStage.act(delta); // contains weather provider
 

@@ -20,27 +20,33 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
 
 	@Override
 	public void onNewSectionCreated(Section s) {
-		List<Actor3D> items = s.getBackgroundItems();
+		List<TerrainItem> items = s.getSurroundingItems();
 		
 		// add the new actors (itmes surrounding the terrain)
-		for (Actor3D a : items) {
+		for (TerrainItem a : items) {
 			addActor(a);
 		}
 		
 		// and remove the old stuff (use same offset as in wavedrawer)
 		float border = getRoot().getGameManager().getGameScreen().performer.getX()-WaveDrawer.PASSED_TERRAIN;
-		List<Actor3D> canBeDeleted = new LinkedList<Actor3D>();
+		List<TerrainItem> canBeDeleted = new LinkedList<TerrainItem>();
 		for (Actor3D a : getRoot().getChildren()) {
 			if (a instanceof TerrainItem) {
 				if (a.getX()<border)
-					canBeDeleted.add(a);
+					canBeDeleted.add((TerrainItem)a);
 			}
 		}
 		
-		for (Actor3D a : canBeDeleted) {
+		for (TerrainItem a : canBeDeleted) {
 			a.remove();
 		}
 		
+	}
+
+	private void addActor(TerrainItem a) {
+		if (a.getTag() == null)
+			throw new RuntimeException("surrounding item must have a tag");
+		this.addActor((Actor3D)a);		
 	}
 
 	@Override

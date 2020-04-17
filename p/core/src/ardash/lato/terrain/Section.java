@@ -5,37 +5,40 @@ import java.util.List;
 
 import com.badlogic.gdx.math.Vector2;
 
-import ardash.gdx.scenes.scene3d.Actor3D;
+import ardash.gdx.scenes.scene3d.Actor3D.Tag;
+import ardash.lato.actors3.TerrainItem;
 
 public class Section extends TerrainSegList {
 	
 	/**
 	 * List of 3D Actors that are rendered behind the terrain.
 	 */
-	List<Actor3D> backgroundItems = new ArrayList<Actor3D>();
+	List<TerrainItem> surroundingItems = new ArrayList<TerrainItem>();
 
-//	/**
-//	 * List of 3D Actors that are rendered in front of the terrain.
-//	 */
-//	List<Actor3D> foregroundItems = new ArrayList<Actor3D>();
-
-//	public List<Actor3D> getForegroundItems() {
-//		return foregroundItems;
-//	}
-	
-	public List<Actor3D> getBackgroundItems() {
-		return backgroundItems;
+	public List<TerrainItem> getSurroundingItems() {
+		return surroundingItems;
 	}
 
 	public void addOffset(Vector2 offsetOfLastSection) {
-		for (Actor3D actor3d : backgroundItems) {
+		for (TerrainItem actor3d : surroundingItems) {
 			actor3d.moveBy(offsetOfLastSection.x, offsetOfLastSection.y);
 		}
-//		
-//		for (Actor3D actor3d : foregroundItems) {
-//			actor3d.moveBy(offsetOfLastSection.x, offsetOfLastSection.y);
-//		}
 		
+	}
+	
+	void addSurroundingItem(TerrainItem ti)
+	{
+		surroundingItems.add(ti);
+		if (ti.getTag() == null)
+		{
+			// set missing tag based on Z value
+			if (ti.getZ()>0)
+				ti.setTag(Tag.FRONT);
+			else if (ti.getZ()<0)
+				ti.setTag(Tag.BACK);
+			else
+				ti.setTag(Tag.CENTER);
+		}
 	}
 	
 }
