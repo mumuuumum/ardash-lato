@@ -19,11 +19,11 @@ import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 import com.github.czyzby.kiwi.util.gdx.viewport.Viewports;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
+import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.Stage3D;
 import ardash.gdx.scenes.scene3d.shape.CubeActor3D;
 import ardash.lato.Assets.SceneTexture;
-import ardash.lato.LatoStage3D.Type;
 import ardash.lato.actors.FlarePlane;
 import ardash.lato.actors.ParticlePlane;
 import ardash.lato.actors.Performer;
@@ -57,8 +57,8 @@ public class GameScreen implements Screen {
 	public LatoStage stage;
 	public LatoStage frontStage;
 	public LatoStage guiStage;
-	public Stage3D stage3d;
-	public LatoStage3D frontStage3d, backStage3d;
+	public Stage3D mountainStage3d;
+	public LatoStage3D backStage3d;
 	public FlarePlane flarePlane;
 	private Performer performer;
 
@@ -85,9 +85,8 @@ public class GameScreen implements Screen {
 //		frontStage = new LatoStage(new ScreenViewport(), this);
 		CURRENT_WORLD_WIDTH = backStage.getViewport().getWorldWidth();
 		guiStage = new LatoStage(Viewports.getDensityAwareViewport(), this);
-		stage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D())); // perspective camera draws correctly behind each other
-		backStage3d = new LatoStage3D(Type.BACKGROUND,new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D(30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
-		frontStage3d = new LatoStage3D(Type.FOREGROUND,new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D(30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
+		mountainStage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D())); // perspective camera draws correctly behind each other
+		backStage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D(30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
 
 //		backStage.setDebugAll(true);
 //		stage.setDebugAll(true);
@@ -120,7 +119,7 @@ public class GameScreen implements Screen {
 		{
 			final int numMountains = 20;
 			final MountainRange3 mr = new MountainRange3(numMountains);
-			stage3d.addActor(mr);
+			mountainStage3d.addActor(mr);
 			mr.setName("MountainRange"+i);
 			
 			// range offset
@@ -135,15 +134,16 @@ public class GameScreen implements Screen {
 //		backStage.addActor(skyPlane);
 //		skyPlane.init();
 		
+		
 		// test to add shaperenderers
 		WaveDrawer hl = new WaveDrawer(EnvColors.DAY.ambient);
 		backStage3d.addActor(hl);
 		stage.setWaveDrawer(hl);
 //		weather.addAmbientColourChangeListener(hl);
-		
-		Spruce testTree = new Spruce();
-		testTree.translate(55, 0, 0);
-		backStage3d.addActor(testTree);
+
+//		Spruce testTree = new Spruce();
+//		testTree.translate(55, 0, 0);
+//		backStage3d.addActor(testTree);
 		
 		performer = new Performer();
 		stage.addActor(performer);
@@ -164,7 +164,7 @@ public class GameScreen implements Screen {
 //		final Stage3DAdapterActor stage3d = new Stage3DAdapterActor();
 //		guiStage.addActor(stage3d);
 		
-		stage3d.getCamera().update();
+		mountainStage3d.getCamera().update();
 		backStage3d.getCamera().update();
 //		flareStage3d.getCamera().update();
 		
@@ -199,43 +199,36 @@ public class GameScreen implements Screen {
 //		stage3d.setPosition(1, 1);
 //		stage3d.setScale(10);
 //		stage3d.getRoot().setVisible(true);
-        stage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		stage3d.getCamera().lookAt(0, 0, 0);
+        mountainStage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		mountainStage3d.getCamera().lookAt(0, 0, 0);
 //		stage3d.getCamera().moveTo(0, 0, 30, 1f);
-		stage3d.getCamera().translate(0, 0, 30);
+		mountainStage3d.getCamera().translate(0, 0, 30);
 		
-        stage3d.getCamera().near = 0.1f;
-        stage3d.getCamera().far = 50f; // TODO adjust fog intensity here
-        stage3d.getCamera().update();
+        mountainStage3d.getCamera().near = 0.1f;
+        mountainStage3d.getCamera().far = 50f; // TODO adjust fog intensity here
+        mountainStage3d.getCamera().update();
         
-        weather.addFogIntensityChangeListener(stage3d);
-        weather.addFogColourChangeListener(stage3d);
-        weather.addAmbientColourChangeListener(stage3d);
+        weather.addFogIntensityChangeListener(mountainStage3d);
+        weather.addFogColourChangeListener(mountainStage3d);
+        weather.addAmbientColourChangeListener(mountainStage3d);
         
         backStage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         backStage3d.getCamera().lookAt(0, 0, 0);
         backStage3d.getCamera().translate(0, 0, 30);
         backStage3d.getCamera().near = 0.1f;
         backStage3d.getCamera().far = 500f; // TODO adjust fog intensity here
-        ((Camera3D)(backStage3d.getCamera())).fieldOfView =90f;
+        //((Camera3D)(backStage3d.getCamera())).fieldOfView =90f;
         backStage3d.getCamera().update();
         gm.tm.addListener(backStage3d);
-        
-        frontStage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        frontStage3d.getCamera().lookAt(0, 0, 0);
-        frontStage3d.getCamera().translate(0, 0, 30);
-        frontStage3d.getCamera().near = 0.1f;
-        frontStage3d.getCamera().far = 500f; // TODO adjust fog intensity here
-        ((Camera3D)(frontStage3d.getCamera())).fieldOfView =90f;
-        frontStage3d.getCamera().update();
-        gm.tm.addListener(frontStage3d);
-        
+                
         CubeActor3D ca = new CubeActor3D(1, 1, 1);
 //        backStage3d.addActor(ca);
 //        ca.translate(55, 3, 0);
         
 		Model houseModel = am.get(Assets.toon_house); 
 		Actor3D ma = new Actor3D(houseModel);
+		ma.setName("toonhouse");
+		ma.setTag(Tag.BACK);
         backStage3d.addActor(ma);
         backStage3d.setAmbientLightColor(Color.WHITE.cpy());
         backStage3d.setDirectionalLight(null);
@@ -255,10 +248,6 @@ public class GameScreen implements Screen {
 				backStage3d.getCamera().translate(-(backStage3d.getCamera().position.x - performer.getCamSpot().x)
 						, -(backStage3d.getCamera().position.y - performer.getCamSpot().y), 0);
 				backStage3d.getCamera().update();
-
-				frontStage3d.getCamera().translate(-(frontStage3d.getCamera().position.x - performer.getCamSpot().x)
-						, -(backStage3d.getCamera().position.y - performer.getCamSpot().y), 0);
-				frontStage3d.getCamera().update();
 			}
 		});
 
@@ -376,17 +365,14 @@ public class GameScreen implements Screen {
     	backStage.draw();
 //    	skyStage3d.act(delta);
 //    	skyStage3d.draw();
-    	stage3d.act(delta);
-    	stage3d.draw();
+    	mountainStage3d.act(delta);
+    	mountainStage3d.draw();
 
     	backStage3d.act(delta);
-    	backStage3d.draw();
+    	backStage3d.draw(true);
 
     	stage.act();
     	stage.draw();
-    	
-    	frontStage3d.act(delta);
-    	frontStage3d.draw();
     	
     	frontStage.act(delta);
     	frontStage.draw();

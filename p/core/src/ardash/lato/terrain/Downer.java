@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
+import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.lato.actors3.Spruce;
 
 /**
@@ -34,10 +35,12 @@ public class Downer extends Section {
 		
 		// add trees
 		Spruce tree = new Spruce();
-		tree.translate(1f, -2, 0);
+		tree.translate(1f, -2, -1);
+		tree.setTag(Tag.BACK);
 		backgroundItems.add(tree);
 		Spruce tree2 = new Spruce();
 		tree2.translate(-1f, 0, 1);
+		tree2.setTag(Tag.FRONT);
 		backgroundItems.add(tree2);
 
 //		Spruce tree3 = new Spruce();

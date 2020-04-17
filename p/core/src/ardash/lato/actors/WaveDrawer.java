@@ -11,13 +11,11 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.AdvShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.gdx.scenes.scene3d.Group3D;
-import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.terrain.Downer;
 import ardash.lato.terrain.HomeHill;
 import ardash.lato.terrain.TerrainSegList;
@@ -29,18 +27,20 @@ public class WaveDrawer extends Group3D implements Disposable { //StageAccessor,
 	Vector2 tmpVector = new Vector2(); // can be used by one method atomically
 
 	public WaveDrawer(Color color) {
+		setName("WaveDrawer");
+		setTag(Tag.CENTER);
 //		setColor(color);
 		sr = new AdvShapeRenderer();
 		sr.setAutoShapeType(true); // TODO check what types we draw
-
+//sr.translate(0, 0, 20);
 		// path setup
 		terrainSegmentList = new TerrainSegList();
 		terrainSegmentList.addAllNoOffset(new HomeHill()); // TODO init starting area of terrain
 		
-		Image3D img = new Image3D(1.85f, 10, Color.GOLD, null, modelBuilder, 0);
-		addActor(img);
-		img = new Image3D(10, 10, Color.GOLD, null, modelBuilder, -5);
-		addActor(img);
+//		Image3D img = new Image3D(1.85f, 10, Color.GOLD, null, modelBuilder, 0);
+//		addActor(img);
+//		img = new Image3D(10, 10, Color.GOLD, null, modelBuilder, -5);
+//		addActor(img);
 	}
 	
 	@Override
@@ -113,24 +113,6 @@ public class WaveDrawer extends Group3D implements Disposable { //StageAccessor,
 		if (Gdx.input.isKeyJustPressed(Keys.T))
 		{
 			terrainSegmentList.addAll(new Downer());
-		}
-	}
-
-	@Override
-	public void act(float delta) {
-		super.act(delta);
-//		updateTerrainSegments();
-//		moveBy(-0.1f, 0f); // TODO add speed
-		getChildren().clear();
-		for (int i = 0 ; i <10 ; i++)
-		{
-			float x = MathUtils.random(5, 10);
-			float y = MathUtils.random(5, 10);
-			float s = MathUtils.random(5, 10);
-			
-			Image3D img = new Image3D(x,y, Color.GOLD, null, modelBuilder, s);
-			addActor(img);
-
 		}
 	}
 	

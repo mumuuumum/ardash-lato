@@ -10,6 +10,7 @@ public class Spruce extends Image3D {
 	public Spruce() {
 		super(5,5,new Color(48 / 255f, 105 / 255f, 105 / 255f, 1f) ); //back color
 //		super(5,5,new Color(32 / 255f, 69 / 255f, 69 / 255f, 1f) ); //front color
+		setName("Spruce");
 		rotateBy(45f);
 		scale(0.01f, 5, 1);
 		moveBy(0, -35f);

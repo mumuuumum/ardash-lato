@@ -33,6 +33,12 @@ import ardash.lato.LatoGame;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
 public class Actor3D extends ModelInstance implements Disposable {
+	public enum Tag {
+		FRONT, BACK, CENTER
+	}
+
+	private Tag tag;
+
     private Stage3D stage3D;
     private Group3D parent;
 
@@ -101,6 +107,14 @@ public class Actor3D extends ModelInstance implements Disposable {
         modelBatch.render(this, environment);
         drawDebug(modelBatch, environment);
     }
+    
+    public Tag getTag() {
+		return tag;
+	}
+
+	public void setTag(Tag tag) {
+		this.tag = tag;
+	}
 
     public Actor3D hit (float x, float y) {
         return null;

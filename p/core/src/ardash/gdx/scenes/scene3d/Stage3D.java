@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.gdx.scenes.scene3d.actions.Actions3D;
 import ardash.gdx.scenes.scene3d.actions.ColorAction;
 import ardash.gdx.scenes.scene3d.actions.FloatAction;
@@ -109,14 +110,27 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
 //        this.environment = environment;
 //    }
 
-    public void draw(){
+    public void draw() {
+		this.draw(false);
+	}
+    
+    public void draw(boolean in3grounds){
         Camera camera = viewport.getCamera();
 		camera .update();
         if (!root.isVisible()) return;
         modelBatch.begin(camera);
     	getModelBatch().setCamera(getCamera());
 
-        root.draw(modelBatch, environment);
+    	if (in3grounds)
+    	{
+            root.draw(modelBatch, environment, Tag.BACK);
+            root.draw(modelBatch, environment, Tag.CENTER);
+            root.draw(modelBatch, environment, Tag.FRONT);
+    	}
+    	else
+    	{
+            root.draw(modelBatch, environment);
+    	}
         modelBatch.end();
         
         

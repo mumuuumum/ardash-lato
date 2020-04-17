@@ -14,7 +14,7 @@ import com.badlogic.gdx.utils.SnapshotArray;
 
 
 public class Group3D extends Actor3D {
-    private final SnapshotArray<Actor3D> children = new SnapshotArray<>(true, 4, Actor3D.class);
+	private final SnapshotArray<Actor3D> children = new SnapshotArray<>(true, 4, Actor3D.class);
     public int visibleCount;
 
     public Group3D(){
@@ -36,15 +36,28 @@ public class Group3D extends Actor3D {
         children.end();
     }
 
-    /** Draws the group and its children. */
-    @Override
-    public void draw(ModelBatch modelBatch, Environment environment) {
+    /**
+     * draws only the actors with a certain tag
+     * @param modelBatch
+     * @param environment
+     * @param tag
+     */
+    public void draw(ModelBatch modelBatch, Environment environment, Tag tag) {
         SnapshotArray<Actor3D> children = this.children;
         Actor3D[] actors = children.begin();
         visibleCount = 0;
         for (int i = 0, n = children.size; i < n; i++){
                 Actor3D child = actors[i];
                 if (!child.isVisible()) continue;
+                
+                if (tag != null)
+                {
+                	final Tag childtag = child.getTag();
+                	if (childtag == null)
+                		throw new RuntimeException("Error: This stage was asked to be drawn in 3 grounds, but one actor (named: "+child.getName()+") in the child-list, has been found without tag. That is an error as it would never be drawn. Assign it to Center, front or back.");
+					if (!tag.equals(childtag))
+                		continue;
+                }
                 
                 // update childs matrix
                 child.transform.setToTranslationAndScaling(child.x, child.y, child.z, child.scaleX, child.scaleY, child.scaleZ);
@@ -58,28 +71,12 @@ public class Group3D extends Actor3D {
         }
         children.end();
     }
-
-
-//    public void drawChildren(ModelBatch modelBatch, Environment environment){
-//        SnapshotArray<Actor3D> children = this.children;
-//        Actor3D[] actors = children.begin();
-//        visibleCount = 0;
-//        for (int i = 0, n = children.size; i < n; i++){
-//                Actor3D child = actors[i];
-//                if (!child.isVisible()) continue;
-//                
-//                // update childs matrix
-//                child.transform.setToTranslationAndScaling(child.x, child.y, child.z, child.scaleX, child.scaleY, child.scaleZ);
-//                child.transform.mul(child.rotationMatrix);
-//                Matrix4 m4 = new Matrix4();
-//                m4.setToTranslationAndScaling(x, y, z, scaleX, scaleY, scaleZ);
-//                m4.mul(rotationMatrix);
-//
-//                child.transform.mulLeft(m4);
-//                child.draw(modelBatch, environment);
-//        }
-//        children.end();
-//    }
+    
+	/** Draws the group and its children. */
+    @Override
+    public void draw(ModelBatch modelBatch, Environment environment) {
+    	this.draw(modelBatch, environment, null);
+    }
 
     /** Adds an actor as a child of this group. The actor is first removed from its parent group, if any.
      * @see #remove() */
