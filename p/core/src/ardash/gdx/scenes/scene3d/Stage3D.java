@@ -248,13 +248,14 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
     }
     
     public Actor3D hit(int screenX, int screenY, Actor3D actor3D) {
-        Camera camera = viewport.getCamera();
-        Ray ray = camera.getPickRay(screenX, screenY);
-        final float dist2 = actor3D.intersects(ray);
-        if (dist2 >= 0) {
-            return actor3D;
-        }
-        return null;
+    	throw new RuntimeException("not implemented");
+//        Camera camera = viewport.getCamera();
+//        Ray ray = camera.getPickRay(screenX, screenY);
+//        final float dist2 = actor3D.intersects(ray);
+//        if (dist2 >= 0) {
+//            return actor3D;
+//        }
+//        return null;
     }
     
     public Actor3D hit(int screenX, int screenY, Group3D group3d) {

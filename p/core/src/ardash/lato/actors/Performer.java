@@ -87,6 +87,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			SceneTexture sprite = SceneTexture.valueOf(posename);
 			Image3D img = new Image3D(PERFORMER_WIDTH,PERFORMER_WIDTH,getAssets().getSTexture(sprite),mb);
 			img.setName(posename);
+//			img.moveBy(-PERFORMER_WIDTH/2f, 0);
 			OffsetImage3D oimg = new OffsetImage3D(img);
 //			img.setWidth(PERFORMER_WIDTH);
 //			img.setHeight(PERFORMER_WIDTH);
@@ -94,7 +95,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 //			addActor(img);
 			poses.put(pose, oimg);
 //			img.moveBy(-PERFORMER_WIDTH/2f, 0f); // set origin
-//			oimg.setOriginX(-PERFORMER_WIDTH/2f);
+			oimg.setOriginX(-PERFORMER_WIDTH/2f);
 			setDebug(true, true);
 		}
 //		setPose(Pose.RIDE);
@@ -102,7 +103,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		camSpot.set(getX(), getY());
 		setSpeed(MIN_SPEED);
 		
-//		addActor(ambientColorContainer);
+		addActor(ambientColorContainer);
 //		ambientColorContainer.setVisible(false);
 		
 		TextureAtlas ta = getAssetManager().get(Assets.uiAtlas);

@@ -239,18 +239,18 @@ public class GameScreen implements Screen {
 		
 
     	// connect cameras to Performer
-//    	performer.addListener(new PerformerListener() {
-//			@Override
-//			public void onPositionChange(float newX, float newY) {
-//				stage.getCamera().translate(-(stage.getCamera().position.x - performer.getCamSpot().x)
-//						, -(stage.getCamera().position.y - performer.getCamSpot().y), 0);
-//				stage.getCamera().update();
-//
-//				backStage3d.getCamera().translate(-(backStage3d.getCamera().position.x - performer.getCamSpot().x)
-//						, -(backStage3d.getCamera().position.y - performer.getCamSpot().y), 0);
-//				backStage3d.getCamera().update();
-//			}
-//		});
+    	performer.addListener(new PerformerListener() {
+			@Override
+			public void onPositionChange(float newX, float newY) {
+				stage.getCamera().translate(-(stage.getCamera().position.x - performer.getCamSpot().x)
+						, -(stage.getCamera().position.y - performer.getCamSpot().y), 0);
+				stage.getCamera().update();
+
+				backStage3d.getCamera().translate(-(backStage3d.getCamera().position.x - performer.getCamSpot().x)
+						, -(backStage3d.getCamera().position.y - performer.getCamSpot().y), 0);
+				backStage3d.getCamera().update();
+			}
+		});
 
 
 //		flareStage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
