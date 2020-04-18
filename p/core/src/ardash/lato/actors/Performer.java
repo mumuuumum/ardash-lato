@@ -5,32 +5,39 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import org.omg.CORBA.OMGVMCID;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter.GradientColorValue;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
+import ardash.gdx.scenes.scene3d.Actor3D;
+import ardash.gdx.scenes.scene3d.Group3D;
+import ardash.gdx.scenes.scene3d.shape.Image3D;
+import ardash.gdx.scenes.scene3d.shape.OffsetImage3D;
 import ardash.lato.Assets;
 import ardash.lato.Assets.SceneTexture;
 import ardash.lato.LatoStage;
 import ardash.lato.actions.MoreActions;
 import ardash.lato.weather.AmbientColorChangeListener;
 
-public class Performer extends Group implements StageAccessor, Disposable, AmbientColorChangeListener {
+public class Performer extends Group3D implements Disposable, AmbientColorChangeListener {
 	
 	private enum Pose {
 		RIDE, DUCK, JUMP//, ROLL, FLY, CRASHED, GRIND
@@ -49,9 +56,10 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 	private ParallelAction jumpAction;
 	private ArrayList<SpeedListener> speedListeners = new ArrayList<SpeedListener>();
 	ParticleEffect snowSpray = new ParticleEffect();
-	private Actor ambientColorContainer = new Actor();
+	private Image3D ambientColorContainer = new Image3D(1, 1, new Color(), new ModelBuilder());
 	private List<PerformerListener> listeners = new ArrayList<Performer.PerformerListener>();
-	private Map<Pose,Image> poses = new EnumMap<Pose, Image>(Pose.class);
+	private Map<Pose,OffsetImage3D> poses = new EnumMap<Pose, OffsetImage3D>(Pose.class);
+//	private Map<Pose,Image3D> poses = new EnumMap<Pose, Image3D>(Pose.class);
 	protected Pose pose = Pose.RIDE;
 	
 	/**
@@ -68,24 +76,34 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 	public interface PerformerListener{
 		void onPositionChange(float newX, float newY);
 	}
-
-//	@Override
-	public void init() {
+	
+	public Performer() {
+		ModelBuilder mb = new ModelBuilder();
+		setName("Performer");
+		setTag(Tag.CENTER);
 		for (Pose pose : Pose.values()) {
 			String performer = "P1";
-			SceneTexture sprite = SceneTexture.valueOf(performer+"_"+pose.name().toUpperCase());
-			Image img = new Image(getAssets().getSTexture(sprite));
-			img.setWidth(PERFORMER_WIDTH);
-			img.setHeight(PERFORMER_WIDTH);
-			addActor(img);
-			poses.put(pose, img);
+			final String posename = performer+"_"+pose.name().toUpperCase();
+			SceneTexture sprite = SceneTexture.valueOf(posename);
+			Image3D img = new Image3D(PERFORMER_WIDTH,PERFORMER_WIDTH,getAssets().getSTexture(sprite),mb);
+			img.setName(posename);
+			OffsetImage3D oimg = new OffsetImage3D(img);
+//			img.setWidth(PERFORMER_WIDTH);
+//			img.setHeight(PERFORMER_WIDTH);
+			addActor(oimg);
+//			addActor(img);
+			poses.put(pose, oimg);
+//			img.moveBy(-PERFORMER_WIDTH/2f, 0f); // set origin
+//			oimg.setOriginX(-PERFORMER_WIDTH/2f);
+			setDebug(true, true);
 		}
-		setPose(Pose.RIDE);
-		setOriginX(PERFORMER_WIDTH/2f);
+//		setPose(Pose.RIDE);
+//		setOriginX(PERFORMER_WIDTH/2f); // TODO set origin per image in group, origin can be set by moving image in the group after creating and adding it
 		camSpot.set(getX(), getY());
 		setSpeed(MIN_SPEED);
 		
-		addActor(ambientColorContainer);
+//		addActor(ambientColorContainer);
+//		ambientColorContainer.setVisible(false);
 		
 		TextureAtlas ta = getAssetManager().get(Assets.uiAtlas);
 		snowSpray.load( Gdx.files.internal("spray.p"), ta);
@@ -131,18 +149,19 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 		final float deltaX = velocity.x;
 		moveBy(deltaX*delta, 0); // movement is product of time-delta and speed-delta
 		
-		float heightUnderActor = ((LatoStage)getStage()).getWaveDrawer().getHeightAt(getX()+(PERFORMER_WIDTH/2f));
+		
+		float heightUnderActor = getGameScreen().waveDrawer.getHeightAt(getX()+(PERFORMER_WIDTH/2f));
 		float heightOfMe = getY();
 		// set the height of the terrain under the actor if not in air
 		if (! isInAir)
 		{
-			setOriginY(0);
+//			setOriginY(0); // TODO fix origin
 			moveBy(0, - (getY() - heightUnderActor));
-			setRotation( ((LatoStage)getStage()).getWaveDrawer().getAngleAtX(getX()+(PERFORMER_WIDTH/2f)));
+			setRotation( getGameScreen().waveDrawer.getAngleAtX(getX()+(PERFORMER_WIDTH/2f)));
 		}
 		else
 		{
-			setOriginY(PERFORMER_WIDTH/2f);
+//			setOriginY(PERFORMER_WIDTH/2f);// TODO fix origin
 			// if jumping or otherwise flying just apply a bit gravity
 //			moveBy(0, - 0.2f);
 			if (heightUnderActor > heightOfMe) // check if hit the ground
@@ -157,26 +176,25 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 			}
 			else
 			{
-//				if (ro)
 				float direction = rotation > 180 ? 1 : -1;
 				rotateBy(ROTATION_SPEED*0.3f*direction*delta);
 				
 			}
 		}
-		camSpot.set(getX()+15f, getY());
+		camSpot.set(getX()+10f, getY());
 		
-		// move snow spray
-		final Pool<Vector2> vecPool = Pools.get(Vector2.class);
-		Vector2 corner = vecPool.obtain();
-		corner.set(0,0);
-		this.localToParentCoordinates(corner);
-		snowSpray.setPosition(corner.x, corner.y);
-		vecPool.free(corner);
-		snowSpray.update(delta);
-		if (isInAir)
-			snowSpray.allowCompletion();
-		else
-			snowSpray.start();
+		// TODO move snow spray (use listener)
+//		final Pool<Vector2> vecPool = Pools.get(Vector2.class);
+//		Vector2 corner = vecPool.obtain();
+//		corner.set(0,0);
+//		this.localToParentCoordinates(corner);
+//		snowSpray.setPosition(corner.x, corner.y);
+//		vecPool.free(corner);
+//		snowSpray.update(delta);
+//		if (isInAir)
+//			snowSpray.allowCompletion();
+//		else
+//			snowSpray.start();
 			
 		// inform listeners about new position
 //		System.out.println("Performer is at: "+ getX() + ","+ getY());
@@ -185,22 +203,33 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 		}
 
 	}
-
+	
 	@Override
-	public void draw(Batch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
-		final GradientColorValue tint = snowSpray.getEmitters().get(0).getTint();
-		final Color amb = ambientColorContainer.getColor();
-		tint.setColors(new float[]{amb.r, amb.g, amb.b});
-		snowSpray.draw(batch);
+	public void draw(ModelBatch modelBatch, Environment environment) {
+		// TODO Auto-generated method stub
+		super.draw(modelBatch, environment);
 	}
+	@Override
+	public void draw(ModelBatch modelBatch, Environment environment, Tag tag) {
+		// TODO Auto-generated method stub
+		super.draw(modelBatch, environment, tag);
+	}
+
+//	@Override
+//	public void draw(Batch batch, float parentAlpha) {
+//		super.draw(batch, parentAlpha);
+//		final GradientColorValue tint = snowSpray.getEmitters().get(0).getTint();
+//		final Color amb = ambientColorContainer.getColor();
+//		tint.setColors(new float[]{amb.r, amb.g, amb.b});
+//		snowSpray.draw(batch);
+//	}
 	
 	public void setPose(Pose pose) {
 		this.pose = pose;
-		for (Actor a : getChildren()) {
+		for (Actor3D a : getChildren()) {
 			a.setVisible(false);
-			poses.get(pose).setVisible(true);
 		}
+		poses.get(pose).setVisible(true);
 	}
 	
 	public Pose getPose() {
@@ -236,12 +265,12 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 
 	@Override
 	public void onAmbientColorChangeTriggered(Color target, float seconds) {
-		ambientColorContainer.addAction(Actions.color(target, seconds));		
-
-		// performer is also emitting ambient light in ambient color
-		target = target.cpy();
-		target.mul(4f); // mul == brighter ==> so the actor doesn't become black but just a bit darker
-		getChild(0).addAction(Actions.color(target, seconds));
+//		ambientColorContainer.addAction(Actions.color(target, seconds));		
+//
+//		// performer is also emitting ambient light in ambient color
+//		target = target.cpy();
+//		target.mul(4f); // mul == brighter ==> so the actor doesn't become black but just a bit darker
+//		getChild(0).addAction(Actions.color(target, seconds));
 	}
 
 	/**
@@ -270,22 +299,22 @@ public class Performer extends Group implements StageAccessor, Disposable, Ambie
 	}
 	
 	private void jump() {
-		isInAir  = true;
-		final MoveByAction jumpForce = Actions.moveBy(0, 8, 1f, Interpolation.fastSlow);
-//		final MoveByAction accelleratedFall = Actions.moveBy(0, -15f*3, 1f*3, Interpolation.slowFast); // increasing speed due to gravity
-//		final RepeatAction constantFall = Actions.forever(Actions.moveBy(0, -15f*3, 1f*3));
-//		final SequenceAction fall = Actions.sequence(accelleratedFall,constantFall);
-		final GravityAction gravity = MoreActions.gravity();
-		jumpAction = Actions.parallel(jumpForce, gravity );
-		addAction(jumpAction);
-		setPose(Pose.JUMP);
+//		isInAir  = true;
+//		final MoveByAction jumpForce = Actions.moveBy(0, 8, 1f, Interpolation.fastSlow);
+////		final MoveByAction accelleratedFall = Actions.moveBy(0, -15f*3, 1f*3, Interpolation.slowFast); // increasing speed due to gravity
+////		final RepeatAction constantFall = Actions.forever(Actions.moveBy(0, -15f*3, 1f*3));
+////		final SequenceAction fall = Actions.sequence(accelleratedFall,constantFall);
+//		final GravityAction gravity = MoreActions.gravity();
+//		jumpAction = Actions.parallel(jumpForce, gravity );
+//		addAction(jumpAction);
+//		setPose(Pose.JUMP);
 	}
 	
 	/** touching down after a jump or fall*/
 	private void land() {
-		isInAir = false;
-		removeAction(jumpAction); // ensure no more up or down (gravity) is applied
-		setPose(Pose.DUCK);
+//		isInAir = false;
+//		removeAction(jumpAction); // ensure no more up or down (gravity) is applied
+//		setPose(Pose.DUCK);
 	}
 	
 	public void addSpeedListener (SpeedListener listener)

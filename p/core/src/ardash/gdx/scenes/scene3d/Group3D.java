@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.SnapshotArray;
 
 public class Group3D extends Actor3D {
 	private final SnapshotArray<Actor3D> children = new SnapshotArray<>(true, 4, Actor3D.class);
-    public int visibleCount;
+//    public int visibleCount;
 
     public Group3D(){
         super();
@@ -44,8 +44,9 @@ public class Group3D extends Actor3D {
      */
     public void draw(ModelBatch modelBatch, Environment environment, Tag tag) {
         SnapshotArray<Actor3D> children = this.children;
+//        modelBatch.ge
         Actor3D[] actors = children.begin();
-        visibleCount = 0;
+//        visibleCount = 0;
         for (int i = 0, n = children.size; i < n; i++){
                 Actor3D child = actors[i];
                 if (!child.isVisible()) continue;
@@ -59,12 +60,15 @@ public class Group3D extends Actor3D {
                 		continue;
                 }
                 
-                // update childs matrix
-                child.transform.setToTranslationAndScaling(child.x, child.y, child.z, child.scaleX, child.scaleY, child.scaleZ);
-                child.transform.mul(child.rotationMatrix);
+                // update child's matrix //TODO
+//                child.transform.setToTranslationAndScaling(child.x, child.y, child.z, child.scaleX, child.scaleY, child.scaleZ);
+//                child.transform.mul(child.rotationMatrix);
                 Matrix4 m4 = new Matrix4();
                 m4.setToTranslationAndScaling(x, y, z, scaleX, scaleY, scaleZ);
                 m4.mul(rotationMatrix);
+                
+//              m4.mul(transform); // add current transform that came from parents
+//              m4.mulLeft(transform); // add current transform that came from parents
 
                 child.transform.mulLeft(m4);
                 child.draw(modelBatch, environment);

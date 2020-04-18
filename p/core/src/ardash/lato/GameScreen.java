@@ -61,6 +61,7 @@ public class GameScreen implements Screen {
 	public LatoStage3D backStage3d;
 	public FlarePlane flarePlane;
 	public Performer performer;
+	public WaveDrawer waveDrawer;
 
 	public GameScreen(GameManager gm) {
 		this.gm = gm;
@@ -91,7 +92,7 @@ public class GameScreen implements Screen {
 //		backStage.setDebugAll(true);
 //		stage.setDebugAll(true);
 //		frontStage.setDebugAll(true);
-//		stage3d.setDebug(true, true);
+//		backStage3d.setDebug(true, true);
 //		Gdx.input.setInputProcessor(backStage);
 		
 		guiStage.addActor(weather); // weather can be on any stage
@@ -136,18 +137,18 @@ public class GameScreen implements Screen {
 		
 		
 		// test to add shaperenderers
-		WaveDrawer hl = new WaveDrawer(EnvColors.DAY.ambient);
-		backStage3d.addActor(hl);
-		stage.setWaveDrawer(hl);
-//		weather.addAmbientColourChangeListener(hl);
+		waveDrawer = new WaveDrawer(EnvColors.DAY.ambient);
+		backStage3d.addActor(waveDrawer);
+		stage.setWaveDrawer(waveDrawer);
+//		weather.addAmbientColourChangeListener(waveDrawer);
 
 //		Spruce testTree = new Spruce();
 //		testTree.translate(55, 0, 0);
 //		backStage3d.addActor(testTree);
 		
 		performer = new Performer();
-		stage.addActor(performer);
-		performer.init();
+		backStage3d.addActor(performer);
+//		performer.init();
 //		p.moveBy(4*1.8f, 10f);
 		performer.moveBy(8*1.8f, 10f); // tmp becasue no starting groudn yet
 		stage.setPerformer(performer); // attach the camera to him
@@ -238,18 +239,18 @@ public class GameScreen implements Screen {
 		
 
     	// connect cameras to Performer
-    	performer.addListener(new PerformerListener() {
-			@Override
-			public void onPositionChange(float newX, float newY) {
-				stage.getCamera().translate(-(stage.getCamera().position.x - performer.getCamSpot().x)
-						, -(stage.getCamera().position.y - performer.getCamSpot().y), 0);
-				stage.getCamera().update();
-
-				backStage3d.getCamera().translate(-(backStage3d.getCamera().position.x - performer.getCamSpot().x)
-						, -(backStage3d.getCamera().position.y - performer.getCamSpot().y), 0);
-				backStage3d.getCamera().update();
-			}
-		});
+//    	performer.addListener(new PerformerListener() {
+//			@Override
+//			public void onPositionChange(float newX, float newY) {
+//				stage.getCamera().translate(-(stage.getCamera().position.x - performer.getCamSpot().x)
+//						, -(stage.getCamera().position.y - performer.getCamSpot().y), 0);
+//				stage.getCamera().update();
+//
+//				backStage3d.getCamera().translate(-(backStage3d.getCamera().position.x - performer.getCamSpot().x)
+//						, -(backStage3d.getCamera().position.y - performer.getCamSpot().y), 0);
+//				backStage3d.getCamera().update();
+//			}
+//		});
 
 
 //		flareStage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
