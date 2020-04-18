@@ -26,6 +26,7 @@ import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.gdx.scenes.scene3d.actions.Actions3D;
 import ardash.gdx.scenes.scene3d.actions.ColorAction;
 import ardash.gdx.scenes.scene3d.actions.FloatAction;
+import ardash.lato.actions.Actions;
 import ardash.lato.weather.AmbientColorChangeListener;
 import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.FogColorChangeListener;
@@ -92,7 +93,7 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
 
     private void setFogColor (Color c)
     {
-        environment.set(new ColorAttribute(ColorAttribute.Fog, c.r, c.g, c.b, 0.51f));
+        environment.set(new ColorAttribute(ColorAttribute.Fog, c.r, c.g, c.b, c.a));
     }
 
     public Stage3D(Viewport v, Environment environment, ShaderProvider shaderProvider) {
@@ -296,22 +297,23 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
 
 	@Override
 	public void onFogIntensityChanged(float currentFog, float newIntensity, float duration) {
-		newIntensity = MathUtils.clamp(newIntensity, 0.0f, 1.0f);
-		final float newFarValue = MathUtils.lerp(MIN_FOG_FAR, MAX_FOG_FAR, newIntensity);
-		FloatAction action = new FloatAction(getCamera().far, newFarValue, duration) {
-			@Override
-			protected void update(float percent) {
-				super.update(percent);
-				actor.getStage().getCamera().far = getValue();
-				actor.getStage().getCamera().update();
-			}
-		};
-		addAction(action);
+//		newIntensity = MathUtils.clamp(newIntensity, 0.0f, 1.0f);
+//		final float newFarValue = MathUtils.lerp(MIN_FOG_FAR, MAX_FOG_FAR, newIntensity);
+//		FloatAction action = new FloatAction(getCamera().far, newFarValue, duration) {
+//			@Override
+//			protected void update(float percent) {
+//				super.update(percent);
+//				actor.getStage().getCamera().far = getValue();
+//				actor.getStage().getCamera().update();
+//			}
+//		};
+//		addAction(action);
+		fogColor.a = newIntensity;
 	}
 
 	@Override
 	public void onFogColorChangeTriggered(Color target, float seconds) {
-		final ColorAction action = Actions3D.color(target, seconds);
+		final ColorAction action = Actions.noAlphaColor(target, seconds);
 		action.setColor(fogColor);
 		addAction(action);
 	}

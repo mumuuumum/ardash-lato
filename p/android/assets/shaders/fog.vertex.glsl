@@ -265,9 +265,35 @@ void main() {
 	#endif // normalFlag
 
     #ifdef fogFlag
-        vec3 flen = u_cameraPosition.xyz - pos.xyz;
-        float fog = dot(flen, flen) * u_cameraPosition.w;
-        v_fog = min(fog, 1.0);
+//        vec3 flen = u_cameraPosition.xyz - pos.xyz;
+//        float fog = dot(flen, flen) * u_cameraPosition.w;
+  //      vec2 flen = u_cameraPosition.yz - pos.yz;
+ //       float fog = dot(flen, flen) * u_cameraPosition.w;
+        
+//		const float LOG2 = 1.442695;
+//		gl_FogFragCoord = fog;
+//		float fogFactor = exp2( -gl_Fog.density * gl_Fog.density * gl_FogFragCoord * gl_FogFragCoord * LOG2 );
+//		fogFactor = clamp(fogFactor, 0.0, 1.0);
+//        fogFactor = 1.0 - fogFactor;
+        
+        
+        
+//        v_fog = min(fog, 1.0);
+//        v_fog = fogFactor;
+        
+        
+        // online thing
+//        vec3 vVertex = vec3(gl_ModelViewMatrix * gl_Vertex);
+//		const float LOG2 = 1.442695;
+//		gl_FogFragCoord = length(vVertex);
+//		float fogFactor = exp2( -gl_Fog.density * 
+//						   gl_Fog.density * 
+//						   gl_FogFragCoord * 
+//						   gl_FogFragCoord * 
+//						   LOG2 );
+//		fogFactor = clamp(fogFactor, 0.0, 1.0);       
+//        v_fog = fogFactor;
+        
     #endif
 
 	#ifdef lightingFlag

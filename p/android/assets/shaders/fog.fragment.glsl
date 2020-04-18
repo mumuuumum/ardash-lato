@@ -194,7 +194,21 @@ void main() {
 	#endif //lightingFlag
 
 	#ifdef fogFlag
-		gl_FragColor.rgb = mix(gl_FragColor.rgb, u_fogColor.rgb, v_fog);
+		// original just one line
+		//gl_FragColor.rgb = mix(gl_FragColor.rgb, u_fogColor.rgb, v_fog);
+		
+		//online
+		const float LOG2 = 1.442695;
+		float z = gl_FragCoord.z / gl_FragCoord.w;
+		float densi = u_fogColor.a;
+		float fogFactor = exp2( -densi * 
+						   densi * 
+						   z * 
+						   z * 
+						   LOG2 );
+		fogFactor = clamp(fogFactor, 0.0, 1.0);
+		
+		gl_FragColor.rgb = mix(u_fogColor.rgb, gl_FragColor.rgb, fogFactor );
 	#endif // end fogFlag
 
 	#ifdef blendedFlag

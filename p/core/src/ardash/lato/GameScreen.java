@@ -117,6 +117,7 @@ public class GameScreen implements Screen {
 		final SkyPlane skyPlane = new SkyPlane(MAX_WORLD_WIDTH,WORLD_HEIGHT);
 		backStage.addActor(skyPlane);
 		weather.addSkyColourChangeListener(skyPlane);
+		weather.addFogColourChangeListener(skyPlane);
 		weather.addSunColourChangeListener(skyPlane);
 		weather.addSODChangeListener(skyPlane);
 		
@@ -313,7 +314,7 @@ public class GameScreen implements Screen {
 				lblText += "\nactors: "+backStage3d.getRoot().getChildren().size;
 				lblText += String.format("\nposition: %.2f %.2f", performer.getX(), performer.getY());
 				lblText += "\nt-sections: "+gm.tm.getSections().size();
-				lblText += String.format("\ntime of day: %.2f %s %s fogginess: %.2f"
+				lblText += String.format("\ntime of day: %.2f %s %s fogginess: %.4f"
 						, weather.currentTOD(), weather.getCurrentColorSchema(), weather.getCurrentPrecip(), weather.getCurrentFog());
 				setText(lblText);
 			}

@@ -18,20 +18,20 @@ import com.github.czyzby.kiwi.util.gdx.scene2d.Actors;
 import ardash.lato.Assets.SceneTexture;
 import ardash.lato.actions.MoreActions;
 import ardash.lato.weather.EnvColors;
+import ardash.lato.weather.FogColorChangeListener;
 import ardash.lato.weather.SODChangeListener;
 import ardash.lato.weather.SkyColorChangeListener;
 import ardash.lato.weather.SunColorChangeListener;
 import ardash.lato.weather.WeatherProvider;
 
-public class SkyPlane extends Group implements StageAccessor, Disposable, SkyColorChangeListener, SunColorChangeListener, SODChangeListener {
+public class SkyPlane extends Group implements StageAccessor, Disposable, SkyColorChangeListener, SunColorChangeListener, SODChangeListener, FogColorChangeListener {
 
 	private static final float SUN_WIDTH = 2;
 	private ShapeRenderer sr;
 	private Group sunRotor;
 	private Image imgGlow, imgSun;
 	private Actor imgFlare;
-	private Actor topColorHolder;
-	private Actor bottomColorHolder;
+	private Actor topColorHolder, bottomColorHolder, fogColorHolder;
 
 	public SkyPlane(float width, float height) {
 		setSize(width, height);
@@ -77,8 +77,11 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		topColorHolder.setColor(EnvColors.DAY.skyTop);
 		bottomColorHolder = new Actor();
 		bottomColorHolder.setColor(EnvColors.DAY.skyBottom);
+		fogColorHolder = new Actor();
+		fogColorHolder.setColor(EnvColors.DAY.fog);
 		addActor(topColorHolder);
 		addActor(bottomColorHolder);
+		addActor(fogColorHolder);
 	}
 	
 	@Override
@@ -105,10 +108,11 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		sr.begin(ShapeRenderer.ShapeType.Filled);
 
 //		sr.rectLine(coords.x, coords.y, coords.x + getWidth(), coords.y, getHeight());
-		final Color fog = EnvColors.DAY.fog;
-		sr.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()*10f, bottomColorHolder.getColor(), bottomColorHolder.getColor(),
-				topColorHolder.getColor(), topColorHolder.getColor());
-//		sr.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), fog, fog, fog, fog);
+		final Color bc = bottomColorHolder.getColor();
+		final Color tc = topColorHolder.getColor();
+		final Color fc = fogColorHolder.getColor();
+		sr.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()/2f, bc, bc, fc, fc);
+		sr.rect(0, Gdx.graphics.getHeight()/2f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()*10f, fc, fc, tc, tc);
 		sr.end();
 //		Gdx.gl.glDisable(GL20.GL_BLEND);
 		Gdx.gl.glLineWidth(1f);
@@ -124,7 +128,11 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 	public void onSkyColorChangeTriggered(Color targetTop, Color targetBottom, float seconds) {
 		topColorHolder.addAction(Actions.color(targetTop, seconds));
 		bottomColorHolder.addAction(Actions.color(targetBottom, seconds));
-		
+	}
+	
+	@Override
+	public void onFogColorChangeTriggered(Color target, float seconds) {
+		fogColorHolder.addAction(Actions.color(target, seconds));
 	}
 
 	@Override

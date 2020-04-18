@@ -20,8 +20,8 @@ public class WeatherProvider extends Actor{
 		RAIN, SNOW, FOG, CLEAR ; // STORM is a sub-mode of RAIN
 	}
 	
-	public static final boolean FASTMODE = false;
-//	public static final boolean FASTMODE = true;
+//	public static final boolean FASTMODE = false;
+	public static final boolean FASTMODE = true;
 	public static final float DAYTIME_HOURS = 16f;
 	public static final float NIGHT_HOURS = 8f;
 	public static final float DAY_HOURS = DAYTIME_HOURS + NIGHT_HOURS;
@@ -33,9 +33,12 @@ public class WeatherProvider extends Actor{
 	public static final float NIGHT_SECONDS = NIGHT_HOURS * SECONDS_PER_HOUR;
 	public static final float DUSK_SECONDS = DUSK_HOURS * SECONDS_PER_HOUR;
 	public static final float DAWN_SECONDS = DAWN_HOURS * SECONDS_PER_HOUR;
-	public static final float MIN_FOG = 0.0f;
-	public static final float MAX_FOG = 1.0f;
-	public static final float MAX_FOG_NO_PRECIPITATION = 0.425f;
+//	public static final float MIN_FOG = 0.0f;
+//	public static final float MAX_FOG = 1.0f;
+//	public static final float MAX_FOG_NO_PRECIPITATION = 0.425f;
+	public static final float MIN_FOG = 0.036f;
+	public static final float MAX_FOG = 0.1f;
+	public static final float MAX_FOG_NO_PRECIPITATION = (MAX_FOG + MIN_FOG) /2f;
 
 	/**
 	 * current Second Of Day. A value from 0 to 24 * SECONDS_PER_HOUR
@@ -240,12 +243,14 @@ public class WeatherProvider extends Actor{
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.F))
 		{
-			sendFogIntensityChange(currentFog + 0.1f, 1f);
+			final float newval = Math.min(currentFog + 0.0031f, MAX_FOG);
+			sendFogIntensityChange(newval, 1f);
 			System.out.println(String.format("fog: %+10.4f", currentFog ));
 		}
 		if (Gdx.input.isKeyJustPressed(Keys.G))
 		{
-			sendFogIntensityChange(currentFog - 0.1f, 1f);
+			final float newval = Math.max(currentFog - 0.0031f, MIN_FOG);
+			sendFogIntensityChange(newval, 1f);
 			System.out.println(String.format("fog: %+10.4f", currentFog ));
 		}
 	}
