@@ -95,8 +95,11 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 //			addActor(img);
 			poses.put(pose, oimg);
 //			img.moveBy(-PERFORMER_WIDTH/2f, 0f); // set origin
-			oimg.setOriginX(-PERFORMER_WIDTH/2f);
+//			oimg.setOriginX(-PERFORMER_WIDTH/2f);
+			originX = -PERFORMER_WIDTH/2f;
+//			oimg.setOriginY(-PERFORMER_WIDTH/2f);
 			setDebug(true, true);
+//			img.setDebug(true);
 		}
 //		setPose(Pose.RIDE);
 //		setOriginX(PERFORMER_WIDTH/2f); // TODO set origin per image in group, origin can be set by moving image in the group after creating and adding it
@@ -157,8 +160,12 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		if (! isInAir)
 		{
 //			setOriginY(0); // TODO fix origin
-			moveBy(0, - (getY() - heightUnderActor));
+//			moveBy(0, - (getY() - heightUnderActor));
+			setY(heightUnderActor);
+//			moveBy(PERFORMER_WIDTH/2f, 0);
+//			moveBy(0, - (getY() - heightUnderActor + PERFORMER_WIDTH/2f));
 			setRotation( getGameScreen().waveDrawer.getAngleAtX(getX()+(PERFORMER_WIDTH/2f)));
+//			moveBy(PERFORMER_WIDTH/1f, PERFORMER_WIDTH/2f);
 		}
 		else
 		{

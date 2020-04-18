@@ -64,6 +64,8 @@ public class Actor3D extends ModelInstance implements Disposable {
     float yaw = 0f,pitch =0f, roll=0f;
     Matrix4 rotationMatrix = new Matrix4();
     private AnimationController animation;
+    
+    public float originX =0, originY=0;
 
     public Actor3D(){
         this(new Model());
