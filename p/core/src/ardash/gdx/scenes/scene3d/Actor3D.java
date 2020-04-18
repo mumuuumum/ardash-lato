@@ -52,8 +52,8 @@ public class Actor3D extends ModelInstance implements Disposable {
     private boolean visible = true;
 
     // Debug tools
-    private boolean debug;
-    private ModelInstance axis;
+    protected boolean debug;
+    protected ModelInstance axis;
     private ModelBuilder modelBuilder;
 
     // local transformations to be applied each frame before render
@@ -478,6 +478,7 @@ public class Actor3D extends ModelInstance implements Disposable {
 //        axis.transform.setToTranslationAndScaling(this.x, this.y, this.z, scaleX, scaleY, scaleZ);
 //        axis.transform.mul(rotationMatrix);
         axis.transform.set(transform.cpy());
+        axis.transform.translate(-originX, -originY, 0);
 
         modelBatch.render(axis, environment);
     }

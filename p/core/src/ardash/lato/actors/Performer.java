@@ -12,16 +12,20 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.gdx.scenes.scene3d.Group3D;
+import ardash.gdx.scenes.scene3d.actions.MoveByAction;
+import ardash.gdx.scenes.scene3d.actions.ParallelAction;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.Assets;
 import ardash.lato.Assets.SceneTexture;
+import ardash.lato.actions.Actions;
+import ardash.lato.actions.GravityAction;
 import ardash.lato.weather.AmbientColorChangeListener;
 
 public class Performer extends Group3D implements Disposable, AmbientColorChangeListener {
@@ -75,7 +79,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			img.setName(posename);
 			addActor(img);
 			poses.put(pose, img);
-//			setDebug(true, true);
+			setDebug(true, true);
 //			img.setDebug(true);
 		}
 		setPose(Pose.RIDE);
@@ -146,21 +150,21 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		}
 		else
 		{
-			setOriginY(PERFORMER_WIDTH/2f);// TODO fix origin
-			// if jumping or otherwise flying just apply a bit gravity
-//			moveBy(0, - 0.2f);
+			setOriginY(-PERFORMER_WIDTH/2f);// TODO fix origin
 			if (heightUnderActor > heightOfMe) // check if hit the ground
 			{
 				land();
 			}
 			
 			// if input touch down rotate counter clockwise, otherwise rotate towards ground
-			if (isUserInputDown)
+			else if (isUserInputDown)
 			{
+				setPose(Pose.RIDE); // TODO set to roll
 				rotateBy(ROTATION_SPEED*delta);
 			}
 			else
 			{
+				setPose(Pose.JUMP);
 				float direction = rotation > 180 ? 1 : -1;
 				rotateBy(ROTATION_SPEED*0.3f*direction*delta);
 				
@@ -284,22 +288,19 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	}
 	
 	private void jump() {
-//		isInAir  = true;
-//		final MoveByAction jumpForce = Actions.moveBy(0, 8, 1f, Interpolation.fastSlow);
-////		final MoveByAction accelleratedFall = Actions.moveBy(0, -15f*3, 1f*3, Interpolation.slowFast); // increasing speed due to gravity
-////		final RepeatAction constantFall = Actions.forever(Actions.moveBy(0, -15f*3, 1f*3));
-////		final SequenceAction fall = Actions.sequence(accelleratedFall,constantFall);
-//		final GravityAction gravity = MoreActions.gravity();
-//		jumpAction = Actions.parallel(jumpForce, gravity );
-//		addAction(jumpAction);
-//		setPose(Pose.JUMP);
+		isInAir  = true;
+		final MoveByAction jumpForce = Actions.moveBy(0f, 8f, 0f, 1f, Interpolation.fastSlow);
+		final GravityAction gravity = Actions.gravity();
+		jumpAction = Actions.parallel(jumpForce, gravity );
+		addAction(jumpAction);
+		setPose(Pose.JUMP);
 	}
 	
 	/** touching down after a jump or fall*/
 	private void land() {
-//		isInAir = false;
-//		removeAction(jumpAction); // ensure no more up or down (gravity) is applied
-//		setPose(Pose.DUCK);
+		isInAir = false;
+		removeAction(jumpAction); // ensure no more up or down (gravity) is applied
+		setPose(Pose.DUCK);
 	}
 	
 	public void addSpeedListener (SpeedListener listener)

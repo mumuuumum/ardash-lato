@@ -63,9 +63,9 @@ public class Group3D extends Actor3D {
                 // update child's matrix //TODO
                 child.transform.setToTranslationAndScaling(child.x, child.y, child.z, child.scaleX, child.scaleY, child.scaleZ);
                 // TODO origin can be added here
-                child.transform.translate(-child.originX,-originY,0f);
+                child.transform.translate(-child.originX,-child.originY,0f);
                 child.transform.mul(child.rotationMatrix);
-                child.transform.translate(child.originX,originY,0f);
+                child.transform.translate(child.originX,child.originY,0f);
                 
                 Matrix4 m4 = transform.cpy();
 //                Matrix4 m4 = new Matrix4();
@@ -78,6 +78,10 @@ public class Group3D extends Actor3D {
                 child.draw(modelBatch, environment);
         }
         children.end();
+        
+        // call debug method since we don't call super.draw() here
+        drawDebug(modelBatch, environment);
+
     }
     
 	/** Draws the group and its children. */
