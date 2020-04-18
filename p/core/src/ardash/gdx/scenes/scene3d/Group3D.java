@@ -62,19 +62,27 @@ public class Group3D extends Actor3D {
                 
                 // update child's matrix //TODO
                 child.transform.setToTranslationAndScaling(child.x, child.y, child.z, child.scaleX, child.scaleY, child.scaleZ);
-                // TODO origin can be added here
-                child.transform.translate(-child.originX,-child.originY,0f);
-                child.transform.mul(child.rotationMatrix);
-                child.transform.translate(child.originX,child.originY,0f);
+                // origin can be added here (if in use
                 
-                Matrix4 m4 = transform.cpy();
+                if (child.originX != 0f || child.originY != 0f)
+                {
+                    child.transform.translate(-child.originX,-child.originY,0f);
+                    child.transform.mul(child.rotationMatrix);
+                    child.transform.translate(child.originX,child.originY,0f);
+                }
+                else
+                {
+                    child.transform.mul(child.rotationMatrix);
+                }
+                
+//                Matrix4 m4 = transform.cpy();
 //                Matrix4 m4 = new Matrix4();
 //                m4.setToTranslationAndScaling(x, y, z, scaleX, scaleY, scaleZ);
 //                m4.mul(rotationMatrix);
 //              m4.mul(transform); // add current transform that came from parents
 //              m4.mulLeft(transform); // add current transform that came from parents
 
-                child.transform.mulLeft(m4);
+                child.transform.mulLeft(transform);
                 child.draw(modelBatch, environment);
         }
         children.end();

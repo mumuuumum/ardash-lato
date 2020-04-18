@@ -12,8 +12,8 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -58,7 +58,11 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
      * will use its own {@link SpriteBatch}. 
      * @param gameScreen */
     public Stage3D(Viewport v) {
-        this(v, new Environment());
+        this(v, new Environment(), null);
+    }
+
+    public Stage3D(Viewport v, ShaderProvider shaderProvider) {
+        this(v, new Environment(), shaderProvider);
     }
 
 //    /** Creates a stage with the specified viewport that doesn't keep the aspect ratio.
@@ -91,12 +95,15 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
         environment.set(new ColorAttribute(ColorAttribute.Fog, c.r, c.g, c.b, 0.51f));
     }
 
-    public Stage3D(Viewport v, Environment environment) {
+    public Stage3D(Viewport v, Environment environment, ShaderProvider shaderProvider) {
         root = new Group3D();
         root.setStage(this);
 
-        modelBatch = new ModelBatch();
-
+        if (shaderProvider == null)
+        	modelBatch = new ModelBatch();
+        else
+        	modelBatch = new ModelBatch(shaderProvider);
+        	
         this.viewport =v;
         this.environment = environment;
     }
@@ -315,4 +322,5 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
 		action.setColor(ambientColor);
 		addAction(action);
 	}
+	
 }

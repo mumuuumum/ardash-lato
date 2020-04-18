@@ -3,6 +3,7 @@ package ardash.lato;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
@@ -16,6 +17,10 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
 
 	public LatoStage3D(Viewport v) {
 		super(v);
+	}
+
+	public LatoStage3D(Viewport v, ShaderProvider shaderProvider) {
+		super(v, shaderProvider);
 	}
 
 	@Override

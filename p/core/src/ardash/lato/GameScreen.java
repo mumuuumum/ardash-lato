@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
+import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -63,6 +65,8 @@ public class GameScreen implements Screen {
 	public Performer performer;
 	public WaveDrawer waveDrawer;
 
+	public enum LatoShaders {BACK}
+	
 	public GameScreen(GameManager gm) {
 		this.gm = gm;
 		this.am = gm.am;
@@ -86,7 +90,7 @@ public class GameScreen implements Screen {
 //		frontStage = new LatoStage(new ScreenViewport(), this);
 		CURRENT_WORLD_WIDTH = backStage.getViewport().getWorldWidth();
 		guiStage = new LatoStage(Viewports.getDensityAwareViewport(), this);
-		mountainStage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D())); // perspective camera draws correctly behind each other
+		mountainStage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D()), getShaderP()); // perspective camera draws correctly behind each other
 		backStage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D(30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
 
 //		backStage.setDebugAll(true);
@@ -284,6 +288,14 @@ public class GameScreen implements Screen {
 //		flarePlane.init();
 
 		buildGui();
+	}
+
+	private ShaderProvider getShaderP() {
+		DefaultShader.Config config = new DefaultShader.Config();
+		config.numDirectionalLights = 1;
+		config.numPointLights = 0;
+		config.numBones = 16;
+		return new LatoShaderProvider(config);
 	}
 
 	private void buildGui() {
