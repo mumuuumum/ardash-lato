@@ -62,7 +62,7 @@ public class WaveDrawer extends Group3D implements Disposable { //StageAccessor,
 		sr.begin();
 //		sr.setColor(getColor());
 		sr.set(ShapeType.Filled);
-		sr.set(ShapeType.Line);
+//		sr.set(ShapeType.Line);
 		
 		sr.setProjectionMatrix(getStage().getCamera().combined);
 //

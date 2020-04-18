@@ -1,7 +1,6 @@
 package ardash.gdx.scenes.scene3d;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.VertexAttributes;
@@ -17,7 +16,6 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -65,7 +63,7 @@ public class Actor3D extends ModelInstance implements Disposable {
     Matrix4 rotationMatrix = new Matrix4();
     private AnimationController animation;
     
-    public float originX =0, originY=0;
+    protected float originX =0, originY=0;
 
     public Actor3D(){
         this(new Model());
@@ -627,6 +625,21 @@ public class Actor3D extends ModelInstance implements Disposable {
 
 	public float getWidth() {
 		throw new RuntimeException("getWidth not implemented");
+	}
+	
+	public float getOriginX() {
+		return originX;
+	}
+	public float getOriginY() {
+		return originY;
+	}
+	
+	public void setOriginX(float originX) {
+		this.originX = originX;
+	}
+	
+	public void setOriginY(float originY) {
+		this.originY = originY;
 	}
 	
 	// note: might be wrong. transform is being reset on draw, when do we call this?

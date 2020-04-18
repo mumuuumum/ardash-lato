@@ -5,36 +5,23 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import org.omg.CORBA.OMGVMCID;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter.GradientColorValue;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.Pool;
-import com.badlogic.gdx.utils.Pools;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.gdx.scenes.scene3d.Group3D;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
-import ardash.gdx.scenes.scene3d.shape.OffsetImage3D;
 import ardash.lato.Assets;
 import ardash.lato.Assets.SceneTexture;
-import ardash.lato.LatoStage;
-import ardash.lato.actions.MoreActions;
 import ardash.lato.weather.AmbientColorChangeListener;
 
 public class Performer extends Group3D implements Disposable, AmbientColorChangeListener {
@@ -58,8 +45,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	ParticleEffect snowSpray = new ParticleEffect();
 	private Image3D ambientColorContainer = new Image3D(1, 1, new Color(), new ModelBuilder());
 	private List<PerformerListener> listeners = new ArrayList<Performer.PerformerListener>();
-	private Map<Pose,OffsetImage3D> poses = new EnumMap<Pose, OffsetImage3D>(Pose.class);
-//	private Map<Pose,Image3D> poses = new EnumMap<Pose, Image3D>(Pose.class);
+	private Map<Pose,Image3D> poses = new EnumMap<Pose, Image3D>(Pose.class);
 	protected Pose pose = Pose.RIDE;
 	
 	/**
@@ -87,22 +73,13 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			SceneTexture sprite = SceneTexture.valueOf(posename);
 			Image3D img = new Image3D(PERFORMER_WIDTH,PERFORMER_WIDTH,getAssets().getSTexture(sprite),mb);
 			img.setName(posename);
-//			img.moveBy(-PERFORMER_WIDTH/2f, 0);
-			OffsetImage3D oimg = new OffsetImage3D(img);
-//			img.setWidth(PERFORMER_WIDTH);
-//			img.setHeight(PERFORMER_WIDTH);
-			addActor(oimg);
-//			addActor(img);
-			poses.put(pose, oimg);
-//			img.moveBy(-PERFORMER_WIDTH/2f, 0f); // set origin
-//			oimg.setOriginX(-PERFORMER_WIDTH/2f);
-			originX = -PERFORMER_WIDTH/2f;
-//			oimg.setOriginY(-PERFORMER_WIDTH/2f);
-			setDebug(true, true);
+			addActor(img);
+			poses.put(pose, img);
+//			setDebug(true, true);
 //			img.setDebug(true);
 		}
-//		setPose(Pose.RIDE);
-//		setOriginX(PERFORMER_WIDTH/2f); // TODO set origin per image in group, origin can be set by moving image in the group after creating and adding it
+		setPose(Pose.RIDE);
+		setOriginX(-PERFORMER_WIDTH/2f);
 		camSpot.set(getX(), getY());
 		setSpeed(MIN_SPEED);
 		
@@ -159,7 +136,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		// set the height of the terrain under the actor if not in air
 		if (! isInAir)
 		{
-//			setOriginY(0); // TODO fix origin
+			setOriginY(0); // TODO fix origin
 //			moveBy(0, - (getY() - heightUnderActor));
 			setY(heightUnderActor);
 //			moveBy(PERFORMER_WIDTH/2f, 0);
@@ -169,7 +146,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		}
 		else
 		{
-//			setOriginY(PERFORMER_WIDTH/2f);// TODO fix origin
+			setOriginY(PERFORMER_WIDTH/2f);// TODO fix origin
 			// if jumping or otherwise flying just apply a bit gravity
 //			moveBy(0, - 0.2f);
 			if (heightUnderActor > heightOfMe) // check if hit the ground
