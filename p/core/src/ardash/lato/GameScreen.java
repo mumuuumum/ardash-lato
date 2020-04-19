@@ -60,7 +60,7 @@ public class GameScreen implements Screen {
 	public LatoStage frontStage;
 	public LatoStage guiStage;
 	public Stage3D mountainStage3d;
-	public LatoStage3D backStage3d;
+	public LatoStage3D stage3d;
 	public FlarePlane flarePlane;
 	public Performer performer;
 	public WaveDrawer waveDrawer;
@@ -91,7 +91,7 @@ public class GameScreen implements Screen {
 		CURRENT_WORLD_WIDTH = backStage.getViewport().getWorldWidth();
 		guiStage = new LatoStage(Viewports.getDensityAwareViewport(), this);
 		mountainStage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D()), getShaderP()); // perspective camera draws correctly behind each other
-		backStage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D(30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
+		stage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D(30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
 
 //		backStage.setDebugAll(true);
 //		stage.setDebugAll(true);
@@ -143,7 +143,7 @@ public class GameScreen implements Screen {
 		
 		// test to add shaperenderers
 		waveDrawer = new WaveDrawer(EnvColors.DAY.ambient);
-		backStage3d.addActor(waveDrawer);
+		stage3d.addActor(waveDrawer);
 		stage.setWaveDrawer(waveDrawer);
 //		weather.addAmbientColourChangeListener(waveDrawer);
 
@@ -152,20 +152,20 @@ public class GameScreen implements Screen {
 //		backStage3d.addActor(testTree);
 		
 		performer = new Performer();
-		backStage3d.addActor(performer);
+		stage3d.addActor(performer);
 //		performer.init();
 //		p.moveBy(4*1.8f, 10f);
 		performer.moveBy(8*1.8f, 10f); // tmp becasue no starting groudn yet
 		stage.setPerformer(performer); // attach the camera to him
 		weather.addAmbientColourChangeListener(performer);
-		weather.addAmbientColourChangeListener(performer);
+//		weather.addAmbientColourChangeListener(performer);
 		
 		// attach the zoom of some cameras to the speed of the player
 //		performer.addSpeedListener(backStage);
 //		performer.addSpeedListener(stage);
 //		performer.addSpeedListener(frontStage);
 //		performer.addSpeedListener(mountainStage3d);
-		performer.addSpeedListener(backStage3d);
+		performer.addSpeedListener(stage3d);
 		
 		stage.addActor(new Scarf(assets.getSTexture(SceneTexture.FOG_PIX)));
 
@@ -173,7 +173,7 @@ public class GameScreen implements Screen {
 //		guiStage.addActor(stage3d);
 		
 		mountainStage3d.getCamera().update();
-		backStage3d.getCamera().update();
+		stage3d.getCamera().update();
 //		flareStage3d.getCamera().update();
 		
 //		stage3d.addActor(new CubeActor3D(1, 1, 1));
@@ -220,14 +220,15 @@ public class GameScreen implements Screen {
         weather.addFogColourChangeListener(mountainStage3d);
         weather.addAmbientColourChangeListener(mountainStage3d);
         
-        backStage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        backStage3d.getCamera().lookAt(0, 0, 0);
-        backStage3d.getCamera().translate(0, 0, 30);
-        backStage3d.getCamera().near = 0.1f;
-        backStage3d.getCamera().far = 500f; // TODO adjust fog intensity here
+        stage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        stage3d.getCamera().lookAt(0, 0, 0);
+        stage3d.getCamera().translate(0, 0, 30);
+        stage3d.getCamera().near = 0.1f;
+        stage3d.getCamera().far = 500f; // TODO adjust fog intensity here
         //((Camera3D)(backStage3d.getCamera())).fieldOfView =90f;
-        backStage3d.getCamera().update();
-        gm.tm.addListener(backStage3d);
+        stage3d.getCamera().update();
+        gm.tm.addListener(stage3d);
+        weather.addAmbientColourChangeListener(stage3d);
                 
         CubeActor3D ca = new CubeActor3D(1, 1, 1);
 //        backStage3d.addActor(ca);
@@ -237,9 +238,9 @@ public class GameScreen implements Screen {
 		Actor3D ma = new Actor3D(houseModel);
 		ma.setName("toonhouse");
 		ma.setTag(Tag.BACK);
-        backStage3d.addActor(ma);
-        backStage3d.setAmbientLightColor(Color.WHITE.cpy());
-        backStage3d.setDirectionalLight(null);
+        stage3d.addActor(ma);
+        stage3d.setAmbientLightColor(Color.WHITE.cpy());
+        stage3d.setDirectionalLight(null);
 //        ma.setScale(1, 1, 1);
         ma.setScale(0.002f, 0.002f, 0.002f);
         ma.translate(55, 0, 0);
@@ -253,9 +254,9 @@ public class GameScreen implements Screen {
 						, -(stage.getCamera().position.y - performer.getCamSpot().y), 0);
 				stage.getCamera().update();
 
-				backStage3d.getCamera().translate(-(backStage3d.getCamera().position.x - performer.getCamSpot().x)
-						, -(backStage3d.getCamera().position.y - performer.getCamSpot().y), 0);
-				backStage3d.getCamera().update();
+				stage3d.getCamera().translate(-(stage3d.getCamera().position.x - performer.getCamSpot().x)
+						, -(stage3d.getCamera().position.y - performer.getCamSpot().y), 0);
+				stage3d.getCamera().update();
 			}
 		});
 
@@ -313,7 +314,7 @@ public class GameScreen implements Screen {
 			public void act(float delta) {
 				super.act(delta);
 				String lblText = "fps: "+ Gdx.graphics.getFramesPerSecond();
-				lblText += "\nactors: "+backStage3d.getRoot().getChildren().size;
+				lblText += "\nactors: "+stage3d.getRoot().getChildren().size;
 				lblText += String.format("\nposition: %.2f %.2f", performer.getX(), performer.getY());
 				lblText += "\nt-sections: "+gm.tm.getSections().size();
 				lblText += String.format("\ntime of day: %.2f %s %s fogginess: %.4f"
@@ -390,8 +391,8 @@ public class GameScreen implements Screen {
     	mountainStage3d.act(delta);
     	mountainStage3d.draw();
 
-    	backStage3d.act(delta);
-    	backStage3d.draw(true);
+    	stage3d.act(delta);
+    	stage3d.draw(true);
 
     	stage.act();
     	stage.draw();
