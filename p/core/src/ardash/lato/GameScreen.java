@@ -129,7 +129,7 @@ public class GameScreen implements Screen {
 			mr.setName("MountainRange"+i);
 			
 			// range offset
-			mr.translate(-MountainRange3.MOUNT_SIZE*(i+1), -2f*i+2, 0+i*2);
+			mr.translate(-MountainRange3.MOUNT_SIZE*(i+1), -5f*i+2, 0+i*10);
 			mr.setSpeed((i*i+1)*0.2f);
 			
 			// move to center on 0,0
@@ -208,10 +208,10 @@ public class GameScreen implements Screen {
         mountainStage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		mountainStage3d.getCamera().lookAt(0, 0, 0);
 //		stage3d.getCamera().moveTo(0, 0, 30, 1f);
-		mountainStage3d.getCamera().translate(0, 0, 30);
+		mountainStage3d.getCamera().translate(0, 0, 100);
 		
         mountainStage3d.getCamera().near = 0.1f;
-        mountainStage3d.getCamera().far = 50f; // TODO adjust fog intensity here
+        mountainStage3d.getCamera().far = 110f; // TODO adjust fog intensity here
         mountainStage3d.getCamera().update();
         
         weather.addFogIntensityChangeListener(mountainStage3d);

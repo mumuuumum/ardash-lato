@@ -1,14 +1,3 @@
-#ifdef GL_ES
-#define LOWP lowp
-#define MED mediump
-#define HIGH highp
-precision mediump float;
-#else
-#define MED
-#define LOWP
-#define HIGH
-#endif
-
 #if defined(diffuseTextureFlag) || defined(specularTextureFlag) || defined(emissiveTextureFlag)
 #define textureFlag
 #endif
@@ -163,7 +152,6 @@ uniform vec4 u_cameraPosition;
 
 #ifdef fogFlag
 varying float v_fog;
-uniform vec4 u_fogColor;
 #endif // fogFlag
 
 
@@ -276,24 +264,10 @@ void main() {
 		v_normal = normal;
 	#endif // normalFlag
 
-// TODO try exp fog again in fragment now that distance is fixed:
     #ifdef fogFlag
-        pos.y *=0.50;
-        pos.x *=0.5;
         vec3 flen = u_cameraPosition.xyz - pos.xyz;
-//        vec2 flen = u_cameraPosition.yz - pos.yz;
         float fog = dot(flen, flen) * u_cameraPosition.w;
         v_fog = min(fog, 1.0);
-        v_fog *= u_fogColor.a*2.0;
-        v_fog = min(v_fog, 1.0);
-        
-//        const float gradient = 1.5;
-//        float density = u_fogColor.a*0.01; // was 0.007
-        
-        
-//        float distance = length(flen.xyz);
-//        float visibility = exp(-pow((distance*density),gradient));
-        //v_fog = visibility;
     #endif
 
 	#ifdef lightingFlag

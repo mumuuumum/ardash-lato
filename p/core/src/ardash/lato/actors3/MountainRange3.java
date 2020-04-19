@@ -23,7 +23,7 @@ public class MountainRange3 extends Group3D{
 	 * number of mountains in the mountain range
 	 */
 	private final int numPieces;
-	public static final float MOUNT_SIZE = GameScreen.WORLD_WIDTH * 0.275f;
+	public static final float MOUNT_SIZE = GameScreen.WORLD_WIDTH * 1.19275f;//0.275f;
 	private final float distanceBetweenPieces = MOUNT_SIZE*0.77f; //0.77 of above
 	private final float VARIANCE = (MOUNT_SIZE + distanceBetweenPieces) / 16f; //(avg of 2 val above) / 4
 	private final Color MOUNT_COLOR = new Color(68 / 255f, 145 / 255f, 140 / 255f, 1f);
@@ -38,7 +38,7 @@ public class MountainRange3 extends Group3D{
 			img.rotateYaw(45f+180f);
 			img.rotateYaw(MathUtils.random(-2f, 2f));
 			img.setScale(MOUNT_SIZE);
-			img.translate(distanceBetweenPieces*i + MathUtils.random(-VARIANCE, VARIANCE), MathUtils.random(-VARIANCE, VARIANCE), 3+i%2);
+			img.translate(distanceBetweenPieces*i + MathUtils.random(-VARIANCE, VARIANCE), MathUtils.random(-VARIANCE, VARIANCE), 3+(i%2)*0.01f);
 //			img.translate(MOUNT_SIZE*i,0, 0);
 //			img.rotateYaw(20);
 			addActor(img);
