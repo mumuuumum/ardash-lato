@@ -194,7 +194,7 @@ void main() {
 	#endif //lightingFlag
 
 	#ifdef fogFlag
-		gl_FragColor.rgb -=(gl_FragCoord.y*0.001); //would make bottom parts brighter without fog
+		gl_FragColor.rgb +=(-gl_FragCoord.y*0.001); //would make bottom parts brighter without fog
 		gl_FragColor.rgb = mix(gl_FragColor.rgb, u_fogColor.rgb, v_fog);
 	#endif // end fogFlag
 

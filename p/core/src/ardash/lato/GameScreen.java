@@ -161,9 +161,11 @@ public class GameScreen implements Screen {
 		weather.addAmbientColourChangeListener(performer);
 		
 		// attach the zoom of some cameras to the speed of the player
-		performer.addSpeedListener(backStage);
-		performer.addSpeedListener(stage);
-		performer.addSpeedListener(frontStage);
+//		performer.addSpeedListener(backStage);
+//		performer.addSpeedListener(stage);
+//		performer.addSpeedListener(frontStage);
+//		performer.addSpeedListener(mountainStage3d);
+		performer.addSpeedListener(backStage3d);
 		
 		stage.addActor(new Scarf(assets.getSTexture(SceneTexture.FOG_PIX)));
 

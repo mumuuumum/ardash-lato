@@ -278,10 +278,10 @@ void main() {
 
 // TODO try exp fog again in fragment now that distance is fixed:
     #ifdef fogFlag
-        pos.y *=0.50;
+//        pos.y *=0.50;
         pos.x *=0.5;
-        vec3 flen = u_cameraPosition.xyz - pos.xyz;
-//        vec2 flen = u_cameraPosition.yz - pos.yz;
+//        vec3 flen = u_cameraPosition.xyz - pos.xyz;
+        vec2 flen = u_cameraPosition.yz - pos.yz;
         float fog = dot(flen, flen) * u_cameraPosition.w;
         v_fog = min(fog, 1.0);
         v_fog *= u_fogColor.a*2.0;

@@ -6,6 +6,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -27,12 +29,17 @@ import ardash.gdx.scenes.scene3d.actions.Actions3D;
 import ardash.gdx.scenes.scene3d.actions.ColorAction;
 import ardash.gdx.scenes.scene3d.actions.FloatAction;
 import ardash.lato.actions.Actions;
+import ardash.lato.actors.SpeedListener;
 import ardash.lato.weather.AmbientColorChangeListener;
 import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.FogColorChangeListener;
 import ardash.lato.weather.FogIntensityChangeListener;
 
-public class Stage3D extends InputAdapter implements Disposable, FogIntensityChangeListener, FogColorChangeListener, AmbientColorChangeListener {
+public class Stage3D extends InputAdapter implements Disposable, FogIntensityChangeListener, FogColorChangeListener, AmbientColorChangeListener, SpeedListener {
+	// the valid zoom interval for the camera to be used to interpolate zooming with current speed
+	protected static final float MIN_ZOOM = 0f;
+	protected static final float MAX_ZOOM = 50f;
+
 	public static final float MAX_FOG_FAR = 30f;
 	public static final float MIN_FOG_FAR = 50f;
 
@@ -323,6 +330,20 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
 		final ColorAction action = Actions3D.color(target, seconds);
 		action.setColor(ambientColor);
 		addAction(action);
+	}
+
+	Float initZ = null;
+	@Override
+	public void onSpeedChanged(float newSpeed, float percentage) {
+		final float newZoom = MathUtils.lerp(MIN_ZOOM, MAX_ZOOM, percentage);
+		Camera3D cam = (Camera3D)getCamera();
+
+		if (initZ == null)
+			initZ = cam.getZ();
+
+//		cam.translate(0, 0, initZ - newZoom);
+		cam.position.z = initZ + newZoom;
+		cam.update();
 	}
 	
 }

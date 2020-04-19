@@ -217,6 +217,7 @@ public class LatoStage extends Stage implements SpeedListener {
 	public void onSpeedChanged(float newSpeed, float percentage) {
 		final float newZoom = MathUtils.lerp(MIN_ZOOM, MAX_ZOOM, percentage);
 		OrthographicCamera cam = (OrthographicCamera)getCamera();
-		cam.zoom = newZoom;
+//		cam.zoom = newZoom;
+		cam.translate(0, 0, newZoom);
 	}
 }

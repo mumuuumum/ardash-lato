@@ -54,7 +54,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		imgGlow.setHeight(SUN_WIDTH*26);
 		sunRotor.addActor(imgGlow);
 //		imgGlow.setPosition(0, -15f); // sun rotation radius
-		imgGlow.setColor(new Color(1,1,1,0.1f)); // adjusting glow intensity here, changes apperence of max fog
+		imgGlow.setColor(new Color(1,1,1,0.51f)); // adjusting glow intensity here, changes apperence of max fog
 		imgGlow.setName("sunglow");
 //		imgGlow.setTouchable(Touchable.disabled);
 
@@ -149,7 +149,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		sunRotor.setRotation(percentOfDayOver * -360f);
 		
 		// fadeOut doesn't work because the flare is not alpha-blended
-		if (hourOfDay < 7 || hourOfDay > 17)
+		if (hourOfDay < 6.5f || hourOfDay > 18.1f)
 			imgFlare.setVisible(false);
 		else
 			imgFlare.setVisible(true);
