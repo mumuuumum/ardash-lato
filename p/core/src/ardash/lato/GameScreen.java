@@ -396,18 +396,17 @@ public class GameScreen implements Screen {
 
     	backStage.act(delta);
     	mountainStage3d.act(delta);
-//    	if (gm.isStarted())
-        	stage3d.act(delta);
+       	stage3d.act(delta);
     	frontStage.act(delta);
     	stage.act(delta);
     	
 
     	backStage.draw();
-    	mountainStage3d.draw();
-    	stage3d.draw(true);
-    	stage.draw();
-    	
-    	frontStage.draw();
+//    	mountainStage3d.draw();
+//    	stage3d.draw(true);
+//    	stage.draw();
+//    	
+//    	frontStage.draw();
     	guiStage.draw();
     	
 //    	stage3d.getCamera().

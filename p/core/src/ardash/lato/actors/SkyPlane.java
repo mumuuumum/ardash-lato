@@ -4,11 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
@@ -24,15 +28,20 @@ import ardash.lato.weather.SunColorChangeListener;
 public class SkyPlane extends Group implements StageAccessor, Disposable, SkyColorChangeListener, SunColorChangeListener, SODChangeListener, FogColorChangeListener {
 
 	private static final float SUN_WIDTH = 2;
+	private static final float MIN_STAR_SIZE = 0.1f;
+	private static final float MAX_STAR_SIZE = 0.2f;
 	private ShapeRenderer sr;
-	private Group sunRotor;
+	private Group sunRotor, stars;
 	private Image iSunGlow, iSun, iMoonGlow, iMoon;
 	private Actor sunFlare, moonFlare;
 	private Actor topColorHolder, bottomColorHolder, fogColorHolder;
+	RandomXS128 rand = new RandomXS128(8793246527834L);
 
 	public SkyPlane(float width, float height) {
 		setSize(width, height);
-		moveBy(getWidth()/-2f, 0f);// self center
+		final float width2 = getWidth()/2f;
+		final float height2 = getHeight()/2f;
+		moveBy(-width2, 0f);// self center
 		sr = new ShapeRenderer();
 		sr.setAutoShapeType(true);
 		setName("skyplane");
@@ -40,14 +49,68 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		
 		sunRotor = new Group();
 		addActor(sunRotor);
-		sunRotor.setPosition(getWidth()/2f, getHeight()/2f); // center on plane
+		sunRotor.setPosition(width2, height2); // center on plane
 		
 		// move a bit down, so sun moved behind mountains
 		sunRotor.moveBy(0, -15);
 		
 		// STARS
 		
-		
+		MathUtils.random = rand; // make always the same stars
+		Vector2 tmpVec = new Vector2();
+		for ( int i=0; i<50; i++)
+		{
+			final Image img = new Image(getAssets().getSTexture(SceneTexture.FOG_PIX));
+			final float size = MathUtils.random(MIN_STAR_SIZE, MAX_STAR_SIZE);
+			final float ch = MathUtils.randomTriangular(237f, 298f, 237f); // red to blue
+//			final float ch = MathUtils.random(55f, 62f); // mostly yellow
+			final float cs = MathUtils.randomTriangular(0f, 30f, 0f)/100f; // more 0
+			final float cv = 100f/100f;
+			
+			final float ang = MathUtils.random(0f, 360f);
+			final float radius = MathUtils.random(10f, 30f);
+			final Group rotor = new Group();
+			addActor(rotor);
+			rotor.setPosition(sunRotor.getX(), sunRotor.getY());
+			rotor.addActor(img);
+//			
+//			tmpVec.set(1, 1).nor().setAngle(ang).setLength(radius);
+//			final float sx = tmpVec.x;
+//			final float sy = tmpVec.y;
+			
+			img.setWidth(size);
+			img.setHeight(size);
+			img.getColor().fromHsv(ch, cs, cv);
+			img.setPosition(0, radius); // moon rotation radius, stars are above and next to moon
+			rotor.setRotation(ang);
+//			img.setOrigin(width2-sx, height2-15-sy);
+			img.setRotation(45f);
+			img.setName("star");
+//			img.debug();
+//			img.addAction(Actions.forever(Actions.sequence(Actions.fadeOut(1),Actions.fadeIn(1))));
+			
+			Action ra = Actions.run(new Runnable() {
+				@Override
+				public void run() {
+					float r = rotor.getRotation();
+					if (r<0) r+=360f;
+					if (r>90 && r<270)
+					{
+						rotor.setVisible(false);
+					}
+					else
+					{
+						rotor.setVisible(true);
+						rotor.getChild(0).getColor().a = MathUtils.cosDeg(r);
+						
+					}
+				}
+			});
+			rotor.addAction(Actions.forever(ra));
+			rotor.addAction(Actions.forever(Actions.rotateBy(-10,1)));
+//			rotor.addAction(Actions.forever(Actions.sequence(Actions.rotateBy(-10,1),ra)));
+		}
+
 
 		// SUN
 		
@@ -92,7 +155,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		iMoon.setWidth(SUN_WIDTH);
 		iMoon.setHeight(SUN_WIDTH);
 		sunRotor.addActor(iMoon);
-		iMoon.setPosition(0, 20f); // sun rotation radius
+		iMoon.setPosition(0, 15f); // moon rotation radius
 		moonFlare = spawnFlareInForeground(iMoon, 500f);
 		moonFlare.getColor().mul(0.5f);
 		moonFlare.setVisible(false);
@@ -115,6 +178,8 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		addActor(topColorHolder);
 		addActor(bottomColorHolder);
 		addActor(fogColorHolder);
+		
+		MathUtils.random = new RandomXS128(); // bring randomness back
 	}
 	
 	@Override
