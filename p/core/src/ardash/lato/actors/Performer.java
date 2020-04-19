@@ -85,16 +85,16 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			img.setName(posename);
 			addActor(img);
 			poses.put(pose, img);
-			setDebug(true, true);
+//			setDebug(true, true);
 //			img.setDebug(true);
 		}
 		setPose(Pose.RIDE);
 		setOriginX(-PERFORMER_WIDTH/2f);
-		camSpot.set(getX(), getY());
+		camSpot.set(getX(), getY()+10f);
 		setSpeed(MIN_SPEED);
 		
 		addActor(ambientColorContainer);
-//		ambientColorContainer.setVisible(false);
+		ambientColorContainer.setVisible(false);
 		
 		TextureAtlas ta = getAssetManager().get(Assets.uiAtlas);
 		snowSpray.load( Gdx.files.internal("spray.p"), ta);
@@ -183,6 +183,10 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		}
 		final float newCamSpotX= MathUtils.lerp(MIN_CAM_SPOT_X, MAX_CAM_SPOT_X, getSpeedPercentage());
 		final Vector2 newCamSpot = new Vector2(getX() + newCamSpotX, getY());
+		if (getSpeed() == 0)
+		{
+			newCamSpot.y +=5f; // initially when standing, move cam above
+		}
 		
 		// before applying the new camspot, check if the difference is too big and go there smoothly
 		final Vector2 diff = newCamSpot.cpy().sub(camSpot);

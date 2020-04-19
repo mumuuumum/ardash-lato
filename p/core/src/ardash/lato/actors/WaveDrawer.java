@@ -68,11 +68,24 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	
 	@Override
 	public void draw(ModelBatch batch, Environment environment) {
+		this.draw(batch, environment, false);
+	}	
+	
+	/**
+	 * @param batch
+	 * @param environment
+	 * @param drawOffset true, to draw the waves with a predefined offset
+	 */
+	public void draw(ModelBatch batch, Environment environment, boolean drawOffset) {
 		super.draw(batch, environment);
+		
+		final float offsetY = drawOffset ? -5 : 0;
 		batch.end();
 
 		sr.begin();
 		sr.setColor(ambientColorContainer.getColor());
+		if (drawOffset)
+			sr.setColor(ambientColorContainer.getColor().cpy().mul(0.9f));
 		sr.set(ShapeType.Filled);
 //		sr.set(ShapeType.Line);
 		
@@ -100,7 +113,7 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 			
 			float y = terrainSegmentList.heightAt(x);
 			polygonPoints.add(x);
-			polygonPoints.add(y);
+			polygonPoints.add(y+offsetY);
 			
 //			float[] fa = {x,y, toX,toY, toX,y-500f, x, y-500f};
 //			sr.polygon(fa);
@@ -113,6 +126,7 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 			polygonPoints.add(polygonPoints.get(polygonPoints.size()-2)-500f);
 			polygonPoints.add(firstX);
 			polygonPoints.add(polygonPoints.get(polygonPoints.size()-2)-500f);
+			
 
 			// convert and draw
 			float[] fa = new float[polygonPoints.size()];
@@ -122,7 +136,6 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 			}
 			
 			sr.polygon(fa);
-			
 		}
 		
 		long endTime = System.currentTimeMillis()+1;

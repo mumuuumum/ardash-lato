@@ -61,7 +61,7 @@ public class Scarf extends Group implements StageAccessor {
 		for (int i = 0; i < x.length - 1; i++) {
 			dragSegment(i + 1, x[i], y[i]);
 		}
-		sr.rectLine(0, 0, 100, 100, 5);
+//		sr.rectLine(0, 0, 100, 100, 5);
 		sr.end();
 //		background(0);
 //		}

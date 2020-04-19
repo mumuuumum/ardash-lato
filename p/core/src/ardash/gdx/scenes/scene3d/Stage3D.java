@@ -31,6 +31,7 @@ import ardash.gdx.scenes.scene3d.actions.ColorAction;
 import ardash.gdx.scenes.scene3d.actions.FloatAction;
 import ardash.lato.actions.Actions;
 import ardash.lato.actors.SpeedListener;
+import ardash.lato.actors.WaveDrawer;
 import ardash.lato.weather.AmbientColorChangeListener;
 import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.FogColorChangeListener;
@@ -142,6 +143,13 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
             root.draw(modelBatch, environment, Tag.BACK);
             root.draw(modelBatch, environment, Tag.CENTER);
             root.draw(modelBatch, environment, Tag.FRONT);
+            
+            // and if the first Actor was a wave drawer (main game stage), draw it again with an offset
+            final Actor3D firstChild = root.getChild(0);
+            if (firstChild instanceof WaveDrawer) {
+				WaveDrawer wd = (WaveDrawer) firstChild;
+				wd.draw(modelBatch, environment, true);
+			}
     	}
     	else
     	{

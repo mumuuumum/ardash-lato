@@ -29,7 +29,7 @@ public class ParticlePlane extends Group implements StageAccessor, Disposable, P
 		rainEffect.load( Gdx.files.internal("rain.p"), ta);
 		rainEffect.scaleEffect(0.05f);
 		rainEffect.setPosition(-22f, 20f);
-		rainEffect.start();
+//		rainEffect.start();
 
 		snowEffect.load( Gdx.files.internal("snow.p"), ta);
 		snowEffect.scaleEffect(0.08f);

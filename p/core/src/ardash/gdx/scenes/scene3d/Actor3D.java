@@ -594,23 +594,23 @@ public class Actor3D extends ModelInstance implements Disposable {
     }
 
     
-	public GameManager getGameManager()
+	public static GameManager getGameManager()
 	{
 		LatoGame game = (LatoGame) Gdx.app.getApplicationListener();
 		return game.gm;
 	}
 	
-	public Assets getAssets()
+	public static Assets getAssets()
 	{
 		return getGameManager().assets;
 	}
 
-	public AnnotationAssetManager getAssetManager()
+	public static AnnotationAssetManager getAssetManager()
 	{
 		return getGameManager().am;
 	}
 
-	public GameScreen getGameScreen()
+	public static GameScreen getGameScreen()
 	{
 		return getGameManager().getGameScreen();
 	}

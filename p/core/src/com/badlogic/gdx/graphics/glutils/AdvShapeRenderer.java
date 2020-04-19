@@ -1,5 +1,7 @@
 package com.badlogic.gdx.graphics.glutils;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.EarClippingTriangulator;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.ShortArray;
@@ -65,4 +67,44 @@ public class AdvShapeRenderer extends ShapeRenderer {
 	        }
 	    }
 	}
+	
+	
+	/** Draws a polygon in the x/y plane using {@link ShapeType#Line}. The vertices must contain at least 3 points (6 floats x,y). */
+	public void polygonz (float[] vertices, int offset, int count) {
+		if (count < 6) throw new IllegalArgumentException("Polygons must contain at least 3 points.");
+		if (count % 2 != 0) throw new IllegalArgumentException("Polygons must have an even number of vertices.");
+
+//		check(ShapeType.Line, null, count);
+		float colorBits = getColor().toFloatBits();
+//		float colorBits = Color.GREEN.toFloatBits();
+		float firstX = vertices[0];
+		float firstY = vertices[1];
+
+		for (int i = offset, n = offset + count; i < n; i += 2) {
+			float x1 = vertices[i];
+			float y1 = vertices[i + 1];
+
+			float x2;
+			float y2;
+
+			if (i + 2 >= count) {
+				x2 = firstX;
+				y2 = firstY;
+			} else {
+				x2 = vertices[i + 2];
+				y2 = vertices[i + 3];
+			}
+			final ImmediateModeRenderer renderer = getRenderer();
+			renderer.color(colorBits);
+			renderer.vertex(x1, y1, 0);
+			renderer.color(colorBits);
+			renderer.vertex(x2, y2, 0);
+		}
+	}
+
+	/** @see #polygon(float[], int, int) */
+	public void polygonz (float[] vertices) {
+		polygonz(vertices, 0, vertices.length);
+	}
+
 }

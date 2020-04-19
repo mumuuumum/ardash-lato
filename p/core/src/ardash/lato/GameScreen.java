@@ -8,7 +8,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
+import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -25,6 +28,7 @@ import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.Stage3D;
 import ardash.gdx.scenes.scene3d.shape.CubeActor3D;
+import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.Assets.SceneTexture;
 import ardash.lato.actors.FlarePlane;
 import ardash.lato.actors.ParticlePlane;
@@ -34,6 +38,7 @@ import ardash.lato.actors.Scarf;
 import ardash.lato.actors.SkyPlane;
 import ardash.lato.actors.WaveDrawer;
 import ardash.lato.actors3.MountainRange3;
+import ardash.lato.actors3.Toonhouse;
 import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.WeatherProvider;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
@@ -155,7 +160,7 @@ public class GameScreen implements Screen {
 		stage3d.addActor(performer);
 //		performer.init();
 //		p.moveBy(4*1.8f, 10f);
-		performer.moveBy(8*1.8f, 10f); // tmp becasue no starting groudn yet
+		performer.moveBy(8*1.8f, 20f); // initial camera position
 		performer.getCamSpot().set(performer.getX(), performer.getY());
 		stage.setPerformer(performer); // attach the camera to him
 		weather.addAmbientColourChangeListener(performer);
@@ -235,16 +240,19 @@ public class GameScreen implements Screen {
 //        backStage3d.addActor(ca);
 //        ca.translate(55, 3, 0);
         
-		Model houseModel = am.get(Assets.toon_house); 
-		Actor3D ma = new Actor3D(houseModel);
-		ma.setName("toonhouse");
+        performer.act(0f); // TODO check if this is safe to act() once to get the position right
+        Vector2 tts = new Vector2(20,10);
+        Image3D titleText = new Image3D(tts.x, tts.y, assets.getSTexture(SceneTexture.TITLESCREEN), new ModelBuilder());
+        titleText.setTag(Tag.CENTER);
+        titleText.setPosition(performer.getX()-tts.x/2f + 4f, performer.getY()+2f);
+        stage3d.addActor(titleText);
+
+        Toonhouse ma = new Toonhouse();
+        ma.translate(0,0, -2);
 		ma.setTag(Tag.BACK);
         stage3d.addActor(ma);
         stage3d.setAmbientLightColor(Color.WHITE.cpy());
         stage3d.setDirectionalLight(null);
-//        ma.setScale(1, 1, 1);
-        ma.setScale(0.002f, 0.002f, 0.002f);
-        ma.translate(55, 0, 0);
 		
 
     	// connect cameras to Performer

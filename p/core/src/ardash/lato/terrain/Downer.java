@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.lato.actors3.Spruce;
 import ardash.lato.actors3.TerrainItem;
+import ardash.lato.actors3.Toonhouse;
 
 /**
  * A slope downhill, followed by a short straight line.
@@ -40,18 +41,24 @@ public class Downer extends Section {
 		tree.setTag(Tag.BACK);
 		surroundingItems.add(tree);
 		Spruce tree2 = new Spruce();
-		tree2.translate(-1f, 0, 1);
+		tree2.translate(-5f, 0, 1);
 		tree2.setTag(Tag.FRONT);
 		surroundingItems.add(tree2);
 
-		Spruce tree3 = new Spruce();
-		tree3.translate(2, 0, -1.5f);
-		tree3.setTag(Tag.BACK);
-		surroundingItems.add(tree3);
-		Spruce tree4 = new Spruce();
-		tree4.translate(2.5f, 0, -0.1f);
-		tree4.setTag(Tag.BACK);
-		surroundingItems.add(tree4);
+//		Spruce tree3 = new Spruce();
+//		tree3.translate(2, 0, -1.5f);
+//		tree3.setTag(Tag.BACK);
+//		surroundingItems.add(tree3);
+//		Spruce tree4 = new Spruce();
+//		tree4.translate(2.5f, 0, -0.1f);
+//		tree4.setTag(Tag.BACK);
+//		surroundingItems.add(tree4);
+		
+        Toonhouse ma = new Toonhouse();
+        ma.translate(-1,0, -2);
+		ma.setTag(Tag.BACK);
+        addSurroundingItem(ma);
+
 }
 
 	static private void makeNewRandomVector() {
