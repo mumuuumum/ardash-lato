@@ -276,7 +276,7 @@ void main() {
 		v_normal = normal;
 	#endif // normalFlag
 
-// TODO try exp fog again in fragment now that distance is fixed:
+// TODO can be removed since fogs come from fragment shader now
     #ifdef fogFlag
 //        pos.y *=0.50;
         pos.x *=0.5;

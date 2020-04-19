@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
@@ -38,6 +39,9 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	private static final float PERFORMER_WIDTH = 1.85f;
 	private static final float MIN_SPEED = 9.3f;
 	private static final float MAX_SPEED = 29.3f;
+	private static final float MIN_CAM_SPOT_X = 10f;
+	private static final float MAX_CAM_SPOT_X = 24f;
+
 	private float speed = 0f; // speed in m/s
 	private boolean isInAir = false;
 	private boolean isUserInputDown = false;
@@ -170,7 +174,8 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 				
 			}
 		}
-		camSpot.set(getX()+10f, getY());
+		final float newCamSpotX= MathUtils.lerp(MIN_CAM_SPOT_X, MAX_CAM_SPOT_X, getSpeedPercentage());
+		camSpot.set(getX()+newCamSpotX, getY());
 		
 		// TODO move snow spray (use listener)
 //		final Pool<Vector2> vecPool = Pools.get(Vector2.class);

@@ -39,7 +39,7 @@ import ardash.lato.weather.FogIntensityChangeListener;
 public class Stage3D extends InputAdapter implements Disposable, FogIntensityChangeListener, FogColorChangeListener, AmbientColorChangeListener, SpeedListener {
 	// the valid zoom interval for the camera to be used to interpolate zooming with current speed
 	protected static final float MIN_ZOOM = 0f;
-	protected static final float MAX_ZOOM = 50f;
+	protected static final float MAX_ZOOM = 40f;
 
 	public static final float MAX_FOG_FAR = 30f;
 	public static final float MIN_FOG_FAR = 50f;
