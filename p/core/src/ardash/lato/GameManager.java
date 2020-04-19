@@ -15,20 +15,40 @@ public class GameManager {
 	public final AnnotationAssetManager am;
 	public TerrainManager tm;
 
+	/**
+	 * Indicates if forward movement is going on. User must tap initially to start and movement will end after crash.
+	 */
+	private boolean started;
+
 	public GameManager(LatoGame game) {
 		this.game = game;
 		this.assets = new Assets();
 		this.am = assets.manager;
 		assets.loadAll();
 		this.tm = new TerrainManager();
+		reset();
 	}
 	
+	private void reset() {
+		tm.reset();
+		started = false;
+	}
+
 	public Screen getScreen() {
 		return game.getScreen();
 	}
 
 	public GameScreen getGameScreen() {
 		return (GameScreen)game.getScreen();
+	}
+	
+	public void setStarted(boolean started) {
+		this.started = started;
+	}
+	
+	public boolean isStarted()
+	{
+		return started;
 	}
 
 }

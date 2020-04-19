@@ -25,6 +25,7 @@ import ardash.gdx.scenes.scene3d.actions.ParallelAction;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.Assets;
 import ardash.lato.Assets.SceneTexture;
+import ardash.lato.GameManager;
 import ardash.lato.actions.Actions;
 import ardash.lato.actions.GravityAction;
 import ardash.lato.weather.AmbientColorChangeListener;
@@ -43,6 +44,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	private static final float MAX_CAM_SPOT_X = 24f;
 
 	private float speed = 0f; // speed in m/s
+	private float runtime = 0f; // lifetime starting after game started
 	private boolean isInAir = false;
 	private boolean isUserInputDown = false;
 //	private float direction = 0f; // current rotation (direction) in degrees
@@ -105,6 +107,11 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	@Override
 	public void act(float delta) {
 		super.act(delta);
+		
+		if (getGameManager().isStarted())
+		{
+			runtime += delta;
+		}
 		
 		// accelerate on ground
 		if (! isInAir)
@@ -175,7 +182,14 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			}
 		}
 		final float newCamSpotX= MathUtils.lerp(MIN_CAM_SPOT_X, MAX_CAM_SPOT_X, getSpeedPercentage());
-		camSpot.set(getX()+newCamSpotX, getY());
+		final Vector2 newCamSpot = new Vector2(getX() + newCamSpotX, getY());
+		
+		// before applying the new camspot, check if the difference is too big and go there smoothly
+		final Vector2 diff = newCamSpot.cpy().sub(camSpot);
+		diff.clamp(0, getMaxCamSpeed());
+		camSpot.add(diff);
+		
+//		camSpot.set(newCamSpot);
 		
 		// TODO move snow spray (use listener)
 //		final Pool<Vector2> vecPool = Pools.get(Vector2.class);
@@ -198,6 +212,10 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 
 	}
 	
+	private float getMaxCamSpeed() {
+		return getGameManager().isStarted() ? (runtime > 2f ? 3.3f : 0.3f) : 0.03f;
+	}
+
 	@Override
 	public void draw(ModelBatch modelBatch, Environment environment) {
 		// TODO Auto-generated method stub
@@ -235,6 +253,9 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	}
 
 	public void setSpeed(float speed) {
+		if (!getGameManager().isStarted())
+			return;
+		
 		if (speed < MIN_SPEED)
 			speed = MIN_SPEED;
 		if (speed > MAX_SPEED)
@@ -272,6 +293,13 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	 * @param down touch up or touch down
 	 */
 	public void userInput(boolean touchDown) {
+		if (!getGameManager().isStarted()) 
+		{
+			return; // don't jump or rotate if game not started yet
+//			setSpeed(MIN_SPEED);
+//			getGameManager().setStarted(true);
+		}
+		
 		isUserInputDown = touchDown;
 		if (!isInAir)
 		{

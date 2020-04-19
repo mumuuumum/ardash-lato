@@ -156,6 +156,7 @@ public class GameScreen implements Screen {
 //		performer.init();
 //		p.moveBy(4*1.8f, 10f);
 		performer.moveBy(8*1.8f, 10f); // tmp becasue no starting groudn yet
+		performer.getCamSpot().set(performer.getX(), performer.getY());
 		stage.setPerformer(performer); // attach the camera to him
 		weather.addAmbientColourChangeListener(performer);
 //		weather.addAmbientColourChangeListener(performer);
@@ -292,6 +293,7 @@ public class GameScreen implements Screen {
 //		flarePlane.init();
 
 		buildGui();
+//		stage3d.act(); // act one time, to draw it correctly
 	}
 
 	private ShaderProvider getShaderP() {
@@ -316,6 +318,7 @@ public class GameScreen implements Screen {
 				String lblText = "fps: "+ Gdx.graphics.getFramesPerSecond();
 				lblText += "\nactors: "+stage3d.getRoot().getChildren().size;
 				lblText += String.format("\nposition: %.2f %.2f", performer.getX(), performer.getY());
+				lblText += String.format("\nspeed: %.2f %.2f%%", performer.getSpeed(), performer.getSpeedPercentage()*100f);
 				lblText += "\nt-sections: "+gm.tm.getSections().size();
 				lblText += String.format("\ntime of day: %.2f %s %s fogginess: %.4f"
 						, weather.currentTOD(), weather.getCurrentColorSchema(), weather.getCurrentPrecip(), weather.getCurrentFog());
@@ -328,6 +331,7 @@ public class GameScreen implements Screen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				performer.userInput(true);
+				gm.setStarted(true);
 				return true;
 			}
 			@Override
@@ -382,27 +386,20 @@ public class GameScreen implements Screen {
     	
     	guiStage.act(delta); // contains weather provider
 
-//    	frontStage.draw();
-    	
-    	backStage.act();
-    	backStage.draw();
-//    	skyStage3d.act(delta);
-//    	skyStage3d.draw();
+    	backStage.act(delta);
     	mountainStage3d.act(delta);
+//    	if (gm.isStarted())
+        	stage3d.act(delta);
+    	frontStage.act(delta);
+    	stage.act(delta);
+    	
+
+    	backStage.draw();
     	mountainStage3d.draw();
-
-    	stage3d.act(delta);
     	stage3d.draw(true);
-
-    	stage.act();
     	stage.draw();
     	
-    	frontStage.act(delta);
     	frontStage.draw();
-//    	flareStage3d.act(delta);
-//    	flareStage3d.draw();
-
-
     	guiStage.draw();
     	
 //    	stage3d.getCamera().

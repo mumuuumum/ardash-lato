@@ -29,7 +29,7 @@ public class TerrainManager {
 		reset();
 	}
 
-	private void reset() {
+	public void reset() {
 		sections.clear();
 	}
 
