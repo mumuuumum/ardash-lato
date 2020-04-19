@@ -145,6 +145,7 @@ public class GameScreen implements Screen {
 //		backStage.addActor(skyPlane);
 //		skyPlane.init();
 		
+		performer = new Performer();
 		
 		// test to add shaperenderers
 		waveDrawer = new WaveDrawer(EnvColors.DAY.ambient);
@@ -156,7 +157,6 @@ public class GameScreen implements Screen {
 //		testTree.translate(55, 0, 0);
 //		backStage3d.addActor(testTree);
 		
-		performer = new Performer();
 		stage3d.addActor(performer);
 //		performer.init();
 //		p.moveBy(4*1.8f, 10f);
@@ -241,10 +241,10 @@ public class GameScreen implements Screen {
 //        ca.translate(55, 3, 0);
         
         performer.act(0f); // TODO check if this is safe to act() once to get the position right
-        Vector2 tts = new Vector2(20,10);
+        Vector2 tts = new Vector2(13.5f,5.566f);
         Image3D titleText = new Image3D(tts.x, tts.y, assets.getSTexture(SceneTexture.TITLESCREEN), new ModelBuilder());
         titleText.setTag(Tag.CENTER);
-        titleText.setPosition(performer.getX()-tts.x/2f + 4f, performer.getY()+2f);
+        titleText.setPosition(performer.getX()-tts.x/2f + 4f, performer.getY()+6f);
         stage3d.addActor(titleText);
 
         Toonhouse ma = new Toonhouse();

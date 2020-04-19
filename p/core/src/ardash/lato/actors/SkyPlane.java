@@ -2,7 +2,6 @@ package ardash.lato.actors;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -13,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
-import com.github.czyzby.kiwi.util.gdx.scene2d.Actors;
 
 import ardash.lato.Assets.SceneTexture;
 import ardash.lato.actions.MoreActions;
@@ -22,15 +20,14 @@ import ardash.lato.weather.FogColorChangeListener;
 import ardash.lato.weather.SODChangeListener;
 import ardash.lato.weather.SkyColorChangeListener;
 import ardash.lato.weather.SunColorChangeListener;
-import ardash.lato.weather.WeatherProvider;
 
 public class SkyPlane extends Group implements StageAccessor, Disposable, SkyColorChangeListener, SunColorChangeListener, SODChangeListener, FogColorChangeListener {
 
 	private static final float SUN_WIDTH = 2;
 	private ShapeRenderer sr;
 	private Group sunRotor;
-	private Image imgGlow, imgSun;
-	private Actor imgFlare;
+	private Image iSunGlow, iSun, iMoonGlow, iMoon;
+	private Actor sunFlare, moonFlare;
 	private Actor topColorHolder, bottomColorHolder, fogColorHolder;
 
 	public SkyPlane(float width, float height) {
@@ -47,30 +44,66 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		
 		// move a bit down, so sun moved behind mountains
 		sunRotor.moveBy(0, -15);
+		
+		// STARS
+		
+		
 
+		// SUN
+		
 		// add sun glow
-		imgGlow = new Image(getAssets().getSTexture(SceneTexture.GLOW));
-		imgGlow.setWidth(SUN_WIDTH*26);
-		imgGlow.setHeight(SUN_WIDTH*26);
-		sunRotor.addActor(imgGlow);
+		iSunGlow = new Image(getAssets().getSTexture(SceneTexture.GLOW));
+		iSunGlow.setWidth(SUN_WIDTH*26);
+		iSunGlow.setHeight(SUN_WIDTH*26);
+		sunRotor.addActor(iSunGlow);
 //		imgGlow.setPosition(0, -15f); // sun rotation radius
-		imgGlow.setColor(new Color(1,1,1,0.51f)); // adjusting glow intensity here, changes apperence of max fog
-		imgGlow.setName("sunglow");
+		iSunGlow.setColor(new Color(1,1,1,0.51f)); // adjusting glow intensity here, changes appearance of max fog
+		iSunGlow.setName("sunglow");
 //		imgGlow.setTouchable(Touchable.disabled);
 
 		
 		// add sun shape
-		imgSun = new Image(getAssets().getSTexture(SceneTexture.SUN_SHAPE));
-		imgSun.setWidth(SUN_WIDTH);
-		imgSun.setHeight(SUN_WIDTH);
-		sunRotor.addActor(imgSun);
-		imgSun.setPosition(0, -20f); // sun rotation radius
-		imgFlare = spawnFlareInForeground(imgSun, 500f);
-		imgSun.setTouchable(Touchable.enabled);
-		imgSun.setName("sunshape");
+		iSun = new Image(getAssets().getSTexture(SceneTexture.SUN_SHAPE));
+		iSun.setWidth(SUN_WIDTH);
+		iSun.setHeight(SUN_WIDTH);
+		sunRotor.addActor(iSun);
+		iSun.setPosition(0, -20f); // sun rotation radius
+		sunFlare = spawnFlareInForeground(iSun, 500f);
+		iSun.setTouchable(Touchable.enabled);
+		iSun.setName("sunshape");
 
 		// move glow to sun
-		imgGlow.setPosition(imgSun.getX()-imgGlow.getWidth()/2f, imgSun.getY()-imgGlow.getHeight()/2f);
+		iSunGlow.setPosition(iSun.getX()-iSunGlow.getWidth()/2f, iSun.getY()-iSunGlow.getHeight()/2f);
+
+		
+		// MOON
+
+		// add moon glow
+		iMoonGlow = new Image(getAssets().getSTexture(SceneTexture.GLOW));
+		iMoonGlow.setWidth(SUN_WIDTH*26);
+		iMoonGlow.setHeight(SUN_WIDTH*26);
+		sunRotor.addActor(iMoonGlow);
+		iMoonGlow.setColor(new Color(1,1,1,0.1f)); // adjusting glow intensity here, changes appearance of max fog
+		iMoonGlow.setName("moonglow");
+
+		
+		// add moon shape
+		iMoon = new Image(getAssets().getSTexture(SceneTexture.MOON_SHAPE));
+		iMoon.setWidth(SUN_WIDTH);
+		iMoon.setHeight(SUN_WIDTH);
+		sunRotor.addActor(iMoon);
+		iMoon.setPosition(0, 20f); // sun rotation radius
+		moonFlare = spawnFlareInForeground(iMoon, 500f);
+		moonFlare.getColor().mul(0.5f);
+		moonFlare.setVisible(false);
+		iMoon.setTouchable(Touchable.enabled);
+		iMoon.setName("moonshape");
+
+		// move moon glow to moon
+		iMoonGlow.setPosition(iMoon.getX()-iMoonGlow.getWidth()/2f, iMoon.getY()-iMoonGlow.getHeight()/2f);
+
+		
+
 		
 		// add dummy Actor to hold the color, so the color can be changed by an Action
 		topColorHolder = new Actor();
@@ -137,9 +170,9 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 
 	@Override
 	public void onSunColorChangeTriggered(Color target, float seconds) {
-		imgGlow.addAction(MoreActions.noAlphaColor(target, seconds));
+		iSunGlow.addAction(MoreActions.noAlphaColor(target, seconds));
 		if (!getGameScreen().weather.getCurrentColorSchema().equals(EnvColors.NIGHT))
-			imgFlare.addAction(MoreActions.noAlphaColor(target, seconds));
+			sunFlare.addAction(MoreActions.noAlphaColor(target, seconds));
 //		imgSun.addAction(Actions.color(target, seconds));
 	}
 
@@ -150,9 +183,14 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		
 		// fadeOut doesn't work because the flare is not alpha-blended
 		if (hourOfDay < 6.5f || hourOfDay > 18.1f)
-			imgFlare.setVisible(false);
+			sunFlare.setVisible(false);
 		else
-			imgFlare.setVisible(true);
+			sunFlare.setVisible(true);
+			
+		if (hourOfDay < 4.9f || hourOfDay > 18.5f)
+			moonFlare.setVisible(true);
+		else
+			moonFlare.setVisible(false);
 			
 	}
 

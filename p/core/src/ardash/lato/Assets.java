@@ -10,22 +10,23 @@ import net.dermetfan.gdx.assets.AnnotationAssetManager;
 import net.dermetfan.gdx.assets.AnnotationAssetManager.Asset;
 
 public class Assets {
-	
-	public enum SceneTexture{
-			MOUNT,MOUNT_PIX,MOUNT_PIX2, MOUNTAINFOG, FOG_PIX, P1_RIDE, P1_JUMP, P1_DUCK, P1_ROLL, SUN_SHAPE, GLOW, FLARE, ADD_FLARE, PAUSE, ADD_FLARE_A, TITLESCREEN;
+
+	public enum SceneTexture {
+		MOUNT, MOUNT_PIX, MOUNT_PIX2, MOUNTAINFOG, FOG_PIX, P1_RIDE, P1_JUMP, P1_DUCK, P1_ROLL, SUN_SHAPE, GLOW, FLARE,
+		ADD_FLARE, PAUSE, ADD_FLARE_A, TITLESCREEN, MOON_SHAPE;
 	}
+
 	public final AnnotationAssetManager manager = new AnnotationAssetManager(new InternalFileHandleResolver());
-	
+
 	@Asset(Texture.class)
-    public static final String ball = "marble.png";//, player = "img/player.png";
-	
+	public static final String ball = "marble.png";// , player = "img/player.png";
+
 	@Asset(TextureAtlas.class)
-    public static final String uiAtlas = "scene.atlas";
-	
+	public static final String uiAtlas = "scene.atlas";
+
 	@Asset(Model.class)
-    public static final String toon_house = "toon_house.g3db";
-	
-	
+	public static final String toon_house = "toon_house.g3db";
+
 //	public static final AssetDescriptor<TextureAtlas> uiAtlas = new AssetDescriptor<TextureAtlas>("scene.atlas",
 //	TextureAtlas.class);
 
@@ -38,18 +39,17 @@ public class Assets {
 //	public static final AssetDescriptor<Skin> uiSkin = new AssetDescriptor<Skin>("ui/uiskin.json", Skin.class,
 //			new SkinLoader.SkinParameter("ui/uiskin.pack"));
 
-	public TextureRegion getSTexture(SceneTexture st)
-	{
+	public TextureRegion getSTexture(SceneTexture st) {
 //		textureAtlas = uiAtlas;
 //		val box = uiAtlas. findRegion("box");
 		String regionName = st.name().toLowerCase();
 		TextureAtlas ta = manager.get(Assets.uiAtlas);
 		TextureRegion tr = ta.findRegion(regionName);
 		if (tr == null)
-			throw new RuntimeException("cannot find region: "+ regionName);
+			throw new RuntimeException("cannot find region: " + regionName);
 		return tr;
 	}
-	
+
 	public void loadAll() {
 		manager.load(Assets.class); // loads all static @Asset fields
 //		manager.load(someTexture);

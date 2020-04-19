@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.gdx.scenes.scene3d.Group3D;
+import ardash.lato.LatoStage3D;
 import ardash.lato.actions.MoreActions;
 import ardash.lato.terrain.Downer;
 import ardash.lato.terrain.HomeHill;
@@ -51,8 +52,12 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 //sr.translate(0, 0, 20);
 		// path setup
 		terrainSegmentList = new TerrainSegList();
-		terrainSegmentList.addAllNoOffset(new HomeHill()); // TODO init starting area of terrain
-		
+		final HomeHill homehill = new HomeHill();
+		terrainSegmentList.addAllNoOffset(homehill); // TODO init starting area of terrain
+		getGameManager().tm.createNewSection(terrainSegmentList.last());
+		// call listener manually		
+		getGameManager().getGameScreen().stage3d.onNewSectionCreated(homehill);
+
 //		Image3D img = new Image3D(1.85f, 10, Color.GOLD, null, modelBuilder, 0);
 //		addActor(img);
 //		img = new Image3D(10, 10, Color.GOLD, null, modelBuilder, -5);

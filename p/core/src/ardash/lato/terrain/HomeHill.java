@@ -15,10 +15,16 @@ public class HomeHill extends Section {
 		add (new Vector2(10,3), new Vector2(25,3), Interpolation.smooth);
 		add (new Vector2(25,3),new Vector2(40,0), Interpolation.smooth);
 		
-        Toonhouse ma = new Toonhouse();
-        ma.translate(0,0, -2);
-		ma.setTag(Tag.BACK);
-        addSurroundingItem(ma);
+        Toonhouse h1 = new Toonhouse(45f);
+        h1.translate(10,4, -2);
+		h1.setTag(Tag.BACK);
+		
+        Toonhouse h2 = new Toonhouse(90f);
+        h2.translate(25,4, -2);
+		h2.setTag(Tag.BACK);
+		
+        addSurroundingItem(h1);
+        addSurroundingItem(h2);
 
 	}
 
