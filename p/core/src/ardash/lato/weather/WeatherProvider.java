@@ -39,7 +39,7 @@ public class WeatherProvider extends Actor{
 //	public static final float MIN_FOG = 0.036f;
 //	public static final float MAX_FOG = 0.1f;
 //	public static final float MAX_FOG_NO_PRECIPITATION = (MAX_FOG + MIN_FOG) /2f;
-	public static final float MIN_FOG = 0.4f;
+	public static final float MIN_FOG = 0.6f;
 	public static final float MAX_FOG = 0.99f;
 	public static final float MAX_FOG_NO_PRECIPITATION = (MAX_FOG + MIN_FOG) /2f;
 

@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.physics.box2d.joints.WheelJoint;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -327,6 +328,8 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
 
 	@Override
 	public void onAmbientColorChangeTriggered(Color target, float seconds) {
+//		target = target.cpy().mul(1.5f); // apply ambience a bit brighter
+//		target.set(Color.WHITE);
 		final ColorAction action = Actions3D.color(target, seconds);
 		action.setColor(ambientColor);
 		addAction(action);

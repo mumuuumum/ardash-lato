@@ -12,15 +12,19 @@ import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.AdvShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.gdx.scenes.scene3d.Group3D;
+import ardash.lato.actions.MoreActions;
 import ardash.lato.terrain.Downer;
 import ardash.lato.terrain.HomeHill;
 import ardash.lato.terrain.TerrainSegList;
+import ardash.lato.weather.AmbientColorChangeListener;
+import ardash.lato.weather.EnvColors;
 
-public class WaveDrawer extends Group3D implements Disposable { //StageAccessor, AmbientColorChangeListener {
+public class WaveDrawer extends Group3D implements Disposable, AmbientColorChangeListener { //StageAccessor,  {
 	/**
 	 * Everything that is more than this far behind the Performer can be deleted form the stage
 	 */
@@ -33,9 +37,10 @@ public class WaveDrawer extends Group3D implements Disposable { //StageAccessor,
 	
 
 	private final ModelBuilder modelBuilder = new ModelBuilder();
-		private AdvShapeRenderer sr;
+	private AdvShapeRenderer sr;
 	TerrainSegList terrainSegmentList;
 	Vector2 tmpVector = new Vector2(); // can be used by one method atomically
+	private Actor ambientColorContainer = new Actor();
 
 	public WaveDrawer(Color color) {
 		setName("WaveDrawer");
@@ -52,7 +57,14 @@ public class WaveDrawer extends Group3D implements Disposable { //StageAccessor,
 //		addActor(img);
 //		img = new Image3D(10, 10, Color.GOLD, null, modelBuilder, -5);
 //		addActor(img);
+		ambientColorContainer.setColor(EnvColors.DAY.ambient.cpy());
 	}
+	
+	@Override
+		public void act(float delta) {
+			super.act(delta);
+			ambientColorContainer.act(delta);
+		}
 	
 	@Override
 	public void draw(ModelBatch batch, Environment environment) {
@@ -60,7 +72,7 @@ public class WaveDrawer extends Group3D implements Disposable { //StageAccessor,
 		batch.end();
 
 		sr.begin();
-//		sr.setColor(getColor());
+		sr.setColor(ambientColorContainer.getColor());
 		sr.set(ShapeType.Filled);
 //		sr.set(ShapeType.Line);
 		
@@ -181,8 +193,9 @@ public class WaveDrawer extends Group3D implements Disposable { //StageAccessor,
 //			throw new RuntimeException("ERROR: don't remove the wave drawer!");
 //		}
 
-//	@Override
-//	public void onAmbientColorChangeTriggered(Color target, float seconds) {
-//		addAction(Actions.color(target, seconds));		
-//	}
+	@Override
+	public void onAmbientColorChangeTriggered(Color target, float seconds) {
+//		addAction(Actions.color(ambientColorContainer.getColor(), seconds));	
+		ambientColorContainer.addAction(MoreActions.noAlphaColor(target, seconds));
+	}
 }

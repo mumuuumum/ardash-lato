@@ -145,7 +145,7 @@ public class GameScreen implements Screen {
 		waveDrawer = new WaveDrawer(EnvColors.DAY.ambient);
 		stage3d.addActor(waveDrawer);
 		stage.setWaveDrawer(waveDrawer);
-//		weather.addAmbientColourChangeListener(waveDrawer);
+		weather.addAmbientColourChangeListener(waveDrawer);
 
 //		Spruce testTree = new Spruce();
 //		testTree.translate(55, 0, 0);
