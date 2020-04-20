@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.PerformanceCounter;
 import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
@@ -67,6 +68,8 @@ public class GameScreen implements Screen {
 	public FlarePlane flarePlane;
 	public Performer performer;
 	public WaveDrawer waveDrawer;
+	PerformanceCounter perf ;
+	float lastPerfOutput = 0;
 
 	public enum LatoShaders {BACK}
 	
@@ -74,6 +77,7 @@ public class GameScreen implements Screen {
 		this.gm = gm;
 		this.am = gm.am;
 		this.assets = gm.assets;
+    	perf = gm.performanceCounters.add("gs");
 	}
 
 	@Override
@@ -368,6 +372,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
+		perf.start();
 		//draw something nice to look at
 //        Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
 //    	Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -407,8 +412,15 @@ public class GameScreen implements Screen {
     	frontStage.draw();
     	guiStage.draw();
     	
-    	gm.performanceCounters.tick();
-    	System.out.println(gm.performanceCounters.toString(new StringBuilder()));
+		perf.stop();
+		
+		lastPerfOutput+=delta;
+		if (lastPerfOutput>=5f)
+		{
+	    	gm.performanceCounters.tick();
+	    	System.out.println(gm.performanceCounters.toString(new StringBuilder()));
+	    	lastPerfOutput = 0;
+		}
 	}
 
 	@Override

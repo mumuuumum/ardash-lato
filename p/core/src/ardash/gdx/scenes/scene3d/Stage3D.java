@@ -65,6 +65,7 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
 	private Viewport viewport;
 
     private final Group3D root;
+	private FloatAction fodIntensityAction;
 
     /** Creates a stage with a viewport equal to the device screen resolution. The stage
      * will use its own {@link SpriteBatch}. 
@@ -117,7 +118,10 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
 
     private void setFogColor (Color c)
     {
-        environment.set(new ColorAttribute(ColorAttribute.Fog, c.r, c.g, c.b, c.a));
+    	float fogi =0;
+    	if (fodIntensityAction != null)
+    		fogi = fodIntensityAction.getValue();
+        environment.set(new ColorAttribute(ColorAttribute.Fog, c.r, c.g, c.b, fogi));
     }
 
     public void draw() {
@@ -305,6 +309,8 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
 
 	@Override
 	public void onFogIntensityChanged(float currentFog, float newIntensity, float duration) {
+		fodIntensityAction = Actions.floata(currentFog, newIntensity, duration);
+		addAction(fodIntensityAction);
 //		newIntensity = MathUtils.clamp(newIntensity, 0.0f, 1.0f);
 //		final float newFarValue = MathUtils.lerp(MIN_FOG_FAR, MAX_FOG_FAR, newIntensity);
 //		FloatAction action = new FloatAction(getCamera().far, newFarValue, duration) {
@@ -316,7 +322,7 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
 //			}
 //		};
 //		addAction(action);
-		fogColor.a = newIntensity;
+//		fogColor.a = newIntensity;
 	}
 
 	@Override
