@@ -1,18 +1,19 @@
 package ardash.lato.actors;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.RandomXS128;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
@@ -36,8 +37,13 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 	private Image iSunGlow, iSun, iMoonGlow, iMoon;
 	private Actor sunFlare, moonFlare;
 	private Actor topColorHolder, bottomColorHolder, fogColorHolder;
+	private List<SkyPlaneListener> listeners = new LinkedList<SkyPlane.SkyPlaneListener>();
 	RandomXS128 rand = new RandomXS128(8793246527834L);
 
+	public interface SkyPlaneListener{
+		void onSunDirectionChanged(float newAngle);
+	}
+	
 	public SkyPlane(float width, float height) {
 		setSize(width, height);
 		final float width2 = getWidth()/2f;
@@ -226,10 +232,13 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 //		imgSun.addAction(Actions.color(target, seconds));
 	}
 
-	boolean fading = false;
+//	boolean fading = false;
 	@Override
 	public void onSODChange(float newSOD, float hourOfDay, float delta, float percentOfDayOver) {
 		sunRotor.setRotation(percentOfDayOver * -360f);
+		for (SkyPlaneListener listener : listeners) {
+			listener.onSunDirectionChanged(sunRotor.getRotation());
+		}
 		
 		// fadeOut doesn't work because the flare is not alpha-blended
 		if (hourOfDay < 6.5f || hourOfDay > 18.1f)
@@ -249,6 +258,11 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 			stars.addAction(Actions.sequence(Actions.fadeOut(3f), Actions.visible(false)));
 		}
 			
+	}
+	
+	public void addListener (SkyPlaneListener l)
+	{
+		listeners.add(l);
 	}
 
 	@Override

@@ -104,17 +104,31 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
         	
         this.viewport =v;
         this.environment = environment;
+        
+        environment.add(dl);
     }
+    
+    DirectionalLight dl = new DirectionalLight().set(0.8f, 0.0f, 0.0f, 0f, -0.8f, -0.2f);
 
+    public void setDirectionalLightColor (Color c)
+    {
+        dl.setColor(c);
+    }
+    
+    public void setDirectionalLightDirection (float x, float y, float z)
+    {
+        dl.setDirection(x, y, z);
+    }
+    
     public void setAmbientLightColor (Color c)
     {
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, c.r, c.g, c.b, 0.51f));
     }
 
-    public void setDirectionalLight (Color c)
-    {
-        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
-    }
+//    public void setDirectionalLight (Color c)
+//    {
+//        environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
+//    }
 
     private void setFogColor (Color c)
     {

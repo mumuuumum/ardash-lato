@@ -25,7 +25,6 @@ import com.github.czyzby.kiwi.util.gdx.viewport.Viewports;
 
 import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.gdx.scenes.scene3d.Camera3D;
-import ardash.gdx.scenes.scene3d.Stage3D;
 import ardash.gdx.scenes.scene3d.shape.CubeActor3D;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.Assets.SceneTexture;
@@ -35,6 +34,7 @@ import ardash.lato.actors.Performer;
 import ardash.lato.actors.Performer.PerformerListener;
 import ardash.lato.actors.Scarf;
 import ardash.lato.actors.SkyPlane;
+import ardash.lato.actors.SkyPlane.SkyPlaneListener;
 import ardash.lato.actors.WaveDrawer;
 import ardash.lato.actors3.MountainRange3;
 import ardash.lato.actors3.Toonhouse;
@@ -128,6 +128,14 @@ public class GameScreen implements Screen {
 		weather.addFogColourChangeListener(skyPlane);
 		weather.addSunColourChangeListener(skyPlane);
 		weather.addSODChangeListener(skyPlane);
+    	stage3d.setDirectionalLightColor(Color.GREEN.cpy());
+    	skyPlane.addListener(new SkyPlaneListener() {
+			@Override
+			public void onSunDirectionChanged(float newAngle) {
+				Vector2 d = new Vector2().set(1,1).nor().setAngle(newAngle);
+				stage3d.setDirectionalLightDirection(d.x, d.y, 0f);
+			}
+		});
 		
 		for (int i = 0; i<4 ; i++)
 		{
@@ -255,7 +263,6 @@ public class GameScreen implements Screen {
 		ma.setTag(Tag.BACK);
         stage3d.addActor(ma);
         stage3d.setAmbientLightColor(Color.WHITE.cpy());
-        stage3d.setDirectionalLight(null);
 		
 
     	// connect cameras to Performer
