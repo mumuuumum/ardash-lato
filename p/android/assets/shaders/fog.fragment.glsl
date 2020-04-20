@@ -201,11 +201,12 @@ void main() {
 		const float LOG2 = 1.442695;
 		float densi = u_fogColor.a;
 		float z = gl_FragCoord.z / gl_FragCoord.w;
-		float fogFactor = exp2( -densi * 
-						   densi * 
-						   z * 
-						   z * 
+		float fogFactor = exp2( -densi *
+						   densi *
+						   z *
+						   z *
 						   LOG2 );
+//		float fogFactor = 0.5;
 		fogFactor = clamp(fogFactor, 0.0, 1.0);
 		
 		gl_FragColor.rgb = mix(u_fogColor.rgb, gl_FragColor.rgb, fogFactor );		 // TODO reveser param 1 und param2
