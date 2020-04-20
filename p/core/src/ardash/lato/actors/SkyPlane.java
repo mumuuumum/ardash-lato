@@ -24,6 +24,7 @@ import ardash.lato.weather.FogColorChangeListener;
 import ardash.lato.weather.SODChangeListener;
 import ardash.lato.weather.SkyColorChangeListener;
 import ardash.lato.weather.SunColorChangeListener;
+import ardash.lato.weather.WeatherProvider;
 
 public class SkyPlane extends Group implements StageAccessor, Disposable, SkyColorChangeListener, SunColorChangeListener, SODChangeListener, FogColorChangeListener {
 
@@ -47,9 +48,12 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		setName("skyplane");
 		this.setTouchable(Touchable.childrenOnly);
 		
+		stars = new Group(); // to manage general star visiblity and fading
 		sunRotor = new Group();
+		addActor(stars);
 		addActor(sunRotor);
 		sunRotor.setPosition(width2, height2); // center on plane
+//		stars.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.visible(false)));
 		
 		// move a bit down, so sun moved behind mountains
 		sunRotor.moveBy(0, -15);
@@ -58,7 +62,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		
 		MathUtils.random = rand; // make always the same stars
 		Vector2 tmpVec = new Vector2();
-		for ( int i=0; i<50; i++)
+		for ( int i=0; i<5000; i++)
 		{
 			final Image img = new Image(getAssets().getSTexture(SceneTexture.FOG_PIX));
 			final float size = MathUtils.random(MIN_STAR_SIZE, MAX_STAR_SIZE);
@@ -70,7 +74,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 			final float ang = MathUtils.random(0f, 360f);
 			final float radius = MathUtils.random(10f, 30f);
 			final Group rotor = new Group();
-			addActor(rotor);
+			stars.addActor(rotor);
 			rotor.setPosition(sunRotor.getX(), sunRotor.getY());
 			rotor.addActor(img);
 //			
@@ -83,8 +87,8 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 			img.getColor().fromHsv(ch, cs, cv);
 			img.setPosition(0, radius); // moon rotation radius, stars are above and next to moon
 			rotor.setRotation(ang);
-//			img.setOrigin(width2-sx, height2-15-sy);
-			img.setRotation(45f);
+//			img.setOrigin(1,1);
+//			img.setRotation(45f);
 			img.setName("star");
 //			img.debug();
 //			img.addAction(Actions.forever(Actions.sequence(Actions.fadeOut(1),Actions.fadeIn(1))));
@@ -93,22 +97,29 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 				@Override
 				public void run() {
 					float r = rotor.getRotation();
-					if (r<0) r+=360f;
+					if (r<0) {
+						r+=360f;
+						rotor.setRotation(r);
+					}
 					if (r>90 && r<270)
 					{
+						// makes all stars invisbile that are currently in the bottom half
 						rotor.setVisible(false);
 					}
 					else
 					{
 						rotor.setVisible(true);
-						rotor.getChild(0).getColor().a = MathUtils.cosDeg(r);
+						// apply 2 cos lookups
+						// 1. cos: fades all stars in when they appear from the bottom, and fade out when they set
+						// 2. cosDeg: lets all stars fade in and out every PI*2 degrees. That makes them flicker.
+						rotor.getChild(0).getColor().a = MathUtils.cos(r)*MathUtils.cosDeg(r)*3;//*radius*1.01f;
 						
 					}
 				}
 			});
 			rotor.addAction(Actions.forever(ra));
-			rotor.addAction(Actions.forever(Actions.rotateBy(-10,1)));
-//			rotor.addAction(Actions.forever(Actions.sequence(Actions.rotateBy(-10,1),ra)));
+			rotor.addAction(Actions.forever(Actions.rotateBy(-360,WeatherProvider.SECONDS_PER_DAY)));
+//			img.addAction(Actions.forever(Actions.rotateBy(360,WeatherProvider.SECONDS_PER_DAY)));
 		}
 
 
@@ -253,9 +264,16 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 			sunFlare.setVisible(true);
 			
 		if (hourOfDay < 4.9f || hourOfDay > 18.5f)
+		{
 			moonFlare.setVisible(true);
+//			stars.addAction(Actions.fadeIn(3f));
+			stars.addAction(Actions.sequence(Actions.visible(true), Actions.fadeIn(3f)));
+		}
 		else
+		{
 			moonFlare.setVisible(false);
+//			stars.addAction(Actions.sequence(Actions.fadeOut(3f), Actions.visible(false)));
+		}
 			
 	}
 
