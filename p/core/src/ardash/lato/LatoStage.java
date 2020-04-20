@@ -10,9 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.PerformanceCounter;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
+import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.lato.actors.Performer;
 import ardash.lato.actors.SpeedListener;
 import ardash.lato.actors.WaveDrawer;
@@ -24,20 +26,17 @@ public class LatoStage extends Stage implements SpeedListener {
 	protected static final float MIN_ZOOM = 1f;
 	protected static final float MAX_ZOOM = 2.08f;
 
-	public final GameScreen screen;
-	public final Assets assets;
-	public final AnnotationAssetManager am;
-	public final GameManager gm;
 	private Performer performer = null;
 	private WaveDrawer waveDrawer = null;
-	
+	private final String name;
+    protected PerformanceCounter pcact;
+    protected PerformanceCounter pcdra;
 
-	public LatoStage(Viewport vp, GameScreen gameScreen) {
+	public LatoStage(Viewport vp, String name) {
 		super(vp);
-		this.screen = gameScreen;
-		this.assets = screen.assets;
-		this.am = screen.am;
-		this.gm = screen.gm;
+		this.name = name;
+		pcact = Actor3D.getGameManager().performanceCounters.add("stage act "+name);
+		pcdra = Actor3D.getGameManager().performanceCounters.add("stage dra "+name);
 		getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), false); // override super constructor
 	}
 
@@ -46,6 +45,7 @@ public class LatoStage extends Stage implements SpeedListener {
 	 * to handle inputs
 	 */
 	public void draw() {
+    	pcdra.start();
     	Gdx.gl20.glEnable(GL20.GL_BLEND);
     	Gdx.gl20.glBlendFunc(GL20.GL_ZERO, GL20.GL_ZERO);
 		super.draw();
@@ -113,17 +113,18 @@ public class LatoStage extends Stage implements SpeedListener {
 		
 //		System.out.print("ppos X: "+Gdx.input.getX());
 //		System.out.println("ppos Y: "+Gdx.input.getY());
-
+    	pcdra.stop();
 	}
 	
 	@Override
 	public void act(float delta) {
+    	pcact.start();
 		super.act(delta);
 		if (waveDrawer != null)
 		{
 			waveDrawer.updateTerrainSegments(performer.getX());
 		}
-		
+    	pcact.stop();
 	}
 	
 	public Actor getFirstHitActorAt(float screenX, float screenY)

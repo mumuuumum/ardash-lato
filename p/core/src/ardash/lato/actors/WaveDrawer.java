@@ -42,6 +42,11 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	TerrainSegList terrainSegmentList;
 	Vector2 tmpVector = new Vector2(); // can be used by one method atomically
 	private Actor ambientColorContainer = new Actor();
+	
+	/**
+	 * list to be used in the draw method to collect points
+	 */
+	private List<Float> polygonPoints = new ArrayList<Float>(100);
 
 	public WaveDrawer(Color color) {
 		setName("WaveDrawer");
@@ -103,7 +108,7 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 		final float drawSteps=0.8f;
 		float firstX = terrainSegmentList.first().x;
 		float lastX = terrainSegmentList.last().x;
-		List<Float> polygonPoints = new ArrayList<Float>(100);
+		polygonPoints.clear();
 		for (float x = firstX; x<lastX-drawSteps ; x+=drawSteps)
 		{
 			float toX = x-drawSteps;

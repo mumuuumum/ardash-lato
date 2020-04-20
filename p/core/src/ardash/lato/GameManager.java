@@ -3,6 +3,7 @@ package ardash.lato;
 import java.util.Collection;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.utils.PerformanceCounters;
 
 import ardash.lato.terrain.TerrainManager;
 import ardash.lato.terrain.TerrainSeg;
@@ -14,6 +15,7 @@ public class GameManager {
 	public final Assets assets;
 	public final AnnotationAssetManager am;
 	public TerrainManager tm;
+	public PerformanceCounters performanceCounters = new PerformanceCounters();
 
 	/**
 	 * Indicates if forward movement is going on. User must tap initially to start and movement will end after crash.

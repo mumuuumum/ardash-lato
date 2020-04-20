@@ -17,8 +17,6 @@ public class Scarf extends Group implements StageAccessor {
 	public static final float SEG_LEN=0.3f;
 	public static final float SEG_THICK=0.1f;
 	
-	Stage3D s;
-	
 	AdvShapeRenderer sr = new AdvShapeRenderer();
 	
 	public Scarf(TextureRegion sTexture) {
@@ -50,6 +48,7 @@ public class Scarf extends Group implements StageAccessor {
 	public void draw(Batch batch, float parentAlpha) {
 		// TODO Auto-generated method stub
 		super.draw(batch, parentAlpha);
+		batch.end();
 		
 		sr.setAutoShapeType(true);
 		
@@ -65,6 +64,8 @@ public class Scarf extends Group implements StageAccessor {
 		sr.end();
 //		background(0);
 //		}
+		
+		batch.begin();
 	}
 
 	void dragSegment(int i, float xin, float yin) {

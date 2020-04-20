@@ -44,20 +44,6 @@ public interface StageAccessor {
 		return getGameScreen().flarePlane.spawnFlare(emitter, size);
 	}
 	
-//	public default float getCenterX()
-//	{
-//		return getX()+getWidth();
-//	}
-//
-//	public int getX();
-//
-//	public int getWidth();
-
 	public Stage getStage();
 	
-//	/**
-//	 * Call this after the Actor has been added to a stage.
-//	 */
-//	public void init();
-
 }

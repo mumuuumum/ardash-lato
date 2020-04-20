@@ -227,11 +227,6 @@ public class Actor3D extends ModelInstance implements Disposable {
         this.parent = parent;
     }
 
-//    private static final Vector3 position = new Vector3();
-//    public boolean isCullable(final Camera cam) {
-//        return cam.frustum.sphereInFrustum(getTransform().getTranslation(position).add(center), radius);
-//    }
-
     public boolean isVisible () {
         return visible;
 
@@ -241,31 +236,16 @@ public class Actor3D extends ModelInstance implements Disposable {
         this.visible = visible;
     }
 
-//    /** @return -1 on no intersection, or when there is an intersection: the squared distance between the center of this
-//     * object and the point on the ray closest to this object when there is intersection. */
-//    public float intersects(Ray ray) {
-//        transform.getTranslation(position).add(center);
-//        final float len = ray.direction.dot(position.x-ray.origin.x, position.y-ray.origin.y, position.z-ray.origin.z);
-//        if (len < 0f)
-//            return -1f;
-//        float dist2 = position.dst2(ray.origin.x+ray.direction.x*len, ray.origin.y+ray.direction.y*len, ray.origin.z+ray.direction.z*len);
-//        return (dist2 <= radius * radius) ? dist2 : -1f;
-//    }
-
     public void setPosition(float x, float y, float z) {
         this.x = x;
         this.y = y;
         this.z = z;
-//        transform.setToTranslationAndScaling(this.x, this.y, this.z, scaleX, scaleY, scaleZ);
-//        transform.mul(rotationMatrix);
     }
 
     public void translate(float x, float y, float z) {
         this.x += x;
         this.y += y;
         this.z += z;
-//        transform.setToTranslationAndScaling(this.x, this.y, this.z, scaleX, scaleY, scaleZ);
-//        transform.mul(rotationMatrix);
     }
     
     /*
@@ -284,8 +264,6 @@ public class Actor3D extends ModelInstance implements Disposable {
          * So we have to correct it
          */
         rotationMatrix = new Matrix4().setFromEulerAngles(pitch, roll, yaw).cpy();
-//        transform.setToTranslationAndScaling(x, y, z, scaleX, scaleY, scaleZ);
-//        transform.mul(rotationMatrix);
     }
 
     /*
@@ -295,8 +273,6 @@ public class Actor3D extends ModelInstance implements Disposable {
     public void setYaw(float newYaw){
         yaw = newYaw;
         rotationMatrix = new Matrix4().setFromEulerAngles(pitch, roll, yaw).cpy();
-//        transform.setToTranslationAndScaling(x, y, z, scaleX, scaleY, scaleZ);
-//        transform.mul(rotationMatrix);
     }
 
     /*
@@ -306,8 +282,6 @@ public class Actor3D extends ModelInstance implements Disposable {
     public void setPitch(float newPitch){
         pitch = newPitch;
         rotationMatrix = new Matrix4().setFromEulerAngles(pitch, roll, yaw).cpy();
-//        transform.setToTranslationAndScaling(x, y, z, scaleX, scaleY, scaleZ);
-//        transform.mul(rotationMatrix);
     }
 
     /*
@@ -317,8 +291,6 @@ public class Actor3D extends ModelInstance implements Disposable {
     public void setRoll(float newRoll){
         roll = newRoll;
         rotationMatrix = new Matrix4().setFromEulerAngles(pitch, roll, yaw).cpy();
-//        transform.setToTranslationAndScaling(x, y, z, scaleX, scaleY, scaleZ);
-//        transform.mul(rotationMatrix);
     }
 
 
@@ -338,29 +310,21 @@ public class Actor3D extends ModelInstance implements Disposable {
         pitch = normalizeDegrees(pitch + amountPitch);
         roll = normalizeDegrees(roll + amountRoll);
         rotationMatrix = new Matrix4().setFromEulerAngles(pitch, roll, yaw).cpy();
-//        transform.setToTranslationAndScaling(x, y, z, scaleX, scaleY, scaleZ);
-//        transform.mul(rotationMatrix);
     }
 
     public void rotateYaw(float amountYaw){
         yaw = normalizeDegrees(yaw + amountYaw);
         rotationMatrix = new Matrix4().setFromEulerAngles(pitch, roll, yaw).cpy();
-//        transform.setToTranslationAndScaling(x, y, z, scaleX, scaleY, scaleZ);
-//        transform.mul(rotationMatrix);
     }
 
     public void rotatePitch(float amountPitch){
         pitch = normalizeDegrees(pitch + amountPitch);
         rotationMatrix = new Matrix4().setFromEulerAngles(pitch, roll, yaw).cpy();
-//        transform.setToTranslationAndScaling(x, y, z, scaleX, scaleY, scaleZ);
-//        transform.mul(rotationMatrix);
     }
 
     public void rotateRoll(float amountRoll){
         roll = normalizeDegrees(roll + amountRoll);
         rotationMatrix = new Matrix4().setFromEulerAngles(pitch, roll, yaw).cpy();
-//        transform.setToTranslationAndScaling(x, y, z, scaleX, scaleY, scaleZ);
-//        transform.mul(rotationMatrix);
     }
 
     public float getYaw(){
@@ -379,14 +343,12 @@ public class Actor3D extends ModelInstance implements Disposable {
         this.scaleX = scaleX;
         this.scaleY = scaleY;
         this.scaleZ = scaleZ;
-//        transform.setToScaling(scaleX, scaleY, scaleZ);
     }
 
     public void setScale(float scale) {
         this.scaleX = scale;
         this.scaleY = scale;
         this.scaleZ = scale;
-//        transform.setToScaling(scaleX, scaleY, scaleZ);
     }
 
     /** Adds the specified scale to the current scale. */
@@ -394,20 +356,17 @@ public class Actor3D extends ModelInstance implements Disposable {
         scaleX += scale;
         scaleY += scale;
         scaleZ += scale;
-//        transform.scl(scale); // re-implement this
     }
 
     public void scale(float scaleX, float scaleY, float scaleZ) {
         this.scaleX += scaleX;
         this.scaleY += scaleY;
         this.scaleZ += scaleZ;
-//        transform.scl(scaleX, scaleY, scaleZ); // re-implement this
     }
 
 
     public void setX (float x) {
         this.x = x;
-//        transform.setToTranslation(x, y, z);
     }
 
     public float getX () {
@@ -416,7 +375,6 @@ public class Actor3D extends ModelInstance implements Disposable {
 
     public void setY (float y) {
         this.y = y;
-//        transform.setToTranslation(x, y, z);
     }
 
     public float getY () {
@@ -425,7 +383,6 @@ public class Actor3D extends ModelInstance implements Disposable {
 
     public void setZ (float z) {
         this.z = z;
-//        transform.setToTranslation(x, y, z);
     }
 
     public float getZ (){
@@ -434,7 +391,6 @@ public class Actor3D extends ModelInstance implements Disposable {
 
     public void setScaleX (float scaleX) {
         this.scaleX = scaleX;
-//        transform.scale(scaleX, scaleY, scaleZ);
     }
 
     public float getScaleX () {
@@ -474,9 +430,6 @@ public class Actor3D extends ModelInstance implements Disposable {
      * @param environment*/
     public void drawDebug(ModelBatch modelBatch, Environment environment) {
         if (!debug) return;
-
-//        axis.transform.setToTranslationAndScaling(this.x, this.y, this.z, scaleX, scaleY, scaleZ);
-//        axis.transform.mul(rotationMatrix);
         axis.transform.set(transform.cpy());
         axis.transform.translate(-originX, -originY, 0);
 
@@ -564,7 +517,6 @@ public class Actor3D extends ModelInstance implements Disposable {
     
     public void moveBy (float x, float y)
     {
-//    	translate(x, y, z);
     	translate(x, y, 0);
     }
 
@@ -573,18 +525,14 @@ public class Actor3D extends ModelInstance implements Disposable {
     	setPosition(x, y, z);
     }
     
-//    public static Vector3 getPosition() {
-//		return position;
-//	}
-    
 	public void setRotation(float f) {
-		setYaw(f); // TODO wrong
-//		setYaw(f*MathUtils.degreesToRadians); // TODO wrong
+		setYaw(f);
+//		setYaw(f*MathUtils.degreesToRadians);
 	}
 
     public void rotateBy(float degrees)
     {
-    	rotateYaw(degrees); // TODO wrong
+    	rotateYaw(degrees);
     }
     
     public float getRotation()
@@ -642,23 +590,6 @@ public class Actor3D extends ModelInstance implements Disposable {
 	public void setOriginY(float originY) {
 		this.originY = originY;
 	}
-	
-	// note: might be wrong. transform is being reset on draw, when do we call this?
-//	@Deprecated
-//	public Vector3 getGlobalPosition()
-//	{
-//		Vector2 ret = new Vector2();
-//		Vector3 pos3d = new Vector3();
-//		transform.getTranslation(pos3d );
-//		
-//		  //tmp add half of sun widht
-////		pos3d.add(-1, -1, 0);
-//		return pos3d;
-//	}
-	
-//	public void lookAtMe() {
-//		getStage().getCamera().lookAt(getGlobalPosition());
-//	}
 
 	public void localToScreenCoordinates(Vector2 v) {		
 		Vector3 position = new Vector3();

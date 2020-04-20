@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
+import com.badlogic.gdx.utils.PerformanceCounter;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
@@ -15,6 +16,10 @@ import ardash.lato.terrain.TerrainManager.TerrainListener;
 
 public class LatoStage3D extends Stage3D implements TerrainListener {
 
+	private static int sc = 0;
+    protected PerformanceCounter pcact = Actor3D.getGameManager().performanceCounters.add("s3d act "+sc);
+    protected PerformanceCounter pcdra = Actor3D.getGameManager().performanceCounters.add("s3d dra "+sc++);
+    
 	public LatoStage3D(Viewport v) {
 		super(v);
 	}
@@ -56,7 +61,23 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
 
 	@Override
 	public void draw() {
-		super.draw(true);
+    	pcdra.start();
+		super.draw();
+        pcdra.stop();
+	}
+	
+	@Override
+	public void draw(boolean in3grounds) {
+    	pcdra.start();
+		super.draw(in3grounds);
+        pcdra.stop();
+	}
+	
+	@Override
+	public void act(float delta) {
+    	pcact.start();
+		super.act(delta);
+		pcact.stop();
 	}
 
 }

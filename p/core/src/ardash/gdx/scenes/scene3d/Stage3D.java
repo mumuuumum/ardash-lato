@@ -22,6 +22,8 @@ import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.PerformanceCounter;
+import com.badlogic.gdx.utils.PerformanceCounters;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -90,6 +92,19 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
 //        
 //    }
     
+    public Stage3D(Viewport v, Environment environment, ShaderProvider shaderProvider) {
+        root = new Group3D();
+        root.setStage(this);
+
+        if (shaderProvider == null)
+        	modelBatch = new ModelBatch();
+        else
+        	modelBatch = new ModelBatch(shaderProvider);
+        	
+        this.viewport =v;
+        this.environment = environment;
+    }
+
     public void setAmbientLightColor (Color c)
     {
         environment.set(new ColorAttribute(ColorAttribute.AmbientLight, c.r, c.g, c.b, 0.51f));
@@ -104,28 +119,6 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
     {
         environment.set(new ColorAttribute(ColorAttribute.Fog, c.r, c.g, c.b, c.a));
     }
-
-    public Stage3D(Viewport v, Environment environment, ShaderProvider shaderProvider) {
-        root = new Group3D();
-        root.setStage(this);
-
-        if (shaderProvider == null)
-        	modelBatch = new ModelBatch();
-        else
-        	modelBatch = new ModelBatch(shaderProvider);
-        	
-        this.viewport =v;
-        this.environment = environment;
-    }
-//    public Stage3D(float width, float height, Environment environment) {
-//        root = new Group3D();
-//        root.setStage(this);
-//
-//        modelBatch = new ModelBatch();
-//
-//        camera =  new OrthographicCamera(width, height);
-//        this.environment = environment;
-//    }
 
     public void draw() {
 		this.draw(false);
@@ -156,7 +149,6 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
             root.draw(modelBatch, environment);
     	}
         modelBatch.end();
-        
         
         // check user inputs
         if (Gdx.input.isKeyJustPressed(Keys.Z))

@@ -217,7 +217,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	}
 	
 	private float getMaxCamSpeed() {
-		return getGameManager().isStarted() ? (runtime > 2f ? 3.3f : 0.3f) : 0.03f;
+		return getGameManager().isStarted() ? (runtime > 1f ? 3.3f : 0.3f) : 0.03f;
 	}
 
 	@Override

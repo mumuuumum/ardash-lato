@@ -185,7 +185,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 
 		batch.end();
 
-		Color color = new Color(getColor());
+		Color color = getColor();
 		sr.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
 //		Gdx.gl.glEnable(GL20.GL_BLEND);

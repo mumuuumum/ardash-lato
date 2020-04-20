@@ -44,7 +44,6 @@ public class Group3D extends Actor3D {
      */
     public void draw(ModelBatch modelBatch, Environment environment, Tag tag) {
         SnapshotArray<Actor3D> children = this.children;
-//        modelBatch.ge
         Actor3D[] actors = children.begin();
 //        visibleCount = 0;
         for (int i = 0, n = children.size; i < n; i++){

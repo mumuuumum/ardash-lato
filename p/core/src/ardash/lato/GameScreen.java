@@ -6,11 +6,9 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -19,11 +17,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 import com.github.czyzby.kiwi.util.gdx.viewport.Viewports;
 
-import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.Stage3D;
@@ -64,7 +62,7 @@ public class GameScreen implements Screen {
 	public LatoStage stage;
 	public LatoStage frontStage;
 	public LatoStage guiStage;
-	public Stage3D mountainStage3d;
+	public LatoStage3D mountainStage3d;
 	public LatoStage3D stage3d;
 	public FlarePlane flarePlane;
 	public Performer performer;
@@ -89,14 +87,15 @@ public class GameScreen implements Screen {
 		Texture ball = am.get(Assets.ball); // Assets.ball is a String
 
 		weather = new WeatherProvider();
-		backStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), this);
-		stage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), this);
-		frontStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), this);
+		backStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), "bs");
+		stage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), "s");
+		frontStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), "fs");
 //		frontStage = new LatoStage(new ScreenViewport(), this);
 		CURRENT_WORLD_WIDTH = backStage.getViewport().getWorldWidth();
-		guiStage = new LatoStage(Viewports.getDensityAwareViewport(), this);
-		mountainStage3d = new Stage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D()), getShaderP()); // perspective camera draws correctly behind each other
-		stage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D(30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight())));
+		guiStage = new LatoStage(Viewports.getDensityAwareViewport(), "gs");
+		final Camera3D mainCam = new Camera3D(30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		mountainStage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D()), getShaderP());
+		stage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, mainCam));
 
 //		backStage.setDebugAll(true);
 //		stage.setDebugAll(true);
@@ -408,6 +407,8 @@ public class GameScreen implements Screen {
     	frontStage.draw();
     	guiStage.draw();
     	
+    	gm.performanceCounters.tick();
+    	System.out.println(gm.performanceCounters.toString(new StringBuilder()));
 	}
 
 	@Override
