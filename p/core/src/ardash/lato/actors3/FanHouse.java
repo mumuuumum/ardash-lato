@@ -7,24 +7,26 @@ import com.badlogic.gdx.math.MathUtils;
 import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.lato.Assets;
 
-public class Toonhouse extends Actor3D implements TerrainItem {
+public class FanHouse extends Actor3D implements TerrainItem {
 	
-	public Toonhouse(float rotation) {
+	public FanHouse(float rotation) {
 		super(getModel());
 		setName("toonhouse");
-		setScale(0.004f);
+		setScale(0.6f); // fan house
+//		setScale(0.02f); // fan house
 //        setScale(0.004f, 0.002f, 0.002f);
-        translate(0, -1.1f, 0);
+        translate(0, -0.6f, 0);
+//        setRoll(270f);
         setPitch(rotation);
 //        setColor(Color.RED);
 		
 	}
-	public Toonhouse() {
+	public FanHouse() {
 		this(MathUtils.random(360f));
 	}
 
 	private static Model getModel() {
-		Model m = getAssetManager().get(Assets.toon_house); 
+		Model m = getAssetManager().get(Assets.fan_house); 
 		return m;
 	}
 

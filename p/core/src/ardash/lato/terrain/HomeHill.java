@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 
 import ardash.gdx.scenes.scene3d.Actor3D.Tag;
+import ardash.lato.actors3.FanHouse;
 import ardash.lato.actors3.Toonhouse;
 
 /**
@@ -16,11 +17,14 @@ public class HomeHill extends Section {
 		add (new Vector2(25,3),new Vector2(40,0), Interpolation.smooth);
 		
         Toonhouse h1 = new Toonhouse(45f);
-        h1.translate(10,4, -2);
+        h1.translate(10,3, -2);
 		h1.setTag(Tag.BACK);
 		
-        Toonhouse h2 = new Toonhouse(90f);
-        h2.translate(25,4, -2);
+//        Toonhouse h2 = new Toonhouse(90f);
+//        h2.translate(25,3.1f, -2);
+//		h2.setTag(Tag.BACK);
+        FanHouse h2 = new FanHouse(-70f);
+        h2.translate(25,3.1f, -2);
 		h2.setTag(Tag.BACK);
 		
         addSurroundingItem(h1);

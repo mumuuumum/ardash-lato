@@ -27,6 +27,9 @@ public class Assets {
 	@Asset(Model.class)
 	public static final String toon_house = "toon_house.g3db";
 
+	@Asset(Model.class)
+	public static final String fan_house = "3d/House.g3db";
+
 //	public static final AssetDescriptor<TextureAtlas> uiAtlas = new AssetDescriptor<TextureAtlas>("scene.atlas",
 //	TextureAtlas.class);
 
