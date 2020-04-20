@@ -53,7 +53,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		addActor(stars);
 		addActor(sunRotor);
 		sunRotor.setPosition(width2, height2); // center on plane
-//		stars.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.visible(false)));
+		stars.addAction(Actions.sequence(Actions.fadeOut(0f), Actions.visible(false)));
 		
 		// move a bit down, so sun moved behind mountains
 		sunRotor.moveBy(0, -15);
@@ -61,8 +61,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		// STARS
 		
 		MathUtils.random = rand; // make always the same stars
-		Vector2 tmpVec = new Vector2();
-		for ( int i=0; i<5000; i++)
+		for ( int i=0; i<50; i++)
 		{
 			final Image img = new Image(getAssets().getSTexture(SceneTexture.FOG_PIX));
 			final float size = MathUtils.random(MIN_STAR_SIZE, MAX_STAR_SIZE);
@@ -77,21 +76,13 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 			stars.addActor(rotor);
 			rotor.setPosition(sunRotor.getX(), sunRotor.getY());
 			rotor.addActor(img);
-//			
-//			tmpVec.set(1, 1).nor().setAngle(ang).setLength(radius);
-//			final float sx = tmpVec.x;
-//			final float sy = tmpVec.y;
-			
 			img.setWidth(size);
 			img.setHeight(size);
 			img.getColor().fromHsv(ch, cs, cv);
 			img.setPosition(0, radius); // moon rotation radius, stars are above and next to moon
 			rotor.setRotation(ang);
-//			img.setOrigin(1,1);
-//			img.setRotation(45f);
+			img.setRotation(45f);
 			img.setName("star");
-//			img.debug();
-//			img.addAction(Actions.forever(Actions.sequence(Actions.fadeOut(1),Actions.fadeIn(1))));
 			
 			Action ra = Actions.run(new Runnable() {
 				@Override
@@ -130,10 +121,8 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		iSunGlow.setWidth(SUN_WIDTH*26);
 		iSunGlow.setHeight(SUN_WIDTH*26);
 		sunRotor.addActor(iSunGlow);
-//		imgGlow.setPosition(0, -15f); // sun rotation radius
 		iSunGlow.setColor(new Color(1,1,1,0.51f)); // adjusting glow intensity here, changes appearance of max fog
 		iSunGlow.setName("sunglow");
-//		imgGlow.setTouchable(Touchable.disabled);
 
 		
 		// add sun shape
@@ -177,8 +166,6 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		iMoonGlow.setPosition(iMoon.getX()-iMoonGlow.getWidth()/2f, iMoon.getY()-iMoonGlow.getHeight()/2f);
 
 		
-
-		
 		// add dummy Actor to hold the color, so the color can be changed by an Action
 		topColorHolder = new Actor();
 		topColorHolder.setColor(EnvColors.DAY.skyTop);
@@ -194,36 +181,23 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 	}
 	
 	@Override
-	public void act(float delta) {
-		super.act(delta);
-//		sunRotor.rotateBy(-0.91f);
-//		System.out.println("sun rot: " + sunRotor.getRotation());
-	}
-
-
-	@Override
 	public void draw(Batch batch, float parentAlpha) {
 
 		batch.end();
 
-		Vector2 coords = new Vector2(getX(), getY());
-
 		Color color = new Color(getColor());
-//		sr.setProjectionMatrix(batch.getProjectionMatrix());
 		sr.setColor(color.r, color.g, color.b, color.a * parentAlpha);
 
 //		Gdx.gl.glEnable(GL20.GL_BLEND);
 //		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		sr.begin(ShapeRenderer.ShapeType.Filled);
 
-//		sr.rectLine(coords.x, coords.y, coords.x + getWidth(), coords.y, getHeight());
 		final Color bc = bottomColorHolder.getColor();
 		final Color tc = topColorHolder.getColor();
 		final Color fc = fogColorHolder.getColor();
 		sr.rect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()/2f, bc, bc, fc, fc);
 		sr.rect(0, Gdx.graphics.getHeight()/2f, Gdx.graphics.getWidth(), Gdx.graphics.getHeight()*10f, fc, fc, tc, tc);
 		sr.end();
-//		Gdx.gl.glDisable(GL20.GL_BLEND);
 		Gdx.gl.glLineWidth(1f);
 		sr.setColor(Color.WHITE);
 
@@ -272,7 +246,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		else
 		{
 			moonFlare.setVisible(false);
-//			stars.addAction(Actions.sequence(Actions.fadeOut(3f), Actions.visible(false)));
+			stars.addAction(Actions.sequence(Actions.fadeOut(3f), Actions.visible(false)));
 		}
 			
 	}

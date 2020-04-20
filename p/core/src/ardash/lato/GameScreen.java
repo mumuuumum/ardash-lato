@@ -402,33 +402,12 @@ public class GameScreen implements Screen {
     	
 
     	backStage.draw();
-//    	mountainStage3d.draw();
-//    	stage3d.draw(true);
-//    	stage.draw();
-//    	
-//    	frontStage.draw();
+    	mountainStage3d.draw();
+    	stage3d.draw(true);
+    	stage.draw();
+    	frontStage.draw();
     	guiStage.draw();
     	
-//    	stage3d.getCamera().
-//    	stage3d.getModelBatch().setCamera(stage3d.getCamera());
-//    	((PerspectiveCamera)stage3d.getCamera()).
-//    	Stage3D s3d = new Stage3D(50, 50);
-//    	s3d.addActor(new CubeActor3D(2, 3, 4));
-//    	s3d.act();
-//    	s3d.dr
-    	
-//    	World world = new World(new Vector2(), false);
-//		// add light
-//    	rayHandler = new RayHandler(world );
-//    	rayHandler.setShadows(false);
-//    	new PointLight(rayHandler, 50, new Color(1,1,1,1),35f, 10, 10);
-////    	rayHandler.poi
-//    	rayHandler.setAmbientLight(1, 0, 0, 0.5f); 
-//    	rayHandler.setBlur(true);
-//    	rayHandler.setBlurNum(30);
-//    	rayHandler.setCombinedMatrix(backStage.getCamera().combined);
-//    	rayHandler.updateAndRender();
-
 	}
 
 	@Override
