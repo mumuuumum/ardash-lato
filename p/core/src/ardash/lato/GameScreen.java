@@ -25,6 +25,7 @@ import com.github.czyzby.kiwi.util.gdx.viewport.Viewports;
 
 import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.gdx.scenes.scene3d.Camera3D;
+import ardash.gdx.scenes.scene3d.Group3D;
 import ardash.gdx.scenes.scene3d.shape.CubeActor3D;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.Assets.SceneTexture;
@@ -338,6 +339,7 @@ public class GameScreen implements Screen {
 				lblText += String.format("\nposition: %.2f %.2f", performer.getX(), performer.getY());
 				lblText += String.format("\nspeed: %.2f %.2f%%", performer.getSpeed(), performer.getSpeedPercentage()*100f);
 				lblText += "\nt-sections: "+gm.tm.getSections().size();
+				lblText += String.format("\nculling : drawn %s of %s", Group3D.draw2Count, Group3D.draw1Count);
 				lblText += String.format("\ntime of day: %.2f %s %s fogginess: %.4f"
 						, weather.currentTOD(), weather.getCurrentColorSchema(), weather.getCurrentPrecip(), weather.getCurrentFog());
 				setText(lblText);
@@ -412,6 +414,8 @@ public class GameScreen implements Screen {
     	stage.act(delta);
     	
 
+		Group3D.draw1Count = 0;
+		Group3D.draw2Count = 0;
     	backStage.draw();
     	mountainStage3d.draw();
     	stage3d.draw(true);

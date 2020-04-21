@@ -19,13 +19,13 @@ import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
+import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.Group3D;
 import ardash.gdx.scenes.scene3d.actions.MoveByAction;
 import ardash.gdx.scenes.scene3d.actions.ParallelAction;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.Assets;
 import ardash.lato.Assets.SceneTexture;
-import ardash.lato.GameManager;
 import ardash.lato.actions.Actions;
 import ardash.lato.actions.GravityAction;
 import ardash.lato.weather.AmbientColorChangeListener;
@@ -348,6 +348,11 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	public void addListener (PerformerListener listener)
 	{
 		listeners.add(listener);
+	}
+	
+	@Override
+	public boolean isCulled(Camera3D cam) {
+		return false;
 	}
 	
 	@Override

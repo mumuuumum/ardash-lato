@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
+import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.utils.AdvModelBuilder;
 
 /**
@@ -25,6 +26,18 @@ public class Image3D extends Actor3D {
 
     public Image3D(float width, float height) {
 		this(width, height, Color.WHITE);
+    }
+
+    public Image3D(float width, float height, Image3D img) {
+		super(img.model);
+        this.width = img.width;
+        this.height = img.height;
+    }
+
+    public Image3D(float width, float height, Model model) {
+		super(model);
+        this.width = width;
+        this.height = height;
     }
 
     public Image3D(float width, float height, Color color) {

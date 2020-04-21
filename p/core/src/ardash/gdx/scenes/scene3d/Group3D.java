@@ -4,10 +4,6 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.SnapshotArray;
@@ -15,7 +11,7 @@ import com.badlogic.gdx.utils.SnapshotArray;
 
 public class Group3D extends Actor3D {
 	private final SnapshotArray<Actor3D> children = new SnapshotArray<>(true, 4, Actor3D.class);
-//    public int visibleCount;
+    public static int draw1Count, draw2Count;
 
     public Group3D(){
         super();
@@ -45,7 +41,6 @@ public class Group3D extends Actor3D {
     public void draw(ModelBatch modelBatch, Environment environment, Tag tag) {
         SnapshotArray<Actor3D> children = this.children;
         Actor3D[] actors = children.begin();
-//        visibleCount = 0;
         for (int i = 0, n = children.size; i < n; i++){
                 Actor3D child = actors[i];
                 if (!child.isVisible()) continue;
@@ -58,8 +53,8 @@ public class Group3D extends Actor3D {
 					if (!tag.equals(childtag))
                 		continue;
                 }
-                
-                // update child's matrix //TODO
+
+                // update child's matrix
                 child.transform.setToTranslationAndScaling(child.x, child.y, child.z, child.scaleX, child.scaleY, child.scaleZ);
                 // origin can be added here (if in use
                 
@@ -74,15 +69,15 @@ public class Group3D extends Actor3D {
                     child.transform.mul(child.rotationMatrix);
                 }
                 
-//                Matrix4 m4 = transform.cpy();
-//                Matrix4 m4 = new Matrix4();
-//                m4.setToTranslationAndScaling(x, y, z, scaleX, scaleY, scaleZ);
-//                m4.mul(rotationMatrix);
-//              m4.mul(transform); // add current transform that came from parents
-//              m4.mulLeft(transform); // add current transform that came from parents
-
                 child.transform.mulLeft(transform);
-                child.draw(modelBatch, environment);
+
+            	draw1Count++; // count all that are meant to be drawn without culling
+				final Camera3D camera = (Camera3D)getStage().getCamera();
+				if (child.isCulled(camera))
+					continue;
+
+				child.draw(modelBatch, environment);
+            	draw2Count++; // count all that are have been drawn after culling
         }
         children.end();
         
@@ -217,5 +212,9 @@ public class Group3D extends Actor3D {
             actor3D.dispose();
     }
 
+    @Override
+    public boolean isCulled(Camera3D cam) {
+    	return false;
+    }
 
 }

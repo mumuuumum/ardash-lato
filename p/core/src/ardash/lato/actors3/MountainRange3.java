@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
+import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.Group3D;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.gdx.scenes.scene3d.shape.Triangle3D;
@@ -31,10 +32,36 @@ public class MountainRange3 extends Group3D{
 	
 	public MountainRange3(int numPieces) {
 		this.numPieces =numPieces;
+		// we'll make copies of this master-mountain :-)
+		Image3D masterimg = new Image3D(1, 1, MOUNT_COLOR, new ModelBuilder()) {
+			private Vector3 position = new Vector3();
+			@Override
+			public boolean isCulled(Camera3D cam) {
+				// mountains have special culling algorithm
+		        this.transform.getTranslation(position);
+		        return !cam.frustum.pointInFrustum(position);
+			}
+		};
 		for (int i=0; i< numPieces; i++)
 		{
 //			Triangle3D img = new Triangle3D(new Vector3(0, 0, 0), Color.WHITE,new Vector3(1, 0, 0), Color.WHITE,new Vector3(0, 1, 0), Color.WHITE, null);
-			Image3D img = new Image3D(1, 1, MOUNT_COLOR, new ModelBuilder());
+			Image3D img = new Image3D(1, 1, masterimg){
+				private Vector3 position = new Vector3();
+				@Override
+				public boolean isCulled(Camera3D cam) {
+					// mountains have special culling algorithm
+			        this.transform.getTranslation(position);
+			        if (cam.frustum.pointInFrustum(position))
+			        	return false;
+			        position.x+=MOUNT_SIZE;
+			        if (cam.frustum.pointInFrustum(position))
+			        	return false;
+			        position.x-=MOUNT_SIZE*2f;
+			        if (cam.frustum.pointInFrustum(position))
+			        	return false;
+			        return true;
+				}
+			};
 			img.rotateYaw(45f+180f);
 			img.rotateYaw(MathUtils.random(-2f, 2f));
 			img.setScale(MOUNT_SIZE);
