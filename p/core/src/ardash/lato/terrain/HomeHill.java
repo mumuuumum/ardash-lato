@@ -5,7 +5,6 @@ import com.badlogic.gdx.math.Vector2;
 
 import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.lato.actors3.FanHouse;
-import ardash.lato.actors3.Toonhouse;
 
 /**
  * Almost straight initial terrain part.
@@ -16,8 +15,11 @@ public class HomeHill extends Section {
 		add (new Vector2(10,3), new Vector2(25,3), Interpolation.smooth);
 		add (new Vector2(25,3),new Vector2(40,0), Interpolation.smooth);
 		
-        Toonhouse h1 = new Toonhouse(45f);
-        h1.translate(10,3, -2);
+//        Toonhouse h1 = new Toonhouse(45f);
+//        h1.translate(10,3, -2);
+//		h1.setTag(Tag.BACK);
+        FanHouse h1 = new FanHouse(-170f);
+        h1.translate(10,3.1f, -2);
 		h1.setTag(Tag.BACK);
 		
 //        Toonhouse h2 = new Toonhouse(90f);

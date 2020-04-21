@@ -13,6 +13,7 @@ import ardash.lato.actors.WaveDrawer;
 import ardash.lato.actors3.TerrainItem;
 import ardash.lato.terrain.Section;
 import ardash.lato.terrain.TerrainManager.TerrainListener;
+import ardash.lato.weather.SunColorChangeListener;
 
 public class LatoStage3D extends Stage3D implements TerrainListener {
 

@@ -6,8 +6,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -15,15 +13,16 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.physics.box2d.joints.WheelJoint;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import com.badlogic.gdx.utils.PerformanceCounter;
-import com.badlogic.gdx.utils.PerformanceCounters;
+import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -38,8 +37,11 @@ import ardash.lato.weather.AmbientColorChangeListener;
 import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.FogColorChangeListener;
 import ardash.lato.weather.FogIntensityChangeListener;
+import ardash.lato.weather.SunColorChangeListener;
+import net.dermetfan.gdx.math.InterpolationUtils;
 
-public class Stage3D extends InputAdapter implements Disposable, FogIntensityChangeListener, FogColorChangeListener, AmbientColorChangeListener, SpeedListener {
+public class Stage3D extends InputAdapter implements Disposable, 
+FogIntensityChangeListener, FogColorChangeListener, AmbientColorChangeListener, SpeedListener, SunColorChangeListener {
 	// the valid zoom interval for the camera to be used to interpolate zooming with current speed
 	protected static final float MIN_ZOOM = 0f;
 	protected static final float MAX_ZOOM = 40f;
@@ -49,6 +51,7 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
 
     private final ModelBatch modelBatch;
     private Environment environment;
+    public Environment dirLightenvironment = new Environment();
     
     /**
      * A color instance that hold the current fog colour. It will be changed and applied to the enviroment every frame.
@@ -59,6 +62,10 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
      * A color instance that hold the current ambient colour. It will be changed and applied to the enviroment every frame.
      */
     private Color ambientColor = EnvColors.DAY.ambient.cpy();
+
+    DirectionalLight directedLightSun = new DirectionalLight().set(1.0f, 1.0f, 1.0f, 0f, -0.8f, -0.2f);
+    DirectionalLight directedLightMoon = new DirectionalLight().set(1.0f, 1.0f, 1.0f, 0f, -0.8f, -0.2f);
+    boolean directedLightIsSun = true;
 
 //    private Camera3D camera;
 //    private OrthographicCamera camera;
@@ -105,24 +112,74 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
         this.viewport =v;
         this.environment = environment;
         
-        environment.add(dl);
+        dirLightenvironment.add(directedLightSun);
     }
     
-    DirectionalLight dl = new DirectionalLight().set(0.8f, 0.0f, 0.0f, 0f, -0.8f, -0.2f);
-
-    public void setDirectionalLightColor (Color c)
+    private void setDirectionalLightColor (Color c)
     {
-        dl.setColor(c);
+        directedLightSun.setColor(c);
     }
     
     public void setDirectionalLightDirection (float x, float y, float z)
     {
-        dl.setDirection(x, y, z);
+    	// turn sun and moon in opposite directions
+        Vector3 v3 = Pools.get(Vector3.class).obtain();
+        v3.set(x, y, z).nor();
+        directedLightSun.setDirection(v3.x, v3.y, v3.z);
+        Vector2 v2 = Pools.get(Vector2.class).obtain();
+        v2.set(x, y);
+        v2.rotate(180);
+        directedLightMoon.setDirection(v2.x, v2.y, z);
+        
+        // turn alpha down if at bottom of screen, and up if at top of screen, so moon and sun switch all the time smoothly
+        // the way to turn off a directional light is to fade it to black
+        // all colors must be scaled down anyway, because 2 light sources would overblend
+        final float angle = v2.angle();
+		System.out.println(angle);
+        // sun movement: dawn -> 180 -> 90 -> 0 -> dusk (invisible otherwise)
+        // sun movement: dawn -> 360 -> 270 -> 180 -> dusk (invisible otherwise)
+        float sunIntens = 0.001f;
+        float moonIntens = 0.001f;
+//        directedLightSun.
+        if (0 < angle && angle < 180)
+        {
+        	// show sun
+        	if (!directedLightIsSun)
+        	{
+        		directedLightIsSun = true;
+        		dirLightenvironment.add(directedLightSun);
+        		dirLightenvironment.remove(directedLightMoon);
+        	}
+        }
+        else
+        {
+        	// show moon
+        	if (directedLightIsSun)
+        	{
+        		directedLightIsSun = false;
+        		dirLightenvironment.remove(directedLightSun);
+        		dirLightenvironment.add(directedLightMoon);
+        	}
+        }
+        
+        directedLightSun.color.a = sunIntens;
+        directedLightMoon.color.a = moonIntens;
     }
     
     public void setAmbientLightColor (Color c)
     {
-        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, c.r, c.g, c.b, 0.51f));
+        ColorAttribute attribute = new ColorAttribute(ColorAttribute.AmbientLight, c.r, c.g, c.b, 0.51f);
+//        attribute.color
+		environment.set(attribute);
+//        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1, 1, 1, 0.91f));
+		
+		
+		c = c.cpy().lerp(Color.BLACK, 0.1f);
+//		c = Color.BLACK.cpy();
+
+        attribute = new ColorAttribute(ColorAttribute.AmbientLight, c.r, c.g, c.b, 0.51f);
+		dirLightenvironment.set(attribute);
+
     }
 
 //    public void setDirectionalLight (Color c)
@@ -135,7 +192,7 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
     	float fogi =0;
     	if (fodIntensityAction != null)
     		fogi = fodIntensityAction.getValue();
-        environment.set(new ColorAttribute(ColorAttribute.Fog, c.r, c.g, c.b, fogi));
+        environment.set(new ColorAttribute(ColorAttribute.Fog, c.r, c.g, c.b, fogi)); // TODO remove fog from main stage, is is shown in the debugger
     }
 
     public void draw() {
@@ -367,6 +424,13 @@ public class Stage3D extends InputAdapter implements Disposable, FogIntensityCha
 //		cam.translate(0, 0, initZ - newZoom);
 		cam.position.z = initZ + newZoom;
 		cam.update();
+	}
+
+	@Override
+	public void onSunColorChangeTriggered(Color target, float seconds) {
+		final ColorAction action = Actions.noAlphaColor(target, seconds);
+		action.setColor(directedLightSun.color);
+		addAction(action);
 	}
 	
 }

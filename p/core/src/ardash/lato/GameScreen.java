@@ -130,12 +130,13 @@ public class GameScreen implements Screen {
 		weather.addFogColourChangeListener(skyPlane);
 		weather.addSunColourChangeListener(skyPlane);
 		weather.addSODChangeListener(skyPlane);
-    	stage3d.setDirectionalLightColor(Color.YELLOW.cpy());
+		weather.addSunColourChangeListener(stage3d);
+//    	stage3d.setDirectionalLightColor(Color.YELLOW.cpy());
     	skyPlane.addListener(new SkyPlaneListener() {
 			@Override
 			public void onSunDirectionChanged(float newAngle) {
 				Vector2 d = new Vector2().set(1,1).nor().setAngle(newAngle+90f);
-				Vector3 d3 = new Vector3().set(d.x,d.y,-1f).nor();
+				Vector3 d3 = new Vector3().set(d.x,d.y,0.2f).nor();
 				stage3d.setDirectionalLightDirection(d3.x, d3.y, d3.z);
 //				System.out.println(d3);
 			}

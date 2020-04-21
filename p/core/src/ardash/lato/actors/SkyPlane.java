@@ -240,7 +240,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 			listener.onSunDirectionChanged(sunRotor.getRotation());
 		}
 		
-		// fadeOut doesn't work because the flare is not alpha-blended
+		// fadeOut doesn't work because the flare is not alpha-blended, it must be faded to black
 		if (hourOfDay < 6.5f || hourOfDay > 18.1f)
 			sunFlare.setVisible(false);
 		else
