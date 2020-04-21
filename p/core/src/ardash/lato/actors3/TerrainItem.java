@@ -30,7 +30,6 @@ public interface TerrainItem extends Cullable{
 		final float px = Math.abs(Actor3D.getGameScreen().performer.getX());
 		final float tx = Math.abs(this.getX());
 		final float dx = Math.abs(px - tx);
-//		System.out.println("dx"+dx);
 		if (dx >60)
 			return true;
 		return false;

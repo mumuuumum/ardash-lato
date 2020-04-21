@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -72,7 +73,7 @@ public class GameScreen implements Screen {
 	PerformanceCounter perf ;
 	float lastPerfOutput = 0;
 
-	public enum LatoShaders {BACK}
+	public enum LatoShaders {BACK, THREED}
 	
 	public GameScreen(GameManager gm) {
 		this.gm = gm;
@@ -99,8 +100,8 @@ public class GameScreen implements Screen {
 		CURRENT_WORLD_WIDTH = backStage.getViewport().getWorldWidth();
 		guiStage = new LatoStage(Viewports.getDensityAwareViewport(), "gs");
 		final Camera3D mainCam = new Camera3D(30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		mountainStage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D()), getShaderP());
-		stage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, mainCam));
+		mountainStage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D()), getShaderP(LatoShaders.BACK));
+		stage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, mainCam), getShaderP(LatoShaders.THREED));
 
 //		backStage.setDebugAll(true);
 //		stage.setDebugAll(true);
@@ -129,12 +130,14 @@ public class GameScreen implements Screen {
 		weather.addFogColourChangeListener(skyPlane);
 		weather.addSunColourChangeListener(skyPlane);
 		weather.addSODChangeListener(skyPlane);
-    	stage3d.setDirectionalLightColor(Color.GREEN.cpy());
+    	stage3d.setDirectionalLightColor(Color.YELLOW.cpy());
     	skyPlane.addListener(new SkyPlaneListener() {
 			@Override
 			public void onSunDirectionChanged(float newAngle) {
-				Vector2 d = new Vector2().set(1,1).nor().setAngle(newAngle);
-				stage3d.setDirectionalLightDirection(d.x, d.y, 0f);
+				Vector2 d = new Vector2().set(1,1).nor().setAngle(newAngle+90f);
+				Vector3 d3 = new Vector3().set(d.x,d.y,-1f).nor();
+				stage3d.setDirectionalLightDirection(d3.x, d3.y, d3.z);
+//				System.out.println(d3);
 			}
 		});
 		
@@ -315,12 +318,12 @@ public class GameScreen implements Screen {
 //		stage3d.act(); // act one time, to draw it correctly
 	}
 
-	private ShaderProvider getShaderP() {
+	private ShaderProvider getShaderP(LatoShaders type) {
 		DefaultShader.Config config = new DefaultShader.Config();
 		config.numDirectionalLights = 1;
 		config.numPointLights = 0;
 		config.numBones = 16;
-		return new LatoShaderProvider(config);
+		return new LatoShaderProvider(config, type);
 	}
 
 	private void buildGui() {
