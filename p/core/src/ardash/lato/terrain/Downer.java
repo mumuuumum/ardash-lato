@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import ardash.gdx.scenes.scene3d.Actor3D.Tag;
+import ardash.lato.actors3.Farmhouse;
 import ardash.lato.actors3.Spruce;
 import ardash.lato.actors3.TerrainItem;
 import ardash.lato.actors3.Toonhouse;
@@ -54,8 +55,8 @@ public class Downer extends Section {
 //		tree4.setTag(Tag.BACK);
 //		surroundingItems.add(tree4);
 		
-        Toonhouse ma = new Toonhouse();
-        ma.translate(-1,0, -2);
+        Farmhouse ma = new Farmhouse();
+        ma.translate(-1,0, -30);
 		ma.setTag(Tag.BACK);
         addSurroundingItem(ma);
 

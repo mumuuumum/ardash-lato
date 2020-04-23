@@ -145,13 +145,13 @@ public class GameScreen implements Screen {
 		for (int i = 0; i<4 ; i++)
 		{
 			final int numMountains = 20;
-			final MountainRange3 mr = new MountainRange3(numMountains);
+			final MountainRange3 mr = new MountainRange3(numMountains, i*0.2f + 1.5f);
 			mountainStage3d.addActor(mr);
 			mr.setName("MountainRange"+i);
 			
 			// range offset
 			mr.translate(-MountainRange3.MOUNT_SIZE*(i+1), -5f*i+2, 0+i*10);
-			mr.setSpeed((i*i+1)*0.2f);
+			mr.setSpeed((i*i+1)*0.2f+1.001f*i);
 			
 			// move to center on 0,0
 			mr.translate(numMountains/2 * -MountainRange3.MOUNT_SIZE,0,0);
@@ -323,6 +323,7 @@ public class GameScreen implements Screen {
 		DefaultShader.Config config = new DefaultShader.Config();
 		config.numDirectionalLights = 1;
 		config.numPointLights = 0;
+//		config.defaultCullFace = 0;
 		config.numBones = 16;
 		return new LatoShaderProvider(config, type);
 	}

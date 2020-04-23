@@ -24,14 +24,16 @@ public class MountainRange3 extends Group3D{
 	 * number of mountains in the mountain range
 	 */
 	private final int numPieces;
+	private final float STRETCH_X;
 	public static final float MOUNT_SIZE = GameScreen.WORLD_WIDTH * 1.19275f;//0.275f;
 	private final float distanceBetweenPieces = MOUNT_SIZE*0.77f; //0.77 of above
 	private final float VARIANCE = (MOUNT_SIZE + distanceBetweenPieces) / 16f; //(avg of 2 val above) / 4
 	private final Color MOUNT_COLOR = new Color(68 / 255f, 145 / 255f, 140 / 255f, 1f);
 	private Color ambientColor = EnvColors.DAY.ambient;
 	
-	public MountainRange3(int numPieces) {
+	public MountainRange3(int numPieces, float stretchX) {
 		this.numPieces =numPieces;
+		this.STRETCH_X = stretchX;
 		// we'll make copies of this master-mountain :-)
 		Image3D masterimg = new Image3D(1, 1, MOUNT_COLOR, new ModelBuilder()) {
 			private Vector3 position = new Vector3();
@@ -72,7 +74,7 @@ public class MountainRange3 extends Group3D{
 			img.setName("Mountain"+i);
 //			img.setColor(ambientColor);
 		}
-		setScale(1.5f,1f,1f);  // stretch all sidewards: long mountains
+		setScale(STRETCH_X,1f,1f);  // stretch all sidewards: long mountains
 //		rotateYaw(45f);
 //		scale(0.00500f);
 //		translate(60, -60, 0);

@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 
 import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.lato.actors3.FanHouse;
+import ardash.lato.actors3.Farmhouse;
+import ardash.lato.actors3.Spruce;
 
 /**
  * Almost straight initial terrain part.
@@ -18,19 +20,29 @@ public class HomeHill extends Section {
 //        Toonhouse h1 = new Toonhouse(45f);
 //        h1.translate(10,3, -2);
 //		h1.setTag(Tag.BACK);
-        FanHouse h1 = new FanHouse(-170f);
-        h1.translate(10,3.1f, -2);
+        Farmhouse h1 = new Farmhouse(-170f);
+        h1.translate(10,3.1f, -4);
 		h1.setTag(Tag.BACK);
 		
 //        Toonhouse h2 = new Toonhouse(90f);
 //        h2.translate(25,3.1f, -2);
 //		h2.setTag(Tag.BACK);
-        FanHouse h2 = new FanHouse(-70f);
-        h2.translate(25,3.1f, -2);
+		Farmhouse h2 = new Farmhouse(-70f);
+        h2.translate(25,3.1f, -30);
 		h2.setTag(Tag.BACK);
 		
         addSurroundingItem(h1);
         addSurroundingItem(h2);
+
+		// add trees
+		Spruce tree = new Spruce();
+		tree.translate(12f, -2, -1);
+		tree.setTag(Tag.BACK);
+		surroundingItems.add(tree);
+		Spruce tree2 = new Spruce();
+		tree2.translate(20f, 0, 1);
+		tree2.setTag(Tag.FRONT);
+		surroundingItems.add(tree2);
 
 	}
 

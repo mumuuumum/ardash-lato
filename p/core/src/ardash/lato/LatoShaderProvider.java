@@ -29,6 +29,7 @@ public class LatoShaderProvider extends DefaultShaderProvider {
 		toonshader.vertexShader = Gdx.files.internal("shaders/toon.vertex.glsl").readString();
 		toonshader.fragmentShader = Gdx.files.internal("shaders/toon.fragment.glsl").readString();
 		toonshader.numDirectionalLights=2;
+		toonshader.defaultCullFace = 0;
 	}
 	
 	@Override
