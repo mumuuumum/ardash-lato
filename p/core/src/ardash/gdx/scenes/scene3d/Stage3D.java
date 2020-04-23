@@ -174,7 +174,7 @@ FogIntensityChangeListener, FogColorChangeListener, AmbientColorChangeListener, 
 //        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 1, 1, 1, 0.91f));
 		
 		
-		c = c.cpy().lerp(Color.BLACK, 0.1f);
+//		c = c.cpy().lerp(Color.WHITE, 0.1f);
 //		c = Color.BLACK.cpy();
 
         attribute = new ColorAttribute(ColorAttribute.AmbientLight, c.r, c.g, c.b, 0.51f);
@@ -428,7 +428,8 @@ FogIntensityChangeListener, FogColorChangeListener, AmbientColorChangeListener, 
 
 	@Override
 	public void onSunColorChangeTriggered(Color target, float seconds) {
-		final ColorAction action = Actions.noAlphaColor(target, seconds);
+		Color c = target.cpy().lerp(Color.BLACK, 0.5f);
+		final ColorAction action = Actions.noAlphaColor(c, seconds);
 		action.setColor(directedLightSun.color);
 		addAction(action);
 	}

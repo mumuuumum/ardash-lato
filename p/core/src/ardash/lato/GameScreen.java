@@ -136,7 +136,7 @@ public class GameScreen implements Screen {
 			@Override
 			public void onSunDirectionChanged(float newAngle) {
 				Vector2 d = new Vector2().set(1,1).nor().setAngle(newAngle+90f);
-				Vector3 d3 = new Vector3().set(d.x,d.y,0.2f).nor();
+				Vector3 d3 = new Vector3().set(d.x,d.y,-0.2f).nor();
 				stage3d.setDirectionalLightDirection(d3.x, d3.y, d3.z);
 //				System.out.println(d3);
 			}

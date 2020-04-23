@@ -28,7 +28,7 @@ public class HomeHill extends Section {
 //        h2.translate(25,3.1f, -2);
 //		h2.setTag(Tag.BACK);
 		Farmhouse h2 = new Farmhouse(-70f);
-        h2.translate(25,3.1f, -30);
+        h2.translate(25,3.1f, -20);
 		h2.setTag(Tag.BACK);
 		
         addSurroundingItem(h1);

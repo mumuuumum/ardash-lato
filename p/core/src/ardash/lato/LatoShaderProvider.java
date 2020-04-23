@@ -29,19 +29,19 @@ public class LatoShaderProvider extends DefaultShaderProvider {
 		toonshader.vertexShader = Gdx.files.internal("shaders/toon.vertex.glsl").readString();
 		toonshader.fragmentShader = Gdx.files.internal("shaders/toon.fragment.glsl").readString();
 		toonshader.numDirectionalLights=2;
-		toonshader.defaultCullFace = 0;
+//		toonshader.defaultCullFace = 0;
 	}
 	
 	@Override
 	protected Shader createShader (Renderable renderable) {
 		if (shaderType == LatoShaders.BACK)
 			return new DefaultShader(renderable, fogshader);
-		if (shaderType == LatoShaders.THREED)
-		{
-			if (renderable.material.has(TextureAttribute.Diffuse))
-			return new DefaultShader(renderable, toonshader);
-			
-		}
+//		if (shaderType == LatoShaders.THREED)
+//		{
+//			if (renderable.material.has(TextureAttribute.Diffuse))
+//			return new DefaultShader(renderable, toonshader);
+//			
+//		}
 //		else
 			return super.createShader(renderable);
 	}

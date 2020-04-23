@@ -14,7 +14,7 @@ public class Farmhouse extends Actor3D implements TerrainItem {
 	public Farmhouse(float rotation) {
 		super(getModel());
 		setName("farmhouse");
-		setScale(0.017f); // fan house
+		setScale(2.17f); // farmhouse
 //		setScale(0.02f); // fan house
 //        setScale(0.004f, 0.002f, 0.002f);
         translate(0, -0.6f, 0);
