@@ -17,6 +17,10 @@ public class GravityAction extends Action3D{
 		super.reset();
 		vspeed = 0;
 	}
+	
+	public void setVspeed(float vspeed) {
+		this.vspeed = vspeed;
+	}
 
 	@Override
 	public boolean act(float delta) {

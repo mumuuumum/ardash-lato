@@ -19,11 +19,19 @@ public class Section extends TerrainSegList {
 		return surroundingItems;
 	}
 
-	public void addOffset(Vector2 offsetOfLastSection) {
+	public void addOffsetToSurroundings(Vector2 offsetOfLastSection) {
 		for (TerrainItem actor3d : surroundingItems) {
 			actor3d.moveBy(offsetOfLastSection.x, offsetOfLastSection.y);
 		}
-		
+	}
+	
+	public void addOffsetToSegList(Vector2 offsetOfLastSection) {
+		final Vector2 offset = offsetOfLastSection;
+		for (TerrainSeg ts : this) {
+			ts.fromPoint.add(offset);
+			ts.toPoint.add(offset);
+		}
+		updateSearchIndex();
 	}
 	
 	void addSurroundingItem(TerrainItem ti)
@@ -39,6 +47,11 @@ public class Section extends TerrainSegList {
 			else
 				ti.setTag(Tag.CENTER);
 		}
+	}
+	
+	@Override
+	public String toString() {
+		return "|- "+first()+" ->"+last();
 	}
 	
 }

@@ -53,10 +53,14 @@ public class TerrainSegList extends ArrayList<TerrainSeg>{
 	}
 
 	public Vector2 first() {
+		if (isEmpty())
+			throw new RuntimeException("list is empty");
 		return get(0).fromPoint;
 	}
 
 	public Vector2 last() {
+		if (isEmpty())
+			throw new RuntimeException("list is empty");
 		return get(size()-1).toPoint;
 	}
 	
@@ -102,6 +106,14 @@ public class TerrainSegList extends ArrayList<TerrainSeg>{
 		return addAllNoOffset(c);
 	}
 
+	public boolean addAll(Collection<? extends TerrainSeg> c, final Vector2 offset) {
+		for (TerrainSeg ts : c) {
+			ts.fromPoint.add(offset);
+			ts.toPoint.add(offset);
+		}
+		return addAllNoOffset(c);
+	}
+
 	/**
 	 * Adds new items without adding an offset. Can be used for the initial terrain part.
 	 * @param c
@@ -113,7 +125,7 @@ public class TerrainSegList extends ArrayList<TerrainSeg>{
 		return ret;
 	}
 
-	private void updateSearchIndex() {
+	protected void updateSearchIndex() {
 		rm.clear();
 		for (TerrainSeg ts : this) {
 			rm.put(ts.fromPoint.x, ts);

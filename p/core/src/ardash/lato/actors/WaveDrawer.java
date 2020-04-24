@@ -19,13 +19,16 @@ import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 import ardash.gdx.scenes.scene3d.Group3D;
 import ardash.lato.LatoStage3D;
 import ardash.lato.actions.MoreActions;
+import ardash.lato.actors.Performer.PerformerListener;
 import ardash.lato.terrain.Downer;
 import ardash.lato.terrain.HomeHill;
+import ardash.lato.terrain.Section;
+import ardash.lato.terrain.TerrainManager.TerrainListener;
 import ardash.lato.terrain.TerrainSegList;
 import ardash.lato.weather.AmbientColorChangeListener;
 import ardash.lato.weather.EnvColors;
 
-public class WaveDrawer extends Group3D implements Disposable, AmbientColorChangeListener { //StageAccessor,  {
+public class WaveDrawer extends Group3D implements Disposable, AmbientColorChangeListener, PerformerListener, TerrainListener {
 	/**
 	 * Everything that is more than this far behind the Performer can be deleted form the stage
 	 */
@@ -36,6 +39,10 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	 */
 	public static final float FUTURE_TERRAIN = 200f;
 	
+	/**
+	 * The size of a step. The amount of meters to move forward to draw the next terrain segment.
+	 */
+	public static final float DRAW_STEPS=0.8f;
 
 	private final ModelBuilder modelBuilder = new ModelBuilder();
 	private AdvShapeRenderer sr;
@@ -57,11 +64,11 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 //sr.translate(0, 0, 20);
 		// path setup
 		terrainSegmentList = new TerrainSegList();
-		final HomeHill homehill = new HomeHill();
-		terrainSegmentList.addAllNoOffset(homehill); // TODO init starting area of terrain
-		getGameManager().tm.createNewSection(terrainSegmentList.last());
+//		final HomeHill homehill = new HomeHill();
+//		terrainSegmentList.addAllNoOffset(homehill); // TODO init starting area of terrain
+//		getGameManager().tm.createNewSection(terrainSegmentList.last());
 		// call listener manually		
-		getGameManager().getGameScreen().stage3d.onNewSectionCreated(homehill);
+//		getGameManager().getGameScreen().stage3d.onNewSectionCreated(homehill);
 
 //		Image3D img = new Image3D(1.85f, 10, Color.GOLD, null, modelBuilder, 0);
 //		addActor(img);
@@ -90,6 +97,7 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 		super.draw(batch, environment);
 		
 		final float offsetY = drawOffset ? -5 : 0;
+//		final float offsetY = drawOffset ? 5 : 10;
 		batch.end();
 
 		sr.begin();
@@ -105,18 +113,17 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 		float performerY = getGameScreen().stage.getPerformer().getY();
 		int counter = 0;
 		long startTime = System.currentTimeMillis();
-		final float drawSteps=0.8f;
 		float firstX = terrainSegmentList.first().x;
 		float lastX = terrainSegmentList.last().x;
 		polygonPoints.clear();
-		for (float x = firstX; x<lastX-drawSteps ; x+=drawSteps)
+		for (float x = firstX; x<lastX-DRAW_STEPS ; x+=DRAW_STEPS)
 		{
-			float toX = x-drawSteps;
+			float toX = x-DRAW_STEPS;
 //			float toY = terrainSegmentList.heightAt(toX);
 			
 			// culling based on X value. Y value is just the current Y of the performer
-			if ( !getStage().getCamera().frustum.pointInFrustum(x-drawSteps*2f, performerY, 0) 
-					&& !getStage().getCamera().frustum.pointInFrustum(x+drawSteps*2f, performerY, 0))
+			if ( !getStage().getCamera().frustum.pointInFrustum(x-DRAW_STEPS*2f, performerY, 0) 
+					&& !getStage().getCamera().frustum.pointInFrustum(x+DRAW_STEPS*2f, performerY, 0))
 			{
 				continue;
 			}
@@ -192,7 +199,7 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	 * Remove passed terrain segments and add new terrain in front of the player.
 	 * @param x The current position of the performer
 	 */
-	public void updateTerrainSegments(float x) {
+	private void updateTerrainSegments(float x) {
 		final float currentMin = terrainSegmentList.first().x;
 		final float currentMax = terrainSegmentList.last().x;
 		
@@ -205,8 +212,10 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 		{
 			// new terrain must be added
 //			terrainSegmentList.addAll(new Downer());
-			getGameManager().tm.createNewSection(terrainSegmentList.last());
-			terrainSegmentList.addAll(getGameManager().tm.getLastSection());
+			getGameManager().tm.createNewSection();
+//			terrainSegmentList.addAll(getGameManager().tm.getLastSection());
+//			terrainSegmentList.addAllNoOffset(getGameManager().tm.getLastSection());
+			
 		}
 		
 	}
@@ -220,5 +229,15 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	public void onAmbientColorChangeTriggered(Color target, float seconds) {
 //		addAction(Actions.color(ambientColorContainer.getColor(), seconds));	
 		ambientColorContainer.addAction(MoreActions.noAlphaColor(target, seconds));
+	}
+
+	@Override
+	public void onPositionChange(float newX, float newY) {
+		updateTerrainSegments(newX);
+	}
+
+	@Override
+	public void onNewSectionCreated(Section s) {
+		terrainSegmentList.addAllNoOffset(getGameManager().tm.getLastSection());
 	}
 }

@@ -1,11 +1,20 @@
 package ardash.lato;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.PerformanceCounter;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.gdx.scenes.scene3d.Stage3D;
@@ -13,14 +22,18 @@ import ardash.lato.actors.WaveDrawer;
 import ardash.lato.actors3.TerrainItem;
 import ardash.lato.terrain.Section;
 import ardash.lato.terrain.TerrainManager.TerrainListener;
-import ardash.lato.weather.SunColorChangeListener;
 
 public class LatoStage3D extends Stage3D implements TerrainListener {
 
 	private static int sc = 0;
     protected PerformanceCounter pcact = Actor3D.getGameManager().performanceCounters.add("s3d act "+sc);
     protected PerformanceCounter pcdra = Actor3D.getGameManager().performanceCounters.add("s3d dra "+sc++);
-    
+    public World world = null;
+    Box2DDebugRenderer worldRenderer;
+	private float worldAccumulator = 0;
+	public static final float DRAW_STEPS=WaveDrawer.DRAW_STEPS;
+
+
 	public LatoStage3D(Viewport v) {
 		super(v);
 	}
@@ -51,6 +64,59 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
 		for (TerrainItem a : canBeDeleted) {
 			a.remove();
 		}
+
+		// add new parts to the physical world
+		float firstX = s.first().x;
+		float lastX = s.last().x;
+		List<Float> pp = new ArrayList<Float>(100);
+		for (float x = firstX; x<lastX-DRAW_STEPS ; x+=DRAW_STEPS)
+		{
+//			float toX = x-DRAW_STEPS;
+//			float toY = terrainSegmentList.heightAt(toX);
+			
+			
+			float y = s.heightAt(x);
+			pp.add(x);
+			pp.add(y);
+			
+//			float[] fa = {x,y, toX,toY, toX,y-500f, x, y-500f};
+//			sr.polygon(fa);
+//			counter ++;
+		}
+		pp.add(lastX);
+		pp.add(s.heightAt(lastX));
+
+		for (int i=0 ; i<pp.size()-2 ; i+=2)
+		{
+			// Create our body definition
+			BodyDef groundBodyDef = new BodyDef();  
+			// Set its world position
+			groundBodyDef.position.set(new Vector2(0, 0));  
+
+			// Create a body from the definition and add it to the world
+			Body groundBody = world.createBody(groundBodyDef);  
+
+			// Create a polygon shape
+			PolygonShape groundBox = new PolygonShape();
+			float x1 = pp.get(i+0);
+			float y1 = pp.get(i+1);
+			float x2 = pp.get(i+2);
+			float y2 = pp.get(i+3);
+			float x3 = x2;
+			float y3 = y2-50;
+			float x4 = x1;
+			float y4 = y3;
+			// build poly counter clockwise for box2d
+			float[] verts = {x1,y1,x4,y4,x3,y3,x2,y2};
+			groundBox.set(verts );
+			// Create a fixture from our polygon shape and add it to our ground body  
+			groundBody.createFixture(groundBox, 0.0f); 
+			// Clean up after ourselves
+			groundBox.dispose();
+		}
+		
+//		TODO offset missing
+
 		
 	}
 
@@ -72,13 +138,39 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
     	pcdra.start();
 		super.draw(in3grounds);
         pcdra.stop();
+        if (worldRenderer != null)
+        	worldRenderer.render(world, getCamera().combined);
 	}
 	
 	@Override
 	public void act(float delta) {
     	pcact.start();
+    	if (world != null)
+    		doPhysicsStep(delta);
 		super.act(delta);
 		pcact.stop();
 	}
+	
+	public void enablePhysics() {
+		world = new World(new Vector2(0f, -9.80665f), true);
+		worldRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
+	}
 
+	private void doPhysicsStep(float deltaTime) {
+	    // fixed time step
+	    // max frame time to avoid spiral of death (on slow devices)
+	    float frameTime = Math.min(deltaTime, 0.25f);
+	    worldAccumulator += frameTime;
+	    float TIME_STEP = 1/60f;
+		while (worldAccumulator >= TIME_STEP ) {
+	        world.step(TIME_STEP, 6, 2);
+	        worldAccumulator -= TIME_STEP;
+	    }
+	}
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		Disposables.gracefullyDisposeOf(world, worldRenderer);
+	}
 }

@@ -39,10 +39,21 @@ public class TerrainManager {
 		return sections.get(sections.size()-1);
 	}
 
-	public void createNewSection(Vector2 offsetOfLastSection) {
-		Section s = new Downer();
-		s.addOffset(offsetOfLastSection);
-		sections.add(s);
+	public void createNewSection() {
+		Section s;
+		if (sections.isEmpty())
+		{
+			s = new HomeHill();
+			sections.add(s);
+		}
+		else
+		{
+			s = new Downer();
+			final Vector2 offset = this.getLastSection().last();
+			s.addOffsetToSurroundings(offset);
+			s.addOffsetToSegList(offset);
+			sections.add(s);
+		}
 		for (TerrainListener listener : listeners) {
 			listener.onNewSectionCreated(s);
 		}

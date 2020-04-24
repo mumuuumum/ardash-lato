@@ -102,7 +102,8 @@ public class GameScreen implements Screen {
 		final Camera3D mainCam = new Camera3D(30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		mountainStage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D()), getShaderP(LatoShaders.BACK));
 		stage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, mainCam), getShaderP(LatoShaders.THREED));
-
+		stage3d.enablePhysics();
+		
 //		backStage.setDebugAll(true);
 //		stage.setDebugAll(true);
 //		frontStage.setDebugAll(true);
@@ -163,11 +164,12 @@ public class GameScreen implements Screen {
 		
 		performer = new Performer();
 		
-		// test to add shaperenderers
+		// add shaperenderers
 		waveDrawer = new WaveDrawer(EnvColors.DAY.ambient);
+		performer.addListener(waveDrawer);
 		stage3d.addActor(waveDrawer);
-		stage.setWaveDrawer(waveDrawer);
 		weather.addAmbientColourChangeListener(waveDrawer);
+        gm.tm.addListener(waveDrawer);
 
 //		Spruce testTree = new Spruce();
 //		testTree.translate(55, 0, 0);
@@ -178,6 +180,7 @@ public class GameScreen implements Screen {
 //		p.moveBy(4*1.8f, 10f);
 		performer.moveBy(8*1.8f, 20f); // initial camera position
 		performer.getCamSpot().set(performer.getX(), performer.getY());
+		performer.enablePhysics();
 		stage.setPerformer(performer); // attach the camera to him
 		weather.addAmbientColourChangeListener(performer);
 //		weather.addAmbientColourChangeListener(performer);
@@ -256,7 +259,7 @@ public class GameScreen implements Screen {
 //        backStage3d.addActor(ca);
 //        ca.translate(55, 3, 0);
         
-        performer.act(0f); // TODO check if this is safe to act() once to get the position right
+//        performer.act(0f); // TODO check if this is safe to act() once to get the position right
         Vector2 tts = new Vector2(13.5f,5.566f);
         Image3D titleText = new Image3D(tts.x, tts.y, assets.getSTexture(SceneTexture.TITLESCREEN), new ModelBuilder());
         titleText.setTag(Tag.CENTER);
@@ -283,6 +286,9 @@ public class GameScreen implements Screen {
 				stage3d.getCamera().update();
 			}
 		});
+    	
+    	// add the first piece of terrain
+    	gm.tm.createNewSection();
 
 
 //		flareStage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());

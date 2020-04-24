@@ -120,10 +120,10 @@ public class LatoStage extends Stage implements SpeedListener {
 	public void act(float delta) {
     	pcact.start();
 		super.act(delta);
-		if (waveDrawer != null)
-		{
-			waveDrawer.updateTerrainSegments(performer.getX());
-		}
+//		if (waveDrawer != null)
+//		{
+//			waveDrawer.updateTerrainSegments(performer.getX());
+//		}
     	pcact.stop();
 	}
 	
@@ -170,13 +170,13 @@ public class LatoStage extends Stage implements SpeedListener {
 		this.performer = performer;
 	}
 
-	public WaveDrawer getWaveDrawer() {
-		return waveDrawer;
-	}
-
-	public void setWaveDrawer(WaveDrawer waveDrawer) {
-		this.waveDrawer = waveDrawer;
-	}
+//	public WaveDrawer getWaveDrawer() {
+//		return waveDrawer;
+//	}
+//
+//	public void setWaveDrawer(WaveDrawer waveDrawer) {
+//		this.waveDrawer = waveDrawer;
+//	}
 
 	@Override
 	public void dispose() {

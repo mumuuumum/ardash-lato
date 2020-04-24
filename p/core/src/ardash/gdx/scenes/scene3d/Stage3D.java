@@ -135,7 +135,7 @@ FogIntensityChangeListener, FogColorChangeListener, AmbientColorChangeListener, 
         // the way to turn off a directional light is to fade it to black
         // all colors must be scaled down anyway, because 2 light sources would overblend
         final float angle = v2.angle();
-		System.out.println(angle);
+//		System.out.println(angle);
         // sun movement: dawn -> 180 -> 90 -> 0 -> dusk (invisible otherwise)
         // sun movement: dawn -> 360 -> 270 -> 180 -> dusk (invisible otherwise)
         float sunIntens = 0.001f;
@@ -428,7 +428,7 @@ FogIntensityChangeListener, FogColorChangeListener, AmbientColorChangeListener, 
 
 	@Override
 	public void onSunColorChangeTriggered(Color target, float seconds) {
-		Color c = target.cpy().lerp(Color.BLACK, 0.5f);
+		Color c = target.cpy().lerp(Color.BLACK, 0.1f);
 		final ColorAction action = Actions.noAlphaColor(c, seconds);
 		action.setColor(directedLightSun.color);
 		addAction(action);
