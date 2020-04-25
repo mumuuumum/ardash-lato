@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -16,11 +15,9 @@ import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.lato.actors.Performer;
-import ardash.lato.actors.SpeedListener;
 import ardash.lato.actors.WaveDrawer;
-import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
-public class LatoStage extends Stage implements SpeedListener {
+public class LatoStage extends Stage {
 
 	// the valid zoom interval for the camera to be used to interpolate zooming with current speed
 	protected static final float MIN_ZOOM = 1f;
@@ -214,11 +211,11 @@ public class LatoStage extends Stage implements SpeedListener {
 		}
 	}
 
-	@Override
-	public void onSpeedChanged(float newSpeed, float percentage) {
-		final float newZoom = MathUtils.lerp(MIN_ZOOM, MAX_ZOOM, percentage);
-		OrthographicCamera cam = (OrthographicCamera)getCamera();
-//		cam.zoom = newZoom;
-		cam.translate(0, 0, newZoom);
-	}
+////	@Override
+//	public void onSpeedChanged(float newSpeed, float percentage) {
+//		final float newZoom = MathUtils.lerp(MIN_ZOOM, MAX_ZOOM, percentage);
+//		OrthographicCamera cam = (OrthographicCamera)getCamera();
+////		cam.zoom = newZoom;
+//		cam.translate(0, 0, newZoom);
+//	}
 }

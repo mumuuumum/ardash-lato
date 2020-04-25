@@ -3,6 +3,7 @@ package ardash.lato.terrain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -49,6 +50,8 @@ public class TerrainManager {
 		else
 		{
 			s = new Downer();
+			if (MathUtils.random(0, 2)>0f)
+				s = new Hill();
 			final Vector2 offset = this.getLastSection().last();
 			s.addOffsetToSurroundings(offset);
 			s.addOffsetToSegList(offset);

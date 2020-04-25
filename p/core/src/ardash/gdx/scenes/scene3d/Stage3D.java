@@ -13,8 +13,6 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
-import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -31,17 +29,16 @@ import ardash.gdx.scenes.scene3d.actions.Actions3D;
 import ardash.gdx.scenes.scene3d.actions.ColorAction;
 import ardash.gdx.scenes.scene3d.actions.FloatAction;
 import ardash.lato.actions.Actions;
-import ardash.lato.actors.SpeedListener;
 import ardash.lato.actors.WaveDrawer;
 import ardash.lato.weather.AmbientColorChangeListener;
 import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.FogColorChangeListener;
 import ardash.lato.weather.FogIntensityChangeListener;
 import ardash.lato.weather.SunColorChangeListener;
-import net.dermetfan.gdx.math.InterpolationUtils;
 
 public class Stage3D extends InputAdapter implements Disposable, 
-FogIntensityChangeListener, FogColorChangeListener, AmbientColorChangeListener, SpeedListener, SunColorChangeListener {
+FogIntensityChangeListener, FogColorChangeListener, AmbientColorChangeListener, SunColorChangeListener//, //PerformerListener 
+{
 	// the valid zoom interval for the camera to be used to interpolate zooming with current speed
 	protected static final float MIN_ZOOM = 0f;
 	protected static final float MAX_ZOOM = 40f;
@@ -412,19 +409,21 @@ FogIntensityChangeListener, FogColorChangeListener, AmbientColorChangeListener, 
 		addAction(action);
 	}
 
-	Float initZ = null;
-	@Override
-	public void onSpeedChanged(float newSpeed, float percentage) {
-		final float newZoom = MathUtils.lerp(MIN_ZOOM, MAX_ZOOM, percentage);
-		Camera3D cam = (Camera3D)getCamera();
-
-		if (initZ == null)
-			initZ = cam.getZ();
-
-//		cam.translate(0, 0, initZ - newZoom);
-		cam.position.z = initZ + newZoom;
-		cam.update();
-	}
+//	Float initZ = null;
+//	@Override
+//	public void onSpeedChanged(float newSpeed, float percentage) {
+//		final float newZoom = MathUtils.lerp(MIN_ZOOM, MAX_ZOOM, percentage);
+//		Camera3D cam = (Camera3D)getCamera();
+//
+//		if (initZ == null)
+//			initZ = cam.getZ();
+//
+////		cam.translate(0, 0, initZ - newZoom);
+////		cam.position.z = initZ + newZoom;
+////		cam.update();
+//		
+////		cam.moveTo(cam.getX(), cam.getY(), initZ+newZoom, 3f);
+//	}
 
 	@Override
 	public void onSunColorChangeTriggered(Color target, float seconds) {

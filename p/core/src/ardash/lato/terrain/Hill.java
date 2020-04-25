@@ -1,5 +1,6 @@
 package ardash.lato.terrain;
 
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Interpolation.Exp;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -11,16 +12,20 @@ import ardash.lato.actors3.Spruce;
 /**
  * A slope downhill, followed by a short straight line.
  */
-public class Downer extends Section {
-	static final float MIN_ANGLE = 10f;
-	static final float MAX_ANGLE = 20f;
-	static final float MIN_LENGTH = 20f;
-	static final float MAX_LENGTH = 140f;
+public class Hill extends Section {
+	static final float MIN_ANGLE = 5f;
+	static final float MAX_ANGLE = 10f;
+	static final float MIN_LENGTH = 5f;
+	static final float MAX_LENGTH = 15f;
 	static final Vector2 currentRandomVector= new Vector2();
 	
-	public Downer() {
+	public Hill() {
 		makeNewRandomVector();
-		add (new Vector2(0,0), new Vector2(currentRandomVector), new Exp(2, 5));
+		add (new Vector2(0,0), currentRandomVector, Interpolation.pow2);
+		final Vector2 to = new Vector2(currentRandomVector);
+		to.x *=2;
+		to.y =0;
+		add (to, Interpolation.pow2);
 
 		// add trees
 		Spruce tree = new Spruce();

@@ -54,8 +54,6 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 //	private float direction = 0f; // current rotation (direction) in degrees
 	private Vector2 velocity = new Vector2(); // this is only here to safe new-calls
 //	private float gravity = 9.807f; // m/s/s
-	private ParallelAction jumpAction;
-	private ArrayList<SpeedListener> speedListeners = new ArrayList<SpeedListener>();
 	ParticleEffect snowSpray = new ParticleEffect();
 	private Image3D ambientColorContainer = new Image3D(1, 1, new Color(), new ModelBuilder());
 	private List<PerformerListener> listeners = new ArrayList<Performer.PerformerListener>();
@@ -72,9 +70,12 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	 * A spot in front of the actor, where he wants the camera to look at. Usually a few meters in front of the actor.
 	 */
 	private Vector2 camSpot = new Vector2();
+	public int currentContacts = 0;
+	private float airTime;
 	
 	public interface PerformerListener{
 		void onPositionChange(float newX, float newY);
+		void onSpeedChanged(float newSpeed, float percentage);
 	}
 	
 	public Performer() {
@@ -122,7 +123,8 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		// enforce max speed
 		final Vector2 linearVelocity = body.getLinearVelocity();
 		final float linearSpeed = linearVelocity.len();
-		
+		final float angle = linearVelocity.angle();
+//		System.out.println("per angle "+ angle);
 		if (linearSpeed > MAX_SPEED)
 		{
 			linearVelocity.setLength(MAX_SPEED);
@@ -133,78 +135,77 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			linearVelocity.setLength(MIN_SPEED);
 			body.setLinearVelocity(linearVelocity);
 		}
+		
+		setSpeed(linearSpeed);
+		
+//		if (90 < angle && angle < 270)
+//		{
+//			// bounced off a hill and moved backward now
+//			linearVelocity.rotate(-90f);
+//			body.setLinearVelocity(linearVelocity);
+//		}
+		
+		if (currentContacts > 0)
+		{
+			land();
+			airTime = 0;
+			body.setGravityScale(2f);
+		}
+		else
+		{
+//			body.setGravityScale(1f);
+			if (angle <180)
+			{
+				airTime+=delta;
+				body.setGravityScale(1f);
+//				if (airTime > 1f)
+				{
+					jump(0f);
+					isInAir  = true;
+				}
+			}
+		}
 
 		
-//		// accelerate on ground
-//		if (! isInAir)
-//		{
-//			final float angleToGround = 360f - velocity.angle(); // 0 or 360 is horizontal, 90 is downward, 45 is ramp down forward
-////			System.out.println(angleToGround);
-//			if (angleToGround > 0)
-//			{
-//				if (angleToGround < 20f) // TODO adjust here. everything above this angle speeds up
-//				{
-//					setSpeed(speed-(1.1f*delta));
-//				}
-//				else if (angleToGround < 90f)
-//				{
-//					setSpeed(speed+(1.1f*delta));
-//				}
-//				else
-//				{
-//					setSpeed(speed-(1.1f*delta));
-//				}
-//			}
-//		}
-//		
-////		System.out.println(Gdx.graphics.getFramesPerSecond());
-////		System.out.println(speed);
-//		final float rotation = getRotation() < 0f ? getRotation() + 360f : getRotation();
-////		System.out.println(rotation);
-//		
-//		// apply the speed into a direction of movement, which is the direction of the terrain, or straight forward (angle 0) when in air
-//		velocity.set(1,1).setLength(speed).setAngle(isInAir ? 0f : rotation);
-//		final float deltaX = velocity.x;
-//		moveBy(deltaX*delta, 0); // movement is product of time-delta and speed-delta
-//		
-//		
-//		float heightUnderActor = getGameScreen().waveDrawer.getHeightAt(getX()+(PERFORMER_WIDTH/2f));
-//		float heightOfMe = getY();
+		final float rotation = getRotation() < 0f ? getRotation() + 360f : getRotation();
+
+		float heightUnderActor = getGameScreen().waveDrawer.getHeightAt(getX()+(PERFORMER_WIDTH/2f));
+		float heightOfMe = getY();
 //		// set the height of the terrain under the actor if not in air
-//		if (! isInAir)
-//		{
+		if (! isInAir)
+		{
 //			vspeed = heightOfMe - heightUnderActor;
 //			if (vspeed > 0.2f)
 //			{
 ////				jump(0f);
 ////				return;
 //			}
-//			setOriginY(0);
-//			setY(heightUnderActor);
-//			setRotation( getGameScreen().waveDrawer.getAngleAtX(getX()+(PERFORMER_WIDTH/2f)));
-//		}
-//		else
-//		{
-//			setOriginY(-PERFORMER_WIDTH/2f);
+			setOriginY(0);
+			setY(heightUnderActor);
+			setRotation( getGameScreen().waveDrawer.getAngleAtX(getX()+(PERFORMER_WIDTH/2f)));
+		}
+		else
+		{
+			setOriginY(-PERFORMER_WIDTH/2f);
 //			if (heightUnderActor > heightOfMe) // check if hit the ground
 //			{
 //				land();
 //			}
-//			
-//			// if input touch down rotate counter clockwise, otherwise rotate towards ground
-//			else if (isUserInputDown)
-//			{
-//				setPose(Pose.RIDE); // TODO set to roll
-//				rotateBy(ROTATION_SPEED*delta);
-//			}
-//			else
-//			{
-//				setPose(Pose.JUMP);
-//				float direction = rotation > 180 ? 1 : -1;
-//				rotateBy(ROTATION_SPEED*0.3f*direction*delta);
-//				
-//			}
-//		}
+			
+			// if input touch down rotate counter clockwise, otherwise rotate towards ground
+			if (isUserInputDown)
+			{
+				setPose(Pose.RIDE); // TODO set to roll
+				rotateBy(ROTATION_SPEED*delta);
+			}
+			else
+			{
+				setPose(Pose.JUMP);
+				float direction = rotation > 180 ? 1 : -1;
+				rotateBy(ROTATION_SPEED*0.3f*direction*delta);
+				
+			}
+		}
 		final float newCamSpotX= MathUtils.lerp(MIN_CAM_SPOT_X, MAX_CAM_SPOT_X, getSpeedPercentage());
 		final Vector2 newCamSpot = new Vector2(getX() + newCamSpotX, getY());
 		if (getSpeed() == 0)
@@ -241,7 +242,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	}
 	
 	private float getMaxCamSpeed() {
-		return getGameManager().isStarted() ? (runtime > 1f ? 3.3f : 0.3f) : 0.03f;
+		return getGameManager().isStarted() ? (runtime > 1f ? 3.3f : 03.3f) : 0.03f;
 	}
 
 	@Override
@@ -291,8 +292,8 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		this.speed = speed;
 		
 		// inform listeners
-		for (SpeedListener speedListener : speedListeners) {
-			speedListener.onSpeedChanged(speed, getSpeedPercentage());
+		for (PerformerListener l : listeners) {
+			l.onSpeedChanged(speed, getSpeedPercentage());
 		}
 	}
 
@@ -333,7 +334,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		{
 			if (touchDown)
 			{
-				jump(8f);
+				jump(2f);
 			}
 		}
 		
@@ -348,8 +349,8 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		return rotation;
 	}
 	
-	private void jump(float jumpforce) {
-		isInAir  = true;
+	public void jump(float jumpforce) {
+//		isInAir  = true;
 //		final MoveByAction jumpForce = Actions.moveBy(0f, jumpforce, 0f, 1f, Interpolation.fastSlow);
 //		final GravityAction gravity = Actions.gravity();
 //		gravity.setVspeed(-vspeed*1f);
@@ -358,19 +359,14 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 //		setPose(Pose.JUMP);
 		
 //		getBody().applyForceToCenter(100f, 100f, true);
-		getBody().applyLinearImpulse(10, 10, 0, 0, true);
+//		if (jumpforce > 0f)
+//			getBody().applyLinearImpulse(10, jumpforce, 0, 0, true);
 	}
 	
 	/** touching down after a jump or fall*/
-	private void land() {
+	public void land() {
 		isInAir = false;
-		removeAction(jumpAction); // ensure no more up or down (gravity) is applied
 		setPose(Pose.DUCK);
-	}
-	
-	public void addSpeedListener (SpeedListener listener)
-	{
-		speedListeners.add(listener);
 	}
 
 	public void addListener (PerformerListener listener)

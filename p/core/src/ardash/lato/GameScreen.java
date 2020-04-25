@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -183,20 +184,9 @@ public class GameScreen implements Screen {
 		performer.enablePhysics();
 		stage.setPerformer(performer); // attach the camera to him
 		weather.addAmbientColourChangeListener(performer);
-//		weather.addAmbientColourChangeListener(performer);
-		
-		// attach the zoom of some cameras to the speed of the player
-//		performer.addSpeedListener(backStage);
-//		performer.addSpeedListener(stage);
-//		performer.addSpeedListener(frontStage);
-//		performer.addSpeedListener(mountainStage3d);
-		performer.addSpeedListener(stage3d);
 		
 		stage.addActor(new Scarf(assets.getSTexture(SceneTexture.FOG_PIX)));
 
-//		final Stage3DAdapterActor stage3d = new Stage3DAdapterActor();
-//		guiStage.addActor(stage3d);
-		
 		mountainStage3d.getCamera().update();
 		stage3d.getCamera().update();
 //		flareStage3d.getCamera().update();
@@ -255,11 +245,6 @@ public class GameScreen implements Screen {
         gm.tm.addListener(stage3d);
         weather.addAmbientColourChangeListener(stage3d);
                 
-        CubeActor3D ca = new CubeActor3D(1, 1, 1);
-//        backStage3d.addActor(ca);
-//        ca.translate(55, 3, 0);
-        
-//        performer.act(0f); // TODO check if this is safe to act() once to get the position right
         Vector2 tts = new Vector2(13.5f,5.566f);
         Image3D titleText = new Image3D(tts.x, tts.y, assets.getSTexture(SceneTexture.TITLESCREEN), new ModelBuilder());
         titleText.setTag(Tag.CENTER);
@@ -273,53 +258,43 @@ public class GameScreen implements Screen {
         stage3d.setAmbientLightColor(Color.WHITE.cpy());
 		
 
+		final Camera3D cam = (Camera3D)stage3d.getCamera();
     	// connect cameras to Performer
     	performer.addListener(new PerformerListener() {
+    		private float lastx, lasty, lastz = 40;
 			@Override
 			public void onPositionChange(float newX, float newY) {
+				lastx = newX;
+				lasty =newY;
 				stage.getCamera().translate(-(stage.getCamera().position.x - performer.getCamSpot().x)
 						, -(stage.getCamera().position.y - performer.getCamSpot().y), 0);
 				stage.getCamera().update();
 
-				stage3d.getCamera().translate(-(stage3d.getCamera().position.x - performer.getCamSpot().x)
-						, -(stage3d.getCamera().position.y - performer.getCamSpot().y), 0);
-				stage3d.getCamera().update();
+				cam.moveTo(performer.getCamSpot().x, performer.getCamSpot().y, lastz, 0.1f);
+				
 			}
+			
+			// the valid zoom interval for the camera to be used to interpolate zooming with current speed
+			protected static final float MIN_ZOOM = 0f;
+			protected static final float MAX_ZOOM = 40f;
+			Float initZ = null;
+			@Override
+			public void onSpeedChanged(float newSpeed, float percentage) {
+				final float newZoom = MathUtils.lerp(MIN_ZOOM, MAX_ZOOM, percentage);
+
+				if (initZ == null)
+					initZ = cam.getZ();
+
+				final float newz = initZ+newZoom;
+				lastz = newz;
+				cam.moveTo(lastx, lasty, newz, 0.1f);
+			}
+
 		});
     	
     	// add the first piece of terrain
     	gm.tm.createNewSection();
 
-
-//		flareStage3d.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//		flareStage3d.getCamera().translate(0, 0, 30);
-////		flareStage3d.getCamera().moveTo(0, 0, 30, 1f);
-//		flareStage3d.getCamera().near = 0.1f;
-//		flareStage3d.getCamera().far = 35f;
-//		flareStage3d.getCamera().update();
-		
-		
-//		// add ambient light overlay
-//		Image fog = new Image(assets.getSTexture(SceneTexture.FOG_PIX));
-//		fog.setSize(204, 204); // TODO reduce to display size
-//		stage.addActor(fog);
-////		fog.setColor(1f, 0.9f, 0.9f, 0.125f);
-//		fog.setColor(EnvColors.DAY.ambient.cpy());
-//		fog.getColor().a = 0.7225f;
-//		Actors.centerActor(fog);
-
-//		Image fog = new Image(assets.getSTexture(SceneTexture.FLARE));
-//		fog.setSize(40, 40); // TODO reduce to display size
-//		stage.addActor(fog);
-////		fog.setColor(1f, 0.9f, 0.9f, 0.125f);
-////		fog.setColor(EnvColors.DAY.ambient.cpy());
-////		fog.getColor().a = 0.7225f;
-//		Actors.centerActor(fog);
-		
-		// flare
-//		final FlarePlane flarePlane = new FlarePlane(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
-//		frontStage.addActor(flarePlane);
-//		flarePlane.init();
 
 		buildGui();
 //		stage3d.act(); // act one time, to draw it correctly
@@ -347,6 +322,7 @@ public class GameScreen implements Screen {
 				super.act(delta);
 				String lblText = "fps: "+ Gdx.graphics.getFramesPerSecond();
 				lblText += "\nactors: "+stage3d.getRoot().getChildren().size;
+				lblText += String.format("\nworld : B %s C %s", stage3d.world.getBodyCount(), stage3d.world.getContactCount());
 				lblText += String.format("\nposition: %.2f %.2f", performer.getX(), performer.getY());
 				lblText += String.format("\nspeed: %.2f %.2f%%", performer.getSpeed(), performer.getSpeedPercentage()*100f);
 				lblText += "\nt-sections: "+gm.tm.getSections().size();

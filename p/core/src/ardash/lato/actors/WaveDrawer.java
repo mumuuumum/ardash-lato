@@ -240,4 +240,9 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	public void onNewSectionCreated(Section s) {
 		terrainSegmentList.addAllNoOffset(getGameManager().tm.getLastSection());
 	}
+
+	@Override
+	public void onSpeedChanged(float newSpeed, float percentage) {
+		// nothing !!
+	}
 }

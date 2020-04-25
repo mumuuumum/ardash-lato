@@ -26,12 +26,15 @@ public interface Physical {
 		// Set our body's starting position in the world
 		bodyDef.position.set(getX(), getY());
 		bodyDef.fixedRotation=true;
+//		bodyDef.d
 
 		// Create our body in the world using our body definition
 		Body body = world.createBody(bodyDef);
 		body.setUserData(this);
-//		body.setLinearDamping(0.10f);
-
+		body.setLinearDamping(0.10f);
+//		body.getMassData().mass=50f;
+		body.setGravityScale(1f);
+		
 		// Create a circle shape and set its radius to 6
 		CircleShape circle = new CircleShape();
 		circle.setRadius(getWidth()/2f);
@@ -39,9 +42,9 @@ public interface Physical {
 		// Create a fixture definition to apply our shape to
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = circle;
-		fixtureDef.density = 0.5f; 
-		fixtureDef.friction = 0.4f;
-		fixtureDef.restitution = 0.0f; // no bouncing
+		fixtureDef.density = 02.5f; 
+		fixtureDef.friction = 0.1f; //0.94f;
+		fixtureDef.restitution = 0.000001f; // no bouncing
 
 		// Create our fixture and attach it to the body
 		Fixture fixture = body.createFixture(fixtureDef);

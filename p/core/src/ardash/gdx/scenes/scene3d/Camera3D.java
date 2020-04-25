@@ -62,6 +62,8 @@ public class Camera3D extends PerspectiveCamera {
     private float rotateLastPercent;
     private float rotatePercentDelta;
     
+    private float requestedZoomZ=0;
+    
     public void moveTo(float x, float y, float z, float duration) {
         moveBy(x-position.x, y-position.y, z-position.z, duration);
     }

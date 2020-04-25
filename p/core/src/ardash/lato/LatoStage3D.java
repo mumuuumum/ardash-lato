@@ -10,8 +10,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.PerformanceCounter;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
@@ -110,12 +112,26 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
 			float[] verts = {x1,y1,x4,y4,x3,y3,x2,y2};
 			groundBox.set(verts );
 			// Create a fixture from our polygon shape and add it to our ground body  
-			groundBody.createFixture(groundBox, 0.0f); 
+			final Fixture fixture = groundBody.createFixture(groundBox, 0.0f); 
+			fixture.setRestitution(0f);
+			fixture.setFriction(0.0099f);
 			// Clean up after ourselves
 			groundBox.dispose();
+			groundBody.setUserData(new Float(x1));
 		}
 		
-//		TODO offset missing
+		// delete old world-ground
+		Array<Body> bodies = new Array<Body>(world.getBodyCount());
+		world.getBodies(bodies);
+		for (Body a : bodies) {
+			if (a.getUserData() instanceof Float) {
+				Float xx = (Float)a.getUserData();
+				if (xx <border)
+					world.destroyBody(a);
+//					canBeDeleted.add((TerrainItem)a);
+			}
+		}
+
 
 		
 	}
@@ -153,7 +169,8 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
 	
 	public void enablePhysics() {
 		world = new World(new Vector2(0f, -9.80665f), true);
-		worldRenderer = new Box2DDebugRenderer(true, true, true, true, true, true);
+		worldRenderer = new Box2DDebugRenderer(true, false, false, true, true, true);
+		world.setContactListener(new ContactListener());
 	}
 
 	private void doPhysicsStep(float deltaTime) {
@@ -163,7 +180,8 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
 	    worldAccumulator += frameTime;
 	    float TIME_STEP = 1/60f;
 		while (worldAccumulator >= TIME_STEP ) {
-	        world.step(TIME_STEP, 6, 2);
+	        world.step(TIME_STEP, 60, 20);
+//	        world.step(TIME_STEP, 6, 2);
 	        worldAccumulator -= TIME_STEP;
 	    }
 	}
