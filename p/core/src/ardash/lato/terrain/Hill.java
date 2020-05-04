@@ -14,7 +14,7 @@ import ardash.lato.actors3.Spruce;
  */
 public class Hill extends Section {
 	static final float MIN_ANGLE = 5f;
-	static final float MAX_ANGLE = 10f;
+	static final float MAX_ANGLE = 15f;
 	static final float MIN_LENGTH = 5f;
 	static final float MAX_LENGTH = 15f;
 	static final Vector2 currentRandomVector= new Vector2();

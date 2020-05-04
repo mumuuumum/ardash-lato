@@ -9,9 +9,9 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import ardash.lato.actors.Performer;
 
 public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactListener {
-	private static final float MIN_SPEED = 9.3f;
-	private static final float MAX_SPEED = 29.3f;
-	private float lastSpeed;
+//	private static final float MIN_SPEED = 9.3f;
+//	private static final float MAX_SPEED = 29.3f;
+//	private float lastSpeed;
 
 	@Override
 	public void beginContact(Contact contact) {
@@ -19,48 +19,50 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		final Object udb = contact.getFixtureB().getUserData();
 		if (uda instanceof Performer) {
 			Performer p = (Performer) uda;
+			p.land();
 			p.currentContacts++;
 //			adjustDirection(contact.getFixtureA().getBody());
-			saveLastSpeed(contact.getFixtureA().getBody());
+//			saveLastSpeed(contact.getFixtureA().getBody());
 		}
 		if (udb instanceof Performer) {
 			Performer p = (Performer) udb;
+			p.land();
 			p.currentContacts++;
 //			adjustDirection(contact.getFixtureB().getBody());
-			saveLastSpeed(contact.getFixtureB().getBody());
+//			saveLastSpeed(contact.getFixtureB().getBody());
 		}
 	}
 
-	private void saveLastSpeed(Body body) {
-		final Vector2 linearVelocity = body.getLinearVelocity();
-		final float linearSpeed = linearVelocity.len();
-		final float angle = linearVelocity.angle();
-		lastSpeed = linearSpeed;
-	}
+//	private void saveLastSpeed(Body body) {
+//		final Vector2 linearVelocity = body.getLinearVelocity();
+//		final float linearSpeed = linearVelocity.len();
+//		final float angle = linearVelocity.angle();
+//		lastSpeed = linearSpeed;
+//	}
 	
-	private void adjustDirection(Body body) {
-		final Vector2 linearVelocity = body.getLinearVelocity();
-		final float linearSpeed = linearVelocity.len();
-		final float angle = linearVelocity.angle();
-		if (linearSpeed > MAX_SPEED)
-		{
-			linearVelocity.setLength(MAX_SPEED);
-			body.setLinearVelocity(linearVelocity);
-		}
-		else if (linearSpeed < MIN_SPEED)
-		{
-			linearVelocity.setLength(MIN_SPEED);
-			body.setLinearVelocity(linearVelocity);
-		}
-		if (90 < angle && angle < 270)
-		{
-			// bounced off a hill and moved backward now
-			linearVelocity.rotate(-90f);
-			body.setLinearVelocity(linearVelocity);
-//			body.velo
-		}
-		
-	}
+//	private void adjustDirection(Body body) {
+//		final Vector2 linearVelocity = body.getLinearVelocity();
+//		final float linearSpeed = linearVelocity.len();
+//		final float angle = linearVelocity.angle();
+//		if (linearSpeed > MAX_SPEED)
+//		{
+//			linearVelocity.setLength(MAX_SPEED);
+//			body.setLinearVelocity(linearVelocity);
+//		}
+//		else if (linearSpeed < MIN_SPEED)
+//		{
+//			linearVelocity.setLength(MIN_SPEED);
+//			body.setLinearVelocity(linearVelocity);
+//		}
+//		if (90 < angle && angle < 270)
+//		{
+//			// bounced off a hill and moved backward now
+//			linearVelocity.rotate(-90f);
+//			body.setLinearVelocity(linearVelocity);
+////			body.velo
+//		}
+//		
+//	}
 
 	@Override
 	public void endContact(Contact contact) {
@@ -91,8 +93,8 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse) {
-		adjustDirection(contact.getFixtureA().getBody());
-		adjustDirection(contact.getFixtureB().getBody());
+//		adjustDirection(contact.getFixtureA().getBody());
+//		adjustDirection(contact.getFixtureB().getBody());
 //		impulse.getNormalImpulses()
 //		contact.setTangentSpeed(0f);
 //		final Vector2 v1 = contact.getFixtureA().getBody().getLinearVelocity();

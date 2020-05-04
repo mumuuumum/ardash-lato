@@ -22,7 +22,7 @@ public interface Physical {
 		// First we create a body definition
 		BodyDef bodyDef = new BodyDef();
 		// We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
-		bodyDef.type = BodyType.DynamicBody;
+		bodyDef.type = BodyType.KinematicBody;
 		// Set our body's starting position in the world
 		bodyDef.position.set(getX(), getY());
 		bodyDef.fixedRotation=true;
@@ -42,7 +42,7 @@ public interface Physical {
 		// Create a fixture definition to apply our shape to
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = circle;
-		fixtureDef.density = 02.5f; 
+		fixtureDef.density = 0.5f; 
 		fixtureDef.friction = 0.1f; //0.94f;
 		fixtureDef.restitution = 0.000001f; // no bouncing
 

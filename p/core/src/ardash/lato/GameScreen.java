@@ -338,6 +338,7 @@ public class GameScreen implements Screen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				performer.userInput(true);
+				performer.setSpeed(Performer.MIN_SPEED);
 				gm.setStarted(true);
 				return true;
 			}
