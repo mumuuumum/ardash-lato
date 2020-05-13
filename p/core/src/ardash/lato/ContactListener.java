@@ -19,15 +19,17 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		final Object udb = contact.getFixtureB().getUserData();
 		if (uda instanceof Performer) {
 			Performer p = (Performer) uda;
-			p.land();
-			p.currentContacts++;
+			if (p.getTimeInState() > 0f)
+				p.land();
+//			p.currentContacts++;
 //			adjustDirection(contact.getFixtureA().getBody());
 //			saveLastSpeed(contact.getFixtureA().getBody());
 		}
 		if (udb instanceof Performer) {
 			Performer p = (Performer) udb;
-			p.land();
-			p.currentContacts++;
+			if (p.getTimeInState() > 0f)
+				p.land();
+//			p.currentContacts++;
 //			adjustDirection(contact.getFixtureB().getBody());
 //			saveLastSpeed(contact.getFixtureB().getBody());
 		}

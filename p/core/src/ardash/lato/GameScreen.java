@@ -322,7 +322,7 @@ public class GameScreen implements Screen {
 				super.act(delta);
 				String lblText = "fps: "+ Gdx.graphics.getFramesPerSecond();
 				lblText += "\nactors: "+stage3d.getRoot().getChildren().size;
-				lblText += String.format("\nworld : B %s C %s", stage3d.world.getBodyCount(), stage3d.world.getContactCount());
+				lblText += String.format("\nworld : B %s C %s PC %s", stage3d.world.getBodyCount(), stage3d.world.getContactCount(), performer.currentContacts);
 				lblText += String.format("\nposition: %.2f %.2f", performer.getX(), performer.getY());
 				lblText += String.format("\nspeed: %.2f %.2f%%", performer.getSpeed(), performer.getSpeedPercentage()*100f);
 				lblText += "\nt-sections: "+gm.tm.getSections().size();

@@ -75,6 +75,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	private Vector2 camSpot = new Vector2();
 	public int currentContacts = 0;
 	private float airTime;
+	private float timeInState;
 	
 	public interface PerformerListener{
 		void onPositionChange(float newX, float newY);
@@ -117,6 +118,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		if (state.isStarted())
 		{
 			runtime += delta;
+			timeInState += delta;
 		}
 		
 		if (currentContacts > 0 )
@@ -124,9 +126,19 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 //			land();
 		}
 		
+		final float rotation = getRotation() < 0f ? getRotation() + 360f : getRotation();
+		System.out.println(rotation+" vel "+velocity + " veaang" + velocity.angle());
+
+		
 		// accelerate on ground
 		if (! state.isInAir())
 		{
+			// apply the speed into a direction of movement, which is the direction of the terrain, or straight forward (angle 0) when in air
+			velocity.set(1,1).setLength(speed).setAngle(state.isInAir() ? 0f : rotation);
+			final float deltaX = velocity.x;
+			moveBy(deltaX*delta, 0); // movement is product of time-delta and speed-delta
+
+			
 			getBody().setType(BodyType.KinematicBody);
 			getBody().setAwake(false);
 			getBody().setLinearVelocity(0, 0);
@@ -151,17 +163,11 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 
 //		System.out.println(Gdx.graphics.getFramesPerSecond());
 //		System.out.println(speed);
-		final float rotation = getRotation() < 0f ? getRotation() + 360f : getRotation();
-//		System.out.println(rotation);
 
 		// in air movement will be calculated
-		if (! state.isInAir())
-		{
-			// apply the speed into a direction of movement, which is the direction of the terrain, or straight forward (angle 0) when in air
-			velocity.set(1,1).setLength(speed).setAngle(state.isInAir() ? 0f : rotation);
-			final float deltaX = velocity.x;
-			moveBy(deltaX*delta, 0); // movement is product of time-delta and speed-delta
-		}
+//		if (! state.isInAir())
+//		{
+//		}
 		
 
 
@@ -235,6 +241,11 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			final Vector2 p = body.getPosition();
 			body.setTransform(getX()+(PERFORMER_WIDTH/2f), heightUnderActor+(PERFORMER_WIDTH/2f), 0f);
 			setRotation( getGameScreen().waveDrawer.getAngleAtX(getX()+(PERFORMER_WIDTH/2f)));
+			if (isUserInputDown)
+			{
+				jump(2f);
+			}
+
 		}
 		else
 		{
@@ -382,7 +393,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	public void userInput(boolean touchDown) {
 		if (!state.isStarted()) 
 		{
-			state = state.moveTo(PlayerState.SLIDING);
+			setState(PlayerState.SLIDING);
 			return; // don't jump or rotate if game not started yet
 //			setSpeed(MIN_SPEED);
 //			getGameManager().setStarted(true);
@@ -393,7 +404,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		{
 			if (touchDown)
 			{
-				jump(20f);
+//				jump(2f);
 			}
 		}
 		
@@ -409,7 +420,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	}
 	
 	public void jump(float jumpforce) {
-		state = state.moveTo(PlayerState.INAIR);
+		setState(PlayerState.INAIR);
 //		final MoveByAction jumpForce = Actions.moveBy(0f, jumpforce, 0f, 1f, Interpolation.fastSlow);
 //		final GravityAction gravity = Actions.gravity();
 //		gravity.setVspeed(-vspeed*1f);
@@ -422,14 +433,29 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		{
 //			getBody().applyLinearImpulse(10, jumpforce, 0, 0, true);
 			getBody().setType(BodyType.DynamicBody);
-			getBody().applyLinearImpulse(velocity.cpy().rotate(45f), new Vector2(), true);
+			Vector2 imp = velocity.cpy();
+//			imp = imp.angle() < 180f ? imp.rotate(-45f):imp.rotate(45f);
+			imp = imp.rotate(45f);
+			imp.scl(jumpforce);
+			getBody().applyLinearImpulse(imp, new Vector2(), true);
 		}
 	}
 	
 	/** touching down after a jump or fall*/
 	public void land() {
-		state = state.moveTo(PlayerState.DUCKING);
+		setState(PlayerState.DUCKING);
 		setPose(Pose.DUCK);
+	}
+	
+	public void setState(PlayerState state) {
+		if (this.state.equals(state))
+			return;
+		timeInState =0f;
+		this.state = state.moveTo(state);
+	}
+	
+	public float getTimeInState() {
+		return timeInState;
 	}
 
 	public void addListener (PerformerListener listener)

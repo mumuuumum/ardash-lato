@@ -154,8 +154,8 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
     	pcdra.start();
 		super.draw(in3grounds);
         pcdra.stop();
-        if (worldRenderer != null)
-        	worldRenderer.render(world, getCamera().combined);
+//        if (worldRenderer != null)
+//        	worldRenderer.render(world, getCamera().combined);
 	}
 	
 	@Override
