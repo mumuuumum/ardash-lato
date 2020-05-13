@@ -2,6 +2,7 @@ package ardash.lato.actors;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +51,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 
 	private float speed = 0f; // speed in m/s
 	private float runtime = 0f; // lifetime starting after game started
-	private boolean isInAir = false;
+//	private boolean isInAir = false;
 	private boolean isUserInputDown = false;
 //	private float direction = 0f; // current rotation (direction) in degrees
 	private Vector2 velocity = new Vector2(); // this is only here to safe new-calls
@@ -60,6 +61,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	private List<PerformerListener> listeners = new ArrayList<Performer.PerformerListener>();
 	private Map<Pose,Image3D> poses = new EnumMap<Pose, Image3D>(Pose.class);
 	protected Pose pose = Pose.RIDE;
+	protected PlayerState state = PlayerState.INIT;
 	
 	/**
 	 * vertical speed is intentionally not in a vector with 'speed' because the velocity is handled differently
@@ -112,7 +114,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		if (getGameManager().isStarted())
+		if (state.isStarted())
 		{
 			runtime += delta;
 		}
@@ -123,7 +125,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		}
 		
 		// accelerate on ground
-		if (! isInAir)
+		if (! state.isInAir())
 		{
 			getBody().setType(BodyType.KinematicBody);
 			getBody().setAwake(false);
@@ -153,10 +155,10 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 //		System.out.println(rotation);
 
 		// in air movement will be calculated
-		if (! isInAir)
+		if (! state.isInAir())
 		{
 			// apply the speed into a direction of movement, which is the direction of the terrain, or straight forward (angle 0) when in air
-			velocity.set(1,1).setLength(speed).setAngle(isInAir ? 0f : rotation);
+			velocity.set(1,1).setLength(speed).setAngle(state.isInAir() ? 0f : rotation);
 			final float deltaX = velocity.x;
 			moveBy(deltaX*delta, 0); // movement is product of time-delta and speed-delta
 		}
@@ -220,7 +222,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		float heightUnderActor = getGameScreen().waveDrawer.getHeightAt(getX()+(PERFORMER_WIDTH/2f));
 		float heightOfMe = getY();
 //		// set the height of the terrain under the actor if not in air
-		if (! isInAir)
+		if (! state.isInAir())
 		{
 //			vspeed = heightOfMe - heightUnderActor;
 //			if (vspeed > 0.2f)
@@ -298,7 +300,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	}
 	
 	private float getMaxCamSpeed() {
-		return getGameManager().isStarted() ? (runtime > 1f ? 3.3f : 03.3f) : 0.03f;
+		return state.isStarted() ? (runtime > 1f ? 3.3f : 03.3f) : 0.03f;
 	}
 
 	@Override
@@ -338,7 +340,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	}
 
 	public void setSpeed(float speed) {
-		if (!getGameManager().isStarted())
+		if (!state.isStarted())
 			return;
 		
 		if (speed < MIN_SPEED)
@@ -378,15 +380,16 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	 * @param down touch up or touch down
 	 */
 	public void userInput(boolean touchDown) {
-		if (!getGameManager().isStarted()) 
+		if (!state.isStarted()) 
 		{
+			state = state.moveTo(PlayerState.SLIDING);
 			return; // don't jump or rotate if game not started yet
 //			setSpeed(MIN_SPEED);
 //			getGameManager().setStarted(true);
 		}
 		
 		isUserInputDown = touchDown;
-		if (!isInAir)
+		if (!state.isInAir())
 		{
 			if (touchDown)
 			{
@@ -406,7 +409,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	}
 	
 	public void jump(float jumpforce) {
-		isInAir  = true;
+		state = state.moveTo(PlayerState.INAIR);
 //		final MoveByAction jumpForce = Actions.moveBy(0f, jumpforce, 0f, 1f, Interpolation.fastSlow);
 //		final GravityAction gravity = Actions.gravity();
 //		gravity.setVspeed(-vspeed*1f);
@@ -425,7 +428,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	
 	/** touching down after a jump or fall*/
 	public void land() {
-		isInAir = false;
+		state = state.moveTo(PlayerState.DUCKING);
 		setPose(Pose.DUCK);
 	}
 

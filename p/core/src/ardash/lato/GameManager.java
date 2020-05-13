@@ -48,7 +48,7 @@ public class GameManager {
 		this.started = started;
 	}
 	
-	public boolean isStarted()
+	private boolean isStarted()
 	{
 		return started;
 	}
