@@ -48,6 +48,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	private static final float MAX_SPEED = 29.3f;
 	private static final float MIN_CAM_SPOT_X = 10f;
 	private static final float MAX_CAM_SPOT_X = 24f;
+	private static final float JUMP_FORCE = 10.99f;
 
 	private float speed = 0f; // speed in m/s
 	private float runtime = 0f; // lifetime starting after game started
@@ -152,7 +153,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 				}
 				else if (angleToGround < 90f)
 				{
-					setSpeed(speed+(1.1f*delta));
+					setSpeed(speed+(2.1f*delta));
 				}
 				else
 				{
@@ -243,7 +244,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			setRotation( getGameScreen().waveDrawer.getAngleAtX(getX()+(PERFORMER_WIDTH/2f)));
 			if (isUserInputDown)
 			{
-				jump(2f);
+				jump(JUMP_FORCE);
 			}
 
 		}
@@ -421,11 +422,6 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	
 	public void jump(float jumpforce) {
 		setState(PlayerState.INAIR);
-//		final MoveByAction jumpForce = Actions.moveBy(0f, jumpforce, 0f, 1f, Interpolation.fastSlow);
-//		final GravityAction gravity = Actions.gravity();
-//		gravity.setVspeed(-vspeed*1f);
-//		jumpAction = Actions.parallel(jumpForce, gravity );
-//		addAction(jumpAction);
 //		setPose(Pose.JUMP);
 		
 //		getBody().applyForceToCenter(100f, 100f, true);
@@ -434,8 +430,9 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 //			getBody().applyLinearImpulse(10, jumpforce, 0, 0, true);
 			getBody().setType(BodyType.DynamicBody);
 			Vector2 imp = velocity.cpy();
+			getBody().applyLinearImpulse(imp, new Vector2(), true);
 //			imp = imp.angle() < 180f ? imp.rotate(-45f):imp.rotate(45f);
-			imp = imp.rotate(45f);
+			imp = imp.rotate(90f).nor();
 			imp.scl(jumpforce);
 			getBody().applyLinearImpulse(imp, new Vector2(), true);
 		}
