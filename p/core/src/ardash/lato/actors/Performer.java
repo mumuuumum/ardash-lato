@@ -128,7 +128,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		}
 		
 		final float rotation = getRotation() < 0f ? getRotation() + 360f : getRotation();
-		System.out.println(rotation+" vel "+velocity + " veaang" + velocity.angle());
+//		System.out.println(rotation+" vel "+velocity + " veaang" + velocity.angle());
 
 		
 		// accelerate on ground
@@ -153,7 +153,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 				}
 				else if (angleToGround < 90f)
 				{
-					setSpeed(speed+(2.1f*delta));
+					setSpeed(speed+(5.1f*delta));
 				}
 				else
 				{
