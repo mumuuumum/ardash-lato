@@ -3,6 +3,7 @@ package ardash.lato.terrain;
 import com.badlogic.gdx.math.Interpolation.Exp;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pools;
 
 import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.lato.actors3.Farmhouse;
@@ -41,7 +42,9 @@ public class Downer extends Section {
 //		tree4.setTag(Tag.BACK);
 //		surroundingItems.add(tree4);
 		
-        Farmhouse ma = new Farmhouse();
+//        Farmhouse ma = new Farmhouse();
+        Farmhouse ma = Pools.obtain(Farmhouse.class);
+        ma.init();
         ma.translate(-1,0, -30);
 		ma.setTag(Tag.BACK);
         addSurroundingItem(ma);

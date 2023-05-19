@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
@@ -28,7 +27,7 @@ import com.github.czyzby.kiwi.util.gdx.viewport.Viewports;
 import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.Group3D;
-import ardash.gdx.scenes.scene3d.shape.CubeActor3D;
+import ardash.gdx.scenes.scene3d.pooling.PoolsManager;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.Assets.SceneTexture;
 import ardash.lato.actors.FlarePlane;
@@ -40,7 +39,6 @@ import ardash.lato.actors.SkyPlane;
 import ardash.lato.actors.SkyPlane.SkyPlaneListener;
 import ardash.lato.actors.WaveDrawer;
 import ardash.lato.actors3.MountainRange3;
-import ardash.lato.actors3.Toonhouse;
 import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.WeatherProvider;
 import net.dermetfan.gdx.assets.AnnotationAssetManager;
@@ -91,8 +89,6 @@ public class GameScreen implements Screen {
 	 * frontStage (ParticlePlane, Flareplane)
 	 */
 	public void show() {
-		Texture ball = am.get(Assets.ball); // Assets.ball is a String
-
 		weather = new WeatherProvider();
 		backStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), "bs");
 		stage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), "s");
@@ -251,10 +247,10 @@ public class GameScreen implements Screen {
         titleText.setPosition(performer.getX()-tts.x/2f + 4f, performer.getY()+6f);
         stage3d.addActor(titleText);
 
-        Toonhouse ma = new Toonhouse();
-        ma.translate(0,0, -2);
-		ma.setTag(Tag.BACK);
-        stage3d.addActor(ma);
+//        Toonhouse ma = new Toonhouse();
+//        ma.translate(0,0, -2);
+//		ma.setTag(Tag.BACK);
+//        stage3d.addActor(ma);
         stage3d.setAmbientLightColor(Color.WHITE.cpy());
 		
 
@@ -419,6 +415,7 @@ public class GameScreen implements Screen {
 	    	gm.performanceCounters.tick();
 	    	System.out.println(gm.performanceCounters.toString(new StringBuilder()));
 	    	lastPerfOutput = 0;
+	    	PoolsManager.printStatusOutput();
 		}
 	}
 

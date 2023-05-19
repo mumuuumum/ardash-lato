@@ -48,9 +48,9 @@ public class TerrainSegList extends ArrayList<TerrainSeg>{
 		return ret;
 	}
 	
-	public Interpolation getTransistion(int index) {
-		return get(index).transistion;
-	}
+//	public Interpolation getTransistion(int index) {
+//		return get(index).transistion;
+//	}
 
 	public Vector2 first() {
 		if (isEmpty())

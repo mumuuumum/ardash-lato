@@ -25,7 +25,7 @@ public class ParticlePlane extends Group implements StageAccessor, Disposable, P
 
 //	@Override
 	public void init() {
-		TextureAtlas ta = getAssetManager().get(Assets.uiAtlas);
+		TextureAtlas ta = getAssetManager().get(Assets.SCENE_ATLAS);
 		rainEffect.load( Gdx.files.internal("rain.p"), ta);
 		rainEffect.scaleEffect(0.05f);
 		rainEffect.setPosition(-22f, 20f);

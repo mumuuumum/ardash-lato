@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.CatmullRomSpline;
 import com.badlogic.gdx.math.Vector2;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
+import ardash.gdx.scenes.scene3d.pooling.PoolsManager;
+
 public class LatoGame extends Game {
 	public GameManager gm;
 //	Assets assets;
@@ -17,6 +19,7 @@ public class LatoGame extends Game {
 
     @Override
     public void create () {
+    	PoolsManager.init();
     	gm = new GameManager(this);
     	setScreen(new LoadingScreen(gm));
 

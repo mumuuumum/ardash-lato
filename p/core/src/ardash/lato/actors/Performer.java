@@ -106,7 +106,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		addActor(ambientColorContainer);
 		ambientColorContainer.setVisible(false);
 		
-		TextureAtlas ta = getAssetManager().get(Assets.uiAtlas);
+		TextureAtlas ta = getAssetManager().get(Assets.SCENE_ATLAS);
 		snowSpray.load( Gdx.files.internal("spray.p"), ta);
 		snowSpray.scaleEffect(0.09f);
 		snowSpray.setPosition(-22f, 20f);

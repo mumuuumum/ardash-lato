@@ -3,7 +3,8 @@ package ardash.lato;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
+
+import ardash.lato.weather.EnvColors;
 
 public class LoadingScreen implements Screen {
 	GameManager gm;
@@ -22,12 +23,13 @@ public class LoadingScreen implements Screen {
 	@Override
 	public void render(float delta) {
 
+		final float p = gm.assets.manager.getProgress();
 		// draw something nice to look at
-		Gdx.gl.glClearColor(0f, 0f, 1f, 0f);
+		Gdx.gl.glClearColor(p*EnvColors.DAY.fog.r, p*EnvColors.DAY.fog.g, p*EnvColors.DAY.fog.b, 0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+		
 		if (gm.assets.manager.update()) {
-			Texture ball = gm.am.get(Assets.ball); // Assets.ball is a String
+//			Texture ball = gm.am.get(Assets.ball); // Assets.ball is a String
 			// Assets have finished loading, change screen maybe?
 			gm.game.setScreen(new GameScreen(gm)); // your screen should take a Assets object in it's constructor.
 		}
