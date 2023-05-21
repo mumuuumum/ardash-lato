@@ -135,7 +135,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		fixture.setRestitution(0.0f);
 //		fixture.s
 		
-		System.out.print("mass: " + body.getMass());
+//		System.out.print("mass: " + body.getMass());
 		// forward set minimum desired velocity
 		Vector2 vel = body.getLinearVelocity();
 	    final float desiredVel = MIN_SPEED;
