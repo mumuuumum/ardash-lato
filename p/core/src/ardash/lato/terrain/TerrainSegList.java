@@ -73,7 +73,9 @@ public class TerrainSegList extends ArrayList<TerrainSeg>{
 	}
 	
 	public void removeFirst() {
-		super.remove(0);
+		final TerrainSeg removedItem = super.remove(0);
+//		removedItem.transistion
+		// TODO free from object-Pool
 		updateSearchIndex();
 	}
 	
