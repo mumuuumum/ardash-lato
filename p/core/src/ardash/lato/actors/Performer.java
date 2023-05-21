@@ -106,7 +106,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		addActor(ambientColorContainer);
 		ambientColorContainer.setVisible(false);
 		
-		TextureAtlas ta = getAssetManager().get(Assets.uiAtlas);
+		TextureAtlas ta = getAssetManager().get(Assets.SCENE_ATLAS);
 		snowSpray.load( Gdx.files.internal("spray.p"), ta);
 		snowSpray.scaleEffect(0.09f);
 		snowSpray.setPosition(-22f, 20f);
@@ -115,6 +115,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	
 	@Override
 	public void act(float delta) {
+		System.out.println("d : "+delta);
 		super.act(delta);
 		if (state.isStarted())
 		{
@@ -140,9 +141,9 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			moveBy(deltaX*delta, 0); // movement is product of time-delta and speed-delta
 
 			
-			getBody().setType(BodyType.KinematicBody);
-			getBody().setAwake(false);
-			getBody().setLinearVelocity(0, 0);
+			getBody().setType(BodyType.StaticBody);
+//			getBody().setAwake(false);
+//			getBody().setLinearVelocity(0, 0);
 			final float angleToGround = 360f - velocity.angle(); // 0 or 360 is horizontal, 90 is downward, 45 is ramp down forward
 //			System.out.println(angleToGround);
 			if (angleToGround > 0)

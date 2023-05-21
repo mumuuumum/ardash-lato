@@ -18,20 +18,23 @@ public class Assets {
 
 	public final AnnotationAssetManager manager = new AnnotationAssetManager(new InternalFileHandleResolver());
 
-	@Asset(Texture.class)
-	public static final String ball = "marble.png";// , player = "img/player.png";
+//	@Asset(Texture.class)
+//	public static final String ball = "marble.png";// , player = "img/player.png";
 
 	@Asset(TextureAtlas.class)
-	public static final String uiAtlas = "scene.atlas";
+	public static final String SCENE_ATLAS = "scene.atlas";
+
+	/*
+	 * 3D Models
+	 */
+//	@Asset(Model.class)
+//	public static final String toon_house = "toon_house.g3db";
+//
+//	@Asset(Model.class)
+//	public static final String fan_house = "3d/House.g3db";
 
 	@Asset(Model.class)
-	public static final String toon_house = "toon_house.g3db";
-
-	@Asset(Model.class)
-	public static final String fan_house = "3d/House.g3db";
-
-	@Asset(Model.class)
-	public static final String farmhouse = "3d/farmhouse.g3db";
+	public static final String FARMHOUSE = "3d/farmhouse.g3db";
 
 //	public static final AssetDescriptor<TextureAtlas> uiAtlas = new AssetDescriptor<TextureAtlas>("scene.atlas",
 //	TextureAtlas.class);
@@ -49,7 +52,7 @@ public class Assets {
 //		textureAtlas = uiAtlas;
 //		val box = uiAtlas. findRegion("box");
 		String regionName = st.name().toLowerCase();
-		TextureAtlas ta = manager.get(Assets.uiAtlas);
+		TextureAtlas ta = manager.get(Assets.SCENE_ATLAS);
 		TextureRegion tr = ta.findRegion(regionName);
 		if (tr == null)
 			throw new RuntimeException("cannot find region: " + regionName);

@@ -5,26 +5,26 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Pool.Poolable;
 
-import ardash.gdx.scenes.scene3d.Actor3D;
+import ardash.gdx.scenes.scene3d.pooling.PoolableActor3D;
 import ardash.lato.Assets;
 
-public class Farmhouse extends Actor3D implements TerrainItem {
+public class Farmhouse extends PoolableActor3D implements TerrainItem{
 	
-	public Farmhouse(float rotation) {
+//	private Farmhouse(float rotation) {
+//		super(getModel());
+//		setName("farmhouse");
+//		setScale(2.17f); // farmhouse
+//        translate(0, -0.6f, 0);
+//        setColor(Color.WHITE);
+//	}
+	public Farmhouse() {
 		super(getModel());
 		setName("farmhouse");
 		setScale(2.17f); // farmhouse
-//		setScale(0.02f); // fan house
-//        setScale(0.004f, 0.002f, 0.002f);
         translate(0, -0.6f, 0);
-//        setRoll(270f);
-        setPitch(rotation);
         setColor(Color.WHITE);
-		
-	}
-	public Farmhouse() {
-		this(MathUtils.random(360f));
 	}
 	@Override
 	public void draw(ModelBatch modelBatch, Environment environment) {
@@ -32,8 +32,21 @@ public class Farmhouse extends Actor3D implements TerrainItem {
 		super.draw(modelBatch, getStage().dirLightenvironment);
 	}
 	private static Model getModel() {
-		Model m = getAssetManager().get(Assets.farmhouse); 
+		Model m = getAssetManager().get(Assets.FARMHOUSE); 
 		return m;
 	}
-
+	@Override
+	public void reset() {
+		super.reset();
+	}
+	
+	@Override
+	public void init() {
+		super.init();
+		setPitch(MathUtils.random(360f));
+	}
+	public void init(float rotation) {
+		this.init();
+        setPitch(rotation);
+	}
 }

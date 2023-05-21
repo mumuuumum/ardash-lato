@@ -32,7 +32,7 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
     protected PerformanceCounter pcdra = Actor3D.getGameManager().performanceCounters.add("s3d dra "+sc++);
     public World world = null;
     Box2DDebugRenderer worldRenderer;
-	private float worldAccumulator = 0;
+	private double worldAccumulator = 0;
 	public static final float DRAW_STEPS=WaveDrawer.DRAW_STEPS;
 
 
@@ -178,7 +178,7 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
 	    // max frame time to avoid spiral of death (on slow devices)
 	    float frameTime = Math.min(deltaTime, 0.25f);
 	    worldAccumulator += frameTime;
-	    float TIME_STEP = 1/60f;
+	    float TIME_STEP = 1f/60f;
 		while (worldAccumulator >= TIME_STEP ) {
 	        world.step(TIME_STEP, 60, 20);
 //	        world.step(TIME_STEP, 6, 2);

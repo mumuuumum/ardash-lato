@@ -2,6 +2,7 @@ package ardash.lato.terrain;
 
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Interpolation.Exp;
+import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
@@ -46,7 +47,9 @@ public class Hill extends Section {
 //		tree4.setTag(Tag.BACK);
 //		surroundingItems.add(tree4);
 		
-        Farmhouse ma = new Farmhouse();
+//      Farmhouse ma = new Farmhouse();
+        Farmhouse ma = Pools.obtain(Farmhouse.class);
+        ma.init();
         ma.translate(-1,0, -30);
 		ma.setTag(Tag.BACK);
         addSurroundingItem(ma);

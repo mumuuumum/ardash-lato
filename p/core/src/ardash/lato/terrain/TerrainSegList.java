@@ -48,9 +48,9 @@ public class TerrainSegList extends ArrayList<TerrainSeg>{
 		return ret;
 	}
 	
-	public Interpolation getTransistion(int index) {
-		return get(index).transistion;
-	}
+//	public Interpolation getTransistion(int index) {
+//		return get(index).transistion;
+//	}
 
 	public Vector2 first() {
 		if (isEmpty())
@@ -73,7 +73,9 @@ public class TerrainSegList extends ArrayList<TerrainSeg>{
 	}
 	
 	public void removeFirst() {
-		super.remove(0);
+		final TerrainSeg removedItem = super.remove(0);
+//		removedItem.transistion
+		// TODO free from object-Pool
 		updateSearchIndex();
 	}
 	
