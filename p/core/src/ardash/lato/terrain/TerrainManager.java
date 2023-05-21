@@ -50,7 +50,7 @@ public class TerrainManager {
 		else
 		{
 			s = new Downer();
-			if (MathUtils.random(0, 2)>0f)
+			if (MathUtils.random(0, 100)<10)
 				s = new Hill();
 			final Vector2 offset = this.getLastSection().last();
 			s.addOffsetToSurroundings(offset);

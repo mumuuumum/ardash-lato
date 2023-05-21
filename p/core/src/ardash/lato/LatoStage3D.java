@@ -154,8 +154,11 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
     	pcdra.start();
 		super.draw(in3grounds);
         pcdra.stop();
-//        if (worldRenderer != null)
-//        	worldRenderer.render(world, getCamera().combined);
+        if (GameManager.DEBUG_VIEW)
+        {
+            if (worldRenderer != null)
+            	worldRenderer.render(world, getCamera().combined);
+        }
 	}
 	
 	@Override
@@ -169,7 +172,8 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
 	
 	public void enablePhysics() {
 		world = new World(new Vector2(0f, -9.80665f), true);
-		worldRenderer = new Box2DDebugRenderer(true, false, false, true, true, true);
+		if (GameManager.DEBUG_VIEW)
+			worldRenderer = new Box2DDebugRenderer(true, true, false, true, true, true);
 		world.setContactListener(new ContactListener());
 	}
 

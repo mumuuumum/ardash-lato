@@ -19,6 +19,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
@@ -38,6 +40,11 @@ import ardash.lato.weather.AmbientColorChangeListener;
 
 public class Performer extends Group3D implements Disposable, AmbientColorChangeListener, Physical{
 	
+	/**
+	 * gravitational force in the direction towards the ground (not necesasarily downward)
+	 */
+	private static final float GROUND_PRESS_FORCE = 150f;
+
 	private enum Pose {
 		RIDE, DUCK, JUMP//, ROLL, FLY, CRASHED, GRIND
 	}
@@ -115,6 +122,59 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	
 	@Override
 	public void act(float delta) {
+		final Body body = getBody();
+		body.setType(BodyType.DynamicBody);
+		final MassData massData = new MassData();
+		massData.mass = 178;
+		body.setMassData(massData);
+		body.setLinearDamping(0.001f);
+		body.setSleepingAllowed(false);
+//		body.setGravityScale(2f);
+		final Fixture fixture = body.getFixtureList().get(0);
+		fixture.setFriction(0.1f);
+		fixture.setRestitution(0.0f);
+//		fixture.s
+		
+		System.out.print("mass: " + body.getMass());
+		// forward set minimum desired velocity
+		Vector2 vel = body.getLinearVelocity();
+	    final float desiredVel = MIN_SPEED;
+	    float velChange = desiredVel - vel.x;
+	    if (velChange >0) {
+		    float impulse = body.getMass() * velChange; //disregard time factor
+		    body.applyLinearImpulse( new Vector2(impulse, 0), body.getWorldCenter() , true);
+	    }
+	    
+	    //reduce jumpiness by gravitatingin an angle  to wards th ground
+	    Vector2 gr = vel.cpy().nor();
+	    gr.rotate90(-1);
+	    gr.scl(GROUND_PRESS_FORCE);
+	    body.applyLinearImpulse( gr, body.getWorldCenter() , true);
+		
+		
+		// move sprite to world body
+		final Vector2 p = body.getPosition();
+		setPosition(p.x-PERFORMER_WIDTH/2f, p.y-PERFORMER_WIDTH/2f);
+
+		
+		final float newCamSpotX= MathUtils.lerp(MIN_CAM_SPOT_X, MAX_CAM_SPOT_X, getSpeedPercentage());
+		final Vector2 newCamSpot = new Vector2(getX() + newCamSpotX, getY());
+		if (getSpeed() == 0)
+		{
+			newCamSpot.y +=5f; // initially when standing, move cam above
+		}
+		
+		// before applying the new camspot, check if the difference is too big and go there smoothly
+		final Vector2 diff = newCamSpot.cpy().sub(camSpot);
+		diff.clamp(0, getMaxCamSpeed());
+		camSpot.add(diff);
+
+		for (PerformerListener listener : listeners) {
+			listener.onPositionChange(getX(), getY());
+		}
+	}
+	
+	public void act2(float delta) {
 		System.out.println("d : "+delta);
 		super.act(delta);
 		if (state.isStarted())
