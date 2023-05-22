@@ -10,16 +10,16 @@ import ardash.lato.actors3.Farmhouse;
 import ardash.lato.actors3.Spruce;
 
 /**
- * A slope downhill, followed by a short straight line.
+ * A steep slope downhill, followed by a short straight line.
  */
-public class Downer extends Section {
-	static final float MIN_ANGLE = 10f;
-	static final float MAX_ANGLE = 20f;
+public class SteepDowner extends Section {
+	static final float MIN_ANGLE = 38f;
+	static final float MAX_ANGLE = 40f;
 	static final float MIN_LENGTH = 120f;
 	static final float MAX_LENGTH = 140f;
 	static final Vector2 currentRandomVector= new Vector2();
 	
-	public Downer() {
+	public SteepDowner() {
 		makeNewRandomVector();
 		add (new Vector2(0,0), new Vector2(currentRandomVector), new Exp(2, 5));
 

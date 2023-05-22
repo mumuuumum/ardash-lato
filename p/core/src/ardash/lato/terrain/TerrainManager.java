@@ -49,7 +49,7 @@ public class TerrainManager {
 		}
 		else
 		{
-			s = new Downer();
+			s = new SteepDowner();
 			if (MathUtils.random(0, 100)<10)
 				s = new Hill();
 			final Vector2 offset = this.getLastSection().last();

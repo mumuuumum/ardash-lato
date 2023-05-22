@@ -36,7 +36,8 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	public static final float PASSED_TERRAIN = 200f; // longest possible terrain
 
 	/**
-	 * If there is not terrain this much in front of the Performer, new Terrain shoudl be created.
+	 * If there is no terrain this much in front of the Performer, new Terrain should be created.
+	 * Must be at least the size of the longest Section. Making it too long will degrade performance.
 	 */
 	public static final float FUTURE_TERRAIN = 200f;
 	
