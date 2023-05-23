@@ -14,6 +14,7 @@ public class MoveByAction extends RelativeTemporalAction {
                 amountX = x;
                 amountY = y;
                 amountZ = z;
+                //TODO many resets missing in parent class, also no reset() in this class, actions are being pooled
         }
 
         public float getAmountX () {

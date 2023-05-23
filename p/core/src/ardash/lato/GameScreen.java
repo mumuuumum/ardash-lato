@@ -99,7 +99,6 @@ public class GameScreen implements Screen {
 		final Camera3D mainCam = new Camera3D(30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		mountainStage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D()), getShaderP(LatoShaders.BACK));
 		stage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, mainCam), getShaderP(LatoShaders.THREED));
-		stage3d.enablePhysics();
 		
 //		backStage.setDebugAll(true);
 //		stage.setDebugAll(true);
@@ -177,7 +176,7 @@ public class GameScreen implements Screen {
 //		p.moveBy(4*1.8f, 10f);
 		performer.moveBy(8*1.8f, 20f); // initial camera position
 		performer.getCamSpot().set(performer.getX(), performer.getY());
-		performer.enablePhysics();
+//		performer.enablePhysics();
 		stage.setPerformer(performer); // attach the camera to him
 		weather.addAmbientColourChangeListener(performer);
 		
@@ -318,7 +317,7 @@ public class GameScreen implements Screen {
 				super.act(delta);
 				String lblText = "fps: "+ Gdx.graphics.getFramesPerSecond();
 				lblText += "\nactors: "+stage3d.getRoot().getChildren().size;
-				lblText += String.format("\nworld : B %s C %s PC %s", stage3d.world.getBodyCount(), stage3d.world.getContactCount(), performer.currentContacts);
+//				lblText += String.format("\nworld : B %s C %s PC %s", stage3d.world.getBodyCount(), stage3d.world.getContactCount(), performer.currentContacts);
 				lblText += String.format("\nposition: %.2f %.2f", performer.getX(), performer.getY());
 				lblText += String.format("\nspeed: %.2f %.2f%%", performer.getSpeed(), performer.getSpeedPercentage()*100f);
 				lblText += "\nt-sections: "+gm.tm.getSections().size();
