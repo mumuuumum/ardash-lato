@@ -265,7 +265,9 @@ public class GameScreen implements Screen {
 						, -(stage.getCamera().position.y - performer.getCamSpot().y), 0);
 				stage.getCamera().update();
 
-				cam.moveTo(performer.getCamSpot().x, performer.getCamSpot().y, lastz, 0.1f);
+				cam.moveTo(performer.getCamSpot().x, performer.getCamSpot().y, lastz, 0.3f);
+//				cam.moveTo(performer.getX(), performer.getY(), lastz, 0.3f);
+				cam.update();				
 				
 			}
 			
@@ -282,7 +284,8 @@ public class GameScreen implements Screen {
 
 				final float newz = initZ+newZoom;
 				lastz = newz;
-				cam.moveTo(lastx, lasty, newz, 0.1f);
+				// the camera will be moved by onPositionChange()
+//				cam.moveTo(lastx, lasty, newz, 0.1f);
 			}
 
 		});
