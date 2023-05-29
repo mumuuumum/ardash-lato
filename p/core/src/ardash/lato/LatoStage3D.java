@@ -5,18 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.PerformanceCounter;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.gdx.scenes.scene3d.Stage3D;
@@ -30,8 +20,6 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
 	private static int sc = 0;
     protected PerformanceCounter pcact = Actor3D.getGameManager().performanceCounters.add("s3d act "+sc);
     protected PerformanceCounter pcdra = Actor3D.getGameManager().performanceCounters.add("s3d dra "+sc++);
-    public World world = null;
-    Box2DDebugRenderer worldRenderer;
 	private double worldAccumulator = 0;
 	public static final float DRAW_STEPS=WaveDrawer.DRAW_STEPS;
 
@@ -88,51 +76,6 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
 		pp.add(lastX);
 		pp.add(s.heightAt(lastX));
 
-		for (int i=0 ; i<pp.size()-2 ; i+=2)
-		{
-			// Create our body definition
-			BodyDef groundBodyDef = new BodyDef();  
-			// Set its world position
-			groundBodyDef.position.set(new Vector2(0, 0));  
-
-			// Create a body from the definition and add it to the world
-			Body groundBody = world.createBody(groundBodyDef);  
-
-			// Create a polygon shape
-			PolygonShape groundBox = new PolygonShape();
-			float x1 = pp.get(i+0);
-			float y1 = pp.get(i+1);
-			float x2 = pp.get(i+2);
-			float y2 = pp.get(i+3);
-			float x3 = x2;
-			float y3 = y2-50;
-			float x4 = x1;
-			float y4 = y3;
-			// build poly counter clockwise for box2d
-			float[] verts = {x1,y1,x4,y4,x3,y3,x2,y2};
-			groundBox.set(verts );
-			// Create a fixture from our polygon shape and add it to our ground body  
-			final Fixture fixture = groundBody.createFixture(groundBox, 0.0f); 
-			fixture.setRestitution(0f);
-			fixture.setFriction(0.0099f);
-			// Clean up after ourselves
-			groundBox.dispose();
-			groundBody.setUserData(new Float(x1));
-		}
-		
-		// delete old world-ground
-		Array<Body> bodies = new Array<Body>(world.getBodyCount());
-		world.getBodies(bodies);
-		for (Body a : bodies) {
-			if (a.getUserData() instanceof Float) {
-				Float xx = (Float)a.getUserData();
-				if (xx <border)
-					world.destroyBody(a);
-//					canBeDeleted.add((TerrainItem)a);
-			}
-		}
-
-
 		
 	}
 
@@ -154,25 +97,17 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
     	pcdra.start();
 		super.draw(in3grounds);
         pcdra.stop();
-//        if (worldRenderer != null)
-//        	worldRenderer.render(world, getCamera().combined);
 	}
 	
 	@Override
 	public void act(float delta) {
     	pcact.start();
-    	if (world != null)
+//    	if (world != null)
     		doPhysicsStep(delta);
 		super.act(delta);
 		pcact.stop();
 	}
 	
-	public void enablePhysics() {
-		world = new World(new Vector2(0f, -9.80665f), true);
-		worldRenderer = new Box2DDebugRenderer(true, false, false, true, true, true);
-		world.setContactListener(new ContactListener());
-	}
-
 	private void doPhysicsStep(float deltaTime) {
 	    // fixed time step
 	    // max frame time to avoid spiral of death (on slow devices)
@@ -180,7 +115,7 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
 	    worldAccumulator += frameTime;
 	    float TIME_STEP = 1f/60f;
 		while (worldAccumulator >= TIME_STEP ) {
-	        world.step(TIME_STEP, 60, 20);
+//	        world.step(TIME_STEP, 60, 20);
 //	        world.step(TIME_STEP, 6, 2);
 	        worldAccumulator -= TIME_STEP;
 	    }
@@ -189,6 +124,6 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
 	@Override
 	public void dispose() {
 		super.dispose();
-		Disposables.gracefullyDisposeOf(world, worldRenderer);
+//		Disposables.gracefullyDisposeOf(world, worldRenderer);
 	}
 }

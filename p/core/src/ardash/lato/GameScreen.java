@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
+import com.badlogic.gdx.graphics.profiling.GLProfiler;
+import com.badlogic.gdx.math.FloatCounter;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -61,24 +63,32 @@ public class GameScreen implements Screen {
 	public WeatherProvider weather;
 	public Assets assets;
 	public LatoStage backStage;
-	public LatoStage stage;
+//	public LatoStage stage;
 	public LatoStage frontStage;
 	public LatoStage guiStage;
 	public LatoStage3D mountainStage3d;
 	public LatoStage3D stage3d;
 	public FlarePlane flarePlane;
 	public Performer performer;
+	public Scarf scarf;
 	public WaveDrawer waveDrawer;
 	PerformanceCounter perf ;
 	float lastPerfOutput = 0;
 
 	public enum LatoShaders {BACK, THREED}
 	
+	// Add this class member
+    private GLProfiler profiler;
+	
 	public GameScreen(GameManager gm) {
 		this.gm = gm;
 		this.am = gm.am;
 		this.assets = gm.assets;
     	perf = gm.performanceCounters.add("gs");
+    	
+    	// create & enable the profiler
+        profiler = new GLProfiler(Gdx.graphics);
+        profiler.enable();
 	}
 
 	@Override
@@ -91,7 +101,7 @@ public class GameScreen implements Screen {
 	public void show() {
 		weather = new WeatherProvider();
 		backStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), "bs");
-		stage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), "s");
+//		stage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), "s");
 		frontStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), "fs");
 //		frontStage = new LatoStage(new ScreenViewport(), this);
 		CURRENT_WORLD_WIDTH = backStage.getViewport().getWorldWidth();
@@ -99,7 +109,6 @@ public class GameScreen implements Screen {
 		final Camera3D mainCam = new Camera3D(30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		mountainStage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D()), getShaderP(LatoShaders.BACK));
 		stage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, mainCam), getShaderP(LatoShaders.THREED));
-		stage3d.enablePhysics();
 		
 //		backStage.setDebugAll(true);
 //		stage.setDebugAll(true);
@@ -177,11 +186,16 @@ public class GameScreen implements Screen {
 //		p.moveBy(4*1.8f, 10f);
 		performer.moveBy(8*1.8f, 20f); // initial camera position
 		performer.getCamSpot().set(performer.getX(), performer.getY());
-		performer.enablePhysics();
-		stage.setPerformer(performer); // attach the camera to him
+		
+		scarf = new Scarf(gm.assets.getSTexture(SceneTexture.FOG_PIX));
+		scarf.setTag(Tag.CENTER);
+		stage3d.addActor(scarf);
+		
+
+//		performer.enablePhysics();
+//		stage.setPerformer(performer); // attach the camera to him
 		weather.addAmbientColourChangeListener(performer);
 		
-		stage.addActor(new Scarf(assets.getSTexture(SceneTexture.FOG_PIX)));
 
 		mountainStage3d.getCamera().update();
 		stage3d.getCamera().update();
@@ -262,12 +276,15 @@ public class GameScreen implements Screen {
 			public void onPositionChange(float newX, float newY) {
 				lastx = newX;
 				lasty =newY;
-				stage.getCamera().translate(-(stage.getCamera().position.x - performer.getCamSpot().x)
-						, -(stage.getCamera().position.y - performer.getCamSpot().y), 0);
-				stage.getCamera().update();
+//				stage.getCamera().translate(-(stage.getCamera().position.x - performer.getCamSpot().x)
+//						, -(stage.getCamera().position.y - performer.getCamSpot().y), 0);
+//				stage.getCamera().update();
 
-				cam.moveTo(performer.getCamSpot().x, performer.getCamSpot().y, lastz, 0.1f);
+				cam.moveTo(performer.getCamSpot().x, performer.getCamSpot().y, lastz, 0.3f);
+//				cam.moveTo(performer.getX(), performer.getY(), lastz, 0.3f);
+				cam.update();				
 				
+				scarf.setPosition(newX, newY);
 			}
 			
 			// the valid zoom interval for the camera to be used to interpolate zooming with current speed
@@ -283,7 +300,8 @@ public class GameScreen implements Screen {
 
 				final float newz = initZ+newZoom;
 				lastz = newz;
-				cam.moveTo(lastx, lasty, newz, 0.1f);
+				// the camera will be moved by onPositionChange()
+//				cam.moveTo(lastx, lasty, newz, 0.1f);
 			}
 
 		});
@@ -318,7 +336,7 @@ public class GameScreen implements Screen {
 				super.act(delta);
 				String lblText = "fps: "+ Gdx.graphics.getFramesPerSecond();
 				lblText += "\nactors: "+stage3d.getRoot().getChildren().size;
-				lblText += String.format("\nworld : B %s C %s PC %s", stage3d.world.getBodyCount(), stage3d.world.getContactCount(), performer.currentContacts);
+//				lblText += String.format("\nworld : B %s C %s PC %s", stage3d.world.getBodyCount(), stage3d.world.getContactCount(), performer.currentContacts);
 				lblText += String.format("\nposition: %.2f %.2f", performer.getX(), performer.getY());
 				lblText += String.format("\nspeed: %.2f %.2f%%", performer.getSpeed(), performer.getSpeedPercentage()*100f);
 				lblText += "\nt-sections: "+gm.tm.getSections().size();
@@ -365,6 +383,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void render(float delta) {
+		profiler.reset();
 		perf.start();
 		//draw something nice to look at
 //        Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
@@ -386,8 +405,8 @@ public class GameScreen implements Screen {
 //    	stage.act(delta);
     	
     	// TODO tmp:
-    	Scarf sc = stage.getRoot().findActor("scarf");
-    	sc.setPosition(performer.getX(), performer.getY());
+//    	Scarf sc = stage.getRoot().findActor("scarf");
+//    	sc.setPosition(performer.getX(), performer.getY());
     	
     	guiStage.act(delta); // contains weather provider
 
@@ -395,7 +414,7 @@ public class GameScreen implements Screen {
     	mountainStage3d.act(delta);
        	stage3d.act(delta);
     	frontStage.act(delta);
-    	stage.act(delta);
+//    	stage.act(delta);
     	
 
 		Group3D.draw1Count = 0;
@@ -403,19 +422,27 @@ public class GameScreen implements Screen {
     	backStage.draw();
     	mountainStage3d.draw();
     	stage3d.draw(true);
-    	stage.draw();
+//    	stage.draw();
     	frontStage.draw();
     	guiStage.draw();
     	
 		perf.stop();
 		
+		float drawCalls = profiler.getDrawCalls();
+		float textureBinds = profiler.getTextureBindings();
+		final FloatCounter vc = profiler.getVertexCount();
+		final int nc = profiler.getCalls();
+		final int ss = profiler.getShaderSwitches();
+
+		
 		lastPerfOutput+=delta;
-		if (lastPerfOutput>=5f)
+		if (lastPerfOutput>=15f)
 		{
 	    	gm.performanceCounters.tick();
 	    	System.out.println(gm.performanceCounters.toString(new StringBuilder()));
 	    	lastPerfOutput = 0;
 	    	PoolsManager.printStatusOutput();
+			System.out.println("dc: " + drawCalls + " tb: "+ textureBinds + " vc: "+ vc + " ss: "+ ss + " nc: "+ nc);
 		}
 	}
 
@@ -423,7 +450,7 @@ public class GameScreen implements Screen {
 	public void resize(int width, int height) {
 		backStage.getViewport().update(width, height, false);
 		backStage.getCamera().position.set(0f, 0f, 0f); // this cam is centered so we can zoom in/out without moving the sun away from center
-		stage.getViewport().update(width, height, false);
+//		stage.getViewport().update(width, height, false);
 		frontStage.getViewport().update(width, height, false);
 		frontStage.getCamera().position.set(0f, 0f, 0f); // this cam is centered so we can zoom in/out without moving the sun away from center
 		guiStage.getViewport().update(width, height, true);
@@ -449,7 +476,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		Disposables.gracefullyDisposeOf(backStage, stage, frontStage, guiStage);
+		Disposables.gracefullyDisposeOf(backStage, frontStage, guiStage);
 	}
 
 }

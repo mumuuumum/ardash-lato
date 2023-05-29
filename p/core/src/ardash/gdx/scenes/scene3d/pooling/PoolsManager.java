@@ -11,6 +11,6 @@ public class PoolsManager {
 	}
 	
 	public static void printStatusOutput() {
-//		System.out.println("Farmhouse: " + Pools.get(Farmhouse.class).getFree());
+		System.out.println("Farmhouse: " + Pools.get(Farmhouse.class).getFree());
 	}
 }

@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.gdx.scenes.scene3d.Group3D;
+import ardash.lato.GameManager;
 import ardash.lato.LatoStage3D;
 import ardash.lato.actions.MoreActions;
 import ardash.lato.actors.Performer.PerformerListener;
@@ -35,7 +36,8 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	public static final float PASSED_TERRAIN = 200f; // longest possible terrain
 
 	/**
-	 * If there is not terrain this much in front of the Performer, new Terrain shoudl be created.
+	 * If there is no terrain this much in front of the Performer, new Terrain should be created.
+	 * Must be at least the size of the longest Section. Making it too long will degrade performance.
 	 */
 	public static final float FUTURE_TERRAIN = 200f;
 	
@@ -61,6 +63,7 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 //		setColor(color);
 		sr = new AdvShapeRenderer();
 		sr.setAutoShapeType(true); // TODO check what types we draw
+
 //sr.translate(0, 0, 20);
 		// path setup
 		terrainSegmentList = new TerrainSegList();
@@ -101,16 +104,20 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 		batch.end();
 
 		sr.begin();
+		if (GameManager.DEBUG_VIEW) {
+			sr.set(ShapeType.Line);
+		} else {
+			sr.set(ShapeType.Filled);
+		}
+
 		sr.setColor(ambientColorContainer.getColor());
 		if (drawOffset)
 			sr.setColor(ambientColorContainer.getColor().cpy().mul(0.9f));
-		sr.set(ShapeType.Filled);
-//		sr.set(ShapeType.Line);
 		
 		sr.setProjectionMatrix(getStage().getCamera().combined);
 //
 		
-		float performerY = getGameScreen().stage.getPerformer().getY();
+		float performerY = getGameScreen().performer.getY();
 		int counter = 0;
 		long startTime = System.currentTimeMillis();
 		float firstX = terrainSegmentList.first().x;
