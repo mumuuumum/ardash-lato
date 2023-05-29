@@ -41,6 +41,8 @@ public class TerrainManager {
 	}
 
 	public void createNewSection() {
+		System.out.println("NEW SEGMENT");
+		System.gc();
 		Section s;
 		if (sections.isEmpty())
 		{

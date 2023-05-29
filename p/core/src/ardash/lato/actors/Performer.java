@@ -113,6 +113,8 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		snowSpray.scaleEffect(0.09f);
 		snowSpray.setPosition(-22f, 20f);
 		snowSpray.start();
+		
+
 	}
 	
 	private float accum = 0;
@@ -124,7 +126,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		final float previousY = getY();
 		accum += delta; 
 //		while (accum >= step) {
-			System.out.println("d : "+state);
+//			System.out.println("d : "+state);
 			super.act(delta);
 			if (state.isStarted())
 			{

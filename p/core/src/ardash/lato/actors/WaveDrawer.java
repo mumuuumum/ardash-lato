@@ -117,7 +117,7 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 		sr.setProjectionMatrix(getStage().getCamera().combined);
 //
 		
-		float performerY = getGameScreen().stage.getPerformer().getY();
+		float performerY = getGameScreen().performer.getY();
 		int counter = 0;
 		long startTime = System.currentTimeMillis();
 		float firstX = terrainSegmentList.first().x;

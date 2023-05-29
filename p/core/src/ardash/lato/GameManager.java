@@ -11,7 +11,7 @@ import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
 public class GameManager {
 	
-	public static final boolean DEBUG_VIEW = true;
+	public static final boolean DEBUG_VIEW = false;
 	
 	public final LatoGame game;
 	public final Assets assets;
