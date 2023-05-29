@@ -300,7 +300,10 @@ public class GameScreen implements Screen {
 //				cam.moveTo(performer.getX(), performer.getY(), lastz, 0.3f);
 				cam.update();				
 				
-				scarf.setPosition(newX, newY);
+//				Vector2 v00 = new Vector2(0,0);
+//				performer.getScarfAttachPoint().localToScreenCoordinates(v00);
+				final Vector2 newScarfPosition = performer.getScarfAttachPointInStageCoords();
+				scarf.setPosition(performer.getX()+performer.getWidth()/2f, performer.getY()+performer.getHeight()*0.4f);
 			}
 			
 			// the valid zoom interval for the camera to be used to interpolate zooming with current speed
@@ -430,15 +433,12 @@ public class GameScreen implements Screen {
     	mountainStage3d.act(delta);
        	stage3d.act(delta);
     	frontStage.act(delta);
-//    	stage.act(delta);
-    	
 
 		Group3D.draw1Count = 0;
 		Group3D.draw2Count = 0;
     	backStage.draw();
     	mountainStage3d.draw();
     	stage3d.draw(true);
-//    	stage.draw();
     	frontStage.draw();
     	guiStage.draw();
     	

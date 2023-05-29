@@ -1,7 +1,23 @@
+/*******************************************************************************
+ * Copyright (C) 2020-2023 Andreas Redmer <ar-lato@abga.be>
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
+
 package ardash.gdx.scenes.scene3d;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.VertexAttributes;
@@ -13,6 +29,7 @@ import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -608,5 +625,38 @@ public class Actor3D extends ModelInstance implements Disposable , Cullable{
 //		hit(visibleCount, visibleCount)
 //		coo
 	}
+	
+	/** Transforms the specified point in the actor's coordinates to be in the parent's coordinates. 
+	 *lato specific implementation: ignore the additional dimension */
+	public Vector2 localToParentCoordinates (Vector2 localCoords) {
+		final float rotation = -this.getRotation();
+		final float scaleX = 1;
+		final float scaleY = 1;
+		final float x = this.x;
+		final float y = this.y;
+		if (rotation == 0) {
+			if (scaleX == 1 && scaleY == 1) {
+//				localCoords.x += x;
+//				localCoords.y += y;
+			} else {
+				final float originX = this.originX;
+				final float originY = this.originY;
+				localCoords.x = (localCoords.x - originX) * scaleX + originX + x;
+				localCoords.y = (localCoords.y - originY) * scaleY + originY + y;
+			}
+		} else {
+			final float cos = (float)Math.cos(rotation * MathUtils.degreesToRadians);
+			final float sin = (float)Math.sin(rotation * MathUtils.degreesToRadians);
+			final float originX = 0;
+			final float originY = 0;
+			final float tox = (localCoords.x - originX) * scaleX;
+			final float toy = (localCoords.y - originY) * scaleY;
+			localCoords.x = (tox * cos + toy * sin) + originX + x;
+			localCoords.y = (tox * -sin + toy * cos) + originY + y;
+		}
+		return localCoords;
+	}
+	
+	
 
 }

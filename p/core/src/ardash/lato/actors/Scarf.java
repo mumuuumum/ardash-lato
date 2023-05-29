@@ -29,6 +29,8 @@ public class Scarf extends Group3D {
 
 	public static final float SEG_LEN = 0.3f;
 	public static final float SEG_THICK = 0.1f;
+	public static final Color SCARF_COLOUR_1 = new Color(0xbc6d56ff);
+	public static final Color SCARF_COLOUR_2 = new Color(0xa83c40ff);
 	private float[] x = new float[20];
 	private float[] y = new float[20];
 
@@ -36,14 +38,14 @@ public class Scarf extends Group3D {
 
 		ModelBuilder mb = new ModelBuilder();
 		setName("scarf");
-		Color c = Color.RED.cpy();
 		for (int i = 0; i < 20; i++) {
 			Image3D img = new Image3D(SEG_LEN, SEG_THICK, sTexture, mb);
 			addActor(img);
-			c.add(0.1f, 0.01f, 0.02f, 0);
-			img.setColor(c);
+			if (i%2 == 0)
+				img.setColor(SCARF_COLOUR_1);
+			else 
+				img.setColor(SCARF_COLOUR_2);
 		}
-
 	}
 
 	@Override
