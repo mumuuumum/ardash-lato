@@ -18,11 +18,9 @@ import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.gdx.scenes.scene3d.Group3D;
 import ardash.lato.GameManager;
-import ardash.lato.LatoStage3D;
 import ardash.lato.actions.MoreActions;
 import ardash.lato.actors.Performer.PerformerListener;
 import ardash.lato.terrain.Downer;
-import ardash.lato.terrain.HomeHill;
 import ardash.lato.terrain.Section;
 import ardash.lato.terrain.TerrainManager.TerrainListener;
 import ardash.lato.terrain.TerrainSegList;

@@ -1,15 +1,13 @@
 package ardash.lato.actors;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
-import ardash.lato.Assets;
+import ardash.lato.A;
+import ardash.lato.A.ParticleAsset;
 import ardash.lato.weather.PrecipitationChangeListener;
 import ardash.lato.weather.WeatherProvider.Precipitation;
 
@@ -25,13 +23,15 @@ public class ParticlePlane extends Group implements StageAccessor, Disposable, P
 
 //	@Override
 	public void init() {
-		TextureAtlas ta = getAssetManager().get(Assets.SCENE_ATLAS);
-		rainEffect.load( Gdx.files.internal("rain.p"), ta);
+		rainEffect = A.getParticleEffect(ParticleAsset.RAIN);
+		snowEffect = A.getParticleEffect(ParticleAsset.SNOW);
+//		TextureAtlas ta = getAssetManager().get(Assets.SCENE_ATLAS);
+//		rainEffect.load( Gdx.files.internal("rain.p"), ta);
 		rainEffect.scaleEffect(0.05f);
 		rainEffect.setPosition(-22f, 20f);
 //		rainEffect.start();
 
-		snowEffect.load( Gdx.files.internal("snow.p"), ta);
+//		snowEffect.load( Gdx.files.internal("snow.p"), ta);
 		snowEffect.scaleEffect(0.08f);
 		snowEffect.setPosition(-23f, 20f);
 		snowEffect.start();

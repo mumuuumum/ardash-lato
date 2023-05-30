@@ -22,10 +22,9 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
@@ -39,8 +38,9 @@ import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.Group3D;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
-import ardash.lato.Assets;
-import ardash.lato.Assets.SceneTexture;
+import ardash.lato.A;
+import ardash.lato.A.ARAsset;
+import ardash.lato.A.ParticleAsset;
 import ardash.lato.actions.Actions;
 import ardash.lato.actions.GravityAction;
 import ardash.lato.weather.AmbientColorChangeListener;
@@ -102,8 +102,8 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		for (Pose pose : Pose.values()) {
 			String performer = "P1";
 			final String posename = performer+"_"+pose.name().toUpperCase();
-			SceneTexture sprite = SceneTexture.valueOf(posename);
-			Image3D img = new Image3D(PERFORMER_WIDTH,PERFORMER_WIDTH,getAssets().getSTexture(sprite),mb);
+			final AtlasRegion poseTextureRegion = A.getTextureRegion(ARAsset.valueOf(posename));
+			Image3D img = new Image3D(PERFORMER_WIDTH,PERFORMER_WIDTH,poseTextureRegion,mb);
 			img.setName(posename);
 			addActor(img);
 			poses.put(pose, img);
@@ -118,8 +118,9 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		addActor(ambientColorContainer);
 		ambientColorContainer.setVisible(false);
 		
-		TextureAtlas ta = getAssetManager().get(Assets.SCENE_ATLAS);
-		snowSpray.load( Gdx.files.internal("spray.p"), ta);
+//		TextureAtlas ta = getAssetManager().get(Assets.SCENE_ATLAS);
+//		snowSpray.load( Gdx.files.internal("spray.p"), ta);
+		snowSpray = A.getParticleEffect(ParticleAsset.SPRAY);
 		snowSpray.scaleEffect(0.09f);
 		snowSpray.setPosition(-22f, 20f);
 		snowSpray.start();
@@ -511,6 +512,13 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		clearActions();
 		setState(PlayerState.DUCKING);
 		setPose(Pose.DUCK);
+		
+		// when jumping and keeping is pressed, the "press" will continue to act and rotate the actor
+		// on the other hand: when landing, while the screen is pressed it must ot be registerred as touch-down
+		// so lets unregister the last touch down, in order to wait for the next touch down
+		// this is important ie. for very close landign where user needs to touch down until last moment
+		// but in no case we want "bouncing" because screen is still touched. A new jump requires a new touch.
+		userInput(false);
 	}
 	
 	public void setState(PlayerState state) {

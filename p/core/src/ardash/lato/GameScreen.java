@@ -47,7 +47,7 @@ import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.Group3D;
 import ardash.gdx.scenes.scene3d.pooling.PoolsManager;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
-import ardash.lato.Assets.SceneTexture;
+import ardash.lato.A.ARAsset;
 import ardash.lato.actors.FlarePlane;
 import ardash.lato.actors.ParticlePlane;
 import ardash.lato.actors.Performer;
@@ -59,7 +59,6 @@ import ardash.lato.actors.WaveDrawer;
 import ardash.lato.actors3.MountainRange3;
 import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.WeatherProvider;
-import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
 public class GameScreen implements Screen {
 	
@@ -75,9 +74,7 @@ public class GameScreen implements Screen {
 	public static float CURRENT_WORLD_WIDTH=MAX_WORLD_WIDTH;      // current on display , we don't need to draw farer than this
 
 	public GameManager gm;
-	public AnnotationAssetManager am;
 	public WeatherProvider weather;
-	public Assets assets;
 	public LatoStage backStage;
 //	public LatoStage stage;
 	public LatoStage frontStage;
@@ -98,8 +95,6 @@ public class GameScreen implements Screen {
 	
 	public GameScreen(GameManager gm) {
 		this.gm = gm;
-		this.am = gm.am;
-		this.assets = gm.assets;
     	perf = gm.performanceCounters.add("gs");
     	
     	// create & enable the profiler
@@ -203,7 +198,7 @@ public class GameScreen implements Screen {
 		performer.moveBy(8*1.8f, 20f); // initial camera position
 		performer.getCamSpot().set(performer.getX(), performer.getY());
 		
-		scarf = new Scarf(gm.assets.getSTexture(SceneTexture.FOG_PIX));
+		scarf = new Scarf();
 		scarf.setTag(Tag.CENTER);
 		stage3d.addActor(scarf);
 		
@@ -272,7 +267,7 @@ public class GameScreen implements Screen {
         weather.addAmbientColourChangeListener(stage3d);
                 
         Vector2 tts = new Vector2(13.5f,5.566f);
-        Image3D titleText = new Image3D(tts.x, tts.y, assets.getSTexture(SceneTexture.TITLESCREEN), new ModelBuilder());
+        Image3D titleText = new Image3D(tts.x, tts.y, A.getTextureRegion(ARAsset.TITLESCREEN), new ModelBuilder());
         titleText.setTag(Tag.CENTER);
         titleText.setPosition(performer.getX()-tts.x/2f + 4f, performer.getY()+6f);
         stage3d.addActor(titleText);
@@ -345,7 +340,7 @@ public class GameScreen implements Screen {
 	private void buildGui() {
 		Gdx.input.setInputProcessor(guiStage);
 		guiStage.setDebugAll(true);
-		Image img = new Image(assets.getSTexture(SceneTexture.P1_RIDE));
+//		Image img = new Image(assets.getSTexture(SceneTexture.P1_RIDE));
 //		guiStage.addActor(img);
 		final LabelStyle lblStyle = new LabelStyle();
 		lblStyle.font = new BitmapFont();
@@ -390,7 +385,7 @@ public class GameScreen implements Screen {
 		mainTable.add();
 		mainTable.row();
 		
-		Image pause = new Image(assets.getSTexture(SceneTexture.PAUSE));
+		Image pause = new Image(A.getTextureRegion(ARAsset.PAUSE));
 		pause.setColor(Color.WHITE.cpy());
 		pause.getColor().a = .8f;
 //		pause.setSize(10f, 10f);
@@ -493,6 +488,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void dispose() {
 		Disposables.gracefullyDisposeOf(backStage, frontStage, guiStage);
+//		A.dispose(); // TODO this is also in Game
 	}
 
 }

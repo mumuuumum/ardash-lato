@@ -9,7 +9,6 @@ import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.Group3D;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
-import ardash.gdx.scenes.scene3d.shape.Triangle3D;
 import ardash.lato.GameScreen;
 import ardash.lato.weather.EnvColors;
 

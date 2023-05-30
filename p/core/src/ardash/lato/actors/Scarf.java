@@ -24,6 +24,8 @@ import com.badlogic.gdx.math.MathUtils;
 import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.gdx.scenes.scene3d.Group3D;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
+import ardash.lato.A;
+import ardash.lato.A.ARAsset;
 
 public class Scarf extends Group3D {
 
@@ -34,7 +36,8 @@ public class Scarf extends Group3D {
 	private float[] x = new float[20];
 	private float[] y = new float[20];
 
-	public Scarf(TextureRegion sTexture) {
+	public Scarf() {
+		TextureRegion sTexture = A.getTextureRegion(ARAsset.FOG_PIX);
 
 		ModelBuilder mb = new ModelBuilder();
 		setName("scarf");

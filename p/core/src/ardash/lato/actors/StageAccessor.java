@@ -5,11 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-import ardash.lato.Assets;
 import ardash.lato.GameManager;
 import ardash.lato.GameScreen;
 import ardash.lato.LatoGame;
-import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
 /**
  * To be used for Actor instances.
@@ -24,16 +22,6 @@ public interface StageAccessor {
 		return game.gm;
 	}
 	
-	public default Assets getAssets()
-	{
-		return getGameManager().assets;
-	}
-
-	public default AnnotationAssetManager getAssetManager()
-	{
-		return getGameManager().am;
-	}
-
 	public default GameScreen getGameScreen()
 	{
 		return getGameManager().getGameScreen();

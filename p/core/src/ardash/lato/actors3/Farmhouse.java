@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.Pool.Poolable;
 
 import ardash.gdx.scenes.scene3d.pooling.PoolableActor3D;
-import ardash.lato.Assets;
+import ardash.lato.A;
+import ardash.lato.A.ModelAsset;
 
 public class Farmhouse extends PoolableActor3D implements TerrainItem{
 	
@@ -32,7 +32,7 @@ public class Farmhouse extends PoolableActor3D implements TerrainItem{
 		super.draw(modelBatch, getStage().dirLightenvironment);
 	}
 	private static Model getModel() {
-		Model m = getAssetManager().get(Assets.FARMHOUSE); 
+		Model m = A.getModel(ModelAsset.FARMHOUSE); 
 		return m;
 	}
 	@Override

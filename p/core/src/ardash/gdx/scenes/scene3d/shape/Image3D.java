@@ -13,8 +13,6 @@ import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
-import ardash.gdx.scenes.scene3d.Camera3D;
-import ardash.gdx.scenes.scene3d.utils.AdvModelBuilder;
 
 /**
  * Created by Andreas Redmer on 11/04/2020.

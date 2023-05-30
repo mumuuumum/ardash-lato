@@ -3,7 +3,6 @@ package ardash.lato.actors3;
 import com.badlogic.gdx.graphics.Color;
 
 import ardash.gdx.scenes.scene3d.shape.Image3D;
-import ardash.lato.weather.EnvColors;
 
 public class Spruce extends Image3D implements TerrainItem {
 	

@@ -42,12 +42,10 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.Disposable;
 
-import ardash.lato.Assets;
 import ardash.lato.GameManager;
 import ardash.lato.GameScreen;
 import ardash.lato.LatoGame;
 import ardash.lato.actors3.Cullable;
-import net.dermetfan.gdx.assets.AnnotationAssetManager;
 
 public class Actor3D extends ModelInstance implements Disposable , Cullable{
 	public enum Tag {
@@ -565,16 +563,6 @@ public class Actor3D extends ModelInstance implements Disposable , Cullable{
 	{
 		LatoGame game = (LatoGame) Gdx.app.getApplicationListener();
 		return game.gm;
-	}
-	
-	public static Assets getAssets()
-	{
-		return getGameManager().assets;
-	}
-
-	public static AnnotationAssetManager getAssetManager()
-	{
-		return getGameManager().am;
 	}
 
 	public static GameScreen getGameScreen()

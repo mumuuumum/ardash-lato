@@ -88,7 +88,7 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        api "net.dermetfan.libgdx-utils:libgdx-utils:0.13.4"
+        api "net.dermetfan.libgdx-utils:libgdx-utils:0.13.4" // prolly not needed. AnnottationAssetManagr is gone
         api "net.dermetfan.libgdx-utils:libgdx-utils-box2d:0.13.4"
         api "com.github.czyzby:gdx-kiwi:1.9.1.9.6"
         
