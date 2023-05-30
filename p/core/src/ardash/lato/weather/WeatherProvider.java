@@ -27,7 +27,7 @@ public class WeatherProvider extends Actor{
 	public static final float DAY_HOURS = DAYTIME_HOURS + NIGHT_HOURS;
 	public static final float DUSK_HOURS = 1.84f;
 	public static final float DAWN_HOURS = 1.84f;
-	public static final float SECONDS_PER_DAY = FASTMODE ? 60f : 7f * 60f + 10f; // one 24 hours cycle shall have 7 minutes and 10 seconds (only 180 seconds in FASTMODE)
+	public static final float SECONDS_PER_DAY = FASTMODE ? 60f : 7f * 60f + 20f; // one 24 hours cycle shall have 7 minutes and 10 seconds (only 180 seconds in FASTMODE)
 	public static final float SECONDS_PER_HOUR = SECONDS_PER_DAY / DAY_HOURS;
 	public static final float DAYTIME_SECONDS = DAYTIME_HOURS * SECONDS_PER_HOUR;
 	public static final float NIGHT_SECONDS = NIGHT_HOURS * SECONDS_PER_HOUR;
