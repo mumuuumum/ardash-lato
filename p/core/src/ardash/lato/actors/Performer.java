@@ -89,6 +89,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 //	public int currentContacts = 0;
 	private float airTime;
 	private float timeInState;
+	private float startedAtX = -1;
 	
 	public interface PerformerListener{
 		void onPositionChange(float newX, float newY);
@@ -453,6 +454,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	public void userInput(boolean touchDown) {
 		if (!state.isStarted()) 
 		{
+			startedAtX  = getX();
 			setState(PlayerState.SLIDING);
 			return; // don't jump or rotate if game not started yet
 //			setSpeed(MIN_SPEED);
@@ -561,7 +563,15 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		scarfAttachPoint.set(0.5f, 0.f);
 //		scarfAttachPointGroup.localToParentCoordinates(scarfAttachPoint);
 		this.localToParentCoordinates(scarfAttachPoint);
-		System.out.println(scarfAttachPoint);
+//		System.out.println(scarfAttachPoint);
 		return scarfAttachPoint;
+	}
+	
+	public int getTraveledDistanceMeters() {
+		if (!state.isStarted())
+			return 0;
+		float dist = getX()-startedAtX;
+		return (int)dist;
+		
 	}
 }

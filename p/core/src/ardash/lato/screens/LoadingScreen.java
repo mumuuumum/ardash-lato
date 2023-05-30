@@ -5,11 +5,11 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import ardash.lato.A;
 import ardash.lato.GameManager;
-import ardash.lato.GameScreen;
 import ardash.lato.LatoGame;
 import ardash.lato.weather.EnvColors;
 
@@ -25,11 +25,11 @@ public class LoadingScreen implements Screen {
 
         stage = new Stage(new ScreenViewport());
 
-//        title = new Label("loading ...", A.LabelStyleAsset.HEADLINE.style);
-//        title.setAlignment(Align.center);
-//        title.setY(Gdx.graphics.getHeight()*2/3);
-//        title.setWidth(Gdx.graphics.getWidth());
-//        stage.addActor(title);
+        title = new Label("loading ...", A.LabelStyleAsset.HEADLINE.style);
+        title.setAlignment(Align.center);
+        title.setY(Gdx.graphics.getHeight()*2/3);
+        title.setWidth(Gdx.graphics.getWidth());
+        stage.addActor(title);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class LoadingScreen implements Screen {
 		Gdx.gl.glClearColor(p*EnvColors.DAY.fog.r, p*EnvColors.DAY.fog.g, p*EnvColors.DAY.fog.b, 0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
-//        title.setText("loading: " + A.getPercentLoaded() + "%");
+        title.setText("loading: " + A.getPercentLoaded() + "%");
         stage.act();
         stage.draw();
 

@@ -43,9 +43,9 @@ import com.badlogic.gdx.utils.DelayedRemovalArray;
 import com.badlogic.gdx.utils.Disposable;
 
 import ardash.lato.GameManager;
-import ardash.lato.GameScreen;
 import ardash.lato.LatoGame;
 import ardash.lato.actors3.Cullable;
+import ardash.lato.screens.GameScreen;
 
 public class Actor3D extends ModelInstance implements Disposable , Cullable{
 	public enum Tag {

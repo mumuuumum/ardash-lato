@@ -9,7 +9,7 @@ import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.Group3D;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
-import ardash.lato.GameScreen;
+import ardash.lato.screens.GameScreen;
 import ardash.lato.weather.EnvColors;
 
 public class MountainRange3 extends Group3D{

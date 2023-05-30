@@ -6,8 +6,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import ardash.lato.GameManager;
-import ardash.lato.GameScreen;
 import ardash.lato.LatoGame;
+import ardash.lato.screens.GameScreen;
 
 /**
  * To be used for Actor instances.

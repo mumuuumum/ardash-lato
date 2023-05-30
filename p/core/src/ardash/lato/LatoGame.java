@@ -18,6 +18,7 @@
 package ardash.lato;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.CatmullRomSpline;
 import com.badlogic.gdx.math.Vector2;
@@ -111,6 +112,12 @@ public class LatoGame extends Game {
 //        sr.end();
 //    }
 
+    @Override
+    public void setScreen(Screen screen) {
+    	super.setScreen(screen);
+    	System.gc();
+    }
+    
     @Override
     public void dispose () {
 		A.dispose();

@@ -6,8 +6,7 @@ import com.badlogic.gdx.graphics.g3d.Shader;
 import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
 import com.badlogic.gdx.graphics.g3d.utils.DefaultShaderProvider;
 
-import ardash.lato.GameScreen.LatoShaders;
-//import shaders.DiffuseShader;
+import ardash.lato.screens.GameScreen.LatoShaders;
 
 public class LatoShaderProvider extends DefaultShaderProvider {
 	DefaultShader.Config xshader;

@@ -20,11 +20,13 @@ package ardash.lato;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.PerformanceCounters;
 
+import ardash.lato.screens.GameScreen;
 import ardash.lato.terrain.TerrainManager;
 
 public class GameManager {
 	
 	public static final boolean DEBUG_VIEW = false;
+	public static final boolean DEBUG_GUI = true;
 	
 	public final LatoGame game;
 	public TerrainManager tm;

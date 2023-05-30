@@ -14,13 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
-package ardash.lato;
+package ardash.lato.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g3d.shaders.DefaultShader;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
@@ -36,6 +35,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.PerformanceCounter;
 import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -47,7 +47,12 @@ import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.Group3D;
 import ardash.gdx.scenes.scene3d.pooling.PoolsManager;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
+import ardash.lato.A;
 import ardash.lato.A.ARAsset;
+import ardash.lato.GameManager;
+import ardash.lato.LatoShaderProvider;
+import ardash.lato.LatoStage;
+import ardash.lato.LatoStage3D;
 import ardash.lato.actors.FlarePlane;
 import ardash.lato.actors.ParticlePlane;
 import ardash.lato.actors.Performer;
@@ -92,6 +97,8 @@ public class GameScreen implements Screen {
 	
 	// Add this class member
     private GLProfiler profiler;
+	private int CURRENT_SCREEN_WIDTH;
+	private int CURRENT_SCREEN_SCREEN;
 	
 	public GameScreen(GameManager gm) {
 		this.gm = gm;
@@ -324,8 +331,11 @@ public class GameScreen implements Screen {
     	gm.tm.createNewSection();
 
 
+		CURRENT_SCREEN_WIDTH = guiStage.getViewport().getScreenWidth(); // screenw :1680
+		CURRENT_SCREEN_SCREEN = guiStage.getViewport().getScreenHeight(); // screenh :
 		buildGui();
 //		stage3d.act(); // act one time, to draw it correctly
+
 	}
 
 	private ShaderProvider getShaderP(LatoShaders type) {
@@ -339,11 +349,48 @@ public class GameScreen implements Screen {
 
 	private void buildGui() {
 		Gdx.input.setInputProcessor(guiStage);
-		guiStage.setDebugAll(true);
-//		Image img = new Image(assets.getSTexture(SceneTexture.P1_RIDE));
-//		guiStage.addActor(img);
-		final LabelStyle lblStyle = new LabelStyle();
-		lblStyle.font = new BitmapFont();
+		guiStage.setDebugAll(GameManager.DEBUG_GUI);
+		
+		if (GameManager.DEBUG_GUI)
+			addDebugInfoView();
+		
+		Table mainTable = new Table();
+		mainTable.setTouchable(Touchable.enabled);
+		mainTable.addListener(new InputListener() {
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				performer.userInput(true);
+				return true;
+			}
+			@Override
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				performer.userInput(false);
+				super.touchUp(event, x, y, pointer, button);
+			}
+		});
+		guiStage.addActor(mainTable);
+		Label lblDistance = new Label("0m", A.LabelStyleAsset.HEADLINE.style) {
+			public void act(float delta) {
+				super.act(delta);
+				setText(performer.getTraveledDistanceMeters()+"m");
+			};
+		};
+		lblDistance.setAlignment(Align.topRight);
+		mainTable.setFillParent(true);
+		mainTable.row().expandX().fillX().expand().fill();
+		mainTable.add();
+		mainTable.add(lblDistance).right().pad(15f);
+		mainTable.row().expandY();
+
+		
+//		fps.
+
+//		Actors.centerActor(mainTable);
+	}
+
+	private void addDebugInfoView() {
+		final LabelStyle lblStyle = A.LabelStyleAsset.HEADLINE.style;
+//		lblStyle.font = new BitmapFont();
 		Label fps = new Label("fps", lblStyle) {
 			@Override
 			public void act(float delta) {
@@ -361,21 +408,21 @@ public class GameScreen implements Screen {
 			}
 		};
 		Table mainTable = new Table();
-		mainTable.setTouchable(Touchable.enabled);
-		mainTable.addListener(new InputListener() {
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				performer.userInput(true);
-//				performer.setSpeed(Performer.MIN_SPEED);
-//				gm.setStarted(true);
-				return true;
-			}
-			@Override
-			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				performer.userInput(false);
-				super.touchUp(event, x, y, pointer, button);
-			}
-		});
+//		mainTable.setTouchable(Touchable.enabled);
+//		mainTable.addListener(new InputListener() {
+//			@Override
+//			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+//				performer.userInput(true);
+////				performer.setSpeed(Performer.MIN_SPEED);
+////				gm.setStarted(true);
+//				return true;
+//			}
+//			@Override
+//			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+//				performer.userInput(false);
+//				super.touchUp(event, x, y, pointer, button);
+//			}
+//		});
 		guiStage.addActor(mainTable);
 		mainTable.setFillParent(true);
 		mainTable.row().colspan(3).expandX().fillX();
@@ -390,9 +437,6 @@ public class GameScreen implements Screen {
 		pause.getColor().a = .8f;
 //		pause.setSize(10f, 10f);
 		mainTable.add(pause).height(40f).width(40f).left();
-//		fps.
-
-//		Actors.centerActor(mainTable);
 	}
 
 	@Override
@@ -455,6 +499,11 @@ public class GameScreen implements Screen {
 	    	PoolsManager.printStatusOutput();
 			System.out.println("dc: " + drawCalls + " tb: "+ textureBinds + " vc: "+ vc + " ss: "+ ss + " nc: "+ nc);
 		}
+		
+		float f1 = guiStage.getWidth();
+		float f2 = guiStage.getViewport().getWorldWidth();
+		float f3 = guiStage.getViewport().getWorldHeight();
+		System.out.println("f1: " + f1 + "f2: " + f2 + "f3: " + f3 );
 	}
 
 	@Override

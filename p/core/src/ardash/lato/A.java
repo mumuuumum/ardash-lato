@@ -87,29 +87,33 @@ public class A {
 		public LabelStyle style;
 		static {
 			HEADLINE.style = new LabelStyle();
-			HEADLINE.style.font = A.FontAsset.HEADLINE_75.font;
+			HEADLINE.style.font = A.FontAsset.F1_30_BOLD.font;
 			HEADLINE.style.fontColor=Color.WHITE;
 //			HEADLINE.style.fontColor=Color.BLACK;
 		}
 	}
 	
 	public enum FontAsset {
-		HEADLINE_75;		
+		HEADLINE_75,F1_30_BOLD;		
 		public BitmapFont font;
 		// init
 		static {
-			final float FONT_SIZE_LARGE_20 = 0.1f * GameScreen.WORLD_HEIGHT; // TODO set to gui height
+			final float FONT_SIZE_LARGE_20 = 30f; // TODO set to gui height
 			{ //Headline
 				FreeTypeFontGenerator generator;
 				FreeTypeFontParameter parameter;
 				generator = A.getFontGenerator(FontGeneratorAsset.TLWGTYPIST);
 				parameter = defaultParameter((int)Math.ceil(FONT_SIZE_LARGE_20),0.1f);
 				parameter.borderColor = Color.BLACK;
-				parameter.borderWidth = 8;
+				parameter.borderWidth = 0;
 				generator.scaleForPixelHeight((int)Math.ceil(FONT_SIZE_LARGE_20));
+//				parameter.
 	
 				HEADLINE_75.font = generator.generateFont(parameter);
 				HEADLINE_75.font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+				generator = A.getFontGenerator(FontGeneratorAsset.TLWGTYPISTBOLD);
+				F1_30_BOLD.font = generator.generateFont(parameter);
+				F1_30_BOLD.font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 			}
 			
 		}
@@ -133,7 +137,7 @@ public class A {
 	}
 
 	private enum FontGeneratorAsset {
-		TLWGTYPIST;
+		TLWGTYPIST,TLWGTYPISTBOLD;
 		@Override
 		public String toString() {
 			return "" + super.toString().toLowerCase() + ".ttf"; // example "arial.ttf"  
