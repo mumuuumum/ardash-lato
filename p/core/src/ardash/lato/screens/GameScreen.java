@@ -324,6 +324,12 @@ public class GameScreen implements Screen {
 				lastz = newz;
 				// the camera will be moved by onPositionChange()
 //				cam.moveTo(lastx, lasty, newz, 0.1f);
+				
+				if (performer.getState().isCrashed()) {
+					scarf.setLength(0f);
+				} else {
+					scarf.setLength(percentage);
+				}
 			}
 
 		});

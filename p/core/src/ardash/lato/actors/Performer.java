@@ -48,7 +48,7 @@ import ardash.lato.weather.AmbientColorChangeListener;
 public class Performer extends Group3D implements Disposable, AmbientColorChangeListener {
 	
 	private enum Pose {
-		RIDE, DUCK, JUMP//, ROLL, FLY, CRASHED, GRIND
+		RIDE, DUCK, JUMP, CRASH_ASS, CRASH_NOSE//, ROLL, FLY, CRASHED, GRIND
 	}
 
 	private static final float ROTATION_SPEED = 180f; // TODO (deg/sec) this could be different for different performers or boards
@@ -208,25 +208,31 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			// accelerate on ground
 			final float angleToGround = 360f - velocity.angle(); // 0 or 360 is horizontal, 90 is downward, 45 is ramp down forward
 //			System.out.println(angleToGround);
-			if (angleToGround > 0)
-			{
-				if (angleToGround < 20f) // TODO adjust here. everything above this angle speeds up
+			
+			if (! state.isCrashed()) {
+				if (angleToGround > 0)
 				{
-					setSpeed(speed-(1.1f*delta));
+					if (angleToGround < 20f) // TODO adjust here. everything above this angle speeds up
+					{
+						setSpeed(speed-(1.1f*delta));
+					}
+					else if (angleToGround < 90f)
+					{
+						setSpeed(speed+(5.1f*delta));
+					}
+					else
+					{
+						setSpeed(speed-(1.1f*delta));
+					}
 				}
-				else if (angleToGround < 90f)
-				{
-					setSpeed(speed+(5.1f*delta));
-				}
-				else
-				{
-					setSpeed(speed-(1.1f*delta));
-				}
-			}
 
-			if (isUserInputDown)
-			{
-				jump(JUMP_FORCE);
+				if (isUserInputDown)
+				{
+					jump(JUMP_FORCE);
+				}
+			} else {
+				// if crashed
+				setSpeed(speed-(5.1f*delta));
 			}
 
 		}
@@ -336,7 +342,8 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 
 //		 accum -= step;
 		
-		final float newCamSpotX= MathUtils.lerp(MIN_CAM_SPOT_X, MAX_CAM_SPOT_X, getSpeedPercentage());
+		float newCamSpotX= MathUtils.lerp(MIN_CAM_SPOT_X, MAX_CAM_SPOT_X, getSpeedPercentage());
+		newCamSpotX = MathUtils.clamp(newCamSpotX, MIN_CAM_SPOT_X, MAX_CAM_SPOT_X);
 		final Vector2 newCamSpot = new Vector2(getX() + newCamSpotX, getY());
 		if (getSpeed() == 0)
 		{
@@ -415,7 +422,12 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		if (!state.isStarted())
 			return;
 		
-		if (speed < MIN_SPEED)
+		if (speed <=0f && state.isCrashed()) {
+			this.speed = 0f;
+			return;
+		}
+		
+		if (speed < MIN_SPEED && !state.isCrashed())
 			speed = MIN_SPEED;
 		if (speed > MAX_SPEED)
 			speed = MAX_SPEED;
@@ -430,6 +442,12 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	public float getSpeedPercentage() {
 		final float max = MAX_SPEED - MIN_SPEED;
 		final float cur = speed - MIN_SPEED;
+		
+		if (cur <=0)
+			return 0f;
+		if (cur >=MAX_SPEED)
+			return 1f;
+		
 		return cur/max;
 	}
 
@@ -512,8 +530,19 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	private void land() {
 		System.out.println("land()");
 		clearActions();
-		setState(PlayerState.DUCKING);
-		setPose(Pose.DUCK);
+		final float rotation = getRotation();
+		System.out.println(rotation);
+		
+		if (rotation >=40f && rotation <= 190f) {
+			setState(PlayerState.CRASHED);
+			setPose(Pose.CRASH_ASS);
+		} else if (rotation >=190f && rotation <= 310f) {
+			setState(PlayerState.CRASHED);
+			setPose(Pose.CRASH_NOSE);
+		} else {
+			setState(PlayerState.DUCKING);
+			setPose(Pose.DUCK);
+		}
 		
 		// when jumping and keeping is pressed, the "press" will continue to act and rotate the actor
 		// on the other hand: when landing, while the screen is pressed it must ot be registerred as touch-down
@@ -521,6 +550,10 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		// this is important ie. for very close landign where user needs to touch down until last moment
 		// but in no case we want "bouncing" because screen is still touched. A new jump requires a new touch.
 		userInput(false);
+	}
+
+	public PlayerState getState() {
+		return state;
 	}
 	
 	public void setState(PlayerState state) {

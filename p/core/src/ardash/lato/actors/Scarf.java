@@ -90,4 +90,14 @@ public class Scarf extends Group3D {
 	public float getY() {
 		return getChild(0).getY();
 	}
+
+	/**
+	 * sets the length of the scarf from 0 to 1 (0% to 100%)
+	 * The amount of visible sections (0-20) will be adjusted accordingly
+	 * @param percentage
+	 */
+	public void setLength(float percentage) {
+		// TODO Auto-generated method stub
+		
+	}
 }
