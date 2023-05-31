@@ -25,7 +25,7 @@ public class LoadingScreen implements Screen {
 
         stage = new Stage(new ScreenViewport());
 
-        title = new Label("loading ...", A.LabelStyleAsset.HEADLINE.style);
+        title = new Label("loading ...", A.LabelStyleAsset.DISTANCE_LABEL.style);
         title.setAlignment(Align.center);
         title.setY(Gdx.graphics.getHeight()*2/3);
         title.setWidth(Gdx.graphics.getWidth());

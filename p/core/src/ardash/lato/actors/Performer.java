@@ -37,12 +37,14 @@ import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.Group3D;
+import ardash.gdx.scenes.scene3d.actions.Actions3D;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.A;
 import ardash.lato.A.ARAsset;
 import ardash.lato.A.ParticleAsset;
 import ardash.lato.actions.Actions;
 import ardash.lato.actions.GravityAction;
+import ardash.lato.screens.GameOverDialog;
 import ardash.lato.weather.AmbientColorChangeListener;
 
 public class Performer extends Group3D implements Disposable, AmbientColorChangeListener {
@@ -534,11 +536,9 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		System.out.println(rotation);
 		
 		if (rotation >=40f && rotation <= 190f) {
-			setState(PlayerState.CRASHED);
-			setPose(Pose.CRASH_ASS);
+			crash(Pose.CRASH_ASS);
 		} else if (rotation >=190f && rotation <= 310f) {
-			setState(PlayerState.CRASHED);
-			setPose(Pose.CRASH_NOSE);
+			crash(Pose.CRASH_NOSE);
 		} else {
 			setState(PlayerState.DUCKING);
 			setPose(Pose.DUCK);
@@ -550,6 +550,20 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		// this is important ie. for very close landign where user needs to touch down until last moment
 		// but in no case we want "bouncing" because screen is still touched. A new jump requires a new touch.
 		userInput(false);
+	}
+
+	private void crash(Pose crashPose) {
+		setState(PlayerState.CRASHED);
+		setPose(crashPose);
+		addAction(Actions3D.sequence(
+				Actions3D.delay(2f),
+				Actions3D.run(new Runnable() {
+					@Override
+					public void run() {
+						new GameOverDialog().show(getGameScreen().guiStage);
+					}
+				})
+				));
 	}
 
 	public PlayerState getState() {

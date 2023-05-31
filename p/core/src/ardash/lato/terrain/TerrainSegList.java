@@ -32,7 +32,7 @@ public class TerrainSegList extends ArrayList<TerrainSeg>{
 	public float heightAt(float x)
 	{
 		if (x < first().x)
-			throw new RuntimeException("x is below the range of this list: "+x);
+			throw new RuntimeException("x is below the range of this list: "+x +"is below " + first().x);
 		if (x > last().x)
 			throw new RuntimeException("x is above the range of this list: "+x);
 		

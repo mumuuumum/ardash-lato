@@ -26,7 +26,7 @@ import ardash.lato.terrain.TerrainManager;
 public class GameManager {
 	
 	public static final boolean DEBUG_VIEW = false;
-	public static final boolean DEBUG_GUI = true;
+	public static final boolean DEBUG_GUI = false;
 	
 	public final LatoGame game;
 	public TerrainManager tm;
@@ -43,7 +43,7 @@ public class GameManager {
 		reset();
 	}
 	
-	private void reset() {
+	public void reset() {
 		tm.reset();
 		started = false;
 	}

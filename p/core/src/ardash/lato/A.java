@@ -83,39 +83,44 @@ public class A {
 	}
 	
 	public enum LabelStyleAsset {
-		HEADLINE;
+		DISTANCE_LABEL, SMALL_TEXT;
 		
 		public LabelStyle style;
 		static {
-			HEADLINE.style = new LabelStyle();
-			HEADLINE.style.font = A.FontAsset.F1_30_BOLD.font;
-			HEADLINE.style.fontColor=Color.WHITE;
-//			HEADLINE.style.fontColor=Color.BLACK;
+			DISTANCE_LABEL.style = new LabelStyle();
+			DISTANCE_LABEL.style.font = A.FontAsset.F1_30_BOLD.font;
+			DISTANCE_LABEL.style.fontColor=Color.WHITE;
+			SMALL_TEXT.style = new LabelStyle();
+			SMALL_TEXT.style.font = A.FontAsset.F1_15.font;
+			SMALL_TEXT.style.fontColor=Color.WHITE;
 		}
 	}
 	
 	public enum FontAsset {
-		HEADLINE_75,F1_30_BOLD;		
+		HEADLINE_75,F1_30_BOLD,F1_15;
 		public BitmapFont font;
 		// init
 		static {
-			final float FONT_SIZE_LARGE_20 = getActualPixelHeight(30); // TODO set to gui height
+			final float FONT_SIZE_LARGE_30 = getActualPixelHeight(30); // TODO set to gui height
+			final float FONT_SIZE_LARGE_15 = getActualPixelHeight(15); // TODO set to gui height
 			{
 				FreeTypeFontGenerator generator;
 				FreeTypeFontParameter parameter;
-				generator = A.getFontGenerator(FontGeneratorAsset.TLWGTYPIST);
-				parameter = defaultParameter((int)Math.ceil(FONT_SIZE_LARGE_20),0.1f);
-				parameter.borderColor = Color.BLACK;
-				parameter.borderWidth = 0;
-				generator.scaleForPixelHeight((int)Math.ceil(FONT_SIZE_LARGE_20));
-//				parameter.
-	
-				HEADLINE_75.font = generator.generateFont(parameter);
-				HEADLINE_75.font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-				generator.dispose();
+				parameter = defaultParameter((int)Math.ceil(FONT_SIZE_LARGE_30),0);
 				generator = A.getFontGenerator(FontGeneratorAsset.TLWGTYPISTBOLD);
+				generator.scaleForPixelHeight((int)Math.ceil(FONT_SIZE_LARGE_30));
 				F1_30_BOLD.font = generator.generateFont(parameter);
 				F1_30_BOLD.font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+				generator.dispose();
+			}
+			{
+				FreeTypeFontGenerator generator;
+				FreeTypeFontParameter parameter;
+				parameter = defaultParameter((int)Math.ceil(FONT_SIZE_LARGE_15),0);
+				generator = A.getFontGenerator(FontGeneratorAsset.TLWGTYPIST);
+				generator.scaleForPixelHeight((int)Math.ceil(FONT_SIZE_LARGE_15));
+				F1_15.font = generator.generateFont(parameter);
+				F1_15.font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
 				generator.dispose();
 			}
 			

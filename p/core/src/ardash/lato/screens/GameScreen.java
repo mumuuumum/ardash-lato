@@ -102,6 +102,7 @@ public class GameScreen implements Screen {
 	
 	public GameScreen(GameManager gm) {
 		this.gm = gm;
+		gm.reset();
     	perf = gm.performanceCounters.add("gs");
     	
     	// create & enable the profiler
@@ -189,7 +190,6 @@ public class GameScreen implements Screen {
 		
 		performer = new Performer();
 		
-		// add shaperenderers
 		waveDrawer = new WaveDrawer(EnvColors.DAY.ambient);
 		performer.addListener(waveDrawer);
 		stage3d.addActor(waveDrawer);
@@ -367,6 +367,12 @@ public class GameScreen implements Screen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 				performer.userInput(true);
+				System.out.println(performer.getState());
+				System.out.println(performer.getTimeInState());
+				// handle the final touch on the game over dialog
+				if (performer.getState().isCrashed() && performer.getTimeInState() >= 2f) {
+					gm.game.setScreen(new LoadingScreen(gm));
+				}
 				return true;
 			}
 			@Override
@@ -376,7 +382,7 @@ public class GameScreen implements Screen {
 			}
 		});
 		guiStage.addActor(mainTable);
-		Label lblDistance = new Label("0m", A.LabelStyleAsset.HEADLINE.style) {
+		Label lblDistance = new Label("0m", A.LabelStyleAsset.DISTANCE_LABEL.style) {
 			public void act(float delta) {
 				super.act(delta);
 				setText(performer.getTraveledDistanceMeters()+"m");
@@ -390,13 +396,10 @@ public class GameScreen implements Screen {
 		mainTable.row().expandY();
 
 		
-//		fps.
-
-//		Actors.centerActor(mainTable);
 	}
 
 	private void addDebugInfoView() {
-		final LabelStyle lblStyle = A.LabelStyleAsset.HEADLINE.style;
+		final LabelStyle lblStyle = A.LabelStyleAsset.DISTANCE_LABEL.style;
 //		lblStyle.font = new BitmapFont();
 		Label fps = new Label("fps", lblStyle) {
 			@Override
