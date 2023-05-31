@@ -20,7 +20,6 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
 	private static int sc = 0;
     protected PerformanceCounter pcact = Actor3D.getGameManager().performanceCounters.add("s3d act "+sc);
     protected PerformanceCounter pcdra = Actor3D.getGameManager().performanceCounters.add("s3d dra "+sc++);
-	private double worldAccumulator = 0;
 	public static final float DRAW_STEPS=WaveDrawer.DRAW_STEPS;
 
 
@@ -102,23 +101,8 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
 	@Override
 	public void act(float delta) {
     	pcact.start();
-//    	if (world != null)
-    		doPhysicsStep(delta);
 		super.act(delta);
 		pcact.stop();
-	}
-	
-	private void doPhysicsStep(float deltaTime) {
-	    // fixed time step
-	    // max frame time to avoid spiral of death (on slow devices)
-	    float frameTime = Math.min(deltaTime, 0.25f);
-	    worldAccumulator += frameTime;
-	    float TIME_STEP = 1f/60f;
-		while (worldAccumulator >= TIME_STEP ) {
-//	        world.step(TIME_STEP, 60, 20);
-//	        world.step(TIME_STEP, 6, 2);
-	        worldAccumulator -= TIME_STEP;
-	    }
 	}
 	
 	@Override

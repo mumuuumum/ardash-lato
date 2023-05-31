@@ -100,7 +100,7 @@ public class A {
 		// init
 		static {
 			final float FONT_SIZE_LARGE_20 = getActualPixelHeight(30); // TODO set to gui height
-			{ //Headline
+			{
 				FreeTypeFontGenerator generator;
 				FreeTypeFontParameter parameter;
 				generator = A.getFontGenerator(FontGeneratorAsset.TLWGTYPIST);
@@ -112,10 +112,11 @@ public class A {
 	
 				HEADLINE_75.font = generator.generateFont(parameter);
 				HEADLINE_75.font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-//				generator.dispose();
+				generator.dispose();
 				generator = A.getFontGenerator(FontGeneratorAsset.TLWGTYPISTBOLD);
 				F1_30_BOLD.font = generator.generateFont(parameter);
 				F1_30_BOLD.font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+				generator.dispose();
 			}
 			
 		}
@@ -561,7 +562,7 @@ public class A {
 //		for (TextureAsset aa : TextureAsset.values()) {
 //			manager.load(aa.toString(), Texture.class);
 //		}
-//		for (ParticleAsset pa : ParticleAsset.values()) { needs atlas paramter here
+//		for (ParticleAsset pa : ParticleAsset.values()) { // TODO needs atlas paramter here
 //			manager.load(pa.toString(), ParticleEffect.class);
 //		}
 	}

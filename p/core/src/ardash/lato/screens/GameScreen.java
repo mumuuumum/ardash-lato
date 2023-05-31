@@ -82,7 +82,6 @@ public class GameScreen implements Screen {
 	public GameManager gm;
 	public WeatherProvider weather;
 	public LatoStage backStage;
-//	public LatoStage stage;
 	public LatoStage frontStage;
 	public LatoStage guiStage;
 	public LatoStage3D mountainStage3d;
@@ -502,10 +501,10 @@ public class GameScreen implements Screen {
 			System.out.println("dc: " + drawCalls + " tb: "+ textureBinds + " vc: "+ vc + " ss: "+ ss + " nc: "+ nc);
 		}
 		
-		float f1 = guiStage.getWidth();
-		float f2 = guiStage.getViewport().getWorldWidth();
-		float f3 = guiStage.getViewport().getWorldHeight();
-		System.out.println("f1: " + f1 + "f2: " + f2 + "f3: " + f3 );
+//		float f1 = guiStage.getWidth();
+//		float f2 = guiStage.getViewport().getWorldWidth();
+//		float f3 = guiStage.getViewport().getWorldHeight();
+//		System.out.println("f1: " + f1 + "f2: " + f2 + "f3: " + f3 );
 	}
 
 	@Override
@@ -538,8 +537,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		Disposables.gracefullyDisposeOf(backStage, frontStage, guiStage);
-//		A.dispose(); // TODO this is also in Game
+		Disposables.gracefullyDisposeOf(backStage, frontStage, guiStage, mountainStage3d, stage3d);
 	}
 
 }

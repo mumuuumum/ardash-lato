@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 
 /**
  * provides new randomised terrain following different generation-strategies.
- * Supplies, shape of the ground, trees, houses, villages, forrsts, grind lines, ramps etc.
+ * Supplies, shape of the ground, trees, houses, villages, forests, grind lines, ramps etc.
  * @author z
  *
  */
