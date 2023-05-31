@@ -20,9 +20,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.gdx.scenes.scene3d.Group3D;
+import ardash.gdx.scenes.scene3d.actions.Actions3D;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.A;
 import ardash.lato.A.ARAsset;
@@ -97,7 +99,26 @@ public class Scarf extends Group3D {
 	 * @param percentage
 	 */
 	public void setLength(float percentage) {
-		// TODO Auto-generated method stub
+		final float lerped = MathUtils.lerp(0, 20, percentage);
+		final float clamped = MathUtils.clamp(lerped, 0, 20);
+		final int rounded = MathUtils.roundPositive(clamped);
+		setLength(rounded);
+	}
+
+	int currentAmountOfSegments = -1;
+	private void setLength(int amountOfSegments) {
+		if (amountOfSegments == currentAmountOfSegments)
+			return;
+		for (int i = 0; i < x.length; i++) {
+			final Actor3D ch = getChild(i);
+			ch.clearActions();
+			if (i<amountOfSegments)
+				ch.addAction(Actions3D.fadeIn(1f));
+			else
+				ch.addAction(Actions3D.fadeOut(1f));
+//			ch.setVisible(i<amountOfSegments);
+		}
 		
+		currentAmountOfSegments = amountOfSegments;
 	}
 }
