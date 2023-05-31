@@ -39,6 +39,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.PerformanceCounter;
 import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 import com.github.czyzby.kiwi.util.gdx.viewport.Viewports;
 
@@ -123,7 +124,8 @@ public class GameScreen implements Screen {
 		frontStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), "fs");
 //		frontStage = new LatoStage(new ScreenViewport(), this);
 		CURRENT_WORLD_WIDTH = backStage.getViewport().getWorldWidth();
-		guiStage = new LatoStage(Viewports.getDensityAwareViewport(), "gs");
+//		guiStage = new LatoStage(Viewports.getDensityAwareViewport(), "gs");
+		guiStage = new LatoStage(new ScreenViewport(), "gs");
 		final Camera3D mainCam = new Camera3D(30, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		mountainStage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, new Camera3D()), getShaderP(LatoShaders.BACK));
 		stage3d = new LatoStage3D(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT, mainCam), getShaderP(LatoShaders.THREED));

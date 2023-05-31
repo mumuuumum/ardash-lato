@@ -20,6 +20,7 @@ package ardash.lato;
 import java.util.EnumSet;
 
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.assets.loaders.ParticleEffectLoader.ParticleEffectParameter;
@@ -98,7 +99,7 @@ public class A {
 		public BitmapFont font;
 		// init
 		static {
-			final float FONT_SIZE_LARGE_20 = 30f; // TODO set to gui height
+			final float FONT_SIZE_LARGE_20 = getActualPixelHeight(30); // TODO set to gui height
 			{ //Headline
 				FreeTypeFontGenerator generator;
 				FreeTypeFontParameter parameter;
@@ -111,6 +112,7 @@ public class A {
 	
 				HEADLINE_75.font = generator.generateFont(parameter);
 				HEADLINE_75.font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+//				generator.dispose();
 				generator = A.getFontGenerator(FontGeneratorAsset.TLWGTYPISTBOLD);
 				F1_30_BOLD.font = generator.generateFont(parameter);
 				F1_30_BOLD.font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
@@ -129,6 +131,13 @@ public class A {
 			parameter.size=size;
 			return parameter;
 		}
+		
+
+		private static int getActualPixelHeight(int pixelHeight) {
+		    float screenDensity = Gdx.graphics.getDensity();
+		    return (int)(pixelHeight * screenDensity);
+		}
+		
 		
 		@Override
 		public String toString() {
