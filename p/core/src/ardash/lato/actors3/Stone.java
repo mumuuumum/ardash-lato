@@ -8,6 +8,7 @@ import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.A;
 import ardash.lato.A.SpriteGroupAsset;
 import ardash.lato.actors.Performer;
+import ardash.lato.actors.Performer.Demise;
 import ardash.lato.actors.Performer.Pose;
 
 public class Stone extends Image3D implements TerrainItem , Poolable{
@@ -69,6 +70,11 @@ public class Stone extends Image3D implements TerrainItem , Poolable{
 			final float pYbottom = performer.getY();
 			
 			if (stoneYtop > pYbottom) {
+				if (performer.getState().isInAir()) {
+					performer.setCauseOfDeath(Demise.LAND_ON_STONE);
+				} else {
+					performer.setCauseOfDeath(Demise.HIT_STONE);
+				}
 				performer.crash(Pose.CRASH_NOSE);
 				hasCollided = true;
 			}

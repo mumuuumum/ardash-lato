@@ -52,6 +52,27 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	public enum Pose {
 		RIDE, DUCK, JUMP, CRASH_ASS, CRASH_NOSE//, ROLL, FLY, CRASHED, GRIND
 	}
+	
+	public enum Demise {
+		NONE, LAND_ON_ASS, LAND_ON_NOSE, LAND_ON_STONE, HIT_STONE;
+		@Override
+		public String toString() {
+			switch (this) {
+			case HIT_STONE:
+				return "You hit a rock";
+			case LAND_ON_ASS:
+				return "You landed on your ass";
+			case LAND_ON_NOSE:
+				return "You landed on your nose";
+			case LAND_ON_STONE:
+				return "You landed on a rock";
+			case NONE:
+				return "";
+			default:
+				return super.toString();
+			}
+		}
+	}
 
 	private static final float ROTATION_SPEED = 180f; // TODO (deg/sec) this could be different for different performers or boards
 	private static final float PERFORMER_WIDTH = 1.85f;
@@ -74,6 +95,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	private Map<Pose,Image3D> poses = new EnumMap<Pose, Image3D>(Pose.class);
 	protected Pose pose = Pose.RIDE;
 	protected PlayerState state = PlayerState.INIT;
+	private Demise causeOfDeath = Demise.NONE;
 	
 	private final Group3D scarfAttachPointGroup = new Group3D();
 	private final Vector2 scarfAttachPoint = new Vector2(0,0);
@@ -538,8 +560,10 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		
 		if (rotation >=40f && rotation <= 190f) {
 			crash(Pose.CRASH_ASS);
+			setCauseOfDeath(Demise.LAND_ON_ASS);
 		} else if (rotation >=190f && rotation <= 310f) {
 			crash(Pose.CRASH_NOSE);
+			setCauseOfDeath(Demise.LAND_ON_NOSE);
 		} else {
 			setState(PlayerState.DUCKING);
 			setPose(Pose.DUCK);
@@ -566,7 +590,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 				Actions3D.run(new Runnable() {
 					@Override
 					public void run() {
-						new GameOverDialog().show(getGameScreen().guiStage);
+						new GameOverDialog(getCauseOfDeath().toString(), getTraveledDistanceMeters()).show(getGameScreen().guiStage);
 					}
 				})
 				));
@@ -625,6 +649,13 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			return 0;
 		float dist = getX()-startedAtX;
 		return (int)dist;
-		
+	}
+	
+	public void setCauseOfDeath(Demise causeOfDeath) {
+		this.causeOfDeath = causeOfDeath;
+	}
+	
+	public Demise getCauseOfDeath() {
+		return causeOfDeath;
 	}
 }
