@@ -118,7 +118,9 @@ public class GameScreen implements Screen {
 	 * frontStage (ParticlePlane, Flareplane)
 	 */
 	public void show() {
-		weather = new WeatherProvider();
+		final float lastKnownHourOfDay = gm.getLastHourOfDay();
+		weather = new WeatherProvider(lastKnownHourOfDay <= 0 ? 10.5f : lastKnownHourOfDay);
+		weather.addSODChangeListener(gm);
 		backStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), "bs");
 //		stage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), "s");
 		frontStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), "fs");

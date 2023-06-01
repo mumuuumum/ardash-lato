@@ -79,7 +79,11 @@ public class WeatherProvider extends Actor{
 	private LinkedList<SODChangeListener> sodChangeListeners = new LinkedList<SODChangeListener>();
 	private boolean isInitialised = false;
 	
-	public WeatherProvider() {
+	/**
+	 * @param initialTimeOfday example: 10.5 = 10:30 am 
+	 */
+	public WeatherProvider(float initialTimeOfday) {
+		currentSOD = SECONDS_PER_HOUR * initialTimeOfday;
 	}
 
 	@Override
@@ -112,14 +116,14 @@ public class WeatherProvider extends Actor{
 			ArrayList<Precipitation> nextWeathers = new ArrayList<WeatherProvider.Precipitation>();
 			Collections.addAll(nextWeathers, Precipitation.values());
 			
-			// give CLEAR weather a higher changce to win :-) 
+			// give CLEAR weather a higher chance to win :-) 
 			nextWeathers.add(Precipitation.CLEAR);
 //			nextWeathers.add(Precipitation.CLEAR);
 //			nextWeathers.add(Precipitation.CLEAR);
 //			nextWeathers.add(Precipitation.CLEAR);
 //			nextWeathers.add(Precipitation.CLEAR);
 //			nextWeathers.add(Precipitation.CLEAR);
-//			nextWeathers.add(Precipitation.CLEAR);
+			nextWeathers.add(Precipitation.CLEAR);
 			nextWeathers.add(Precipitation.CLEAR);
 			
 			// pick a random next weather from the list

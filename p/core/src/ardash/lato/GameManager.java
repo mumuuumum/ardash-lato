@@ -22,8 +22,9 @@ import com.badlogic.gdx.utils.PerformanceCounters;
 
 import ardash.lato.screens.GameScreen;
 import ardash.lato.terrain.TerrainManager;
+import ardash.lato.weather.SODChangeListener;
 
-public class GameManager {
+public class GameManager implements SODChangeListener {
 	
 	public static final boolean DEBUG_VIEW = false;
 	public static final boolean DEBUG_GUI = false;
@@ -36,6 +37,7 @@ public class GameManager {
 	 * Indicates if forward movement is going on. User must tap initially to start and movement will end after crash.
 	 */
 	private boolean started;
+	private float lastHourOfDay = -1;
 
 	public GameManager(LatoGame game) {
 		this.game = game;
@@ -63,6 +65,15 @@ public class GameManager {
 	private boolean isStarted()
 	{
 		return started;
+	}
+
+	@Override
+	public void onSODChange(float newSOD, float hourOfDay, float delta, float percentOfDayOver) {
+		this.lastHourOfDay = hourOfDay;	
+	}
+	
+	public float getLastHourOfDay() {
+		return lastHourOfDay;
 	}
 
 }
