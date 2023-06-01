@@ -62,10 +62,16 @@ public class Stone extends Image3D implements TerrainItem , Poolable{
 		final Performer performer = getGameScreen().performer;
 		final float pX = performer.getX() + pWidth/2f;
 		
-		// TODO check Y coords too
 		if (Math.abs(myX - pX) < myWidth) {
-			performer.crash(Pose.CRASH_NOSE);
-			hasCollided = true;
+			
+			// check Y coords too
+			final float stoneYtop = getY()+1f;
+			final float pYbottom = performer.getY();
+			
+			if (stoneYtop > pYbottom) {
+				performer.crash(Pose.CRASH_NOSE);
+				hasCollided = true;
+			}
 		}
 	}
 }
