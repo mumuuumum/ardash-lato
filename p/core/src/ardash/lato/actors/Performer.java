@@ -158,11 +158,11 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			
 			setOriginY(-PERFORMER_WIDTH/2f);
 			
-//			//register landing
+			//register landing
 			final float heightUnderActorBeforeForwardMovement = getGameScreen().waveDrawer.getHeightAt(getX()+(PERFORMER_WIDTH/2f));
-			if (getY()+getOriginY()<heightUnderActorBeforeForwardMovement)
+			if (getY()<heightUnderActorBeforeForwardMovement)
 			{
-				System.out.println("hua: " +heightUnderActorBeforeForwardMovement+ " , Y: "+getY());
+//				System.out.println("hua: " +heightUnderActorBeforeForwardMovement+ " , Y: "+getY());
 				
 				// land only if in air since longer time
 				if (timeInState >= 0.1f)
