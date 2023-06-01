@@ -113,7 +113,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 //			setDebug(true, true);
 //			img.setDebug(true);
 		}
-		setPose(Pose.RIDE);
+		setPose(Pose.CRASH_ASS);
 		setOriginX(-PERFORMER_WIDTH/2f);
 		camSpot.set(getX(), getY()+10f);
 		setSpeed(MIN_SPEED);
@@ -476,6 +476,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		{
 			startedAtX  = getX();
 			setState(PlayerState.SLIDING);
+			setPose(Pose.RIDE);
 			return; // don't jump or rotate if game not started yet
 //			setSpeed(MIN_SPEED);
 //			getGameManager().setStarted(true);

@@ -277,7 +277,7 @@ public class GameScreen implements Screen {
         Vector2 tts = new Vector2(13.5f,5.566f);
         Image3D titleText = new Image3D(tts.x, tts.y, A.getTextureRegion(ARAsset.TITLESCREEN), new ModelBuilder());
         titleText.setTag(Tag.CENTER);
-        titleText.setPosition(performer.getX()-tts.x/2f + 4f, performer.getY()+6f);
+        titleText.setPosition(performer.getX()-tts.x/2f + 8f, 8);
         stage3d.addActor(titleText);
 
 //        Toonhouse ma = new Toonhouse();

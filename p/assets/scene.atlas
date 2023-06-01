@@ -55,14 +55,14 @@ mount
   index: -1
 mount_pix
   rotate: false
-  xy: 1371, 743
+  xy: 1034, 660
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 mount_pix2
   rotate: false
-  xy: 1034, 660
+  xy: 2017, 1001
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -116,6 +116,90 @@ pause
   orig: 225, 225
   offset: 0, 0
   index: -1
+stone
+  rotate: false
+  xy: 1371, 648
+  size: 118, 96
+  orig: 118, 96
+  offset: 0, 0
+  index: 11
+stone
+  rotate: false
+  xy: 1887, 785
+  size: 119, 87
+  orig: 119, 87
+  offset: 0, 0
+  index: 5
+stone
+  rotate: false
+  xy: 229, 15
+  size: 118, 85
+  orig: 118, 85
+  offset: 0, 0
+  index: 8
+stone
+  rotate: false
+  xy: 359, 123
+  size: 94, 107
+  orig: 94, 107
+  offset: 0, 0
+  index: 7
+stone
+  rotate: false
+  xy: 1491, 669
+  size: 126, 75
+  orig: 126, 75
+  offset: 0, 0
+  index: 10
+stone
+  rotate: false
+  xy: 1371, 539
+  size: 92, 107
+  orig: 92, 107
+  offset: 0, 0
+  index: 2
+stone
+  rotate: false
+  xy: 1619, 682
+  size: 125, 62
+  orig: 125, 62
+  offset: 0, 0
+  index: 3
+stone
+  rotate: false
+  xy: 1746, 668
+  size: 90, 76
+  orig: 90, 76
+  offset: 0, 0
+  index: 4
+stone
+  rotate: false
+  xy: 1371, 454
+  size: 89, 83
+  orig: 89, 83
+  offset: 0, 0
+  index: 0
+stone
+  rotate: false
+  xy: 1887, 695
+  size: 87, 88
+  orig: 87, 88
+  offset: 0, 0
+  index: 6
+stone
+  rotate: false
+  xy: 1465, 562
+  size: 87, 84
+  orig: 87, 84
+  offset: 0, 0
+  index: 9
+stone
+  rotate: false
+  xy: 1554, 586
+  size: 81, 81
+  orig: 81, 81
+  offset: 0, 0
+  index: 1
 sun_shape
   rotate: false
   xy: 1113, 488
@@ -132,14 +216,14 @@ titlescreen
   index: -1
 tree_bg_pix
   rotate: false
-  xy: 1887, 871
+  xy: 2008, 871
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 tree_fg_pix
   rotate: false
-  xy: 2017, 1001
+  xy: 229, 12
   size: 1, 1
   orig: 1, 1
   offset: 0, 0

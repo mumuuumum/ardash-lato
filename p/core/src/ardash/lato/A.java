@@ -234,7 +234,11 @@ public class A {
 		 */
 		FOG_PIX, 
 		
+		// performer
 		P1_RIDE, P1_JUMP, P1_DUCK, P1_CRASH_ASS, P1_CRASH_NOSE, //P1_ROLL, 
+		
+		// stones
+		STONE_0,STONE_1,STONE_2,STONE_3,STONE_4,STONE_5,STONE_6,STONE_7,STONE_8,STONE_9,STONE_10,STONE_11,
 		
 		SUN_SHAPE, GLOW, FLARE,
 		ADD_FLARE, PAUSE, ADD_FLARE_A, TITLESCREEN, MOON_SHAPE;
@@ -246,135 +250,136 @@ public class A {
 	
 
 
-	public enum SpriteAsset {
-		PUFF_0,PUFF_1,PUFF_2,PUFF_3,PUFF_4,PUFF_5,PUFF_6,PUFF_7,PUFF_8,PUFF_9,
-		
-		DORK_0,DORK_1,DORK_2,DORK_3,
-
-		PENG_0,
-		EYES_CLOSED_PENG,
-		
-		BIRD_0,BIRD_1,BIRD_2,BIRD_3,BIRD_4,BIRD_5,
-
-		BIRD_6,BIRD_7,BIRD_8,BIRD_9,BIRD_10,BIRD_11,
-		
-		WOOD_TNT_0,
-		WOOD_BL_11_0,WOOD_BL_11_1,WOOD_BL_11_2,WOOD_BL_11_3,
-		
-		WOOD_BL_21_0,WOOD_BL_21_1,WOOD_BL_21_2,WOOD_BL_21_3,
-		WOOD_BL_22_0,WOOD_BL_22_1,WOOD_BL_22_2,WOOD_BL_22_3,
-		
-		WOOD_BL_41_0,WOOD_BL_41_1,WOOD_BL_41_2,WOOD_BL_41_3,
-		WOOD_BL_42_0,WOOD_BL_42_1,WOOD_BL_42_2,WOOD_BL_42_3,
-		
-		WOOD_BL_81_0,WOOD_BL_81_1,WOOD_BL_81_2,WOOD_BL_81_3,
-		
-		WOOD_TRIA_0,WOOD_TRIA_1,WOOD_TRIA_2,WOOD_TRIA_3,
-		WOOD_RECT_0,WOOD_RECT_1,WOOD_RECT_2,WOOD_RECT_3,
-		
-		EYES_CLOSED,
-		EYES_DOWN,
-		EYES_INNER,
-		EYES_LEFT,
-		EYES_OUTER,
-		EYES_RIGHT,
-		EYES_UP,
-
-		DIALOG,
-		SLIDERBACK,
-		FLAG_DE,
-		FLAG_EN,
-		FLAG_EO,
-		FLAG_ES,
-		FLAG_FR,
-		FLAG_PL,
-		FLAG_RU,
-		BTN_INFO,
-		BTN_JOYPAD,
-		BTN_LEADER,
-		BTN_ACHI,
-		BTN_SQ_EMPTY,
-		BTN_FL_EMPTY,
-		BTN_TW,
-		BTN_FB,
-		BTN_GP,
-		BTN_PI,
-		BTN_CLOSE,
-		BTN_PLAY,
-		BTN_1PLAYER,
-		BTN_2PLAYERS,
-		BTN_SETTINGS,
-		BTN_SOUND_ON,
-		BTN_SOUND_OFF,
-		BTN_BACK,
-		BTN_PAUSE,
-		BTN_REFRESH,
-		BTN_ABORT,
-		BTN_BLANK,
-		BTN_WORLD;
-		
-		static {
-			// init all sprites
-			for (SpriteAsset e : SpriteAsset.values()) {
-				// first the name and index must be set, so thString(works properly)
-				final String lowername = e.name().toLowerCase();
-				if (lowername.contains("_")) 
-				{
-					final int uscp = lowername.lastIndexOf('_'); // underscore position
-					e.rname = lowername.substring(0, uscp);
-					final String lIndex = lowername.substring(uscp+1, lowername.length());
-					try {
-						e.rindex = Integer.valueOf(lIndex);
-					} catch (NumberFormatException e1) {
-						e.rname = lowername;
-						e.rindex = -1;
-					}
-				}
-				else
-				{
-					e.rname = lowername;
-					e.rindex = -1;
-				}
-				
-				// the sprite could be found automatically here, by searching all regions in the atlas for that name
-				// but then all atlasses would have to be preloaded right away as soon as only one sprite is needed. is that good?
-				
-				// try it
-				TextureAtlas foundAtlas = null;
-				for (AtlasAsset aa : AtlasAsset.values())
-				{
-					final TextureAtlas atlas = getAtlas(aa);
-					final AtlasRegion foundRegion = atlas.findRegion(e.rname,e.rindex);
-					if (foundRegion!= null)
-					{
-						foundAtlas = atlas;
-						if (foundRegion.index !=e.rindex)
-							throw new RuntimeException("found region "+ e.toString() + " but with wrong index");  
-						break;
-					}
-				}
-				if (foundAtlas == null)
-					throw new RuntimeException("No atlas found for "+e.toString()); 
-				foundAtlas.getTextures().first().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-				e.sprite= foundAtlas.createSprite(e.rname,e.rindex);
-				if (e.sprite == null)
-					throw new RuntimeException("Sprite not created for "+e.toString()); 
-			}
-		}
-
-		private Sprite sprite;
-		private String rname =""; 
-		private int rindex=-1;
-		public Sprite get()
-		{
-			return sprite;
-		}
-		
-		@Override
-		public String toString() {
-			return "" + rname + (rindex ==-1 ? "" : "_"+rindex); // "eyes_closed"   
-		}
-	}
+//	public enum SpriteAsset {
+//		STONE_0,STONE_1,STONE_2,STONE_3,STONE_4,STONE_5,STONE_6,STONE_7,STONE_8,STONE_9,STONE_10,STONE_11;
+//
+//	//		
+////		DORK_0,DORK_1,DORK_2,DORK_3,
+////
+////		PENG_0,
+////		EYES_CLOSED_PENG,
+////		
+////		BIRD_0,BIRD_1,BIRD_2,BIRD_3,BIRD_4,BIRD_5,
+////
+////		BIRD_6,BIRD_7,BIRD_8,BIRD_9,BIRD_10,BIRD_11,
+////		
+////		WOOD_TNT_0,
+////		WOOD_BL_11_0,WOOD_BL_11_1,WOOD_BL_11_2,WOOD_BL_11_3,
+////		
+////		WOOD_BL_21_0,WOOD_BL_21_1,WOOD_BL_21_2,WOOD_BL_21_3,
+////		WOOD_BL_22_0,WOOD_BL_22_1,WOOD_BL_22_2,WOOD_BL_22_3,
+////		
+////		WOOD_BL_41_0,WOOD_BL_41_1,WOOD_BL_41_2,WOOD_BL_41_3,
+////		WOOD_BL_42_0,WOOD_BL_42_1,WOOD_BL_42_2,WOOD_BL_42_3,
+////		
+////		WOOD_BL_81_0,WOOD_BL_81_1,WOOD_BL_81_2,WOOD_BL_81_3,
+////		
+////		WOOD_TRIA_0,WOOD_TRIA_1,WOOD_TRIA_2,WOOD_TRIA_3,
+////		WOOD_RECT_0,WOOD_RECT_1,WOOD_RECT_2,WOOD_RECT_3,
+////		
+////		EYES_CLOSED,
+////		EYES_DOWN,
+////		EYES_INNER,
+////		EYES_LEFT,
+////		EYES_OUTER,
+////		EYES_RIGHT,
+////		EYES_UP,
+////
+////		DIALOG,
+////		SLIDERBACK,
+////		FLAG_DE,
+////		FLAG_EN,
+////		FLAG_EO,
+////		FLAG_ES,
+////		FLAG_FR,
+////		FLAG_PL,
+////		FLAG_RU,
+////		BTN_INFO,
+////		BTN_JOYPAD,
+////		BTN_LEADER,
+////		BTN_ACHI,
+////		BTN_SQ_EMPTY,
+////		BTN_FL_EMPTY,
+////		BTN_TW,
+////		BTN_FB,
+////		BTN_GP,
+////		BTN_PI,
+////		BTN_CLOSE,
+////		BTN_PLAY,
+////		BTN_1PLAYER,
+////		BTN_2PLAYERS,
+////		BTN_SETTINGS,
+////		BTN_SOUND_ON,
+////		BTN_SOUND_OFF,
+////		BTN_BACK,
+////		BTN_PAUSE,
+////		BTN_REFRESH,
+////		BTN_ABORT,
+////		BTN_BLANK,
+////		BTN_WORLD;
+//		
+//		static {
+//			// init all sprites
+//			for (SpriteAsset e : SpriteAsset.values()) {
+//				// first the name and index must be set, so thString(works properly)
+//				final String lowername = e.name().toLowerCase();
+//				if (lowername.contains("_")) 
+//				{
+//					final int uscp = lowername.lastIndexOf('_'); // underscore position
+//					e.rname = lowername.substring(0, uscp);
+//					final String lIndex = lowername.substring(uscp+1, lowername.length());
+//					try {
+//						e.rindex = Integer.valueOf(lIndex);
+//					} catch (NumberFormatException e1) {
+//						e.rname = lowername;
+//						e.rindex = -1;
+//					}
+//				}
+//				else
+//				{
+//					e.rname = lowername;
+//					e.rindex = -1;
+//				}
+//				
+//				// the sprite could be found automatically here, by searching all regions in the atlas for that name
+//				// but then all atlasses would have to be preloaded right away as soon as only one sprite is needed. is that good?
+//				
+//				// try it
+//				TextureAtlas foundAtlas = null;
+//				for (AtlasAsset aa : AtlasAsset.values())
+//				{
+//					final TextureAtlas atlas = getAtlas(aa);
+//					final AtlasRegion foundRegion = atlas.findRegion(e.rname,e.rindex);
+//					if (foundRegion!= null)
+//					{
+//						foundAtlas = atlas;
+//						if (foundRegion.index !=e.rindex)
+//							throw new RuntimeException("found region "+ e.toString() + " but with wrong index");  
+//						break;
+//					}
+//				}
+//				if (foundAtlas == null)
+//					throw new RuntimeException("No atlas found for "+e.toString()); 
+//				foundAtlas.getTextures().first().setFilter(TextureFilter.Linear, TextureFilter.Linear);
+//				e.sprite= foundAtlas.createSprite(e.rname,e.rindex);
+//				if (e.sprite == null)
+//					throw new RuntimeException("Sprite not created for "+e.toString()); 
+//			}
+//		}
+//
+//		private Sprite sprite;
+//		private String rname =""; 
+//		private int rindex=-1;
+//		public Sprite get()
+//		{
+//			return sprite;
+//		}
+//		
+//		@Override
+//		public String toString() {
+//			return "" + rname + (rindex ==-1 ? "" : "_"+rindex); // "eyes_closed"   
+//		}
+//	}
 
 
 	/**
@@ -461,77 +466,77 @@ public class A {
 		}
 	}
 
-//	public enum SpriteGroupAsset {
-//		PUFF;
-//
-//		static {
-//			for (SpriteGroupAsset e : SpriteGroupAsset.values()) {
-//				if (e.members.size() == 0) {
-//					// apply default format - get format from own name
-//					final String format = e.name() + "_%d"; 
-//					e.fillMembersByFormat(format, e.members);
-//				}
-//				if (e.members.size() == 0)
-//					throw new RuntimeException("Empty Asset Group created in " + e.toString()); 
-//			}
-//		}
-//
-//		public final EnumSet<SpriteAsset> members;
-//
-//		/**
-//		 * creates the sound group by the specified format
-//		 * 
-//		 * @param format
-//		 *            must contain %d ,which will be replaced by a number
-//		 *            [0,+inf]
-//		 */
-//		SpriteGroupAsset(final String format) {
-//			final EnumSet<SpriteAsset> result = EnumSet.noneOf(SpriteAsset.class);
-//			fillMembersByFormat(format, result);
-//
-//			this.members = result;
-//		}
-//
-//		/**
-//		 * @param format
-//		 *            must contain %d ,which will be replaced by a number
-//		 *            [0,+inf]
-//		 * @param result
-//		 *            the members array
-//		 */
-//		private void fillMembersByFormat(final String format, final EnumSet<SpriteAsset> result) {
-//			for (int i = 0; i < SpriteAsset.values().length; i++) {
-//				// get all the SAsset values that match this name structure
-//				try {
-//					final SpriteAsset newE = SpriteAsset.valueOf(String.format(format, i));
-//					result.add(newE);
-//				} catch (Throwable t) {
-//					break;
-//				}
-//			}
-//		}
-//
-//		/**
-//		 * creates the members automatically using its own name as format,
-//		 * happens in a static block after <init>
-//		 * 
-//		 * @param format
-//		 */
-//		SpriteGroupAsset() {
-//			EnumSet<SpriteAsset> result = EnumSet.noneOf(SpriteAsset.class);
-//			this.members = result;
-//		}
-//
-//		public SpriteAsset getRandom() {
-//			return (SpriteAsset) (members.toArray())[MathUtils.random(0, members.size() - 1)];
-//		}
-//		public SpriteAsset get(int i) {
-//			return (SpriteAsset) (members.toArray())[i];
-//		}
-//		public int size() {
-//			return members.size();
-//		}
-//	}
+	public enum SpriteGroupAsset {
+		STONE;
+
+		static {
+			for (SpriteGroupAsset e : SpriteGroupAsset.values()) {
+				if (e.members.size() == 0) {
+					// apply default format - get format from own name
+					final String format = e.name() + "_%d"; 
+					e.fillMembersByFormat(format, e.members);
+				}
+				if (e.members.size() == 0)
+					throw new RuntimeException("Empty Asset Group created in " + e.toString()); 
+			}
+		}
+
+		public final EnumSet<ARAsset> members;
+
+		/**
+		 * creates the sprite group by the specified format
+		 * 
+		 * @param format
+		 *            must contain %d ,which will be replaced by a number
+		 *            [0,+inf]
+		 */
+		SpriteGroupAsset(final String format) {
+			final EnumSet<ARAsset> result = EnumSet.noneOf(ARAsset.class);
+			fillMembersByFormat(format, result);
+
+			this.members = result;
+		}
+
+		/**
+		 * @param format
+		 *            must contain %d ,which will be replaced by a number
+		 *            [0,+inf]
+		 * @param result
+		 *            the members array
+		 */
+		private void fillMembersByFormat(final String format, final EnumSet<ARAsset> result) {
+			for (int i = 0; i < ARAsset.values().length; i++) {
+				// get all the SAsset values that match this name structure
+				try {
+					final ARAsset newE = ARAsset.valueOf(String.format(format, i));
+					result.add(newE);
+				} catch (Throwable t) {
+					break;
+				}
+			}
+		}
+
+		/**
+		 * creates the members automatically using its own name as format,
+		 * happens in a static block after <init>
+		 * 
+		 * @param format
+		 */
+		SpriteGroupAsset() {
+			EnumSet<ARAsset> result = EnumSet.noneOf(ARAsset.class);
+			this.members = result;
+		}
+
+		public ARAsset getRandom() {
+			return (ARAsset) (members.toArray())[MathUtils.random(0, members.size() - 1)];
+		}
+		public ARAsset get(int i) {
+			return (ARAsset) (members.toArray())[i];
+		}
+		public int size() {
+			return members.size();
+		}
+	}
 
 	private static final AssetManager manager = new AssetManager();
 	static {
@@ -562,8 +567,12 @@ public class A {
 			manager.load(ma.toString(), Music.class);
 		}
 		for (AtlasAsset aa : AtlasAsset.values()) {
+//			manager.
 			manager.load(aa.toString(), TextureAtlas.class);
 		}
+//		for (SpriteAsset sa : SpriteAsset.values()) {
+//			manager.load(sa.toString(), Sprite.class);
+//		}
 //		for (TextureAsset aa : TextureAsset.values()) {
 //			manager.load(aa.toString(), Texture.class);
 //		}
@@ -580,7 +589,7 @@ public class A {
 	public static Model getModel(ModelAsset ma) {
 		final String path = ma.toString();
 		if (!manager.isLoaded(path)) {
-			manager.load(path, Sound.class);
+			manager.load(path, Model.class);
 			manager.finishLoading();
 		}
 		return manager.get(path, Model.class);
@@ -605,6 +614,15 @@ public class A {
 		}
 		return manager.get(path, Sound.class);
 	}
+
+//	public static Sprite getSprite(SpriteAsset s) {
+//		final String path = s.toString();
+//		if (!manager.isLoaded(path)) {
+//			manager.load(path, Sprite.class);
+//			manager.finishLoading();
+//		}
+//		return manager.get(path, Sprite.class);
+//	}
 
 	public static ParticleEffect getParticleEffect(ParticleAsset pa) {
 		final String path = pa.toString();
@@ -687,6 +705,15 @@ public class A {
 		return sound;
 	}
 
+//	public static Sprite getRandomSprite(SpriteGroupAsset sg) {
+//		final SpriteAsset random = sg.getRandom();
+//		final Sprite s = getSprite(random);
+//		if (s == null)
+//			log.error("Sprite was null"); 
+//			//throw new RuntimeException("sound was null");
+//		return s;
+//	}
+
 	// TODO make private again?!
 	public static TextureAtlas getAtlas(AtlasAsset aa) {
 		final String path = aa.toString();
@@ -716,14 +743,14 @@ public class A {
 //	}
 
 
-//	/**
-//	 * early access all enum, so errors throw up early
-//	 */
-//	public static void validate() {
-//		for (SoundGroupAsset sg : SoundGroupAsset.values()) {
-//			sg.toString();
-//		}
-//	}
+	/**
+	 * early access all enum, so errors throw up early
+	 */
+	public static void validate() {
+		for (SoundGroupAsset sg : SoundGroupAsset.values()) {
+			sg.toString();
+		}
+	}
 
 	public static void dispose() {
 		manager.dispose();

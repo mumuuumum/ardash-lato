@@ -50,6 +50,7 @@ public class Scarf extends Group3D {
 				img.setColor(SCARF_COLOUR_1);
 			else 
 				img.setColor(SCARF_COLOUR_2);
+			img.addAction(Actions3D.fadeOut(0f));
 		}
 	}
 
