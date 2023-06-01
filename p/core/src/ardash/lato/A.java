@@ -705,14 +705,11 @@ public class A {
 		return sound;
 	}
 
-//	public static Sprite getRandomSprite(SpriteGroupAsset sg) {
-//		final SpriteAsset random = sg.getRandom();
-//		final Sprite s = getSprite(random);
-//		if (s == null)
-//			log.error("Sprite was null"); 
-//			//throw new RuntimeException("sound was null");
-//		return s;
-//	}
+	public static AtlasRegion getRandomAtlasRegion(SpriteGroupAsset sg) {
+		final int i = MathUtils.random(0, sg.size()-1);
+		final String sgname = sg.name().toLowerCase();
+		return A.getTextureRegions(sgname).get(i);
+	}
 
 	// TODO make private again?!
 	public static TextureAtlas getAtlas(AtlasAsset aa) {

@@ -49,7 +49,7 @@ import ardash.lato.weather.AmbientColorChangeListener;
 
 public class Performer extends Group3D implements Disposable, AmbientColorChangeListener {
 	
-	private enum Pose {
+	public enum Pose {
 		RIDE, DUCK, JUMP, CRASH_ASS, CRASH_NOSE//, ROLL, FLY, CRASHED, GRIND
 	}
 
@@ -545,15 +545,20 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			setPose(Pose.DUCK);
 		}
 		
-		// when jumping and keeping is pressed, the "press" will continue to act and rotate the actor
-		// on the other hand: when landing, while the screen is pressed it must ot be registerred as touch-down
+		// when jumping and keeping it pressed, the "press" will continue to act and rotate the actor
+		// on the other hand: when landing, while the screen is pressed it must not be registered as touch-down
 		// so lets unregister the last touch down, in order to wait for the next touch down
-		// this is important ie. for very close landign where user needs to touch down until last moment
+		// this is important ie. for very close landing where user needs to touch down until last moment
 		// but in no case we want "bouncing" because screen is still touched. A new jump requires a new touch.
 		userInput(false);
 	}
 
-	private void crash(Pose crashPose) {
+	/**
+	 * This must be public. A crash can be triggered internally (ie. by landing nt on feet) and externally (ie. by hitting a stone)
+	 * @param crashPose
+	 */
+	public void crash(Pose crashPose) {
+		userInput(false);
 		setState(PlayerState.CRASHED);
 		setPose(crashPose);
 		addAction(Actions3D.sequence(

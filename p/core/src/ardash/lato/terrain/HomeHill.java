@@ -49,7 +49,7 @@ public class HomeHill extends Section {
 		surroundingItems.add(tree2);
 
 		// add stone
-		Stone stone = new Stone();
+		Stone stone = new Stone(2); // index 2 is the stone on the initial screen
 		stone.setPosition(12.8f, 2.8f);
 		surroundingItems.add(stone);
 	}

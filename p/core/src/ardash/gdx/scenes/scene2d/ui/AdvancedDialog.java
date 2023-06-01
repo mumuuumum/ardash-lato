@@ -51,7 +51,7 @@ public class AdvancedDialog extends Dialog {
 //        EMPTY_TEX = Assets.SpriteAsset.BTN_SQ_EMPTY.get();
 		backgrPixel = new Image(A.getTextureRegion(ARAsset.FOG_PIX)); 
 		backgrPixel.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        backgrPixel.setColor(1, 1, 1, 0.5f);
+        backgrPixel.setColor(0, 0, 0, 0.5f);
         
 		getButtonTable().addListener(new ChangeListener() {
 			@Override

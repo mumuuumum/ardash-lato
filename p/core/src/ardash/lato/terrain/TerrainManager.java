@@ -6,9 +6,11 @@ import java.util.List;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
+import ardash.lato.actors3.Stone;
+
 /**
  * provides new randomised terrain following different generation-strategies.
- * Supplies, shape of the ground, trees, houses, villages, forests, grind lines, ramps etc.
+ * Supplies, shape of the ground, trees, houses, villages, forests, grind lines, ramps, stones etc.
  * @author z
  *
  */
@@ -52,6 +54,7 @@ public class TerrainManager {
 		else
 		{
 			s = new Downer();
+			addStoneRandomly((Downer)s);
 			if (MathUtils.random(0, 100)<10)
 				s = new Hill();
 			final Vector2 offset = this.getLastSection().last();
@@ -64,6 +67,12 @@ public class TerrainManager {
 		}
 	}
 	
+	private void addStoneRandomly(Downer s) {
+		final int r = MathUtils.random(1);
+		if (r == 0)
+			s.addStone();
+	}
+
 	public void addListener(TerrainListener listener) {
 		this.listeners.add(listener);
 	}

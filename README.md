@@ -1,3 +1,5 @@
+# History
+
 This is a 2020 remake of the Game Alto's Adventure (2015), which was a remake of Ski Safari (2012). The first release of this game is in 2023.
 
 'Lato' is the name of the main character and describes someone who is always 'late' and that's why he has to hurry.
@@ -8,8 +10,9 @@ The only suitable way around that was to use a well established and well support
 * endless procedural random terrain
 * 2D and 3D mixture
 * realistic weather and day night cycles
-* physics without physics engine
+* physics without physics engine (Box2D was possible over overkill, so it was removed in 8e059919b01a148cc3303734567100079ae2bb18)
 * chained shaders
+* Scene3D - likely the frist working version at all (only implemented to the necessary extend)
 
 in LIBGDX.
 
@@ -18,10 +21,23 @@ If you are a game maker too, please feel free to copy everything you need from t
 All parts of this project are meant to be developed with FLOSS software.
 
 Engine: LibGDX
+
 Target Platforms: Android, Linux
+
 Dev PC: Ubuntu Linux
+
 IDE: Eclipse
+
 Sprite drawing: Inkscape
+
 Animations and rigging: Synfig Studio
+
 Pixeling: Gimp
 
+# Music
+
+Music: Traveler (2019) by Alexander Nakarada (www.serpentsoundstudios.com)
+
+Licensed under Creative Commons: By Attribution 4.0 License
+
+http://creativecommons.org/licenses/by/4.0/
