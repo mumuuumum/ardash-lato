@@ -229,6 +229,13 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 //		public boolean remove() {
 //			throw new RuntimeException("ERROR: don't remove the wave drawer!");
 //		}
+	
+	/**
+	 * Returns the size of the terrain-segment-list - ONLY for debugging purposes (to show in debug window label).
+	 */
+	public int getTSLSize() {
+		return terrainSegmentList.size();
+	}
 
 	@Override
 	public void onAmbientColorChangeTriggered(Color target, float seconds) {

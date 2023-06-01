@@ -358,7 +358,7 @@ public class GameScreen implements Screen {
 		Gdx.input.setInputProcessor(guiStage);
 		guiStage.setDebugAll(GameManager.DEBUG_GUI);
 		
-		if (GameManager.DEBUG_GUI)
+//		if (GameManager.DEBUG_GUI)
 			addDebugInfoView();
 		
 		Table mainTable = new Table();
@@ -405,12 +405,15 @@ public class GameScreen implements Screen {
 			@Override
 			public void act(float delta) {
 				super.act(delta);
+				final int countTSections = gm.tm.getSections().size();
+				final int countTSegments = waveDrawer.getTSLSize();
+
 				String lblText = "fps: "+ Gdx.graphics.getFramesPerSecond();
 				lblText += "\nactors: "+stage3d.getRoot().getChildren().size;
 //				lblText += String.format("\nworld : B %s C %s PC %s", stage3d.world.getBodyCount(), stage3d.world.getContactCount(), performer.currentContacts);
 				lblText += String.format("\nposition: %.2f %.2f", performer.getX(), performer.getY());
 				lblText += String.format("\nspeed: %.2f %.2f%%", performer.getSpeed(), performer.getSpeedPercentage()*100f);
-				lblText += "\nt-sections: "+gm.tm.getSections().size();
+				lblText += "\nt-sections: "+countTSections + " t-segments: "+countTSegments;
 				lblText += String.format("\nculling : drawn %s of %s", Group3D.draw2Count, Group3D.draw1Count);
 				lblText += String.format("\ntime of day: %.2f %s %s fogginess: %.4f"
 						, weather.currentTOD(), weather.getCurrentColorSchema(), weather.getCurrentPrecip(), weather.getCurrentFog());
