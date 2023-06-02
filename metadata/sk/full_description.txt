@@ -1,0 +1,31 @@
+Lato vždy mešká (odtiaľ ten názov). Preto sa vždy ponáhľa. Pomôžte Latovi
+pretekať z kopca na svojom snowboarde. Alebo si len sadnite na horu a užívajte si to
+západ slnka.
+
+Vlastnosti:
+
+  * kvalitná grafika s vysokým rozlíšením
+  * nekonečný procedurálny náhodný terén
+  * 2D a 3D zmes
+  * realistické počasie a denné nočné cykly
+  * jednoduché ovládanie hry jedným dotykom
+  * vhodné pre všetky vekové kategórie
+  * 100 % open source (GPL3)
+
+V tejto hre sa musíte skĺznuť z hory so snowboardom.
+
+Ovládajte prehrávač dotykom obrazovky. Hru spustíte dotykom obrazovky.
+Dotknite sa obrazovky, aby postava preskočila kameň. Dotknite sa obrazovky
+backflip, keď ste vo vzduchu.
+
+Toto je začiatok cesty. Ďalšie funkcie budú pridané v priebehu nasledujúcich týždňov
+a mesiacov.
+
+medzinárodné vekové hodnotenia:
+
+  * ACB: G (všeobecné)
+  * ClassInd: L
+  * ESRB: E (všetci)
+  * PEGI: 3
+  * USK: 0
+  * IARC: 3

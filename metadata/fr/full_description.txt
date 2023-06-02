@@ -1,0 +1,31 @@
+Lato est toujours en retard (d'où son nom). Il est donc toujours pressé. Aidez Lato à
+course en descente sur son snowboard. Ou simplement s'asseoir sur la montagne et profiter de la
+coucher de soleil.
+
+Caractéristiques:
+
+  * graphiques de qualité haute résolution
+  * terrain aléatoire procédural sans fin
+  * Mélange 2D et 3D
+  * cycles météo et jour/nuit réalistes
+  * contrôle de jeu simple à une touche
+  * adapté à tous les âges
+  * 100% open source (GPL3)
+
+Dans ce jeu, vous devez glisser sur une montagne avec un snowboard.
+
+Contrôlez le lecteur en touchant l'écran. Touchez l'écran pour lancer le jeu.
+Touchez l'écran pour faire sauter le personnage par-dessus un rocher. Touchez l'écran pour
+backflip pendant que vous êtes en vol.
+
+C'est le début d'un voyage. Plus de fonctionnalités seront ajoutées dans les prochaines semaines
+et des mois.
+
+classifications d'âge internationales :
+
+  * ACB : G (général)
+  * ClasseInd : L
+  * ESRB : E (tout le monde)
+  * PEGI : 3
+  * USK : 0
+  * CIRC : 3

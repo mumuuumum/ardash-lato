@@ -1,0 +1,31 @@
+Lato está sempre atrasado (daí o nome). Então ele está sempre com pressa. Ajude o Lato a
+corrida ladeira abaixo em seu snowboard. Ou apenas sente-se na montanha e aproveite o
+pôr do sol.
+
+Características:
+
+  * gráficos de qualidade de alta resolução
+  * terreno aleatório processual sem fim
+  * Mistura 2D e 3D
+  * clima realista e ciclos diurnos e noturnos
+  * controle de jogo simples com um toque
+  * adequado para todas as idades
+  * 100% código aberto (GPL3)
+
+Neste jogo você deve deslizar montanha abaixo com uma prancha de snowboard.
+
+Controle o jogador tocando na tela. Toque na tela para iniciar o jogo.
+Toque na tela para fazer o personagem pular sobre uma pedra. Toque na tela para
+backflip enquanto você está no ar.
+
+Este é o começo de uma jornada. Mais recursos serão adicionados nas próximas semanas
+e meses.
+
+classificações etárias internacionais:
+
+  * ACB: G (geral)
+  * ClassInd: L
+  * ESRB: E (todos)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

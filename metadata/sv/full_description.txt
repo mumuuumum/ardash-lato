@@ -1,0 +1,31 @@
+Lato är alltid sen (därav namnet). Så han har alltid bråttom. Hjälp Lato att
+tävla utför på sin snowboard. Eller bara sitta på berget och njuta av
+solnedgång.
+
+Funktioner:
+
+  * högupplöst grafik
+  * Oändliga slumpmässiga förfaranden terräng
+  * 2D- och 3D-blandning
+  * realistiska väder- och dag-nattcykler
+  * enkel en-touch spelkontroll
+  * lämplig för alla åldrar
+  * 100 % öppen källkod (GPL3)
+
+I det här spelet måste du glida nerför ett berg med en snowboard.
+
+Styr spelaren genom att peka på skärmen. Tryck på skärmen för att starta spelet.
+Tryck på skärmen för att få karaktären att hoppa över en sten. Peka på skärmen för att
+backflip medan du är luftburen.
+
+Det här är början på en resa. Fler funktioner kommer att läggas till under de kommande veckorna
+och månader.
+
+internationella åldersklassificeringar:
+
+  * ACB: G (allmänt)
+  * ClassInd: L
+  * ESRB: E (alla)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

@@ -1,0 +1,31 @@
+Lato selalu terlambat (karena itulah namanya). Jadi dia selalu terburu-buru. Bantu Lato untuk
+berlomba menuruni bukit dengan papan seluncur saljunya. Atau hanya duduk di gunung dan menikmati
+matahari terbenam.
+
+Fitur:
+
+  * Grafik kualitas resolusi tinggi
+  * medan acak prosedural tak berujung
+  * Campuran 2D dan 3D
+  * cuaca realistis dan siklus siang malam
+  * Kontrol permainan satu sentuhan sederhana
+  * cocok untuk segala usia
+  * 100% sumber terbuka (GPL3)
+
+Dalam game ini Anda harus meluncur menuruni gunung dengan snowboard.
+
+Kontrol pemain dengan menyentuh layar. Sentuh layar untuk memulai permainan.
+Sentuh layar untuk membuat karakter melompati batu. Sentuh layar untuk
+backflip saat Anda mengudara.
+
+Ini adalah awal dari sebuah perjalanan. Lebih banyak fitur akan ditambahkan dalam beberapa minggu ke depan
+dan bulan.
+
+peringkat usia internasional:
+
+  * ACB: G (umum)
+  * KelasInd: L
+  * ESRB: E (semua orang)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

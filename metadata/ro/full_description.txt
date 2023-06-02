@@ -1,0 +1,31 @@
+Lato întârzie întotdeauna (de aici și numele). Așa că se grăbește mereu. Ajută-l pe Lato să
+alerga la vale pe snowboard-ul lui. Sau pur și simplu stai pe munte și bucură-te de
+apus de soare.
+
+Caracteristici:
+
+  * grafică de înaltă rezoluție
+  * teren procedural aleatoriu fără sfârșit
+  * Amestec 2D și 3D
+  * vreme realiste și cicluri de zi și noapte
+  * control simplu al jocului cu o singură atingere
+  * potrivit pentru toate vârstele
+  * 100% open source (GPL3)
+
+În acest joc trebuie să aluneci pe un munte cu un snowboard.
+
+Controlați playerul atingând ecranul. Atingeți ecranul pentru a începe jocul.
+Atingeți ecranul pentru a face personajul să sară peste o stâncă. Atingeți ecranul pentru a
+întoarceți înapoi în timp ce sunteți în aer.
+
+Acesta este începutul unei călătorii. Mai multe funcții vor fi adăugate în următoarele săptămâni
+si luni.
+
+evaluări internaționale de vârstă:
+
+  * ACB: G (general)
+  * ClassInd: L
+  * ESRB: E (toată lumea)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

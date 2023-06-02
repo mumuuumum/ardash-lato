@@ -1,0 +1,31 @@
+Lato visada vėluoja (iš čia ir pavadinimas). Taigi jis visada skuba. Padėkite Lato
+lenktyniauti nuokalne savo snieglente. Arba tiesiog atsisėskite ant kalno ir mėgaukitės
+saulėlydis.
+
+Funkcijos:
+
+  * aukštos raiškos kokybės grafika
+  * begalinis procedūrinis atsitiktinis reljefas
+  * 2D ir 3D mišinys
+  * tikroviški orai ir dienos nakties ciklai
+  * paprastas žaidimo valdymas vienu paspaudimu
+  * tinka bet kokio amžiaus
+  * 100 % atvirojo kodo (GPL3)
+
+Šiame žaidime jūs turite nusileisti nuo kalno su snieglente.
+
+Valdykite grotuvą paliesdami ekraną. Norėdami pradėti žaidimą, palieskite ekraną.
+Palieskite ekraną, kad veikėjas peršoktų per akmenį. Palieskite ekraną, kad
+apversti atgal, kol skrendate ore.
+
+Tai kelionės pradžia. Per ateinančias savaites bus pridėta daugiau funkcijų
+ir mėnesius.
+
+tarptautiniai amžiaus reitingai:
+
+  * ACB: G (bendrasis)
+  * ClassInd: L
+  * ESRB: E (visi)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

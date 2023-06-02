@@ -1,0 +1,31 @@
+Lato vedno zamuja (od tod tudi ime). Zato se mu vedno mudi. Pomagaj Latu pri
+dirkati po klancu na svoji snežni deski. Ali pa samo sedite na gori in uživajte
+sončni zahod.
+
+Lastnosti:
+
+  * kakovostna grafika visoke ločljivosti
+  * neskončni postopkovni naključni teren
+  * 2D in 3D mešanica
+  * realistični vremenski in dnevni nočni cikli
+  * preprosto upravljanje igre z enim dotikom
+  * primerno za vse starosti
+  * 100% odprtokodni (GPL3)
+
+V tej igri se morate s snežno desko spustiti z gore.
+
+Upravljajte predvajalnik z dotikom zaslona. Za začetek igre se dotaknite zaslona.
+Dotaknite se zaslona, da lik skoči čez skalo. Dotaknite se zaslona, da
+nazaj, ko ste v zraku.
+
+To je začetek potovanja. Več funkcij bo dodanih v naslednjih tednih
+in mesecih.
+
+mednarodne starostne ocene:
+
+  * ACB: G (splošno)
+  * Ind razreda: L
+  * ESRB: E (vsi)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

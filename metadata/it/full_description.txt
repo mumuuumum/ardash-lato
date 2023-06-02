@@ -1,0 +1,31 @@
+Lato è sempre in ritardo (da qui il nome). Quindi ha sempre fretta. Aiuta Lato a
+correre in discesa sul suo snowboard. O semplicemente siediti sulla montagna e goditi il
+tramonto.
+
+Caratteristiche:
+
+  * grafica di qualità ad alta risoluzione
+  * terreno casuale procedurale infinito
+  * Miscela 2D e 3D
+  * Cicli meteorologici e notturni realistici
+  * semplice controllo del gioco one-touch
+  * adatto a tutte le età
+  * 100% open source (GPL3)
+
+In questo gioco devi scivolare giù da una montagna con lo snowboard.
+
+Controlla il lettore toccando lo schermo. Tocca lo schermo per iniziare il gioco.
+Tocca lo schermo per far saltare il personaggio sopra una roccia. Toccare lo schermo per
+backflip mentre sei in volo.
+
+Questo è l'inizio di un viaggio. Altre funzionalità verranno aggiunte nelle prossime settimane
+e mesi.
+
+classificazioni internazionali per età:
+
+  * ACB: SOL (generale)
+  * ClassInd: L
+  * ESRB: E (tutti)
+  * PEGI:3
+  * USD: 0
+  * IARC: 3

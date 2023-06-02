@@ -1,0 +1,31 @@
+Lato sempre fa tard (d'aquí el nom). Així que sempre té pressa. Ajuda a Lato
+córrer costa avall amb la seva taula de neu. O simplement seure a la muntanya i gaudir-ne
+posta de sol.
+
+Característiques:
+
+  * Gràfics de qualitat d'alta resolució
+  * terreny aleatori procedimental sense fi
+  * Barreja 2D i 3D
+  * cicles meteorològics realistes i dia nocturn
+  * control de joc senzill d'un sol toc
+  * Apte per a totes les edats
+  * 100% codi obert (GPL3)
+
+En aquest joc has de lliscar per una muntanya amb una taula de neu.
+
+Controla el reproductor tocant la pantalla. Toqueu la pantalla per iniciar el joc.
+Toca la pantalla per fer saltar el personatge per sobre d'una roca. Toqueu la pantalla per
+cap enrere mentre esteu a l'aire.
+
+Aquest és l'inici d'un viatge. En les properes setmanes s'afegiran més funcions
+i mesos.
+
+classificacions internacionals d'edat:
+
+  * ACB: G (general)
+  * ClassInd: L
+  * ESRB: E (tots)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

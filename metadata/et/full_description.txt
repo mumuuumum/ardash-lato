@@ -1,0 +1,31 @@
+Lato jääb alati hiljaks (sellest ka nimi). Nii et tal on alati kiire. Aidake Latol
+võidujooks lumelaual allamäge. Või lihtsalt istuge mäel ja nautige
+päikeseloojang.
+
+Funktsioonid:
+
+  * kõrge eraldusvõimega kvaliteetne graafika
+  * lõputu protseduuriline juhuslik maastik
+  * 2D ja 3D segu
+  * realistlik ilm ja päeva-öised tsüklid
+  * lihtne ühe puutega mängu juhtimine
+  * sobib igas vanuses
+  * 100% avatud lähtekoodiga (GPL3)
+
+Selles mängus tuleb lumelauaga mäest alla libiseda.
+
+Juhtige mängijat, puudutades ekraani. Mängu alustamiseks puudutage ekraani.
+Puudutage ekraani, et panna tegelane üle kivi hüppama. Puudutage ekraani, et
+tagasipöörake, kui olete õhus.
+
+See on teekonna algus. Järgmise nädala jooksul lisatakse rohkem funktsioone
+ja kuud.
+
+rahvusvahelised vanusepiirangud:
+
+  * ACB: G (üldine)
+  * ClassInd: L
+  * ESRB: E (kõik)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3
