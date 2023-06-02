@@ -3,11 +3,16 @@
 ![screenshot](metadata/en-GB/images/featureGraphic.png)
 
 # Screenshots
-![screenshot](metadata/en-GB/images/phoneScreenshots/lato_dawn.png)
-![screenshot](metadata/en-GB/images/phoneScreenshots/lato_day.png)
+<p float="left">
+  <img src="metadata/en-GB/images/phoneScreenshots/lato_dawn.png" width="49%" />
+  <img src="metadata/en-GB/images/phoneScreenshots/lato_day.png" width="49%" /> 
+</p>
 
-![screenshot](metadata/en-GB/images/phoneScreenshots/lato_dusk.png)
-![screenshot](metadata/en-GB/images/phoneScreenshots/lato_night.png)
+<p float="left">
+  <img src="metadata/en-GB/images/phoneScreenshots/lato_dusk.png" width="49%" />
+  <img src="metadata/en-GB/images/phoneScreenshots/lato_night.png" width="49%" /> 
+</p>
+
 
 # History
 
