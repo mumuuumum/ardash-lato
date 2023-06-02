@@ -1,3 +1,14 @@
+# Lato - A downhill snowboarding game for Android
+
+![screenshot](metadata/en-GB/images/featureGraphic.png)
+
+# Screenshots
+![screenshot](metadata/en-GB/images/phoneScreenshots/lato_dawn.png)
+![screenshot](metadata/en-GB/images/phoneScreenshots/lato_day.png)
+
+![screenshot](metadata/en-GB/images/phoneScreenshots/lato_dusk.png)
+![screenshot](metadata/en-GB/images/phoneScreenshots/lato_night.png)
+
 # History
 
 This is a 2020 remake of the Game Alto's Adventure (2015), which was a remake of Ski Safari (2012). The first release of this game is in 2023.
