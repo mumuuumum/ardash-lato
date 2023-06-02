@@ -59,7 +59,6 @@ public class Stone extends Image3D implements TerrainItem , Poolable{
 		final float myWidth = 1.0f;
 		final float pWidth = 1.0f;
 		final float myX = getX()+myWidth/2f;
-		System.out.println(myX);
 		final Performer performer = getGameScreen().performer;
 		final float pX = performer.getX() + pWidth/2f;
 		
