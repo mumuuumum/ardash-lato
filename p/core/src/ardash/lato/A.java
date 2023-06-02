@@ -32,7 +32,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -111,7 +110,7 @@ public class A {
 				generator.scaleForPixelHeight((int)Math.ceil(FONT_SIZE_LARGE_30));
 				F1_30_BOLD.font = generator.generateFont(parameter);
 				F1_30_BOLD.font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-				generator.dispose();
+//				generator.dispose(); // do not dispose. it will cause an exception upon app exit
 			}
 			{
 				FreeTypeFontGenerator generator;
@@ -121,7 +120,7 @@ public class A {
 				generator.scaleForPixelHeight((int)Math.ceil(FONT_SIZE_LARGE_15));
 				F1_15.font = generator.generateFont(parameter);
 				F1_15.font.getRegion().getTexture().setFilter(TextureFilter.Linear, TextureFilter.Linear);
-				generator.dispose();
+//				generator.dispose(); // do not dispose. it will cause an exception upon app exit
 			}
 			
 		}
@@ -750,15 +749,15 @@ public class A {
 	}
 
 	public static void dispose() {
-		manager.dispose();
-//		for (FontAsset fa : FontAsset.values())
-//		{
-//			try {
-//				fa.font.dispose(); // can throw if already disposed
-//			} catch (Exception e) {
+		for (FontAsset fa : FontAsset.values())
+		{
+			try {
+				fa.font.dispose(); // can throw if already disposed
+			} catch (Exception e) {
 //				e.printStackTrace();
-//			}
-//		}
+			}
+		}
+		manager.dispose();
 	}
 	
 	public static int getPercentLoaded()

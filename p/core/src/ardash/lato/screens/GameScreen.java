@@ -551,6 +551,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
+		A.dispose();
 		Disposables.gracefullyDisposeOf(backStage, frontStage, guiStage, mountainStage3d, stage3d);
 	}
 

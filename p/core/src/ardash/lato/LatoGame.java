@@ -42,6 +42,7 @@ public class LatoGame extends Game {
     @Override
     public void dispose () {
     	super.dispose();
+    	screen.dispose();
 		A.dispose();
 	}
 }
