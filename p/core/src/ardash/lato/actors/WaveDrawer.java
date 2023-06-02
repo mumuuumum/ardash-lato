@@ -18,11 +18,9 @@ import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.gdx.scenes.scene3d.Group3D;
 import ardash.lato.GameManager;
-import ardash.lato.LatoStage3D;
 import ardash.lato.actions.MoreActions;
 import ardash.lato.actors.Performer.PerformerListener;
 import ardash.lato.terrain.Downer;
-import ardash.lato.terrain.HomeHill;
 import ardash.lato.terrain.Section;
 import ardash.lato.terrain.TerrainManager.TerrainListener;
 import ardash.lato.terrain.TerrainSegList;
@@ -231,6 +229,13 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 //		public boolean remove() {
 //			throw new RuntimeException("ERROR: don't remove the wave drawer!");
 //		}
+	
+	/**
+	 * Returns the size of the terrain-segment-list - ONLY for debugging purposes (to show in debug window label).
+	 */
+	public int getTSLSize() {
+		return terrainSegmentList.size();
+	}
 
 	@Override
 	public void onAmbientColorChangeTriggered(Color target, float seconds) {

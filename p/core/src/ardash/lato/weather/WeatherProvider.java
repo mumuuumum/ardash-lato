@@ -1,3 +1,20 @@
+/*******************************************************************************
+ * Copyright (C) 2020-2023 Andreas Redmer <ar-lato@abga.be>
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
+
 package ardash.lato.weather;
 
 import java.util.ArrayList;
@@ -27,7 +44,7 @@ public class WeatherProvider extends Actor{
 	public static final float DAY_HOURS = DAYTIME_HOURS + NIGHT_HOURS;
 	public static final float DUSK_HOURS = 1.84f;
 	public static final float DAWN_HOURS = 1.84f;
-	public static final float SECONDS_PER_DAY = FASTMODE ? 60f : 7f * 60f + 10f; // one 24 hours cycle shall have 7 minutes and 10 seconds (only 180 seconds in FASTMODE)
+	public static final float SECONDS_PER_DAY = FASTMODE ? 60f : 7f * 60f + 20f; // one 24 hours cycle shall have 7 minutes and 10 seconds (only 180 seconds in FASTMODE)
 	public static final float SECONDS_PER_HOUR = SECONDS_PER_DAY / DAY_HOURS;
 	public static final float DAYTIME_SECONDS = DAYTIME_HOURS * SECONDS_PER_HOUR;
 	public static final float NIGHT_SECONDS = NIGHT_HOURS * SECONDS_PER_HOUR;
@@ -62,7 +79,11 @@ public class WeatherProvider extends Actor{
 	private LinkedList<SODChangeListener> sodChangeListeners = new LinkedList<SODChangeListener>();
 	private boolean isInitialised = false;
 	
-	public WeatherProvider() {
+	/**
+	 * @param initialTimeOfday example: 10.5 = 10:30 am 
+	 */
+	public WeatherProvider(float initialTimeOfday) {
+		currentSOD = SECONDS_PER_HOUR * initialTimeOfday;
 	}
 
 	@Override
@@ -95,14 +116,14 @@ public class WeatherProvider extends Actor{
 			ArrayList<Precipitation> nextWeathers = new ArrayList<WeatherProvider.Precipitation>();
 			Collections.addAll(nextWeathers, Precipitation.values());
 			
-			// give CLEAR weather a higher changce to win :-) 
+			// give CLEAR weather a higher chance to win :-) 
 			nextWeathers.add(Precipitation.CLEAR);
 //			nextWeathers.add(Precipitation.CLEAR);
 //			nextWeathers.add(Precipitation.CLEAR);
 //			nextWeathers.add(Precipitation.CLEAR);
 //			nextWeathers.add(Precipitation.CLEAR);
 //			nextWeathers.add(Precipitation.CLEAR);
-//			nextWeathers.add(Precipitation.CLEAR);
+			nextWeathers.add(Precipitation.CLEAR);
 			nextWeathers.add(Precipitation.CLEAR);
 			
 			// pick a random next weather from the list

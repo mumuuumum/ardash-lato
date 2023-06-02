@@ -13,8 +13,6 @@ import com.badlogic.gdx.graphics.g3d.attributes.TextureAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
-import ardash.gdx.scenes.scene3d.Camera3D;
-import ardash.gdx.scenes.scene3d.utils.AdvModelBuilder;
 
 /**
  * Created by Andreas Redmer on 11/04/2020.
@@ -64,6 +62,15 @@ public class Image3D extends Actor3D {
 		super(createModel(width, height, color, texture, modelBuilder));
         this.width = width;
         this.height = height;
+    }
+
+    /**
+     * Used by normal actors with 2d sprites from texture atlas. Get the height and width from the texture region.
+     */
+    public Image3D(TextureRegion textureRegion, ModelBuilder modelBuilder) {
+		super(createModel(textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), null, textureRegion, modelBuilder, 0f, null));
+        this.width = textureRegion.getRegionWidth();
+        this.height = textureRegion.getRegionHeight();
     }
 
     /**
@@ -132,7 +139,7 @@ public class Image3D extends Actor3D {
         Material material = new Material();
         if (color != null) material.set( ColorAttribute.createDiffuse(color) );
         if (textureRegion != null) material.set( TextureAttribute.createDiffuse(textureRegion) );
-        
+
         // set 'normal' blending
         if (blendingAttribute == null)
         	material.set(new BlendingAttribute(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA, 1.0f));
@@ -144,4 +151,5 @@ public class Image3D extends Actor3D {
         return modelBuilder.createRect(0, 0, 0, width, 0+shear, 0, width, height+shear, 0, 0, height, 0, 0, 0, 1, material, usageCode) ;
     
     }
+    
 }

@@ -1,7 +1,7 @@
 package ardash.lato.actors3;
 
-import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.gdx.scenes.scene3d.Actor3D;
+import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.gdx.scenes.scene3d.Camera3D;
 
 /**

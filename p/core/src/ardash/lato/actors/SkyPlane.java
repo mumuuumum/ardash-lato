@@ -18,7 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
-import ardash.lato.Assets.SceneTexture;
+import ardash.lato.A;
+import ardash.lato.A.ARAsset;
 import ardash.lato.actions.MoreActions;
 import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.FogColorChangeListener;
@@ -69,7 +70,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		MathUtils.random = rand; // make always the same stars
 		for ( int i=0; i<50; i++)
 		{
-			final Image img = new Image(getAssets().getSTexture(SceneTexture.FOG_PIX));
+			final Image img = new Image(A.getTextureRegion(ARAsset.FOG_PIX));
 			final float size = MathUtils.random(MIN_STAR_SIZE, MAX_STAR_SIZE);
 			final float ch = MathUtils.randomTriangular(237f, 298f, 237f); // red to blue
 //			final float ch = MathUtils.random(55f, 62f); // mostly yellow
@@ -123,7 +124,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		// SUN
 		
 		// add sun glow
-		iSunGlow = new Image(getAssets().getSTexture(SceneTexture.GLOW));
+		iSunGlow = new Image(A.getTextureRegion(ARAsset.GLOW));
 		iSunGlow.setWidth(SUN_WIDTH*26);
 		iSunGlow.setHeight(SUN_WIDTH*26);
 		sunRotor.addActor(iSunGlow);
@@ -132,7 +133,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 
 		
 		// add sun shape
-		iSun = new Image(getAssets().getSTexture(SceneTexture.SUN_SHAPE));
+		iSun = new Image(A.getTextureRegion(ARAsset.SUN_SHAPE));
 		iSun.setWidth(SUN_WIDTH);
 		iSun.setHeight(SUN_WIDTH);
 		sunRotor.addActor(iSun);
@@ -148,7 +149,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 		// MOON
 
 		// add moon glow
-		iMoonGlow = new Image(getAssets().getSTexture(SceneTexture.GLOW));
+		iMoonGlow = new Image(A.getTextureRegion(ARAsset.GLOW));
 		iMoonGlow.setWidth(SUN_WIDTH*26);
 		iMoonGlow.setHeight(SUN_WIDTH*26);
 		sunRotor.addActor(iMoonGlow);
@@ -157,7 +158,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 
 		
 		// add moon shape
-		iMoon = new Image(getAssets().getSTexture(SceneTexture.MOON_SHAPE));
+		iMoon = new Image(A.getTextureRegion(ARAsset.MOON_SHAPE));
 		iMoon.setWidth(SUN_WIDTH);
 		iMoon.setHeight(SUN_WIDTH);
 		sunRotor.addActor(iMoon);

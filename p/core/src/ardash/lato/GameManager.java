@@ -1,21 +1,35 @@
-package ardash.lato;
+/*******************************************************************************
+ * Copyright (C) 2020-2023 Andreas Redmer <ar-lato@abga.be>
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
 
-import java.util.Collection;
+package ardash.lato;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.PerformanceCounters;
 
+import ardash.lato.screens.GameScreen;
 import ardash.lato.terrain.TerrainManager;
-import ardash.lato.terrain.TerrainSeg;
-import net.dermetfan.gdx.assets.AnnotationAssetManager;
+import ardash.lato.weather.SODChangeListener;
 
-public class GameManager {
+public class GameManager implements SODChangeListener {
 	
 	public static final boolean DEBUG_VIEW = false;
+	public static final boolean DEBUG_GUI = false;
 	
 	public final LatoGame game;
-	public final Assets assets;
-	public final AnnotationAssetManager am;
 	public TerrainManager tm;
 	public PerformanceCounters performanceCounters = new PerformanceCounters();
 
@@ -23,17 +37,15 @@ public class GameManager {
 	 * Indicates if forward movement is going on. User must tap initially to start and movement will end after crash.
 	 */
 	private boolean started;
+	private float lastHourOfDay = -1;
 
 	public GameManager(LatoGame game) {
 		this.game = game;
-		this.assets = new Assets();
-		this.am = assets.manager;
-		assets.loadAll();
 		this.tm = new TerrainManager();
 		reset();
 	}
 	
-	private void reset() {
+	public void reset() {
 		tm.reset();
 		started = false;
 	}
@@ -53,6 +65,15 @@ public class GameManager {
 	private boolean isStarted()
 	{
 		return started;
+	}
+
+	@Override
+	public void onSODChange(float newSOD, float hourOfDay, float delta, float percentOfDayOver) {
+		this.lastHourOfDay = hourOfDay;	
+	}
+	
+	public float getLastHourOfDay() {
+		return lastHourOfDay;
 	}
 
 }

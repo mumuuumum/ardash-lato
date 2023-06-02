@@ -1,21 +1,18 @@
 package ardash.lato.actors;
 
-import java.util.Vector;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Disposable;
-import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
-import ardash.lato.Assets.SceneTexture;
 import ardash.gdx.scenes.scene3d.Actor3D;
+import ardash.lato.A;
+import ardash.lato.A.ARAsset;
 import ardash.lato.LatoStage;
 import ardash.lato.weather.SunColorChangeListener;
 
@@ -35,7 +32,7 @@ public class FlarePlane extends Group implements StageAccessor, Disposable, SunC
 	
 	public Actor spawnFlare(Actor emitter, float size)
 	{
-		Image imgGlow = new Image(getAssets().getSTexture(SceneTexture.ADD_FLARE));
+		Image imgGlow = new Image(A.getTextureRegion(ARAsset.ADD_FLARE));
 		imgGlow.setUserObject(emitter);
 		final float width = SUN_WIDTH*26;
 		imgGlow.setWidth(width);
@@ -48,7 +45,7 @@ public class FlarePlane extends Group implements StageAccessor, Disposable, SunC
 	
 	public Actor spawnFlare(Actor3D emitter, float size)
 	{
-		Image imgGlow = new Image(getAssets().getSTexture(SceneTexture.ADD_FLARE));
+		Image imgGlow = new Image(A.getTextureRegion(ARAsset.ADD_FLARE));
 		imgGlow.setUserObject(emitter);
 		final float width = SUN_WIDTH*26;
 		imgGlow.setWidth(width);

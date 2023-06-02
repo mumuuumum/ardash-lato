@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Pools;
 import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.lato.actors3.Farmhouse;
 import ardash.lato.actors3.Spruce;
+import ardash.lato.actors3.Stone;
 
 /**
  * Almost straight initial terrain part.
@@ -47,6 +48,10 @@ public class HomeHill extends Section {
 		tree2.setTag(Tag.FRONT);
 		surroundingItems.add(tree2);
 
+		// add stone
+		Stone stone = new Stone(2); // index 2 is the stone on the initial screen
+		stone.setPosition(12.8f, 2.8f);
+		surroundingItems.add(stone);
 	}
 
 

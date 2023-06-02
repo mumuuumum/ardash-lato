@@ -2,6 +2,7 @@ package ardash.gdx.scenes.scene3d.actions;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.utils.Null;
 import com.badlogic.gdx.utils.Pool;
 import com.badlogic.gdx.utils.Pools;
 
@@ -331,6 +332,25 @@ public class Actions3D {
 		action.setDuration(duration);
 		action.setInterpolation(interpolation);
 		return action;
+	}
+
+	/** Transitions from the alpha at the time this action starts to the specified alpha. */
+	static public AlphaAction alpha (float a, float duration, @Null Interpolation interpolation) {
+		AlphaAction action = action3d(AlphaAction.class);
+		action.setAlpha(a);
+		action.setDuration(duration);
+		action.setInterpolation(interpolation);
+		return action;
+	}
+	
+	/** Transitions from the alpha at the time this action starts to an alpha of 0. */
+	static public AlphaAction fadeOut (float duration) {
+		return alpha(0, duration, null);
+	}
+
+	/** Transitions from the alpha at the time this action starts to an alpha of 1. */
+	static public AlphaAction fadeIn (float duration) {
+		return alpha(1, duration, null);
 	}
 
 
