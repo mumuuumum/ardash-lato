@@ -1,0 +1,31 @@
+Lato is always late (hence the name). So he is always in a hurry. Help Lato to
+race downhill on his snowboard. Or just sit on the mountain and enjoy the
+sunset.
+
+Features:
+
+* high resolution quality graphics
+* endless procedural random terrain
+* 2D and 3D mixture
+* realistic weather and day night cycles
+* simple one-touch game control
+* suitable for all ages
+* 100% open source (GPL3)
+
+In this game you have to slide down a mountain with a snowboard.
+
+Control the player by touching the screen. Touch the screen to start the game.
+Touch the screen to make the character jump over a rock. Touch the screen to
+back flip while you are airborn.
+
+This is the start of a journey. More features will be added in the next weeks
+and months.
+
+international age ratings:
+
+* ACB: G (general)
+* ClassInd: L
+* ESRB: E (everyone)
+* PEGI:3
+* USK: 0
+* IARC: 3
