@@ -1,0 +1,31 @@
+Lato on aina myöhässä (tästä nimi). Hänellä on siis aina kiire. Auta Latoa
+kilpaa alamäkeen lumilautallaan. Tai vain istua vuorella ja nauttia
+auringonlasku.
+
+Ominaisuudet:
+
+  * Korkean resoluution laadukas grafiikka
+  * loputon menettelyllinen satunnainen maasto
+  * 2D ja 3D sekoitus
+  * realistinen sää ja päivä-yösyklit
+  * yksinkertainen yhden kosketuksen pelinhallinta
+  * sopii kaiken ikäisille
+  * 100 % avoin lähdekoodi (GPL3)
+
+Tässä pelissä sinun täytyy liukua alas vuorelta lumilaudalla.
+
+Ohjaa soitinta koskettamalla näyttöä. Aloita peli koskettamalla näyttöä.
+Kosketa näyttöä saadaksesi hahmon hyppäämään kiven yli. Kosketa näyttöä
+käännä taaksepäin ollessasi ilmassa.
+
+Tämä on matkan alku. Lisää ominaisuuksia lisätään seuraavien viikkojen aikana
+ja kuukausia.
+
+kansainväliset ikäluokat:
+
+  * ACB: G (yleinen)
+  * ClassInd: L
+  * ESRB: E (kaikki)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

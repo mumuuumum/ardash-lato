@@ -1,0 +1,31 @@
+Lato siempre llega tarde (de ahí el nombre). Por eso siempre tiene prisa. Ayuda a Lato a
+carrera cuesta abajo en su tabla de snowboard. O simplemente siéntate en la montaña y disfruta del
+atardecer.
+
+Características:
+
+  * gráficos de calidad de alta resolución
+  * terreno aleatorio procesal sin fin
+  * Mezcla 2D y 3D
+  * clima realista y ciclos de día y noche
+  * control de juego simple con un solo toque
+  * apto para todas las edades
+  * 100% código abierto (GPL3)
+
+En este juego tienes que deslizarte por una montaña con una tabla de snowboard.
+
+Controla al jugador tocando la pantalla. Toque la pantalla para iniciar el juego.
+Toca la pantalla para hacer que el personaje salte sobre una roca. Toque la pantalla para
+voltereta hacia atrás mientras estás en el aire.
+
+Este es el comienzo de un viaje. Se agregarán más funciones en las próximas semanas.
+y meses
+
+Clasificación internacional por edades:
+
+  * ACB: G (general)
+  * ClassInd: L
+  * ESRB: E (todos)
+  * PEGI:3
+  * USK: 0
+  * CIIA: 3

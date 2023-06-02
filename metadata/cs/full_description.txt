@@ -1,0 +1,31 @@
+Lato je vždy pozdě (odtud ten název). Takže pořád spěchá. Pomozte Lato
+závod z kopce na svém snowboardu. Nebo si jen sedněte na horu a užívejte si to
+západ slunce.
+
+Funkce:
+
+  * kvalitní grafika s vysokým rozlišením
+  * nekonečný procedurální náhodný terén
+  * Směs 2D a 3D
+  * realistické počasí a denní noční cykly
+  * jednoduché ovládání hry jedním dotykem
+  * vhodné pro všechny věkové kategorie
+  * 100% open source (GPL3)
+
+V této hře musíte sklouznout z hory se snowboardem.
+
+Ovládejte přehrávač dotykem obrazovky. Hru spustíte dotykem obrazovky.
+Dotkněte se obrazovky, aby postava skočila přes kámen. Dotkněte se obrazovky
+backflip, když jste ve vzduchu.
+
+Toto je začátek cesty. Další funkce budou přidány v následujících týdnech
+a měsíce.
+
+mezinárodní věkové hodnocení:
+
+  * ACB: G (obecné)
+  * ClassInd: L
+  * ESRB: E (všichni)
+  * PEGI: 3
+  * USK: 0
+  * IARC: 3

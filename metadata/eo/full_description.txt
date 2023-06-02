@@ -1,0 +1,31 @@
+Lato ĉiam malfruas (tial la nomo). Do li ĉiam rapidas. Helpu Laton al
+kuregi malsupren sur sia neĝtabulo. Aŭ simple sidiĝu sur la monto kaj ĝuu la
+sunsubiro.
+
+Trajtoj:
+
+  * alt-rezoluciaj kvalitaj grafikoj
+  * senfina proceda hazarda tereno
+  * 2D kaj 3D miksaĵo
+  * Realismaj vetero kaj tagaj noktaj cikloj
+  * simpla unutuŝa ludregado
+  * taŭga por ĉiuj aĝoj
+  * 100% malferma fonto (GPL3)
+
+En ĉi tiu ludo vi devas gliti malsupren de monto kun neĝtabulo.
+
+Kontrolu la ludanton tuŝante la ekranon. Tuŝu la ekranon por komenci la ludon.
+Tuŝu la ekranon por igi la karakteron salti super roko. Tuŝu la ekranon por
+backflip dum vi estas aera.
+
+Ĉi tio estas la komenco de vojaĝo. Pli da funkcioj estos aldonitaj en la venontaj semajnoj
+kaj monatoj.
+
+internaciaj aĝaj rangigoj:
+
+  * ACB: G (ĝenerala)
+  * ClassInd: L
+  * ESRB: E (ĉiuj)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

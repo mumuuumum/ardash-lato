@@ -1,0 +1,31 @@
+Lato er alltid sent ute (derav navnet). Så han har det alltid travelt. Hjelp Lato å
+løp nedover på snowboardet sitt. Eller bare sitte på fjellet og nyte
+solnedgang.
+
+Egenskaper:
+
+  * høyoppløselig kvalitetsgrafikk
+  * endeløs prosedyremessig tilfeldig terreng
+  * 2D og 3D blanding
+  * Realistisk vær og dag natt sykluser
+  * enkel ett-trykks spillkontroll
+  * passer for alle aldre
+  * 100 % åpen kildekode (GPL3)
+
+I dette spillet må du skli ned et fjell med et snowboard.
+
+Kontroller spilleren ved å berøre skjermen. Trykk på skjermen for å starte spillet.
+Trykk på skjermen for å få karakteren til å hoppe over en stein. Trykk på skjermen for å
+backflip mens du er i luften.
+
+Dette er starten på en reise. Flere funksjoner vil bli lagt til i løpet av de neste ukene
+og måneder.
+
+internasjonale aldersvurderinger:
+
+  * ACB: G (generelt)
+  * ClassInd: L
+  * ESRB: E (alle)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

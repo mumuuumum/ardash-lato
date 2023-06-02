@@ -1,0 +1,31 @@
+Lato huwa amechelewa (kwa hivyo jina). Kwa hivyo yeye huwa na haraka kila wakati. Msaada Lato kwa
+mbio kuteremka kwenye ubao wake wa theluji. Au kaa tu mlimani na ufurahie
+machweo.
+
+vipengele:
+
+  * picha za ubora wa juu
+  * eneo lisilo na mwisho la utaratibu wa nasibu
+  * Mchanganyiko wa 2D na 3D
+  * hali ya hewa ya kweli na mizunguko ya mchana usiku
+  * Udhibiti rahisi wa mchezo wa kugusa moja
+  * yanafaa kwa kila kizazi
+  * 100% chanzo wazi (GPL3)
+
+Katika mchezo huu una slide chini ya mlima na snowboard.
+
+Dhibiti mchezaji kwa kugusa skrini. Gusa skrini ili kuanza mchezo.
+Gusa skrini ili kumfanya mhusika aruke juu ya mwamba. Gusa skrini ili
+backflip wakati wewe ni hewa.
+
+Huu ni mwanzo wa safari. Vipengele zaidi vitaongezwa katika wiki zijazo
+na miezi.
+
+viwango vya kimataifa vya umri:
+
+  * ACB: G (jumla)
+  * ClassInd: L
+  * ESRB: E (kila mtu)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

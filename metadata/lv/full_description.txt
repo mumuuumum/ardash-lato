@@ -1,0 +1,31 @@
+Lato vienmēr kavējas (tātad nosaukums). Tāpēc viņš vienmēr steidzas. Palīdziet Lato
+skrējiens lejup uz viņa snovborda. Vai vienkārši sēdēt kalnā un baudīt
+saulriets.
+
+Iespējas:
+
+  * augstas izšķirtspējas kvalitātes grafika
+  * bezgalīgs procesuāls nejaušs reljefs
+  * 2D un 3D maisījums
+  * reāli laikapstākļi un dienas nakts cikli
+  * vienkārša viena pieskāriena spēles vadība
+  * piemērots visu vecumu cilvēkiem
+  *  100% atvērtais avots (GPL3)
+
+Šajā spēlē ar snovbordu ir jānoslīd lejā no kalna.
+
+Kontrolējiet atskaņotāju, pieskaroties ekrānam. Pieskarieties ekrānam, lai sāktu spēli.
+Pieskarieties ekrānam, lai varonis lēktu pāri akmenim. Pieskarieties ekrānam, lai
+apgriezties atpakaļ, kamēr atrodaties gaisā.
+
+Šis ir ceļojuma sākums. Nākamo nedēļu laikā tiks pievienotas citas funkcijas
+un mēneši.
+
+starptautiskie vecuma reitingi:
+
+  * ACB: G (vispārīgi)
+  * ClassInd: L
+  * ESRB: E (visi)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

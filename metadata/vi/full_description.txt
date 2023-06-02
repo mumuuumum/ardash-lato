@@ -1,0 +1,31 @@
+Lato luôn trễ (do đó có tên). Vì vậy, anh ấy luôn vội vàng. Giúp Lato với
+cuộc đua xuống dốc trên ván trượt tuyết của mình. Hoặc chỉ cần ngồi trên núi và tận hưởng
+Hoàng hôn.
+
+Đặc trưng:
+
+  * đồ họa chất lượng độ phân giải cao
+  * địa hình ngẫu nhiên theo thủ tục vô tận
+  * Hỗn hợp 2D và 3D
+  * thời tiết thực tế và chu kỳ ngày đêm
+  * điều khiển trò chơi một chạm đơn giản
+  * Phù hợp với mọi lứa tuổi
+  * 100% mã nguồn mở (GPL3)
+
+Trong trò chơi này, bạn phải trượt xuống một ngọn núi bằng ván trượt tuyết.
+
+Điều khiển người chơi bằng cách chạm vào màn hình. Chạm vào màn hình để bắt đầu trò chơi.
+Chạm vào màn hình để nhân vật nhảy qua một tảng đá. Chạm vào màn hình để
+backflip trong khi bạn đang ở trên không.
+
+Đây là sự khởi đầu của một cuộc hành trình. Nhiều tính năng sẽ được bổ sung trong những tuần tới
+và tháng.
+
+xếp hạng tuổi quốc tế:
+
+  * ACB: G (tổng hợp)
+  * LớpInd: L
+  * ESRB: E (mọi người)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

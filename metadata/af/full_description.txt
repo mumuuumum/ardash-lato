@@ -1,0 +1,31 @@
+Lato is altyd laat (vandaar die naam). Hy is dus altyd haastig. Help Lato om
+jaag afdraand op sy snowboard. Of sit net op die berg en geniet die
+sonsondergang.
+
+Kenmerke:
+
+  * hoë resolusie kwaliteit grafika
+  * eindelose prosedurele ewekansige terrein
+  * 2D en 3D mengsel
+  * realistiese weer en dag nag siklusse
+  * Eenvoudige een-touch-speletjiebeheer
+  * geskik vir alle ouderdomme
+  * 100% oopbron (GPL3)
+
+In hierdie speletjie moet jy met 'n sneeubord teen 'n berg afgly.
+
+Beheer die speler deur die skerm te raak. Raak die skerm om die speletjie te begin.
+Raak die skerm om die karakter oor 'n rots te laat spring. Raak die skerm om
+terugdraai terwyl jy in die lug is.
+
+Dit is die begin van 'n reis. Meer kenmerke sal in die volgende weke bygevoeg word
+en maande.
+
+internasionale ouderdomsgraderings:
+
+  * ACB: G (algemeen)
+  * KlasInd: L
+  * ESRB: E (almal)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

@@ -1,0 +1,31 @@
+Lato beti berandu da (hortik datorkio izena). Beraz, beti dabil presaka. Lagundu Latori
+lasterketa maldan behera bere snowboardean. Edo, besterik gabe, eseri mendian eta gozatu
+ilunabarra.
+
+Ezaugarriak:
+
+  * bereizmen handiko kalitate grafikoak
+  * Prozedura ausazko lur amaigabea
+  * 2D eta 3D nahasketa
+  * eguraldi errealista eta eguneko gaueko zikloak
+  * ukipen bakarreko jokoaren kontrol sinplea
+  * adin guztietarako egokia
+  * 100% kode irekia (GPL3)
+
+Joko honetan snowboard batekin mendi batean behera irristatu behar duzu.
+
+Kontrolatu jokalaria pantaila ukituz. Ukitu pantaila jokoa hasteko.
+Ukitu pantaila pertsonaia harri baten gainetik salto egiteko. Ukitu pantaila
+itzuli atzera airean zauden bitartean.
+
+Hau bidaia baten hasiera da. Datozen asteetan funtzio gehiago gehituko dira
+eta hilabeteak.
+
+nazioarteko adinaren balorazioa:
+
+  * ACB: G (orokorra)
+  * ClassInd: L
+  * ESRB: E (denok)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

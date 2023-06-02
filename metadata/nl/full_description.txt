@@ -1,0 +1,31 @@
+Lato is altijd te laat (vandaar de naam). Hij heeft dus altijd haast. Help Lato
+race bergafwaarts op zijn snowboard. Of ga gewoon op de berg zitten en geniet van de
+zonsondergang.
+
+Functies:
+
+  * Grafische afbeeldingen met hoge resolutie
+  * eindeloos procedureel willekeurig terrein
+  * 2D en 3D mix
+  * realistische weer- en dag-nachtcycli
+  * eenvoudige spelbesturing met één druk op de knop
+  * geschikt voor alle leeftijden
+  * 100% open source (GPL3)
+
+In dit spel moet je met een snowboard van een berg afglijden.
+
+Bedien de speler door het scherm aan te raken. Raak het scherm aan om het spel te starten.
+Raak het scherm aan om het personage over een rots te laten springen. Raak het scherm aan
+backflip terwijl je in de lucht bent.
+
+Dit is het begin van een reis. De komende weken zullen er meer functies worden toegevoegd
+en maanden.
+
+internationale leeftijdsclassificaties:
+
+  * ACB: G (algemeen)
+  * KlasseInd: L
+  * ESRB: E (iedereen)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

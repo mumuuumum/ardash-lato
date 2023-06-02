@@ -1,0 +1,31 @@
+Lato zawsze się spóźnia (stąd nazwa). Dlatego zawsze się spieszy. Pomóż Lato
+ścigać się w dół na swoim snowboardzie. Lub po prostu usiądź na górze i ciesz się
+zachód słońca.
+
+Cechy:
+
+  * grafika wysokiej rozdzielczości
+  * Niekończący się proceduralny losowy teren
+  * Mieszanka 2D i 3D
+  * realistyczna pogoda i cykle dnia i nocy
+  * Prosta kontrola gry jednym dotknięciem
+  * odpowiedni dla wszystkich grup wiekowych
+  * 100% open source (GPL3)
+
+W tej grze musisz zjeżdżać z góry na desce snowboardowej.
+
+Steruj odtwarzaczem, dotykając ekranu. Dotknij ekranu, aby rozpocząć grę.
+Dotknij ekranu, aby postać przeskoczyła kamień. Dotknij ekranu, aby
+salto w tył, gdy jesteś w powietrzu.
+
+To jest początek podróży. Więcej funkcji zostanie dodanych w następnych tygodniach
+i miesiące.
+
+międzynarodowe klasyfikacje wiekowe:
+
+  * ACB: G (ogólnie)
+  * Ind. klasy: L
+  * ESRB: E (wszyscy)
+  * PEGI:3
+  * UK: 0
+  * IARC: 3

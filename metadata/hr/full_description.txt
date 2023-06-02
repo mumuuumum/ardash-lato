@@ -1,0 +1,31 @@
+Lato uvijek kasni (otuda i naziv). Stoga je uvijek u žurbi. Pomozi Latu da
+utrku nizbrdo na svojoj dasci. Ili jednostavno sjednite na planinu i uživajte
+zalazak sunca.
+
+Značajke:
+
+  * kvalitetna grafika visoke rezolucije
+  * beskrajni proceduralni nasumični teren
+  * 2D i 3D mješavina
+  * realni vremenski i dnevni i noćni ciklusi
+  * jednostavna kontrola igre jednim dodirom
+  * pogodno za sve uzraste
+  * 100% otvoreni kod (GPL3)
+
+U ovoj igri morate se spuštati niz planinu sa snowboardom.
+
+Upravljajte playerom dodirivanjem zaslona. Dodirnite zaslon za početak igre.
+Dodirnite zaslon kako bi lik preskočio stijenu. Dodirnite ekran za
+backflip dok ste u zraku.
+
+Ovo je početak putovanja. Više značajki bit će dodano u sljedećim tjednima
+i mjeseci.
+
+međunarodne dobne ocjene:
+
+  * ACB: G (općenito)
+  * Klasa Ind: L
+  * ESRB: E (svi)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

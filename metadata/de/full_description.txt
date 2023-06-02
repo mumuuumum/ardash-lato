@@ -1,0 +1,30 @@
+Lato kommt immer zu spät (daher der Name). Deshalb ist er immer in Eile. Hilf Lato dabei
+auf seinem Snowboard bergab zu rasen. Oder sitz einfach auf dem Berg und genieß
+Sonnenuntergang.
+
+Merkmale:
+
+  * Hochwertige Grafiken mit hoher Auflösung
+  * Endloses prozedurales Zufallsgelände
+  * 2D- und 3D-Mischung
+  * Realistisches Wetter und Tag-Nacht-Zyklen
+  * Einfache One-Touch-Spielsteuerung
+  * für alle Altersgruppen geeignet
+  * 100 % Open Source (GPL3)
+
+In diesem Spiel musst du mit einem Snowboard einen Berg runter schlittern.
+
+Steuern Sie den Spieler, indem Sie den Bildschirm berühren. Berühren Sie den Bildschirm, um das Spiel zu starten.
+Berühren Sie den Bildschirm, um die Figur über einen Felsen springen zu lassen. Berühren Sie den Bildschirm, um
+ einen Rückwärtssalto zu machen, während Sie in der Luft sind.
+
+Dies ist der Beginn einer Reise. Weitere Funktionen werden in den nächsten Wochen und Monaten hinzugefügt.
+
+Internationale Altersfreigaben:
+
+  * ACB: G (allgemein)
+  * ClassInd: L
+  * ESRB: E (jeder)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

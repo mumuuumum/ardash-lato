@@ -1,0 +1,31 @@
+Lato her zaman geç kalır (adı da buradan gelir). Bu yüzden her zaman acelesi vardır. Lato'ya yardım et
+snowboardunda yokuş aşağı yarış. Ya da sadece dağda oturun ve keyfini çıkarın
+gün batımı.
+
+Özellikler:
+
+  * yüksek çözünürlüklü kaliteli grafikler
+  * sonsuz prosedürel rastgele arazi
+  * 2D ve 3D karışım
+  * gerçekçi hava ve gündüz gece döngüleri
+  * basit tek dokunuşla oyun kontrolü
+  * her yaşa uygun
+  * %100 açık kaynak (GPL3)
+
+Bu oyunda bir snowboard ile bir dağdan aşağı kaymanız gerekiyor.
+
+Ekrana dokunarak oynatıcıyı kontrol edin. Oyuna başlamak için ekrana dokunun.
+Karakterin bir kayanın üzerinden atlamasını sağlamak için ekrana dokunun. için ekrana dokunun
+havadayken ters takla atın.
+
+Bu bir yolculuğun başlangıcı. Önümüzdeki haftalarda daha fazla özellik eklenecek
+ve aylar.
+
+uluslararası yaş derecelendirmeleri:
+
+  * ACB: G (genel)
+  * ClassInd: L
+  * ESRB: E (herkes)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3

@@ -1,0 +1,31 @@
+Lato mindig késik (innen a név). Tehát mindig siet. Segíts Latónak
+versenyfutás lefelé a snowboardján. Vagy csak üljön a hegyre és élvezze a
+napnyugta.
+
+Jellemzők:
+
+  * Nagy felbontású minőségű grafika
+  * végtelen eljárási véletlenszerű terep
+  * 2D és 3D keverék
+  * Reális időjárás és nappali éjszakai ciklusok
+  * Egyszerű egyérintéses játékvezérlés
+  * minden korosztály számára alkalmas
+  * 100%-ban nyílt forráskódú (GPL3)
+
+Ebben a játékban snowboarddal kell lecsúsznod a hegyről.
+
+A lejátszó vezérlése a képernyő megérintésével. Érintse meg a képernyőt a játék elindításához.
+Érintse meg a képernyőt, hogy a karakter átugorjon egy sziklán. Érintse meg a képernyőt
+repülj hátra, miközben levegőben vagy.
+
+Ez egy utazás kezdete. További funkciókkal bővül a következő hetekben
+és hónapok.
+
+nemzetközi korhatárok:
+
+  * ACB: G (általános)
+  * ClassInd: L
+  * ESRB: E (mindenki)
+  * PEGI:3
+  * USK: 0
+  * IARC: 3
