@@ -24,7 +24,7 @@ public enum PlayerState implements HasNextStates {
 	},
 	INAIR { // JUMPING and snapped into air
 		public EnumSet<PlayerState> nexts() {
-			EnumSet<PlayerState> ret = EnumSet.of(SLIDING, DUCKING, ROLLING, GRINDING, CRASHED);
+			EnumSet<PlayerState> ret = EnumSet.of(SLIDING, DUCKING, ROLLING, GRINDING, CRASHED, DROPPED);
 			return ret;
 		}
 	},
@@ -40,9 +40,15 @@ public enum PlayerState implements HasNextStates {
 			return ret;
 		}
 	},
-	CRASHED {
+	DROPPED {
 		public EnumSet<PlayerState> nexts() {
 			EnumSet<PlayerState> ret = EnumSet.of(INIT);
+			return ret;
+		}
+	},
+	CRASHED {
+		public EnumSet<PlayerState> nexts() {
+			EnumSet<PlayerState> ret = EnumSet.of(INIT, DROPPED);
 			return ret;
 		}
 	};
@@ -72,6 +78,6 @@ public enum PlayerState implements HasNextStates {
 	}
 	
 	public boolean isCrashed() {
-		return this.equals(CRASHED);
+		return this.equals(CRASHED) || this.equals(DROPPED) ;
 	}
 }

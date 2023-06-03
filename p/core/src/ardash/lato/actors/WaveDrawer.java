@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.AdvShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Disposable;
@@ -185,7 +186,10 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	public float getAngleAtX(final float x) {
 		tmpVector.set(x, getHeightAt(x));
 		tmpVector.sub(x+0.1f, getHeightAt(x+0.1f));
-		return tmpVector.scl(-1f).angle();
+		float angle = tmpVector.scl(-1f).angle();
+//		angle = MathUtils.clamp(angle, -85f, 85f);
+		System.out.println(angle);
+		return angle;
 	}
 	
 	@Override

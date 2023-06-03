@@ -54,7 +54,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	}
 	
 	public enum Demise {
-		NONE, LAND_ON_ASS, LAND_ON_NOSE, LAND_ON_STONE, HIT_STONE;
+		NONE, LAND_ON_ASS, LAND_ON_NOSE, LAND_ON_STONE, HIT_STONE, DROP_IN_CANYON;
 		@Override
 		public String toString() {
 			switch (this) {
@@ -66,6 +66,8 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 				return "You landed on your nose";
 			case LAND_ON_STONE:
 				return "You landed on a rock";
+			case DROP_IN_CANYON:
+				return "You dropped into a canyon";
 			case NONE:
 				return "";
 			default:
@@ -170,6 +172,10 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			runtime += delta;
 			timeInState += delta;
 		}
+		
+		if (state == PlayerState.DROPPED) {
+			return;
+		}
 
 		// rotation for the forward movement (ignored when in air)
 		final float rotation = getRotation() < 0f ? getRotation() + 360f : getRotation();
@@ -224,10 +230,29 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			// we use setPosition instead of setY(), so setPosition can be overwritten for smoother movement
 			// set the height of the terrain under the actor if not in air
 			float heightUnderActor = getGameScreen().waveDrawer.getHeightAt(getX()+(PERFORMER_WIDTH/2f));
-			setPosition(getX(), heightUnderActor);
+			
+			// check the the offset is very high, if the actor would suddenly fall, make him 0-jump : airborne + gravity
+			final float heightDelta = getY() - heightUnderActor;
+			
+			if ((heightDelta >=-0.92 && heightDelta < 0.92f) || ! state.isStarted()) {
+				// all good, just put him on the ground
+				setPosition(getX(), heightUnderActor);
+				// set rotation to what the ground is under the actor
+				final float newRot = getGameScreen().waveDrawer.getAngleAtX(getX()+(PERFORMER_WIDTH/2f));
+				
+				// apply only reasonable values 275-360 and 0-85 
+				if ((newRot > 0 && newRot < 85) || (newRot > 275 && newRot < 360))  
+					setRotation( newRot);
+			} else if (heightDelta < 0) {
+				// Terrain goes suddenly up (inside canyon) - we don't put walls like this on the terrain
+				// this cannot happen anymore withthe AbyssCollider
+//				drop(); // TODO make new method drop() similar to crash(). use new status, move the player slightly backwards
+			} else {
+				// Terrain goes suddenly down (canyon, ramp)
+				jump(0f);
+			}
+			
 
-			// set rotation to what the ground is under the actor
-			setRotation( getGameScreen().waveDrawer.getAngleAtX(getX()+(PERFORMER_WIDTH/2f)));
 
 			// accelerate on ground
 			final float angleToGround = 360f - velocity.angle(); // 0 or 360 is horizontal, 90 is downward, 45 is ramp down forward
@@ -366,18 +391,21 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 
 //		 accum -= step;
 		
-		float newCamSpotX= MathUtils.lerp(MIN_CAM_SPOT_X, MAX_CAM_SPOT_X, getSpeedPercentage());
-		newCamSpotX = MathUtils.clamp(newCamSpotX, MIN_CAM_SPOT_X, MAX_CAM_SPOT_X);
-		final Vector2 newCamSpot = new Vector2(getX() + newCamSpotX, getY());
-		if (getSpeed() == 0)
-		{
-			newCamSpot.y +=5f; // initially when standing, move cam above
+		if (! state.isCrashed()) {
+			float newCamSpotX= MathUtils.lerp(MIN_CAM_SPOT_X, MAX_CAM_SPOT_X, getSpeedPercentage());
+			newCamSpotX = MathUtils.clamp(newCamSpotX, MIN_CAM_SPOT_X, MAX_CAM_SPOT_X);
+			final Vector2 newCamSpot = new Vector2(getX() + newCamSpotX, getY());
+			if (getSpeed() == 0)
+			{
+				newCamSpot.y +=5f; // initially when standing, move cam above
+			}
+			
+			// before applying the new camspot, check if the difference is too big and go there smoothly
+			final Vector2 diff = newCamSpot.cpy().sub(camSpot);
+			diff.clamp(0, getMaxCamSpeed());
+			camSpot.add(diff);
+			
 		}
-		
-		// before applying the new camspot, check if the difference is too big and go there smoothly
-		final Vector2 diff = newCamSpot.cpy().sub(camSpot);
-		diff.clamp(0, getMaxCamSpeed());
-		camSpot.add(diff);
 		
 //		camSpot.set(newCamSpot);
 		
@@ -528,8 +556,9 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		System.out.println("jump : "+isUserInputDown);
 		setState(PlayerState.INAIR);
 		getActions().clear();
+		final float jumpDuration = jumpforce==0f ? 0f : 0.3f;
 		addAction(Actions.sequence(
-				Actions.moveBy(0, jumpforce, 0, 0.3f, Interpolation.exp5Out),
+				Actions.moveBy(0, jumpforce, 0, jumpDuration, Interpolation.exp5Out),
 //				Actions.moveBy(0, jumpforce, 0, 0.3f, Interpolation.circleOut),
 				new GravityAction()
 //				Actions.gravity()
@@ -596,6 +625,15 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 				));
 	}
 
+	public void drop() {
+		System.out.println("drop()");
+//		getActions().clear();
+		crash(Pose.CRASH_ASS);
+		setState(PlayerState.DROPPED);
+//		setSpeed(-1f);
+//		addAction(new GravityAction());// he can only hit the abyss-collider when already falling
+	}
+	
 	public PlayerState getState() {
 		return state;
 	}
@@ -604,7 +642,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		if (this.state.equals(state))
 			return;
 		timeInState =0f;
-		this.state = state.moveTo(state);
+		this.state = this.state.moveTo(state);
 	}
 	
 	public float getTimeInState() {

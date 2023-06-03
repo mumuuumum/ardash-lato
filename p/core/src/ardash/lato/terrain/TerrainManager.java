@@ -57,6 +57,7 @@ public class TerrainManager {
 			addStoneRandomly((Downer)s);
 			if (MathUtils.random(0, 100)<10)
 				s = new Hill();
+			s = new Canyon();
 			final Vector2 offset = this.getLastSection().last();
 			s.addOffsetToSurroundings(offset);
 			s.addOffsetToSegList(offset);
