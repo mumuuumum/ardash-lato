@@ -32,7 +32,7 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	/**
 	 * Everything that is more than this far behind the Performer can be deleted form the stage
 	 */
-	public static final float PASSED_TERRAIN = 200f; // longest possible terrain
+	public static final float PASSED_TERRAIN = 200f; // longest possible terrain * 2 (if cull to closely then cliffs are not attached to the corners correctly.)
 
 	/**
 	 * If there is no terrain this much in front of the Performer, new Terrain should be created.
@@ -43,7 +43,7 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	/**
 	 * The size of a step. The amount of meters to move forward to draw the next terrain segment.
 	 */
-	public static final float DRAW_STEPS=0.8f;
+	public static final float DRAW_STEPS=0.4f; // 8.8 good with edges of abyss
 
 	private final ModelBuilder modelBuilder = new ModelBuilder();
 	private AdvShapeRenderer sr;

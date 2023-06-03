@@ -49,7 +49,12 @@ import ardash.lato.screens.GameScreen;
 
 public class Actor3D extends ModelInstance implements Disposable , Cullable{
 	public enum Tag {
-		FRONT, BACK, CENTER
+		FRONT, BACK, CENTER,
+		
+		/**
+		 * Draw something in front if the second wave-drawer (cliffs)
+		 */
+		MEGAFRONT
 	}
 
 	private Tag tag;

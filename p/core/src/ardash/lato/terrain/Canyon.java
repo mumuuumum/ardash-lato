@@ -3,7 +3,10 @@ package ardash.lato.terrain;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 
+import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.actors3.AbyssCollider;
+import ardash.lato.actors3.CliffLeft;
+import ardash.lato.actors3.TerrainItem;
 import ardash.lato.terrain.TerrainSeg.TSType;
 
 /**
@@ -21,5 +24,9 @@ public class Canyon extends Section {
 		// note: we can't use the collider to show fog
 		surroundingItems.add(new AbyssCollider(9, -30, 17, 24.5f));
 		
+		// cliffs can't be attached perfectly to the edge, because the share renderer moves it slightly, especially when removing old items
+		TerrainItem cliffLeft = new CliffLeft(4.42f,-17.95f); 
+		surroundingItems.add(cliffLeft);
+		// TODO don't do culling the t segments when a canyon is on the screen
 	}
 }
