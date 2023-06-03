@@ -23,7 +23,7 @@ public class AbyssCollider extends Image3D implements TerrainItem , Poolable{
 //		setScale(0.02f, 0.02f, 1);
 		setPosition(x, y);
 		reset();
-		setColor(Color.PINK);
+		setColor(Color.WHITE);
 	}
 	
 	@Override
@@ -35,7 +35,7 @@ public class AbyssCollider extends Image3D implements TerrainItem , Poolable{
 	 * -1 for random
 	 */
 	private static AtlasRegion getTextureRegion() {
-		return A.getTextureRegion(ARAsset.FOG_PIX);
+		return A.getTextureRegion(ARAsset.MOUNTAINFOG);
 	}
 
 	private static ModelBuilder getModelBuilder() {

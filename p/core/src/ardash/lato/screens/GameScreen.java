@@ -301,6 +301,7 @@ public class GameScreen implements Screen {
 //						, -(stage.getCamera().position.y - performer.getCamSpot().y), 0);
 //				stage.getCamera().update();
 
+				System.out.println("cam move: " + performer.getCamSpot().x +" "+ performer.getCamSpot().y +" "+ lastz);
 				cam.moveTo(performer.getCamSpot().x, performer.getCamSpot().y, lastz, 0.3f);
 //				cam.moveTo(performer.getX(), performer.getY(), lastz, 0.3f);
 				cam.update();				

@@ -126,12 +126,15 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 		{
 			float toX = x-DRAW_STEPS;
 //			float toY = terrainSegmentList.heightAt(toX);
-			
+
+//			System.out.println("campos: " + getStage().getCamera().position);
 			// culling based on X value. Y value is just the current Y of the performer
 			if ( !getStage().getCamera().frustum.pointInFrustum(x-DRAW_STEPS*2f, performerY, 0) 
 					&& !getStage().getCamera().frustum.pointInFrustum(x+DRAW_STEPS*2f, performerY, 0))
 			{
-				continue;
+				// don't cull if performer is dropping
+				if (getGameScreen().performer.state != PlayerState.DROPPED)
+					continue;
 			}
 			
 			float y = terrainSegmentList.heightAt(x);

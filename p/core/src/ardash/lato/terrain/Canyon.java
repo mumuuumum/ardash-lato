@@ -14,9 +14,12 @@ public class Canyon extends Section {
 		add (new Vector2(0,0), new Vector2(10,3), Interpolation.smooth);
 		add (new Vector2(10,-30), new Vector2(25,-30), Interpolation.smooth, TSType.ABYSS);
 		add (new Vector2(25,-5),new Vector2(40,-7), Interpolation.smooth);
-	// TODO try physics again with polygons instead of rectangles
+	// TODO add cliff-sides
+		// TODO add fog in bottom
 		
 //		surroundingItems.add(new AbyssCollider(10, -40, 25, -5));
-		surroundingItems.add(new AbyssCollider(10, -30, 15, 24.5f));
+		// note: we can't use the collider to show fog
+		surroundingItems.add(new AbyssCollider(9, -30, 17, 24.5f));
+		
 	}
 }
