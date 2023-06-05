@@ -25,9 +25,9 @@
      showgrid="false"
      units="px"
      height="300px"
-     inkscape:zoom="5.6568542"
-     inkscape:cx="41.18897"
-     inkscape:cy="25.632621"
+     inkscape:zoom="2"
+     inkscape:cx="-88"
+     inkscape:cy="194.5"
      inkscape:window-width="1920"
      inkscape:window-height="959"
      inkscape:window-x="0"
@@ -111,7 +111,10 @@
            style="fill:#555152;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            d="M 27.918568,0.09374728 29.704495,13.9497 l -2.859685,6.362998 7.643421,1.744435 -2.121525,1.45584 -0.273888,1.648324 -3.365447,8.206693 6.297085,15.214108 6.435739,6.384007 -1.90626,24.225634 L 6.256119,79.046552 16.306774,66.80741 18.838739,52.85692 6.9680224,43.481405 11.875443,35.167308 8.6838339,26.729528 19.170924,9.8032868 23.381149,8.6313146 24.484802,0.06541345 Z"
            id="path842"
-           sodipodi:nodetypes="cccccccccccccccccccc" />
+           sodipodi:nodetypes="cccccccccccccccccccc"
+           inkscape:export-filename="/home/z/devel/lato/art/inkscape/path842.png"
+           inkscape:export-xdpi="164.28603"
+           inkscape:export-ydpi="164.28603" />
         <path
            style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
            d="m 29.704495,13.9497 -2.859685,6.362998 c 0,0 8.795438,2.576343 9.179091,2.031716 C 36.407555,21.799787 29.704495,13.9497 29.704495,13.9497 Z"

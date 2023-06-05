@@ -48,7 +48,9 @@ public enum PlayerState implements HasNextStates {
 	},
 	CRASHED {
 		public EnumSet<PlayerState> nexts() {
-			EnumSet<PlayerState> ret = EnumSet.of(INIT, DROPPED);
+			// when crashed, still sliding, we must be able to go back to INAIR. But doing it correctly onecan smash on ass before an abyss and then be health again after landing
+			// I cant find a good solution for now.
+			EnumSet<PlayerState> ret = EnumSet.of(INIT, INAIR, DROPPED);
 			return ret;
 		}
 	};

@@ -5,13 +5,12 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.utils.Pool.Poolable;
 
+import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.A;
 import ardash.lato.A.ARAsset;
-import ardash.lato.A.SpriteGroupAsset;
 import ardash.lato.actors.Performer;
 import ardash.lato.actors.Performer.Demise;
-import ardash.lato.actors.Performer.Pose;
 
 public class AbyssCollider extends Image3D implements TerrainItem , Poolable{
 	
@@ -19,11 +18,12 @@ public class AbyssCollider extends Image3D implements TerrainItem , Poolable{
 	public AbyssCollider(float x, float y, float width, float height) {
 		super(width,height, getTextureRegion(),getModelBuilder());
 		setName("AbyssCollider");
-		setTag(Tag.CENTER); // abyss (center of canyon) is always on center, not in background of foreground
+		setTag(Tag.MEGAFRONT); // abyss (center of canyon) is always on center, not in background of foreground
 //		setScale(0.02f, 0.02f, 1);
-		setPosition(x, y);
+		setPosition(x, y, 5f);
 		reset();
-		setColor(Color.WHITE);
+		setColor(Color.PINK);
+		setVisible(false);
 	}
 	
 	@Override
@@ -35,7 +35,7 @@ public class AbyssCollider extends Image3D implements TerrainItem , Poolable{
 	 * -1 for random
 	 */
 	private static AtlasRegion getTextureRegion() {
-		return A.getTextureRegion(ARAsset.MOUNTAINFOG);
+		return A.getTextureRegion(ARAsset.FOG_PIX);
 	}
 
 	private static ModelBuilder getModelBuilder() {
@@ -72,5 +72,10 @@ public class AbyssCollider extends Image3D implements TerrainItem , Poolable{
 				hasCollided = true;
 			}
 		}
+	}
+	
+	@Override
+	public boolean isCulled(Camera3D cam) {
+		return true;
 	}
 }

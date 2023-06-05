@@ -47,6 +47,7 @@ import ardash.lato.LatoGame;
 import ardash.lato.actors3.Cullable;
 import ardash.lato.screens.GameScreen;
 
+@SuppressWarnings("rawtypes")
 public class Actor3D extends ModelInstance implements Disposable , Cullable{
 	public enum Tag {
 		FRONT, BACK, CENTER,
@@ -54,7 +55,10 @@ public class Actor3D extends ModelInstance implements Disposable , Cullable{
 		/**
 		 * Draw something in front if the second wave-drawer (cliffs)
 		 */
-		MEGAFRONT
+		MEGAFRONT,
+		
+		// and even more in the front (like clouds in front of cliff)
+		GIGAFRONT
 	}
 
 	private Tag tag;
@@ -178,7 +182,7 @@ public class Actor3D extends ModelInstance implements Disposable , Cullable{
         if (actions.removeValue(action, true)) action.setActor(null);
     }
 
-    public Array<Action3D> getActions() {
+	public Array<Action3D> getActions() {
         return actions;
     }
 

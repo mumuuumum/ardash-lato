@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.utils.Pool.Poolable;
 
-import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.A;
 import ardash.lato.A.ARAsset;
@@ -13,34 +12,34 @@ import ardash.lato.A.SpriteGroupAsset;
 import ardash.lato.actors.Performer;
 import ardash.lato.actors.Performer.Demise;
 import ardash.lato.actors.Performer.Pose;
-import ardash.lato.weather.EnvColors;
 
-public class CliffLeft extends Image3D implements TerrainItem , Poolable{
+public class AbyssMist extends Image3D implements TerrainItem , Poolable{
 	
-	public CliffLeft(float x, float y) { //, float width, float height) {
-		super(getTextureRegion(),getModelBuilder());
-		setName("CliffLeft");
-		setTag(Tag.MEGAFRONT); // cliffs must be drawn on top of ( in front of the second wave drawer)
-		setScale(0.04f, 0.04f, 1);
-		setPosition(x, y, 1.105f);
+	boolean hasCollided;
+	public AbyssMist(float x, float y, float width, float height) {
+		super(width,height, getTextureRegion(),getModelBuilder());
+		setName("AbyssMist");
+		setTag(Tag.MEGAFRONT); // abyss (center of canyon) is always on center, not in background of foreground
+//		setScale(0.02f, 0.02f, 1);
+		setPosition(x, y, 5.5f);
 		reset();
-		setColor(Color.WHITE); // The other env colours will draw it in the correct shading
+		setColor(Color.WHITE);
 	}
 	
 	@Override
 	public void reset() {
+		hasCollided = false;
 	}
 
 	/**
 	 * -1 for random
 	 */
 	private static AtlasRegion getTextureRegion() {
-		return A.getTextureRegion(ARAsset.CLIFF_LEFT);
+		return A.getTextureRegion(ARAsset.GLOW);
 	}
 
 	private static ModelBuilder getModelBuilder() {
 		return new ModelBuilder(); // TODO Pool or reuse a static instance
 	}
-	
 
 }
