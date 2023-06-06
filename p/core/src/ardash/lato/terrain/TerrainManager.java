@@ -66,6 +66,7 @@ public class TerrainManager {
 		}
 		for (TerrainListener listener : listeners) {
 			listener.onNewSectionCreated(s);
+			s.validate();
 		}
 	}
 	
