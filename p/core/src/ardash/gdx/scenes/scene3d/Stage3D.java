@@ -215,6 +215,11 @@ FogIntensityChangeListener, FogColorChangeListener, AmbientColorChangeListener, 
 				WaveDrawer wd = (WaveDrawer) firstChild;
 				wd.draw(modelBatch, environment, true);
 			}
+
+            root.draw(modelBatch, environment, Tag.MEGAFRONT);
+            modelBatch.end();
+            root.draw(modelBatch, environment, Tag.GIGAFRONT);
+            modelBatch.begin(camera);
     	}
     	else
     	{

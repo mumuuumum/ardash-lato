@@ -181,7 +181,7 @@ public class A {
 //	}
 
 	public enum ModelAsset {
-		FARMHOUSE;
+		YCOIN,FARMHOUSE;
 		@Override
 		public String toString() {
 			return "3d/" + super.toString().toLowerCase() + ".g3db";
@@ -238,6 +238,8 @@ public class A {
 		
 		// stones
 		STONE_0,STONE_1,STONE_2,STONE_3,STONE_4,STONE_5,STONE_6,STONE_7,STONE_8,STONE_9,STONE_10,STONE_11,
+		
+		CLIFF_LEFT, CLIFF_RIGHT,
 		
 		SUN_SHAPE, GLOW, FLARE,
 		ADD_FLARE, PAUSE, ADD_FLARE_A, TITLESCREEN, MOON_SHAPE;

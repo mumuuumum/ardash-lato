@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.graphics.glutils.AdvShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Disposable;
@@ -31,7 +32,7 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	/**
 	 * Everything that is more than this far behind the Performer can be deleted form the stage
 	 */
-	public static final float PASSED_TERRAIN = 200f; // longest possible terrain
+	public static final float PASSED_TERRAIN = 200f; // longest possible terrain * 2 (if cull to closely then cliffs are not attached to the corners correctly.)
 
 	/**
 	 * If there is no terrain this much in front of the Performer, new Terrain should be created.
@@ -42,7 +43,7 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	/**
 	 * The size of a step. The amount of meters to move forward to draw the next terrain segment.
 	 */
-	public static final float DRAW_STEPS=0.8f;
+	public static final float DRAW_STEPS=0.5f; // 8.8 good with edges of abyss
 
 	private final ModelBuilder modelBuilder = new ModelBuilder();
 	private AdvShapeRenderer sr;
@@ -118,20 +119,23 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 		float performerY = getGameScreen().performer.getY();
 		int counter = 0;
 		long startTime = System.currentTimeMillis();
-		float firstX = terrainSegmentList.first().x;
+		float firstX = MathUtils.ceil(terrainSegmentList.first().x);
 		float lastX = terrainSegmentList.last().x;
 		polygonPoints.clear();
 		for (float x = firstX; x<lastX-DRAW_STEPS ; x+=DRAW_STEPS)
 		{
 			float toX = x-DRAW_STEPS;
 //			float toY = terrainSegmentList.heightAt(toX);
-			
+
+//			System.out.println("campos: " + getStage().getCamera().position);
 			// culling based on X value. Y value is just the current Y of the performer
-			if ( !getStage().getCamera().frustum.pointInFrustum(x-DRAW_STEPS*2f, performerY, 0) 
-					&& !getStage().getCamera().frustum.pointInFrustum(x+DRAW_STEPS*2f, performerY, 0))
-			{
-				continue;
-			}
+			// don't cull if performer is dropping
+			if (getGameScreen().performer.state != PlayerState.DROPPED && !getGameScreen().performer.state.isCrashed()) // TODO this check is easier, move up ??
+				if ( !getStage().getCamera().frustum.pointInFrustum(x-DRAW_STEPS*2f, performerY, 0) 
+						&& !getStage().getCamera().frustum.pointInFrustum(x+DRAW_STEPS*2f, performerY, 0))
+				{
+						continue;
+				}
 			
 			float y = terrainSegmentList.heightAt(x);
 			polygonPoints.add(x);
@@ -185,7 +189,10 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	public float getAngleAtX(final float x) {
 		tmpVector.set(x, getHeightAt(x));
 		tmpVector.sub(x+0.1f, getHeightAt(x+0.1f));
-		return tmpVector.scl(-1f).angle();
+		float angle = tmpVector.scl(-1f).angle();
+//		angle = MathUtils.clamp(angle, -85f, 85f);
+//		System.out.println(angle);
+		return angle;
 	}
 	
 	@Override
@@ -205,6 +212,10 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	 * @param x The current position of the performer
 	 */
 	private void updateTerrainSegments(float x) {
+		// don't cull if performer is dropping
+		if (getGameScreen().performer.state == PlayerState.DROPPED || getGameScreen().performer.state.isCrashed()) // TODO this check is easier, move up ??
+			return;
+		
 		final float currentMin = terrainSegmentList.first().x;
 		final float currentMax = terrainSegmentList.last().x;
 		

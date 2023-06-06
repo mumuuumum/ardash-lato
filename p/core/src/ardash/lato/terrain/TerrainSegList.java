@@ -6,6 +6,8 @@ import java.util.Collection;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 
+import ardash.lato.terrain.TerrainSeg.TSType;
+
 public class TerrainSegList extends ArrayList<TerrainSeg>{
 	private static final long serialVersionUID = 607986145672323254L;
 
@@ -19,6 +21,11 @@ public class TerrainSegList extends ArrayList<TerrainSeg>{
 	
 	public void add(Vector2 from, Vector2 to, Interpolation i) {
 		add (new TerrainSeg(from, to, i));		
+		end = to.cpy();
+	}
+	
+	public void add(Vector2 from, Vector2 to, Interpolation i, TSType type) {
+		add (new TerrainSeg(from, to, i, type));		
 		end = to.cpy();
 	}
 	

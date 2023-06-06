@@ -6,10 +6,12 @@ import java.util.List;
 import com.badlogic.gdx.math.Vector2;
 
 import ardash.gdx.scenes.scene3d.Actor3D.Tag;
+import ardash.lato.GameManager;
 import ardash.lato.actors3.TerrainItem;
 
 public class Section extends TerrainSegList {
 	
+	private static final long serialVersionUID = 2486525736803783478L;
 	/**
 	 * List of 3D Actors that are rendered behind the terrain.
 	 */
@@ -52,6 +54,16 @@ public class Section extends TerrainSegList {
 	@Override
 	public String toString() {
 		return "|- "+first()+" ->"+last();
+	}
+	
+	protected void validate() {
+		if (!GameManager.DEBUG_RUNTIME_VALIDATION) 
+			return;
+		float fX = firstX();
+		float lX = lastX();
+		if ((int)fX != fX || (int)lX != lX) {
+			throw new RuntimeException(String.format("Section %s of Type %s has no integer length, since it gose from %f to %f .", toString(), this.getClass().getSimpleName(), fX, lX));
+		}
 	}
 	
 }

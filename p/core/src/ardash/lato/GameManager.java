@@ -28,6 +28,7 @@ public class GameManager implements SODChangeListener {
 	
 	public static final boolean DEBUG_VIEW = false;
 	public static final boolean DEBUG_GUI = false;
+	public static final boolean DEBUG_RUNTIME_VALIDATION = false;
 	
 	public final LatoGame game;
 	public TerrainManager tm;
