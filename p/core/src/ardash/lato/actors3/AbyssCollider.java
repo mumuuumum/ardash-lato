@@ -2,6 +2,8 @@ package ardash.lato.actors3;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.utils.Pool.Poolable;
 
@@ -24,6 +26,11 @@ public class AbyssCollider extends Image3D implements TerrainItem , Poolable{
 		reset();
 		setColor(Color.PINK);
 		setVisible(false);
+	}
+	
+	@Override
+	public void draw(ModelBatch modelBatch, Environment environment) {
+//		nothing
 	}
 	
 	@Override

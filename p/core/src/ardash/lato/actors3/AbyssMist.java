@@ -20,8 +20,8 @@ public class AbyssMist extends Image3D implements TerrainItem , Poolable{
 		super(width,height, getTextureRegion(),getModelBuilder());
 		setName("AbyssMist");
 		setTag(Tag.MEGAFRONT); // abyss (center of canyon) is always on center, not in background of foreground
-//		setScale(0.02f, 0.02f, 1);
-		setPosition(x, y, 5.5f);
+		setScale(1f, 1f, 0.01f);
+		setPosition(x, y, 10.051f);
 		reset();
 		setColor(Color.WHITE);
 	}

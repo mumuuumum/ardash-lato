@@ -297,8 +297,8 @@ public class GameScreen implements Screen {
 			public void onPositionChange(float newX, float newY) {
 				lastx = newX;
 				lasty =newY;
-				if (initZ !=null)
-					lastz = initZ+MAX_ZOOM; // for testing
+//				if (initZ !=null)
+//					lastz = initZ+MAX_ZOOM; // for testing
 //				stage.getCamera().translate(-(stage.getCamera().position.x - performer.getCamSpot().x)
 //						, -(stage.getCamera().position.y - performer.getCamSpot().y), 0);
 //				stage.getCamera().update();

@@ -21,8 +21,8 @@ public class CliffLeft extends Image3D implements TerrainItem , Poolable{
 		super(getTextureRegion(),getModelBuilder());
 		setName("CliffLeft");
 		setTag(Tag.MEGAFRONT); // cliffs must be drawn on top of ( in front of the second wave drawer)
-		setScale(0.04f, 0.04f, 1);
-		setPosition(x, y, 1.105f);
+		setScale(0.04f, 0.06f, 0.01f);
+		setPosition(x, y, 0.01f);
 		reset();
 		setColor(Color.WHITE); // The other env colours will draw it in the correct shading
 	}

@@ -11,7 +11,7 @@ import ardash.lato.LatoGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setWindowedMode((int)(2400*0.7), (int)(1080*0.7));
+		config.setWindowedMode((int)(2400*0.97), (int)(1080*0.97));
 //		config.
 //		config.width = 1280; // XHDPI 1.77
 //		config.height = 720; // XHDPI
@@ -40,7 +40,7 @@ public class DesktopLauncher {
         settings.maxWidth = 2048;
         settings.maxHeight = 2048;
 //		TexturePacker.process(settings, "./art/sprites/ui", "./android/assets", "ui");
-//		TexturePacker.process(settings, "../../texturepacker/scene", "../assets", "scene");
+		TexturePacker.process(settings, "../../texturepacker/scene", "../assets", "scene");
 		TexturePacker t; // keep this here, otherwise import gets always removed
 
 		

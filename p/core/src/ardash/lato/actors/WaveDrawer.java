@@ -43,7 +43,7 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	/**
 	 * The size of a step. The amount of meters to move forward to draw the next terrain segment.
 	 */
-	public static final float DRAW_STEPS=0.4f; // 8.8 good with edges of abyss
+	public static final float DRAW_STEPS=0.5f; // 8.8 good with edges of abyss
 
 	private final ModelBuilder modelBuilder = new ModelBuilder();
 	private AdvShapeRenderer sr;
@@ -119,7 +119,7 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 		float performerY = getGameScreen().performer.getY();
 		int counter = 0;
 		long startTime = System.currentTimeMillis();
-		float firstX = terrainSegmentList.first().x;
+		float firstX = MathUtils.ceil(terrainSegmentList.first().x);
 		float lastX = terrainSegmentList.last().x;
 		polygonPoints.clear();
 		for (float x = firstX; x<lastX-DRAW_STEPS ; x+=DRAW_STEPS)
@@ -133,7 +133,7 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 					&& !getStage().getCamera().frustum.pointInFrustum(x+DRAW_STEPS*2f, performerY, 0))
 			{
 				// don't cull if performer is dropping
-				if (getGameScreen().performer.state != PlayerState.DROPPED)
+				if (getGameScreen().performer.state != PlayerState.DROPPED) // TODO this check is easier, move up ??
 					continue;
 			}
 			

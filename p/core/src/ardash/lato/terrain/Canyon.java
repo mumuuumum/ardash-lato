@@ -25,13 +25,13 @@ public class Canyon extends Section {
 //		surroundingItems.add(new AbyssCollider(10, -40, 25, -5));
 		// note: we can't use the collider to show fog
 		surroundingItems.add(new AbyssCollider(9, -30, 17, 24.5f));
-		surroundingItems.add(new AbyssMist(9-35, -30-10, 17+35*2, 24.5f+10*2));
+//		surroundingItems.add(new AbyssMist(9-35, -30-10, 17+35*2, 24.5f+10*2));
 //		AbyssMist am2 = new AbyssMist(9-35, -30-10, 17+35*2, 24.5f+10*2);
 //		am2.setZ(am2.getZ()+1);
 //		surroundingItems.add(am2);
 //		
 		// cliffs can't be attached perfectly to the edge, because the share renderer moves it slightly, especially when removing old items
-		TerrainItem cliffLeft = new CliffLeft(4.42f,-17.95f); 
+		TerrainItem cliffLeft = new CliffLeft(3.90f,-27.695f); 
 		surroundingItems.add(cliffLeft);
 		// TODO don't do culling the t segments when a canyon is on the screen
 		

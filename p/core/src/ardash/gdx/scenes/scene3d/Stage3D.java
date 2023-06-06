@@ -217,7 +217,9 @@ FogIntensityChangeListener, FogColorChangeListener, AmbientColorChangeListener, 
 			}
 
             root.draw(modelBatch, environment, Tag.MEGAFRONT);
+            modelBatch.end();
             root.draw(modelBatch, environment, Tag.GIGAFRONT);
+            modelBatch.begin(camera);
     	}
     	else
     	{
