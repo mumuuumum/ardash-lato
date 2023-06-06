@@ -585,7 +585,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		System.out.println("land()");
 		clearActions();
 		final float rotation = getRotation();
-		System.out.println(rotation);
+//		System.out.println(rotation);
 		
 		if (rotation >=40f && rotation <= 190f) {
 			crash(Pose.CRASH_ASS);

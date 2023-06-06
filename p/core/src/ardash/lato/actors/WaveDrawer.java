@@ -129,13 +129,13 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 
 //			System.out.println("campos: " + getStage().getCamera().position);
 			// culling based on X value. Y value is just the current Y of the performer
-			if ( !getStage().getCamera().frustum.pointInFrustum(x-DRAW_STEPS*2f, performerY, 0) 
-					&& !getStage().getCamera().frustum.pointInFrustum(x+DRAW_STEPS*2f, performerY, 0))
-			{
-				// don't cull if performer is dropping
-				if (getGameScreen().performer.state != PlayerState.DROPPED) // TODO this check is easier, move up ??
-					continue;
-			}
+			// don't cull if performer is dropping
+			if (getGameScreen().performer.state != PlayerState.DROPPED && !getGameScreen().performer.state.isCrashed()) // TODO this check is easier, move up ??
+				if ( !getStage().getCamera().frustum.pointInFrustum(x-DRAW_STEPS*2f, performerY, 0) 
+						&& !getStage().getCamera().frustum.pointInFrustum(x+DRAW_STEPS*2f, performerY, 0))
+				{
+						continue;
+				}
 			
 			float y = terrainSegmentList.heightAt(x);
 			polygonPoints.add(x);
@@ -191,7 +191,7 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 		tmpVector.sub(x+0.1f, getHeightAt(x+0.1f));
 		float angle = tmpVector.scl(-1f).angle();
 //		angle = MathUtils.clamp(angle, -85f, 85f);
-		System.out.println(angle);
+//		System.out.println(angle);
 		return angle;
 	}
 	
@@ -212,6 +212,10 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	 * @param x The current position of the performer
 	 */
 	private void updateTerrainSegments(float x) {
+		// don't cull if performer is dropping
+		if (getGameScreen().performer.state == PlayerState.DROPPED || getGameScreen().performer.state.isCrashed()) // TODO this check is easier, move up ??
+			return;
+		
 		final float currentMin = terrainSegmentList.first().x;
 		final float currentMax = terrainSegmentList.last().x;
 		

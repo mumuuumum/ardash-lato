@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import ardash.lato.actors3.AbyssCollider;
 import ardash.lato.actors3.AbyssMist;
 import ardash.lato.actors3.CliffLeft;
+import ardash.lato.actors3.CliffRight;
 import ardash.lato.actors3.Coin;
 import ardash.lato.actors3.TerrainItem;
 import ardash.lato.terrain.TerrainSeg.TSType;
@@ -33,6 +34,8 @@ public class Canyon extends Section {
 		// cliffs can't be attached perfectly to the edge, because the share renderer moves it slightly, especially when removing old items
 		TerrainItem cliffLeft = new CliffLeft(3.90f,-27.695f); 
 		surroundingItems.add(cliffLeft);
+		TerrainItem cliffRight = new CliffRight(21.50f,-35.4595f); 
+		surroundingItems.add(cliffRight);
 		// TODO don't do culling the t segments when a canyon is on the screen
 		
 		// mist in the abyss
