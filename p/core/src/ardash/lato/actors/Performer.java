@@ -241,7 +241,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 				final float newRot = getGameScreen().waveDrawer.getAngleAtX(getX()+(PERFORMER_WIDTH/2f));
 				
 				// apply only reasonable values 275-360 and 0-85 
-				if ((newRot > 0 && newRot < 85) || (newRot > 275 && newRot < 360))  
+				if ((newRot > 0 && newRot < 89) || (newRot > 271 && newRot < 360))  
 					setRotation( newRot);
 			} else if (heightDelta < 0) {
 				// Terrain goes suddenly up (inside canyon) - we don't put walls like this on the terrain
