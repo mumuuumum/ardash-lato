@@ -16,6 +16,7 @@
  ******************************************************************************/
 package ardash.lato.screens;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
@@ -40,8 +41,11 @@ import com.badlogic.gdx.utils.PerformanceCounter;
 import com.badlogic.gdx.utils.StringBuilder;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.bitfire.postprocessing.PostProcessor;
+import com.bitfire.postprocessing.effects.Bloom;
+import com.bitfire.postprocessing.effects.Fxaa;
+import com.bitfire.utils.ShaderLoader;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
-import com.github.czyzby.kiwi.util.gdx.viewport.Viewports;
 
 import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.gdx.scenes.scene3d.Camera3D;
@@ -99,6 +103,10 @@ public class GameScreen implements Screen {
     private GLProfiler profiler;
 	private int CURRENT_SCREEN_WIDTH;
 	private int CURRENT_SCREEN_SCREEN;
+	
+	// post processing:
+	private static final boolean isDesktop = (Gdx.app.getType() == ApplicationType.Desktop);
+	private PostProcessor postProcessor;
 	
 	public GameScreen(GameManager gm) {
 		this.gm = gm;
@@ -297,8 +305,10 @@ public class GameScreen implements Screen {
 			public void onPositionChange(float newX, float newY) {
 				lastx = newX;
 				lasty =newY;
-//				if (initZ !=null)
-//					lastz = initZ+MAX_ZOOM; // for testing
+				if (GameManager.DEBUG_ZOOM_OUT_TO_MAX_SPEED) {
+					if (initZ !=null)
+					lastz = initZ+MAX_ZOOM;
+				}
 //				stage.getCamera().translate(-(stage.getCamera().position.x - performer.getCamSpot().x)
 //						, -(stage.getCamera().position.y - performer.getCamSpot().y), 0);
 //				stage.getCamera().update();
@@ -348,6 +358,15 @@ public class GameScreen implements Screen {
 		buildGui();
 //		stage3d.act(); // act one time, to draw it correctly
 
+		
+		// must be at the end:
+		// postprocessing setup
+        ShaderLoader.BasePath = "shaders/";
+        postProcessor = new PostProcessor( true, false, isDesktop );
+        Bloom bloom = new Bloom( (int)(Gdx.graphics.getWidth() * 0.25f), (int)(Gdx.graphics.getHeight() * 0.25f) );
+        Fxaa fxaa = new Fxaa(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        postProcessor.addEffect( bloom );
+        postProcessor.addEffect( fxaa );
 	}
 
 	private ShaderProvider getShaderP(LatoShaders type) {
@@ -493,9 +512,11 @@ public class GameScreen implements Screen {
 
 		Group3D.draw1Count = 0;
 		Group3D.draw2Count = 0;
+		postProcessor.capture();
     	backStage.draw();
     	mountainStage3d.draw();
     	stage3d.draw(true);
+    	postProcessor.render();
     	frontStage.draw();
     	guiStage.draw();
     	
@@ -543,7 +564,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		
+		postProcessor.rebind();
 	}
 
 	@Override
@@ -556,6 +577,8 @@ public class GameScreen implements Screen {
 	public void dispose() {
 		A.dispose();
 		Disposables.gracefullyDisposeOf(backStage, frontStage, guiStage, mountainStage3d, stage3d);
+		postProcessor.dispose();
+
 	}
 
 }

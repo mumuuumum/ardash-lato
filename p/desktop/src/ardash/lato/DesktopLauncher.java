@@ -8,6 +8,7 @@ import com.badlogic.gdx.tools.texturepacker.TexturePacker.Settings;
 import ardash.lato.LatoGame;
 
 // Please note that on macOS your application needs to be started with the -XstartOnFirstThread JVM argument
+@SuppressWarnings("unused")
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
@@ -40,7 +41,7 @@ public class DesktopLauncher {
         settings.maxWidth = 2048;
         settings.maxHeight = 2048;
 //		TexturePacker.process(settings, "./art/sprites/ui", "./android/assets", "ui");
-		TexturePacker.process(settings, "../../texturepacker/scene", "../assets", "scene");
+//		TexturePacker.process(settings, "../../texturepacker/scene", "../assets", "scene");
 		TexturePacker t; // keep this here, otherwise import gets always removed
 
 		
