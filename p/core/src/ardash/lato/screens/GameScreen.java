@@ -44,9 +44,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.bitfire.postprocessing.PostProcessor;
 import com.bitfire.postprocessing.effects.Bloom;
 import com.bitfire.postprocessing.effects.Fxaa;
-import com.bitfire.postprocessing.effects.LensFlare2;
-import com.bitfire.postprocessing.effects.Nfaa;
-import com.bitfire.postprocessing.effects.Vignette;
 import com.bitfire.utils.ShaderLoader;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
@@ -308,8 +305,10 @@ public class GameScreen implements Screen {
 			public void onPositionChange(float newX, float newY) {
 				lastx = newX;
 				lasty =newY;
-//				if (initZ !=null)
-//					lastz = initZ+MAX_ZOOM; // for testing
+				if (GameManager.DEBUG_ZOOM_OUT_TO_MAX_SPEED) {
+					if (initZ !=null)
+					lastz = initZ+MAX_ZOOM;
+				}
 //				stage.getCamera().translate(-(stage.getCamera().position.x - performer.getCamSpot().x)
 //						, -(stage.getCamera().position.y - performer.getCamSpot().y), 0);
 //				stage.getCamera().update();
@@ -365,14 +364,9 @@ public class GameScreen implements Screen {
         ShaderLoader.BasePath = "shaders/";
         postProcessor = new PostProcessor( true, false, isDesktop );
         Bloom bloom = new Bloom( (int)(Gdx.graphics.getWidth() * 0.25f), (int)(Gdx.graphics.getHeight() * 0.25f) );
-//        LensFlare2 lf2 = new LensFlare2((int)(Gdx.graphics.getWidth() * 0.25f), (int)(Gdx.graphics.getHeight() * 0.25f) );
-//        Vignette vg = new Vignette( (int)(Gdx.graphics.getWidth() * 0.25f), (int)(Gdx.graphics.getHeight() * 0.25f), false);
         Fxaa fxaa = new Fxaa(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//        Nfaa nfaa = new Nfaa(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-//        vg.setIntensity(1005.8f);
         postProcessor.addEffect( bloom );
         postProcessor.addEffect( fxaa );
-
 	}
 
 	private ShaderProvider getShaderP(LatoShaders type) {
