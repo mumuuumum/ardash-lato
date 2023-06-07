@@ -280,8 +280,8 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 					jump(JUMP_FORCE);
 				}
 			} else {
-				// if crashed
-				setSpeed(speed-(5.1f*delta));
+				// if crashed: break hard
+				setSpeed(speed-(15.1f*delta));
 			}
 
 		}
