@@ -52,12 +52,6 @@ public class Downer extends Section {
 
 	}
 
-	public void addStone() {
-		Stone stone = new Stone(); // TODO Pool stones
-		stone.setPosition(5.8f, -0.50f);
-		surroundingItems.add(stone);
-	}
-
 	static private void makeNewRandomVector() {
 		currentRandomVector.set(1,0).setLength(MathUtils.random(MIN_LENGTH, MAX_LENGTH));
 		currentRandomVector.rotate(-MathUtils.random(MIN_ANGLE, MAX_ANGLE));

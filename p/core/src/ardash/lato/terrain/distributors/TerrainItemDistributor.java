@@ -19,18 +19,17 @@ package ardash.lato.terrain.distributors;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import ardash.lato.actors3.Coin;
+import ardash.lato.actors3.Stone;
 import ardash.lato.terrain.CollidingTerrainItem;
+import ardash.lato.terrain.DummyTerrainItem;
 
 public abstract class TerrainItemDistributor {
 
 	static final int AVG_RANGE_SIZE = 500;
 
-	protected abstract void addCoin(int i);
+	protected abstract void addItem(int i);
 
-	protected abstract int addAFewCoins(int from, int to);
-
-	protected TreeMap<Integer, CollidingTerrainItem> rangeMap = new TreeMap<>();
+	protected abstract int addAFewItems(int from, int to);
 
 	public TerrainItemDistributor() {
 		super();
@@ -38,17 +37,25 @@ public abstract class TerrainItemDistributor {
 
 	public void reset() {
 		// TODO return items to object pool
-		rangeMap.clear();
+		getRangeMap().clear();
 	}
 	
 	public abstract int getCurrMaxX();
 	public abstract void setCurrMaxX(int newCurrMaxX);
+	protected abstract int getDesiredAmountPer1000m();
+	
+	/**
+	 * Some items cannot oerlap, like stones and coins. So stones an coins share the same range map.
+	 * The range map is static. For stones and coines it is the colliderRagemap.
+	 * @return The Rage Map for this Type.
+	 */
+	protected abstract TreeMap<Integer, CollidingTerrainItem> getRangeMap();
 
-	public SortedMap<Integer, CollidingTerrainItem> getCoinsInRange(int from, int to) {
+	public SortedMap<Integer, CollidingTerrainItem> getItemsInRange(int from, int to) {
 		if (to > getCurrMaxX()) {
 			generateNewRange();
 		}
-		return rangeMap.subMap(from, to);
+		return getRangeMap().subMap(from, to);
 	}
 
 	private void generateNewRange() {
@@ -57,20 +64,32 @@ public abstract class TerrainItemDistributor {
 		final int rangeSize = to - from;
 		setCurrMaxX(to);
 		
-		final int desiredAmountPer1000m = 50;		
+		final int desiredAmountPer1000m = getDesiredAmountPer1000m();		
 		final int desiredAmountForThisRange = desiredAmountPer1000m / Math.min(1, (1000/rangeSize) ) ;
 		
-		int addedCoins = 0;
+		int addedItems = 0;
 		
 		for (int i = 0 ; i < desiredAmountForThisRange ; i++) {
-			int coinsAddedInThisCycle = addAFewCoins(from, to);
-			addedCoins += coinsAddedInThisCycle;
+			final int itemsAddedInThisCycle = addAFewItems(from, to);
+			addedItems += itemsAddedInThisCycle;
 			
 			// stop when we have enough items
-			if (addedCoins >= desiredAmountForThisRange) {
+			if (addedItems >= desiredAmountForThisRange) {
 				break;
 			}
 		}
 	}
+	
+	/**
+	 * Adds a dummy item to fill the place at position i, so no other object can be palced there. Anyway the dummy won't be rendered or colliding.
+	 * It is only sitting there to save the spot. Stones for example must have a minimum distance of 1. We can put dummy items next to them, so no other stones will be put there.
+	 * @param i the x index
+	 */
+	protected void addDummyItem(int i) {
+		final DummyTerrainItem di = new DummyTerrainItem();
+		getRangeMap().put(i, di);
+	}
+
+	
 
 }
