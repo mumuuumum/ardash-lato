@@ -106,7 +106,7 @@ public class GameScreen implements Screen {
 	
 	// post processing:
 	private static final boolean isDesktop = (Gdx.app.getType() == ApplicationType.Desktop);
-	private PostProcessor postProcessor;
+	public PostProcessor postProcessor;
 	
 	public GameScreen(GameManager gm) {
 		this.gm = gm;
@@ -364,8 +364,8 @@ public class GameScreen implements Screen {
         ShaderLoader.BasePath = "shaders/";
         postProcessor = new PostProcessor( true, false, isDesktop );
         Bloom bloom = new Bloom( (int)(Gdx.graphics.getWidth() * 0.25f), (int)(Gdx.graphics.getHeight() * 0.25f) );
-        Fxaa fxaa = new Fxaa(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         postProcessor.addEffect( bloom );
+        Fxaa fxaa = new Fxaa(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         postProcessor.addEffect( fxaa );
 	}
 
@@ -516,8 +516,8 @@ public class GameScreen implements Screen {
     	backStage.draw();
     	mountainStage3d.draw();
     	stage3d.draw(true);
-    	postProcessor.render();
     	frontStage.draw();
+    	postProcessor.render();
     	guiStage.draw();
     	
 		perf.stop();

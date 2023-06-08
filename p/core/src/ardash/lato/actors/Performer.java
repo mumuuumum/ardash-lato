@@ -22,6 +22,7 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
@@ -32,6 +33,8 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
+import com.bitfire.postprocessing.effects.Zoomer;
+import com.bitfire.postprocessing.filters.RadialBlur.Quality;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
@@ -620,6 +623,9 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 					@Override
 					public void run() {
 						new GameOverDialog(getCauseOfDeath().toString(), getTraveledDistanceMeters()).show(getGameScreen().guiStage);
+				        Zoomer sb = new Zoomer((int)(Gdx.graphics.getWidth() * 0.25f), (int)(Gdx.graphics.getHeight() * 0.25f) , Quality.VeryHigh);
+				        sb.setBlurStrength(2);
+						getGameScreen().postProcessor.addEffect( sb );
 					}
 				})
 				));
