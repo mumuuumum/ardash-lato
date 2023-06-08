@@ -25,6 +25,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import ardash.lato.actors3.Coin;
 import ardash.lato.terrain.distributors.CoinDistributor;
+import ardash.lato.terrain.distributors.TerrainItemDistributor;
 
 /**
  * provides new randomised terrain following different generation-strategies.
@@ -46,7 +47,7 @@ public class TerrainManager {
 	
 	List<TerrainListener> listeners = new ArrayList<TerrainManager.TerrainListener>();
 	
-	private CoinDistributor cd = new CoinDistributor();
+	private TerrainItemDistributor cd = new CoinDistributor();
 	
 	public TerrainManager() {
 		reset();
@@ -86,17 +87,17 @@ public class TerrainManager {
 			// the type and size of the new sections is now final
 			
 			// put some coins on the new section, if there are coins planned for it
-			SortedMap<Integer, Coin> plannedCoinsInRange = cd.getCoinsInRange((int)(s.firstX()+offsetX), MathUtils.ceil(s.lastX()+offsetX));
+			SortedMap<Integer, CollidingTerrainItem> plannedCoinsInRange = cd.getCoinsInRange((int)(s.firstX()+offsetX), MathUtils.ceil(s.lastX()+offsetX));
 			for (int plannedCoinX : plannedCoinsInRange.keySet()) {
-				final Coin coin = plannedCoinsInRange.get(plannedCoinX);
+				final CollidingTerrainItem cti = plannedCoinsInRange.get(plannedCoinX);
 				// the coins are being created with a wider view, so they alreay have the absolute X value correct: now move them back
-				System.out.println("add C at X "+ coin.getX());
+				System.out.println("add C at X "+ cti.getX());
 				System.out.println("moved by X "+ -offsetX);
-				coin.moveBy(-offsetX, 0);
-				System.out.println("moved to X "+ coin.getX());
-				coin.moveBy(0, s.heightAt(coin.getX()));
+				cti.moveBy(-offsetX, 0);
+				System.out.println("moved to X "+ cti.getX());
+				cti.moveBy(0, s.heightAt(cti.getX()));
 //				coin.
-				s.surroundingItems.add(coin);
+				s.surroundingItems.add(cti);
 			}
 			
 			

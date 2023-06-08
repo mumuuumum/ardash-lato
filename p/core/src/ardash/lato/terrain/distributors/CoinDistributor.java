@@ -17,59 +17,37 @@
 package ardash.lato.terrain.distributors;
 
 import java.util.SortedMap;
-import java.util.TreeMap;
 
 import com.badlogic.gdx.math.MathUtils;
 
 import ardash.lato.actors3.Coin;
+import ardash.lato.terrain.CollidingTerrainItem;
 
-public class CoinDistributor {
+public class CoinDistributor extends TerrainItemDistributor {
 	
-	static final int AVG_RANGE_SIZE=500;
-	TreeMap<Integer, Coin> rangeMap = new TreeMap<>();
 	private int currMaxX;
 	
 	public CoinDistributor() {
+		super();
 		reset();
 	}
-
+	
+	@Override
 	public void reset() {
-		// TODO return coins to object pool
-		rangeMap.clear();
+		super.reset();
 		currMaxX = 0;
 	}
-
 	
-	public SortedMap<Integer, Coin> getCoinsInRange(int from, int to) {
-		if (to > currMaxX) {
-			generateNewRange();
-		}
-		return rangeMap.subMap(from, to);
+	public int getCurrMaxX() {
+		return currMaxX;
+	}
+	
+	public void setCurrMaxX(int currMaxX) {
+		this.currMaxX = currMaxX;
 	}
 
-	private void generateNewRange() {
-		final int from = currMaxX;
-		final int to = from+AVG_RANGE_SIZE;
-		final int rangeSize = to - from;
-		currMaxX = to;
-		
-		final int desiredAmountPer1000m = 50;		
-		final int desiredAmountForThisRange = desiredAmountPer1000m / Math.min(1, (1000/rangeSize) ) ;
-		
-		int addedCoins = 0;
-		
-		for (int i = 0 ; i < desiredAmountForThisRange ; i++) {
-			int coinsAddedInThisCycle = addAFewCoins(from, to);
-			addedCoins += coinsAddedInThisCycle;
-			
-			// stop when we have enough items
-			if (addedCoins >= desiredAmountForThisRange) {
-				break;
-			}
-		}
-	}
-
-	private int addAFewCoins(int from, int to) {
+	@Override
+	protected int addAFewCoins(int from, int to) {
 		// get a random starting point in this range
 		final int start = MathUtils.random(from, to);
 		
@@ -77,7 +55,7 @@ public class CoinDistributor {
 		final int amount = MathUtils.random(1, 6);
 		
 		// check if there already coins in this range
-		SortedMap<Integer, Coin> existingRange = getCoinsInRange(start, start+amount);
+		SortedMap<Integer, CollidingTerrainItem> existingRange = getCoinsInRange(start, start+amount);
 		if (! existingRange.isEmpty()) {
 			return 0;
 		}
@@ -88,7 +66,8 @@ public class CoinDistributor {
 		return amount;
 	}
 
-	private void addCoin(int i) {
+	@Override
+	protected void addCoin(int i) {
 		final Coin coin = new Coin();
 		coin.setX(i);
 		rangeMap.put(i, coin);
