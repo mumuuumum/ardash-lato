@@ -95,16 +95,11 @@ public class TerrainManager {
 				for (int plannedCoinX : plannedCoinsInRange.keySet()) {
 					final CollidingTerrainItem cti = plannedCoinsInRange.get(plannedCoinX);
 					if (!(cti instanceof Coin)) {
-//						DummyTerrainItem dti = (DummyTerrainItem) cti;
 						continue;
 					}
 					// the CTI are being created with a wider view, so they already have the absolute X value correct: now move them back
-					System.out.println("add C at X "+ cti.getX());
-					System.out.println("moved by X "+ -offsetX);
 					cti.moveBy(-offsetX, 0);
-					System.out.println("moved to X "+ cti.getX());
 					cti.moveBy(0, s.heightAt(cti.getX()));
-//					coin.
 					s.surroundingItems.add(cti);
 				}				
 			}
@@ -115,25 +110,14 @@ public class TerrainManager {
 				for (int plannedCoinX : plannedCoinsInRange.keySet()) {
 					final CollidingTerrainItem cti = plannedCoinsInRange.get(plannedCoinX);
 					if (!(cti instanceof Stone)) {
-//						DummyTerrainItem dti = (DummyTerrainItem) cti;
 						continue;
 					}
 					// the CTI are being created with a wider view, so they already have the absolute X value correct: now move them back
-					System.out.println("add C at X "+ cti.getX());
-					System.out.println("moved by X "+ -offsetX);
 					cti.moveBy(-offsetX, 0);
-					System.out.println("moved to X "+ cti.getX());
-					try {
-						cti.moveBy(0, s.heightAt(cti.getX()));
-//						coin.
-						s.surroundingItems.add(cti);
-						
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					cti.moveBy(0, s.heightAt(cti.getX()));
+					s.surroundingItems.add(cti);
 				}				
 			}
-			
 			
 			s.addOffsetToSurroundings(offset);
 			s.addOffsetToSegList(offset);
