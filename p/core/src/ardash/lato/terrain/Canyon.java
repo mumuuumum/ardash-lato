@@ -41,6 +41,6 @@ public class Canyon extends Section {
 		// mist in the abyss
 		
 		
-		surroundingItems.add( new Coin());
+//		surroundingItems.add( new Coin());
 	}
 }

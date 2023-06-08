@@ -1,12 +1,30 @@
+/*******************************************************************************
+ * Copyright (C) 2023 Andreas Redmer <ar-lato@abga.be>
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ ******************************************************************************/
 package ardash.lato.terrain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedMap;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
-import ardash.lato.actors3.Stone;
+import ardash.lato.actors3.Coin;
+import ardash.lato.terrain.distributors.CoinDistributor;
 
 /**
  * provides new randomised terrain following different generation-strategies.
@@ -28,12 +46,15 @@ public class TerrainManager {
 	
 	List<TerrainListener> listeners = new ArrayList<TerrainManager.TerrainListener>();
 	
+	private CoinDistributor cd = new CoinDistributor();
+	
 	public TerrainManager() {
 		reset();
 	}
 
 	public void reset() {
 		sections.clear();
+		cd.reset();
 	}
 
 	public Section getLastSection() {
@@ -60,10 +81,33 @@ public class TerrainManager {
 			if (MathUtils.random(0, 100)<20)
 				s = new Canyon();
 			final Vector2 offset = this.getLastSection().last();
+			final float offsetX = offset.x;
+			
+			// the type and size of the new sections is now final
+			
+			// put some coins on the new section, if there are coins planned for it
+			SortedMap<Integer, Coin> plannedCoinsInRange = cd.getCoinsInRange((int)(s.firstX()+offsetX), MathUtils.ceil(s.lastX()+offsetX));
+			for (int plannedCoinX : plannedCoinsInRange.keySet()) {
+				final Coin coin = plannedCoinsInRange.get(plannedCoinX);
+				// the coins are being created with a wider view, so they alreay have the absolute X value correct: now move them back
+				System.out.println("add C at X "+ coin.getX());
+				System.out.println("moved by X "+ -offsetX);
+				coin.moveBy(-offsetX, 0);
+				System.out.println("moved to X "+ coin.getX());
+				coin.moveBy(0, s.heightAt(coin.getX()));
+//				coin.
+				s.surroundingItems.add(coin);
+			}
+			
+			
 			s.addOffsetToSurroundings(offset);
 			s.addOffsetToSegList(offset);
 			sections.add(s);
+
+		
 		}
+		
+		
 		for (TerrainListener listener : listeners) {
 			listener.onNewSectionCreated(s);
 			s.validate();
