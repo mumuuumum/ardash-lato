@@ -30,6 +30,7 @@ public class GameManager implements SODChangeListener {
 	public static final boolean DEBUG_GUI = false;
 	public static final boolean DEBUG_RUNTIME_VALIDATION = false;
 	public static final boolean DEBUG_WEATHER_FASTMODE = false;
+//	public static final boolean DEBUG_WEATHER_FASTMODE = true;
 	public static final boolean DEBUG_ZOOM_OUT_TO_MAX_SPEED = false;
 	
 	public final LatoGame game;
