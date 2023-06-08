@@ -19,7 +19,6 @@ package ardash.lato.terrain.distributors;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import ardash.lato.actors3.Stone;
 import ardash.lato.terrain.CollidingTerrainItem;
 import ardash.lato.terrain.DummyTerrainItem;
 

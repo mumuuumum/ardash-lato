@@ -16,9 +16,8 @@
  ******************************************************************************/
 package ardash.lato.terrain;
 
-import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.Actor3D.Tag;
-import ardash.lato.actors3.TerrainItem;
+import ardash.gdx.scenes.scene3d.Camera3D;
 
 public class DummyTerrainItem implements CollidingTerrainItem{
 

@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.Pools;
 import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.lato.actors3.Farmhouse;
 import ardash.lato.actors3.Spruce;
-import ardash.lato.actors3.Stone;
 
 /**
  * A slope downhill, followed by a short straight line.

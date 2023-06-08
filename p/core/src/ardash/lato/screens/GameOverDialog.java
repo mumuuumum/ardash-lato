@@ -1,12 +1,10 @@
 package ardash.lato.screens;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import ardash.gdx.scenes.scene2d.ui.AdvancedDialog;
 import ardash.lato.A;
-import ardash.lato.actors.Performer.Demise;
 import ardash.lato.actors.StageAccessor;
 
 public class GameOverDialog extends AdvancedDialog implements StageAccessor{

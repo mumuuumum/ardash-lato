@@ -20,10 +20,8 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 
 import ardash.lato.actors3.AbyssCollider;
-import ardash.lato.actors3.AbyssMist;
 import ardash.lato.actors3.CliffLeft;
 import ardash.lato.actors3.CliffRight;
-import ardash.lato.actors3.Coin;
 import ardash.lato.actors3.TerrainItem;
 import ardash.lato.terrain.TerrainSeg.TSType;
 
