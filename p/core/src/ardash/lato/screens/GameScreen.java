@@ -530,13 +530,17 @@ public class GameScreen implements Screen {
 
 		
 		lastPerfOutput+=delta;
-		if (lastPerfOutput>=15f)
+		if (GameManager.DEBUG_PRINT_PERFORMANCE_STATS &&  lastPerfOutput>=15f)
 		{
 	    	gm.performanceCounters.tick();
 	    	System.out.println(gm.performanceCounters.toString(new StringBuilder()));
 	    	lastPerfOutput = 0;
-	    	PoolsManager.printStatusOutput();
 			System.out.println("dc: " + drawCalls + " tb: "+ textureBinds + " vc: "+ vc + " ss: "+ ss + " nc: "+ nc);
+		}
+		if (GameManager.DEBUG_PRINT_POOL_STATS &&  lastPerfOutput>=0.5f)
+		{
+	    	PoolsManager.printStatusOutput();
+	    	lastPerfOutput = 0;
 		}
 		
 //		float f1 = guiStage.getWidth();

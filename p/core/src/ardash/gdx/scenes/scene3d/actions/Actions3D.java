@@ -169,6 +169,12 @@ public class Actions3D {
         return action;
     }
 
+    static public FreeActorAction freeActor (Actor3D freeActor) {
+    	FreeActorAction action = action3d(FreeActorAction.class);
+        action.setFreeActor(freeActor);
+        return action;
+    }
+
     static public DelayAction delay (float duration) {
         DelayAction action = action3d(DelayAction.class);
         action.setDuration(duration);

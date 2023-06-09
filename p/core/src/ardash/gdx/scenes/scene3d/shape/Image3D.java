@@ -68,7 +68,7 @@ public class Image3D extends Actor3D {
      * Used by normal actors with 2d sprites from texture atlas. Get the height and width from the texture region.
      */
     public Image3D(TextureRegion textureRegion, ModelBuilder modelBuilder) {
-		super(createModel(textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), null, textureRegion, modelBuilder, 0f, null));
+		super(createModel(textureRegion.getRegionWidth(), textureRegion.getRegionHeight(), Color.WHITE.cpy(), textureRegion, modelBuilder, 0f, null));
         this.width = textureRegion.getRegionWidth();
         this.height = textureRegion.getRegionHeight();
     }
