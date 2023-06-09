@@ -37,6 +37,8 @@ import com.bitfire.postprocessing.effects.Zoomer;
 import com.bitfire.postprocessing.filters.RadialBlur.Quality;
 import com.github.czyzby.kiwi.util.gdx.asset.Disposables;
 
+import ardash.gdx.graphics.g3d.ParticleEmitter;
+import ardash.gdx.graphics.g3d.ParticleEmitter.ParticleEmitterType;
 import ardash.gdx.scenes.scene3d.Actor3D;
 import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.Group3D;
@@ -89,12 +91,10 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 
 	private float speed = 0f; // speed in m/s
 	private float runtime = 0f; // lifetime starting after game started
-//	private boolean isInAir = false;
 	private boolean isUserInputDown = false;
 //	private float direction = 0f; // current rotation (direction) in degrees
 	private Vector2 velocity = new Vector2(); // this is only here to safe new-calls
-//	private float gravity = 9.807f; // m/s/s
-	ParticleEffect snowSpray = new ParticleEffect();
+	protected ParticleEmitter spray = new ParticleEmitter(ParticleEmitterType.SNOW);
 	private Image3D ambientColorContainer = new Image3D(1, 1, new Color(), new ModelBuilder());
 	private List<PerformerListener> listeners = new ArrayList<Performer.PerformerListener>();
 	private Map<Pose,Image3D> poses = new EnumMap<Pose, Image3D>(Pose.class);
@@ -147,13 +147,6 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		
 		addActor(ambientColorContainer);
 		ambientColorContainer.setVisible(false);
-		
-//		TextureAtlas ta = getAssetManager().get(Assets.SCENE_ATLAS);
-//		snowSpray.load( Gdx.files.internal("spray.p"), ta);
-		snowSpray = A.getParticleEffect(ParticleAsset.SPRAY);
-		snowSpray.scaleEffect(0.09f);
-		snowSpray.setPosition(-22f, 20f);
-		snowSpray.start();
 		
 //		scarfAttachPointGroup.setPosition(0.5f, 0.1f);
 		scarfAttachPointGroup.setPosition(0f, 0f);
@@ -411,24 +404,15 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		}
 		
 //		camSpot.set(newCamSpot);
-		
-		// TODO move snow spray (use listener)
-//		final Pool<Vector2> vecPool = Pools.get(Vector2.class);
-//		Vector2 corner = vecPool.obtain();
-//		corner.set(0,0);
-//		this.localToParentCoordinates(corner);
-//		snowSpray.setPosition(corner.x, corner.y);
-//		vecPool.free(corner);
-//		snowSpray.update(delta);
-//		if (isInAir)
-//			snowSpray.allowCompletion();
-//		else
-//			snowSpray.start();
 			
 		// inform listeners about new position
 //		System.out.println("Performer is at: "+ getX() + ","+ getY());
 		for (PerformerListener listener : listeners) {
 			listener.onPositionChange(getX(), getY());
+
+			if (!spray.hasParent())
+				getStage().addActor(spray);
+			spray.setPosition(getX(), getY());
 		}
 		
 	}
@@ -436,26 +420,6 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	private float getMaxCamSpeed() {
 		return state.isStarted() ? (runtime > 1f ? 3.3f : 03.3f) : 0.03f;
 	}
-
-	@Override
-	public void draw(ModelBatch modelBatch, Environment environment) {
-		// TODO Auto-generated method stub
-		super.draw(modelBatch, environment);
-	}
-	@Override
-	public void draw(ModelBatch modelBatch, Environment environment, Tag tag) {
-		// TODO Auto-generated method stub
-		super.draw(modelBatch, environment, tag);
-	}
-
-//	@Override
-//	public void draw(Batch batch, float parentAlpha) {
-//		super.draw(batch, parentAlpha);
-//		final GradientColorValue tint = snowSpray.getEmitters().get(0).getTint();
-//		final Color amb = ambientColorContainer.getColor();
-//		tint.setColors(new float[]{amb.r, amb.g, amb.b});
-//		snowSpray.draw(batch);
-//	}
 	
 	public void setPose(Pose pose) {
 		this.pose = pose;
@@ -649,6 +613,11 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			return;
 		timeInState =0f;
 		this.state = this.state.moveTo(state);
+		if (state == PlayerState.SLIDING ||state == PlayerState.DUCKING) {
+			spray.startEmitting();
+		} else {
+			spray.stopEmitting();
+		}
 	}
 	
 	public float getTimeInState() {
@@ -667,7 +636,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	
 	@Override
 	public void dispose() {
-		Disposables.gracefullyDisposeOf(snowSpray);
+//		Disposables.gracefullyDisposeOf(snowSpray);
 	}
 
 	@Override
