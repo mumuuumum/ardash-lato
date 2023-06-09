@@ -404,19 +404,6 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		}
 		
 //		camSpot.set(newCamSpot);
-		
-		// TODO move snow spray (use listener)
-//		final Pool<Vector2> vecPool = Pools.get(Vector2.class);
-//		Vector2 corner = vecPool.obtain();
-//		corner.set(0,0);
-//		this.localToParentCoordinates(corner);
-//		snowSpray.setPosition(corner.x, corner.y);
-//		vecPool.free(corner);
-//		snowSpray.update(delta);
-//		if (isInAir)
-//			snowSpray.allowCompletion();
-//		else
-//			snowSpray.start();
 			
 		// inform listeners about new position
 //		System.out.println("Performer is at: "+ getX() + ","+ getY());
@@ -433,27 +420,6 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	private float getMaxCamSpeed() {
 		return state.isStarted() ? (runtime > 1f ? 3.3f : 03.3f) : 0.03f;
 	}
-
-	@Override
-	public void draw(ModelBatch modelBatch, Environment environment) {
-		// TODO Auto-generated method stub
-		super.draw(modelBatch, environment);
-	}
-	@Override
-	public void draw(ModelBatch modelBatch, Environment environment, Tag tag) {
-		// TODO Auto-generated method stub
-		super.draw(modelBatch, environment, tag);
-//		snowSpray.draw(getGameScreen().frontStage.getBatch());
-	}
-
-//	@Override
-//	public void draw(Batch batch, float parentAlpha) {
-//		super.draw(batch, parentAlpha);
-//		final GradientColorValue tint = snowSpray.getEmitters().get(0).getTint();
-//		final Color amb = ambientColorContainer.getColor();
-//		tint.setColors(new float[]{amb.r, amb.g, amb.b});
-//		snowSpray.draw(batch);
-//	}
 	
 	public void setPose(Pose pose) {
 		this.pose = pose;
