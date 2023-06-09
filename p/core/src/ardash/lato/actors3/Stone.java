@@ -57,6 +57,8 @@ public class Stone extends Image3D implements CollidingTerrainItem , Poolable{
 		if (hasCollided)
 			return;
 		
+		// TODO continue here. use rectangle class for collision detection
+		
 		final float myWidth = 1.0f;
 		final float pWidth = 1.0f;
 		final float myX = getX()+myWidth/2f;
