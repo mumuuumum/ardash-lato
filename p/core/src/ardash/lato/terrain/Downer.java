@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.Pools;
 import ardash.gdx.scenes.scene3d.Actor3D.Tag;
 import ardash.lato.actors3.Farmhouse;
 import ardash.lato.actors3.Spruce;
-import ardash.lato.actors3.Stone;
 
 /**
  * A slope downhill, followed by a short straight line.
@@ -50,12 +49,6 @@ public class Downer extends Section {
 		ma.setTag(Tag.BACK);
         addSurroundingItem(ma);
 
-	}
-
-	public void addStone() {
-		Stone stone = new Stone(); // TODO Pool stones
-		stone.setPosition(5.8f, -0.50f);
-		surroundingItems.add(stone);
 	}
 
 	static private void makeNewRandomVector() {

@@ -8,10 +8,6 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.A;
 import ardash.lato.A.ARAsset;
-import ardash.lato.A.SpriteGroupAsset;
-import ardash.lato.actors.Performer;
-import ardash.lato.actors.Performer.Demise;
-import ardash.lato.actors.Performer.Pose;
 
 public class AbyssMist extends Image3D implements TerrainItem , Poolable{
 	

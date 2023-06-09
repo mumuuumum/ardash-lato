@@ -5,15 +5,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.utils.Pool.Poolable;
 
-import ardash.gdx.scenes.scene3d.Camera3D;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.A;
 import ardash.lato.A.ARAsset;
-import ardash.lato.A.SpriteGroupAsset;
-import ardash.lato.actors.Performer;
-import ardash.lato.actors.Performer.Demise;
-import ardash.lato.actors.Performer.Pose;
-import ardash.lato.weather.EnvColors;
 
 public class CliffRight extends Image3D implements TerrainItem , Poolable{
 	

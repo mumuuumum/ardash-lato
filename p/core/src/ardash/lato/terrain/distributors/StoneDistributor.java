@@ -20,14 +20,14 @@ import java.util.SortedMap;
 
 import com.badlogic.gdx.math.MathUtils;
 
-import ardash.lato.actors3.Coin;
+import ardash.lato.actors3.Stone;
 import ardash.lato.terrain.CollidingTerrainItem;
 
-public class CoinDistributor extends ColliderDistributor {
+public class StoneDistributor extends ColliderDistributor {
 	
 	private int currMaxX;
 	
-	public CoinDistributor() {
+	public StoneDistributor() {
 		super();
 		reset();
 	}
@@ -35,7 +35,7 @@ public class CoinDistributor extends ColliderDistributor {
 	@Override
 	public void reset() {
 		super.reset();
-		currMaxX = 100;// don't put anything in the first 100
+		currMaxX = 500;// don't put anything in the first 100
 	}
 	
 	public int getCurrMaxX() {
@@ -52,7 +52,7 @@ public class CoinDistributor extends ColliderDistributor {
 		final int start = MathUtils.random(from, to);
 		
 		//get a random amount of coins
-		final int amount = MathUtils.random(1, 6);
+		final int amount = (int)MathUtils.randomTriangular(1, 4, 1); // max 3 stones in a row, but 1 is most likely
 		
 		// check if there already coins in this range
 		SortedMap<Integer, CollidingTerrainItem> existingRange = getItemsInRange(start, start+amount);
@@ -60,21 +60,26 @@ public class CoinDistributor extends ColliderDistributor {
 			return 0;
 		}
 
-		for (int i = 0; i < amount ; i++) {
+		for (int i = 0; i < amount*3 ; i++) {
 			addItem (start+i);
+			i++;
+			addDummyItem (start+i);
+			i++;
+			addDummyItem (start+i);
 		}
 		return amount;
 	}
 
 	@Override
 	protected void addItem(int i) {
-		final Coin coin = new Coin();
-		coin.setX(i);
-		getRangeMap().put(i, coin);
+		final Stone s = new Stone();
+		s.setX(i);
+		getRangeMap().put(i, s);
 	}
 
 	@Override
 	protected int getDesiredAmountPer1000m() {
-		return 50;
+		return 5;
 	}
+
 }

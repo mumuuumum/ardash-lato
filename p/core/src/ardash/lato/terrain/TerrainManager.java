@@ -24,7 +24,10 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import ardash.lato.actors3.Coin;
+import ardash.lato.actors3.Stone;
 import ardash.lato.terrain.distributors.CoinDistributor;
+import ardash.lato.terrain.distributors.StoneDistributor;
+import ardash.lato.terrain.distributors.TerrainItemDistributor;
 
 /**
  * provides new randomised terrain following different generation-strategies.
@@ -46,7 +49,8 @@ public class TerrainManager {
 	
 	List<TerrainListener> listeners = new ArrayList<TerrainManager.TerrainListener>();
 	
-	private CoinDistributor cd = new CoinDistributor();
+	private TerrainItemDistributor cd = new CoinDistributor();
+	private TerrainItemDistributor sd = new StoneDistributor();
 	
 	public TerrainManager() {
 		reset();
@@ -55,6 +59,7 @@ public class TerrainManager {
 	public void reset() {
 		sections.clear();
 		cd.reset();
+		sd.reset();
 	}
 
 	public Section getLastSection() {
@@ -75,7 +80,6 @@ public class TerrainManager {
 		else
 		{
 			s = new Downer();
-			addStoneRandomly((Downer)s);
 			if (MathUtils.random(0, 100)<10)
 				s = new Hill();
 			if (MathUtils.random(0, 100)<20)
@@ -86,19 +90,34 @@ public class TerrainManager {
 			// the type and size of the new sections is now final
 			
 			// put some coins on the new section, if there are coins planned for it
-			SortedMap<Integer, Coin> plannedCoinsInRange = cd.getCoinsInRange((int)(s.firstX()+offsetX), MathUtils.ceil(s.lastX()+offsetX));
-			for (int plannedCoinX : plannedCoinsInRange.keySet()) {
-				final Coin coin = plannedCoinsInRange.get(plannedCoinX);
-				// the coins are being created with a wider view, so they alreay have the absolute X value correct: now move them back
-				System.out.println("add C at X "+ coin.getX());
-				System.out.println("moved by X "+ -offsetX);
-				coin.moveBy(-offsetX, 0);
-				System.out.println("moved to X "+ coin.getX());
-				coin.moveBy(0, s.heightAt(coin.getX()));
-//				coin.
-				s.surroundingItems.add(coin);
+			{
+				SortedMap<Integer, CollidingTerrainItem> plannedCoinsInRange = cd.getItemsInRange((int)(s.firstX()+offsetX), MathUtils.ceil(s.lastX()+offsetX));
+				for (int plannedCoinX : plannedCoinsInRange.keySet()) {
+					final CollidingTerrainItem cti = plannedCoinsInRange.get(plannedCoinX);
+					if (!(cti instanceof Coin)) {
+						continue;
+					}
+					// the CTI are being created with a wider view, so they already have the absolute X value correct: now move them back
+					cti.moveBy(-offsetX, 0);
+					cti.moveBy(0, s.heightAt(cti.getX()));
+					s.surroundingItems.add(cti);
+				}				
 			}
 			
+			// put some stones on the new section, if there are stones planned for it
+			{
+				SortedMap<Integer, CollidingTerrainItem> plannedCoinsInRange = sd.getItemsInRange((int)(s.firstX()+offsetX), MathUtils.ceil(s.lastX()+offsetX));
+				for (int plannedCoinX : plannedCoinsInRange.keySet()) {
+					final CollidingTerrainItem cti = plannedCoinsInRange.get(plannedCoinX);
+					if (!(cti instanceof Stone)) {
+						continue;
+					}
+					// the CTI are being created with a wider view, so they already have the absolute X value correct: now move them back
+					cti.moveBy(-offsetX, 0);
+					cti.moveBy(0, s.heightAt(cti.getX()));
+					s.surroundingItems.add(cti);
+				}				
+			}
 			
 			s.addOffsetToSurroundings(offset);
 			s.addOffsetToSegList(offset);
@@ -114,12 +133,6 @@ public class TerrainManager {
 		}
 	}
 	
-	private void addStoneRandomly(Downer s) {
-		final int r = MathUtils.random(1);
-		if (r == 0)
-			s.addStone();
-	}
-
 	public void addListener(TerrainListener listener) {
 		this.listeners.add(listener);
 	}

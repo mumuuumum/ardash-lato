@@ -10,8 +10,9 @@ import ardash.lato.A.SpriteGroupAsset;
 import ardash.lato.actors.Performer;
 import ardash.lato.actors.Performer.Demise;
 import ardash.lato.actors.Performer.Pose;
+import ardash.lato.terrain.CollidingTerrainItem;
 
-public class Stone extends Image3D implements TerrainItem , Poolable{
+public class Stone extends Image3D implements CollidingTerrainItem , Poolable{
 	
 	boolean hasCollided;
 	public Stone() {

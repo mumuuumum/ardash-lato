@@ -11,8 +11,9 @@ import com.badlogic.gdx.math.MathUtils;
 import ardash.gdx.scenes.scene3d.pooling.PoolableActor3D;
 import ardash.lato.A;
 import ardash.lato.A.ModelAsset;
+import ardash.lato.terrain.CollidingTerrainItem;
 
-public class Coin extends PoolableActor3D implements TerrainItem{
+public class Coin extends PoolableActor3D implements CollidingTerrainItem{
 	private static Color emissiveLightColour = Color.GOLD.cpy();
 	static {
 		emissiveLightColour.lerp(Color.BLACK, 0.15f); // make less shiny by moving it 15% towards black
