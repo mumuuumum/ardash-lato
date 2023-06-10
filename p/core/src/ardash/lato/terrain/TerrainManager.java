@@ -22,9 +22,11 @@ import java.util.SortedMap;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pools;
 
 import ardash.lato.actors3.Coin;
 import ardash.lato.actors3.Stone;
+import ardash.lato.actors3.TerrainItem;
 import ardash.lato.terrain.distributors.CoinDistributor;
 import ardash.lato.terrain.distributors.StoneDistributor;
 import ardash.lato.terrain.distributors.TerrainItemDistributor;
@@ -56,8 +58,15 @@ public class TerrainManager {
 		reset();
 	}
 
-	public void reset() {
+	// TODO dont reset, make a new one
+	private void reset() {
+		for (Section section : sections) {
+			for (TerrainItem ti : section.surroundingItems) {
+				Pools.free(ti);
+			}
+		}
 		sections.clear();
+		listeners.clear();
 		cd.reset();
 		sd.reset();
 	}
@@ -101,7 +110,8 @@ public class TerrainManager {
 					cti.moveBy(-offsetX, 0);
 					cti.moveBy(0, s.heightAt(cti.getX()));
 					s.surroundingItems.add(cti);
-				}				
+				}
+				cd.removeItemsBefore(MathUtils.ceil(s.lastX()+offsetX));
 			}
 			
 			// put some stones on the new section, if there are stones planned for it
@@ -116,6 +126,7 @@ public class TerrainManager {
 					cti.moveBy(-offsetX, 0);
 					cti.moveBy(0, s.heightAt(cti.getX()));
 					s.surroundingItems.add(cti);
+					sd.removeItemsBefore(MathUtils.ceil(s.lastX()+offsetX));
 				}				
 			}
 			

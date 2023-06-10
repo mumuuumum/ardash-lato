@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.g3d.utils.ShaderProvider;
 import com.badlogic.gdx.utils.PerformanceCounter;
+import com.badlogic.gdx.utils.Pools;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
@@ -52,6 +53,7 @@ public class LatoStage3D extends Stage3D implements TerrainListener {
 		
 		for (TerrainItem a : canBeDeleted) {
 			a.remove();
+			Pools.free(a);
 		}
 
 		// add new parts to the physical world

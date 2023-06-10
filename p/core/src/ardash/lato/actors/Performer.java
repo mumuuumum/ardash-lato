@@ -592,6 +592,8 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 					@Override
 					public void run() {
 						new GameOverDialog(getCauseOfDeath().toString(), getTraveledDistanceMeters()).show(getGameScreen().guiStage);
+						
+						//blurr background behind dialog
 				        Zoomer sb = new Zoomer((int)(Gdx.graphics.getWidth() * 0.25f), (int)(Gdx.graphics.getHeight() * 0.25f) , Quality.VeryHigh);
 				        sb.setBlurStrength(2);
 						getGameScreen().postProcessor.addEffect( sb );

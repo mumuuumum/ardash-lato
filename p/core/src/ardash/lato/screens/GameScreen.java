@@ -395,6 +395,7 @@ public class GameScreen implements Screen {
 				System.out.println(performer.getTimeInState());
 				// handle the final touch on the game over dialog
 				if (performer.getState().isCrashed() && performer.getTimeInState() >= 2f) {
+					gm.reset();
 					gm.game.setScreen(new LoadingScreen(gm));
 				}
 				return true;

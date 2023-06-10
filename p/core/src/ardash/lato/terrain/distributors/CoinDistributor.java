@@ -19,6 +19,7 @@ package ardash.lato.terrain.distributors;
 import java.util.SortedMap;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Pools;
 
 import ardash.lato.actors3.Coin;
 import ardash.lato.terrain.CollidingTerrainItem;
@@ -68,7 +69,8 @@ public class CoinDistributor extends ColliderDistributor {
 
 	@Override
 	protected void addItem(int i) {
-		final Coin coin = new Coin();
+		final Coin coin = Pools.get(Coin.class).obtain();
+		coin.init();
 		coin.setX(i);
 		getRangeMap().put(i, coin);
 	}

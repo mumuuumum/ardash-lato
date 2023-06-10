@@ -55,9 +55,11 @@ public class GameManager implements SODChangeListener {
 	}
 	
 	public void reset() {
-		tm.reset();
+//		tm.reset();
+		this.tm = new TerrainManager();
 		started = false;
 		coinsPickedUpThisRound = 0;
+		System.gc();
 	}
 
 	public Screen getScreen() {

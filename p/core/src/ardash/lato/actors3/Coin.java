@@ -8,13 +8,11 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Pools;
 
 import ardash.gdx.scenes.scene3d.pooling.PoolableActor3D;
 import ardash.lato.A;
 import ardash.lato.A.ModelAsset;
-import ardash.lato.actors.Performer;
-import ardash.lato.actors.Performer.Demise;
-import ardash.lato.actors.Performer.Pose;
 import ardash.lato.terrain.CollidingTerrainItem;
 
 public class Coin extends PoolableActor3D implements CollidingTerrainItem {
@@ -59,6 +57,8 @@ public class Coin extends PoolableActor3D implements CollidingTerrainItem {
 	public void reset() {
 		super.reset();
 		hasCollided = false;
+		setPosition(0f, 0f);
+        translate(0, 0.7f, 0);
 	}
 	
 	@Override
@@ -66,10 +66,10 @@ public class Coin extends PoolableActor3D implements CollidingTerrainItem {
 		super.init();
 		setPitch(MathUtils.random(360f));
 	}
-	public void init(float rotation) {
-		this.init();
-        setPitch(rotation);
-	}
+//	public void init(float rotation) {
+//		this.init();
+//        setPitch(rotation);
+//	}
 
 	public void detectCollision() {
 		if (hasCollided)
@@ -86,5 +86,6 @@ public class Coin extends PoolableActor3D implements CollidingTerrainItem {
 		remove();
 		getGameManager().pickUpCoin();
 		hasCollided = true;
+		Pools.free(this);
 	}
 }

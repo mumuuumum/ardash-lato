@@ -16,9 +16,13 @@
  ******************************************************************************/
 package ardash.lato.terrain.distributors;
 
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import com.badlogic.gdx.utils.Pools;
+
+import ardash.lato.actors3.TerrainItem;
 import ardash.lato.terrain.CollidingTerrainItem;
 import ardash.lato.terrain.DummyTerrainItem;
 
@@ -35,7 +39,9 @@ public abstract class TerrainItemDistributor {
 	}
 
 	public void reset() {
-		// TODO return items to object pool
+		for (TerrainItem ti : getRangeMap().values()) {
+			Pools.free(ti);
+		}
 		getRangeMap().clear();
 	}
 	
@@ -55,6 +61,15 @@ public abstract class TerrainItemDistributor {
 			generateNewRange();
 		}
 		return getRangeMap().subMap(from, to);
+	}
+	
+	public void removeItemsBefore(int to) {
+		SortedMap<Integer, CollidingTerrainItem> subMap = getItemsInRange(Integer.MIN_VALUE, to);
+		for (Integer i : subMap.keySet()) {
+			final CollidingTerrainItem removedValue = subMap.remove(i);
+			// TODO ERROR here: this still hold refenrecs of coins that were on the stage and have been picked up, an freed already, now we free them again, while they are in use, prolly no godd idea to make the rferences in the distributor, solution, whne items to to stage, remove them from her rangemap
+			//Pools.free(removedValue);
+		}
 	}
 
 	private void generateNewRange() {
