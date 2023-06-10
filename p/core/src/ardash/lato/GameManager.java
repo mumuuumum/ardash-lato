@@ -90,5 +90,9 @@ public class GameManager implements SODChangeListener {
 		SoundPlayer.playSound(A.getSound(SoundAsset.COINDROP));
 		coinsPickedUpThisRound++;
 	}
+	
+	public int getCoinsPickedUpThisRound() {
+		return coinsPickedUpThisRound;
+	}
 
 }

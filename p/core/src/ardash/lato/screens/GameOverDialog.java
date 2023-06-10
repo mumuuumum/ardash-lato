@@ -19,6 +19,8 @@ public class GameOverDialog extends AdvancedDialog implements StageAccessor{
 		getContentTable().row();
 		text(new Label("You travelled "+distance+" meters", A.LabelStyleAsset.SMALL_TEXT.style));
 		getContentTable().row();
+		text(new Label("You collected "+getGameManager().getCoinsPickedUpThisRound()+" coins", A.LabelStyleAsset.SMALL_TEXT.style));
+		getContentTable().row();
 		text(new Label("Touch the screen to restart", A.LabelStyleAsset.SMALL_TEXT.style));
 		
 //		getGameScreen().performer.getTimeInState()

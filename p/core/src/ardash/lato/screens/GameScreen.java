@@ -418,11 +418,10 @@ public class GameScreen implements Screen {
 		lblDistance.setAlignment(Align.topRight);
 		
 		// coin label
-		Label lblCoins = new Label("Coins: ", A.LabelStyleAsset.DISTANCE_LABEL.style) {
+		Label lblCoins = new Label("Coins: 0", A.LabelStyleAsset.DISTANCE_LABEL.style) {
 			public void act(float delta) {
 				super.act(delta);
-				// we don't use a listener here, because the meters update all the time (each frame)
-//				setText(performer.getTraveledDistanceMeters()+"m");
+				setText("Coins: " + gm.getCoinsPickedUpThisRound());
 			};
 		};
 		lblCoins.setAlignment(Align.topLeft);
