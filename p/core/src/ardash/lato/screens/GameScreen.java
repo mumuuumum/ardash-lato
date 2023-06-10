@@ -382,8 +382,8 @@ public class GameScreen implements Screen {
 		Gdx.input.setInputProcessor(guiStage);
 		guiStage.setDebugAll(GameManager.DEBUG_GUI);
 		
-		if (GameManager.DEBUG_GUI)
-			addDebugInfoView();
+//		if (GameManager.DEBUG_GUI)
+//			addDebugInfoView();
 		
 		Table mainTable = new Table();
 		mainTable.setTouchable(Touchable.enabled);
@@ -406,20 +406,35 @@ public class GameScreen implements Screen {
 			}
 		});
 		guiStage.addActor(mainTable);
+		
+		// distance label
 		Label lblDistance = new Label("0m", A.LabelStyleAsset.DISTANCE_LABEL.style) {
 			public void act(float delta) {
 				super.act(delta);
+				// we don't use a listener here, because the meters update all the time (each frame)
 				setText(performer.getTraveledDistanceMeters()+"m");
 			};
 		};
 		lblDistance.setAlignment(Align.topRight);
+		
+		// coin label
+		Label lblCoins = new Label("Coins: ", A.LabelStyleAsset.DISTANCE_LABEL.style) {
+			public void act(float delta) {
+				super.act(delta);
+				// we don't use a listener here, because the meters update all the time (each frame)
+//				setText(performer.getTraveledDistanceMeters()+"m");
+			};
+		};
+		lblCoins.setAlignment(Align.topLeft);
+		
+		//add labels
 		mainTable.setFillParent(true);
 		mainTable.row().expandX().fillX().expand().fill();
-		mainTable.add();
+		mainTable.add(lblCoins).left().pad(15f);
 		mainTable.add(lblDistance).right().pad(15f);
 		mainTable.row().expandY();
 
-		
+
 	}
 
 	private void addDebugInfoView() {

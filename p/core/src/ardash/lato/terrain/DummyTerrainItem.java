@@ -23,6 +23,7 @@ public class DummyTerrainItem implements CollidingTerrainItem{
 
 	@Override
 	public void moveBy(float x, float y) {
+		// nothing
 	}
 
 	@Override
@@ -42,6 +43,7 @@ public class DummyTerrainItem implements CollidingTerrainItem{
 
 	@Override
 	public void setTag(Tag tag) {
+		// nothing
 	}
 
 	@Override
@@ -51,11 +53,22 @@ public class DummyTerrainItem implements CollidingTerrainItem{
 
 	@Override
 	public void translate(float x, float y, float z) {
+		// nothing
 	}
 	
 	@Override
 	public boolean isCulled(Camera3D cam) {
 		return true;
+	}
+
+	@Override
+	public void detectCollision() {
+		// nothing
+	}
+
+	@Override
+	public void onCollision() {
+		// nothing
 	}
 
 }

@@ -2,6 +2,7 @@ package ardash.lato.actors3;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Pool.Poolable;
 
 import ardash.gdx.scenes.scene3d.shape.Image3D;
@@ -14,7 +15,8 @@ import ardash.lato.terrain.CollidingTerrainItem;
 
 public class Stone extends Image3D implements CollidingTerrainItem , Poolable{
 	
-	boolean hasCollided;
+	private boolean hasCollided;
+	private Rectangle bb;
 	public Stone() {
 		this(-1);
 	}
@@ -25,6 +27,7 @@ public class Stone extends Image3D implements CollidingTerrainItem , Poolable{
 		setTag(Tag.CENTER); // stones are always on center, not in background of foreground
 		setScale(0.02f, 0.02f, 1);
 		reset();
+		this.bb = new Rectangle(getX(), getY(), 1, 1);
 	}
 	
 	@Override
@@ -49,37 +52,28 @@ public class Stone extends Image3D implements CollidingTerrainItem , Poolable{
 	@Override
 	public void act(float delta) {
 		super.act(delta);
-		// by doing collision detection here we reduce the work and the code needed in Performer (ie. if there is no Stone, nothing need to be done))
-		detectCollision();
+		CollidingTerrainItem.super.act(delta);
 	}
 
-	private void detectCollision() {
+	public void detectCollision() {
 		if (hasCollided)
 			return;
 		
-		// TODO continue here. use rectangle class for collision detection
-		
-		final float myWidth = 1.0f;
-		final float pWidth = 1.0f;
-		final float myX = getX()+myWidth/2f;
-		final Performer performer = getGameScreen().performer;
-		final float pX = performer.getX() + pWidth/2f;
-		
-		if (Math.abs(myX - pX) < myWidth) {
-			
-			// check Y coords too
-			final float stoneYtop = getY()+1f;
-			final float pYbottom = performer.getY();
-			
-			if (stoneYtop > pYbottom) {
-				if (performer.getState().isInAir()) {
-					performer.setCauseOfDeath(Demise.LAND_ON_STONE);
-				} else {
-					performer.setCauseOfDeath(Demise.HIT_STONE);
-				}
-				performer.crash(Pose.CRASH_NOSE);
-				hasCollided = true;
-			}
+		// TODO update bb only when position changes (and in init())
+		bb.setPosition(getX(), getY());
+		if (getGameScreen().performer.bb.overlaps(bb)) {
+			onCollision();
 		}
+	}
+
+	public void onCollision() {
+		final Performer performer = getGameScreen().performer;
+		if (performer.getState().isInAir()) {
+			performer.setCauseOfDeath(Demise.LAND_ON_STONE);
+		} else {
+			performer.setCauseOfDeath(Demise.HIT_STONE);
+		}
+		performer.crash(Pose.CRASH_NOSE);
+		hasCollided = true;
 	}
 }
