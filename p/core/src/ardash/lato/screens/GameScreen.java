@@ -382,8 +382,8 @@ public class GameScreen implements Screen {
 		Gdx.input.setInputProcessor(guiStage);
 		guiStage.setDebugAll(GameManager.DEBUG_GUI);
 		
-//		if (GameManager.DEBUG_GUI)
-//			addDebugInfoView();
+		if (GameManager.DEBUG_GUI)
+			addDebugInfoView();
 		
 		Table mainTable = new Table();
 		mainTable.setTouchable(Touchable.enabled);
