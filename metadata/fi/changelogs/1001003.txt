@@ -1,0 +1,3 @@
+Peliin lisättiin kolikoiden keräysmekanismi (3D, GUI, ääni, ...).
+Lisätty objektien yhdistäminen suorituskyvyn parantamiseksi.
+Lisätty kivet törmäyskohteiksi.

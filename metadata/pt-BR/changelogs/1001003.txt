@@ -1,0 +1,3 @@
+Adicionado o mecanismo de coleta de moedas (3D, GUI, som, ...) ao jogo.
+Adicionado pool de objetos para melhor desempenho.
+Pedras adicionadas como objetos colisores.

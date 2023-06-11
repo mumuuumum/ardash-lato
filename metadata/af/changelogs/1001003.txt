@@ -1,0 +1,3 @@
+Het die muntinsamelingsmeganisme (3D, GUI, klank, ...) by die speletjie gevoeg.
+Bygevoeg voorwerppoel vir beter werkverrigting.
+Bygevoeg klippe as botsende voorwerpe.

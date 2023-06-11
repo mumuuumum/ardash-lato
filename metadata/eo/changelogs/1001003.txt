@@ -1,0 +1,3 @@
+Aldonis la monerkolektan mekanismon (3D, GUI, sono, ...) al la ludo.
+Aldonita objekta kunigo por pli bona rendimento.
+Aldonitaj ŝtonoj kiel kolizioj objektoj.

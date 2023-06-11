@@ -1,0 +1,3 @@
+Aggiunto il meccanismo di raccolta delle monete (3D, GUI, suono, ...) al gioco.
+Aggiunto il raggruppamento di oggetti per prestazioni migliori.
+Aggiunte pietre come oggetti collider.

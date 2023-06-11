@@ -1,0 +1,3 @@
+Added the coin-collection mechanism (3D, GUI, sound, ...) to the game.
+Added object pooling for better performance.
+Added stones as collider objects.

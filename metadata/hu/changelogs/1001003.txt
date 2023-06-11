@@ -1,0 +1,3 @@
+Hozzáadtuk az érmegyűjtő mechanizmust (3D, GUI, hang stb.) a játékhoz.
+Objektumtárolás hozzáadva a jobb teljesítmény érdekében.
+Hozzáadott köveket ütköztető objektumként.

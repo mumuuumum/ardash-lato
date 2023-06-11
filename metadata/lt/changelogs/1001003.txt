@@ -1,0 +1,3 @@
+Prie žaidimo pridėtas monetų rinkimo mechanizmas (3D, GUI, garsas, ...).
+Pridėtas objektų telkimas geresniam veikimui.
+Pridėta akmenų kaip susidūrimo objektai.

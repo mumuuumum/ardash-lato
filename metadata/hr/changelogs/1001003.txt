@@ -1,0 +1,3 @@
+Igri je dodan mehanizam za prikupljanje novčića (3D, GUI, zvuk, ...).
+Dodano udruživanje objekata za bolje performanse.
+Dodano kamenje kao objekti sudarača.

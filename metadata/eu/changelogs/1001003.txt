@@ -1,0 +1,3 @@
+Txanponak biltzeko mekanismoa (3D, GUI, soinua, ...) gehitu da jokoan.
+Objektuen bilketa gehitu da errendimendu hobea izateko.
+Harriak talkatzaile gisa gehitu dira.

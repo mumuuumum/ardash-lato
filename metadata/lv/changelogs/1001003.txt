@@ -1,0 +1,3 @@
+Spēlei tika pievienots monētu savākšanas mehānisms (3D, GUI, skaņa, ...).
+Pievienota objektu apvienošana labākai veiktspējai.
+Pievienoti akmeņi kā sadursmes objekti.

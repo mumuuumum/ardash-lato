@@ -1,0 +1,3 @@
+Lagt til myntinnsamlingsmekanismen (3D, GUI, lyd, ...) til spillet.
+Lagt til objektpooling for bedre ytelse.
+Lagt til steiner som kolliderende objekter.

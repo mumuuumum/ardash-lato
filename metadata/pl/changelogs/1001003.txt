@@ -1,0 +1,3 @@
+Dodano mechanizm zbierania monet (3D, GUI, dźwięk, ...) do gry.
+Dodano łączenie obiektów w celu uzyskania lepszej wydajności.
+Dodano kamienie jako obiekty typu collider.

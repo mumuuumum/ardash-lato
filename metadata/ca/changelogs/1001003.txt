@@ -1,0 +1,3 @@
+S'ha afegit el mecanisme de recollida de monedes (3D, GUI, so, ...) al joc.
+S'ha afegit l'agrupació d'objectes per a un millor rendiment.
+S'han afegit pedres com a objectes col·lisionadors.
