@@ -109,13 +109,10 @@ public class TerrainManager {
 						continue;
 					}
 					itemsToDelete.add(plannedCoinX);
-					final Coin cti = Pools.get(Coin.class).obtain(); // plannedCoinsInRange.get(plannedCoinX);
+					final Coin cti = Pools.get(Coin.class).obtain();
 					cti.init();
-//					if (!(cti instanceof Coin)) {
-//						continue;
-//					}
 					// the CTI are being created with a wider view, so they already have the absolute X value correct: now move them back
-					cti.setPosition(plannedCoinX, 0);
+					cti.setPosition(plannedCoinX, 0.7f);
 					cti.moveBy(-offsetX, 0);
 					cti.moveBy(0, s.heightAt(cti.getX()));
 					s.surroundingItems.add(cti);
@@ -124,25 +121,22 @@ public class TerrainManager {
 			
 			// put some stones on the new section, if there are stones planned for it
 			{
-				SortedMap<Integer, TerrainItemType> plannedCoinsInRange = sd.getItemsInRange((int)(s.firstX()+offsetX), MathUtils.ceil(s.lastX()+offsetX));
-				for (int plannedCoinX : plannedCoinsInRange.keySet()) {
-					if (plannedCoinsInRange.get(plannedCoinX) != TerrainItemType.STONE) {
+				SortedMap<Integer, TerrainItemType> plannedStonesInRange = sd.getItemsInRange((int)(s.firstX()+offsetX), MathUtils.ceil(s.lastX()+offsetX));
+				for (int plannedStoneX : plannedStonesInRange.keySet()) {
+					if (plannedStonesInRange.get(plannedStoneX) != TerrainItemType.STONE) {
 						continue;
 					}
-					itemsToDelete.add(plannedCoinX);
-					final Stone cti = Pools.get(Stone.class).obtain(); // plannedCoinsInRange.get(plannedCoinX);
+					itemsToDelete.add(plannedStoneX);
+					final Stone cti = Pools.get(Stone.class).obtain();
 //					cti.init(); // TODO
-//					if (!(cti instanceof Stone)) {
-//						continue;
-//					}
 					// the CTI are being created with a wider view, so they already have the absolute X value correct: now move them back
-					cti.setPosition(plannedCoinX, 0);
+					cti.setPosition(plannedStoneX, -0.5f);
 					cti.moveBy(-offsetX, 0);
 					cti.moveBy(0, s.heightAt(cti.getX()));
 					s.surroundingItems.add(cti);
 				}				
 				for (Integer integer : itemsToDelete) {
-					plannedCoinsInRange.remove(integer);
+					plannedStonesInRange.remove(integer);
 				}
 			}
 			
