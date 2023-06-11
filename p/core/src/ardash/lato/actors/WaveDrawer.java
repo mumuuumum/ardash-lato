@@ -213,7 +213,7 @@ public class WaveDrawer extends Group3D implements Disposable, AmbientColorChang
 	 */
 	private void updateTerrainSegments(float x) {
 		// don't cull if performer is dropping
-		if (getGameScreen().performer.state == PlayerState.DROPPED || getGameScreen().performer.state.isCrashed()) // TODO this check is easier, move up ??
+		if (getGameScreen().performer.state == PlayerState.DROPPED || getGameScreen().performer.state.isCrashed())
 			return;
 		
 		final float currentMin = terrainSegmentList.first().x;

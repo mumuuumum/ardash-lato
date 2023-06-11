@@ -22,6 +22,7 @@ public class HomeHill extends Section {
 //        h1.translate(10,3, -2);
 //		h1.setTag(Tag.BACK);
         Farmhouse h1 = Pools.obtain(Farmhouse.class);
+        h1.init();
 		h1.init(-170f);
         h1.translate(10, 3.1f, -4);
 		h1.setTag(Tag.BACK);
@@ -31,6 +32,7 @@ public class HomeHill extends Section {
 //		h2.setTag(Tag.BACK);
 //		Farmhouse h2 = new Farmhouse(-70f);
 		Farmhouse h2 = Pools.obtain(Farmhouse.class);
+		h2.init();
 		h2.init(-70f);
         h2.translate(25, 3.1f, -20);
 		h2.setTag(Tag.BACK);

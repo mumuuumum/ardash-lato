@@ -395,6 +395,7 @@ public class GameScreen implements Screen {
 				System.out.println(performer.getTimeInState());
 				// handle the final touch on the game over dialog
 				if (performer.getState().isCrashed() && performer.getTimeInState() >= 2f) {
+					gm.reset();
 					gm.game.setScreen(new LoadingScreen(gm));
 				}
 				return true;
@@ -406,20 +407,34 @@ public class GameScreen implements Screen {
 			}
 		});
 		guiStage.addActor(mainTable);
+		
+		// distance label
 		Label lblDistance = new Label("0m", A.LabelStyleAsset.DISTANCE_LABEL.style) {
 			public void act(float delta) {
 				super.act(delta);
+				// we don't use a listener here, because the meters update all the time (each frame)
 				setText(performer.getTraveledDistanceMeters()+"m");
 			};
 		};
 		lblDistance.setAlignment(Align.topRight);
+		
+		// coin label
+		Label lblCoins = new Label("Coins: 0", A.LabelStyleAsset.DISTANCE_LABEL.style) {
+			public void act(float delta) {
+				super.act(delta);
+				setText("Coins: " + gm.getCoinsPickedUpThisRound());
+			};
+		};
+		lblCoins.setAlignment(Align.topLeft);
+		
+		//add labels
 		mainTable.setFillParent(true);
 		mainTable.row().expandX().fillX().expand().fill();
-		mainTable.add();
+		mainTable.add(lblCoins).left().pad(15f);
 		mainTable.add(lblDistance).right().pad(15f);
 		mainTable.row().expandY();
 
-		
+
 	}
 
 	private void addDebugInfoView() {

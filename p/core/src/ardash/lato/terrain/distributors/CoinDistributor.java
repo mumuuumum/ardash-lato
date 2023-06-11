@@ -20,8 +20,7 @@ import java.util.SortedMap;
 
 import com.badlogic.gdx.math.MathUtils;
 
-import ardash.lato.actors3.Coin;
-import ardash.lato.terrain.CollidingTerrainItem;
+import ardash.lato.terrain.TerrainItemType;
 
 public class CoinDistributor extends ColliderDistributor {
 	
@@ -55,7 +54,7 @@ public class CoinDistributor extends ColliderDistributor {
 		final int amount = MathUtils.random(1, 6);
 		
 		// check if there already coins in this range
-		SortedMap<Integer, CollidingTerrainItem> existingRange = getItemsInRange(start, start+amount);
+		SortedMap<Integer, TerrainItemType> existingRange = getItemsInRange(start, start+amount);
 		if (! existingRange.isEmpty()) {
 			return 0;
 		}
@@ -68,9 +67,10 @@ public class CoinDistributor extends ColliderDistributor {
 
 	@Override
 	protected void addItem(int i) {
-		final Coin coin = new Coin();
-		coin.setX(i);
-		getRangeMap().put(i, coin);
+//		final Coin coin = Pools.get(Coin.class).obtain();
+//		coin.init();
+//		coin.setX(i);
+		getRangeMap().put(i, TerrainItemType.COIN);
 	}
 
 	@Override

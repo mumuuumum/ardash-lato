@@ -50,9 +50,18 @@ public class Farmhouse extends PoolableActor3D implements TerrainItem{
 	public void init() {
 		super.init();
 		setPitch(MathUtils.random(360f));
+		setPosition(0, 0, 0);
+        translate(0, -0.6f, 0);
 	}
 	public void init(float rotation) {
 		this.init();
         setPitch(rotation);
 	}
+	
+//	@Override
+//		public boolean remove() {
+//		if (hasParent())
+//			throw new RuntimeException("tmp");
+//		return super.remove();
+//		}
 }

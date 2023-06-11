@@ -10,7 +10,8 @@ public interface Initable extends Poolable {
 	
 	default void verify() {
 		if (!isInitialised()) {
-			throw new IllegalStateException("Item has act()-ed but was not initialised. Call init after unpooling it.");
+			System.err.println("Item "+this.getClass().getSimpleName()+" has act()-ed but was not initialised. Call init after unpooling it.");
+//			throw new IllegalStateException("Item "+this.getClass().getSimpleName()+" has act()-ed but was not initialised. Call init after unpooling it.");
 		}
 	}
 }

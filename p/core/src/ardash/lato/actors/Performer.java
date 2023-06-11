@@ -31,6 +31,7 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Disposable;
 import com.bitfire.postprocessing.effects.Zoomer;
@@ -119,6 +120,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 	private float airTime;
 	private float timeInState;
 	private float startedAtX = -1;
+	public Rectangle bb;
 	
 	public interface PerformerListener{
 		void onPositionChange(float newX, float newY);
@@ -150,6 +152,8 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 		
 //		scarfAttachPointGroup.setPosition(0.5f, 0.1f);
 		scarfAttachPointGroup.setPosition(0f, 0f);
+		
+		this.bb = new Rectangle(getX(), getY(), PERFORMER_WIDTH, PERFORMER_WIDTH);
 	}
 	
 //	private float accum = 0;
@@ -413,6 +417,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			if (!spray.hasParent())
 				getStage().addActor(spray);
 			spray.setPosition(getX(), getY());
+			bb.setPosition(getX(), getY());
 		}
 		
 	}
@@ -587,6 +592,8 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 					@Override
 					public void run() {
 						new GameOverDialog(getCauseOfDeath().toString(), getTraveledDistanceMeters()).show(getGameScreen().guiStage);
+						
+						//blurr background behind dialog
 				        Zoomer sb = new Zoomer((int)(Gdx.graphics.getWidth() * 0.25f), (int)(Gdx.graphics.getHeight() * 0.25f) , Quality.VeryHigh);
 				        sb.setBlurStrength(2);
 						getGameScreen().postProcessor.addEffect( sb );

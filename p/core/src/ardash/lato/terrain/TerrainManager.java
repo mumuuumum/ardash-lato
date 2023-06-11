@@ -17,14 +17,18 @@
 package ardash.lato.terrain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedMap;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pools;
 
 import ardash.lato.actors3.Coin;
 import ardash.lato.actors3.Stone;
+import ardash.lato.actors3.TerrainItem;
 import ardash.lato.terrain.distributors.CoinDistributor;
 import ardash.lato.terrain.distributors.StoneDistributor;
 import ardash.lato.terrain.distributors.TerrainItemDistributor;
@@ -56,8 +60,15 @@ public class TerrainManager {
 		reset();
 	}
 
-	public void reset() {
+	// TODO dont reset, make a new one
+	private void reset() {
+		for (Section section : sections) {
+			for (TerrainItem ti : section.surroundingItems) {
+				Pools.free(ti);
+			}
+		}
 		sections.clear();
+		listeners.clear();
 		cd.reset();
 		sd.reset();
 	}
@@ -89,34 +100,44 @@ public class TerrainManager {
 			
 			// the type and size of the new sections is now final
 			
+			Set<Integer> itemsToDelete = new HashSet<>();
 			// put some coins on the new section, if there are coins planned for it
 			{
-				SortedMap<Integer, CollidingTerrainItem> plannedCoinsInRange = cd.getItemsInRange((int)(s.firstX()+offsetX), MathUtils.ceil(s.lastX()+offsetX));
+				SortedMap<Integer, TerrainItemType> plannedCoinsInRange = cd.getItemsInRange((int)(s.firstX()+offsetX), MathUtils.ceil(s.lastX()+offsetX));
 				for (int plannedCoinX : plannedCoinsInRange.keySet()) {
-					final CollidingTerrainItem cti = plannedCoinsInRange.get(plannedCoinX);
-					if (!(cti instanceof Coin)) {
+					if (plannedCoinsInRange.get(plannedCoinX) != TerrainItemType.COIN) {
 						continue;
 					}
+					itemsToDelete.add(plannedCoinX);
+					final Coin cti = Pools.get(Coin.class).obtain();
+					cti.init();
 					// the CTI are being created with a wider view, so they already have the absolute X value correct: now move them back
+					cti.setPosition(plannedCoinX, 0.7f);
 					cti.moveBy(-offsetX, 0);
 					cti.moveBy(0, s.heightAt(cti.getX()));
 					s.surroundingItems.add(cti);
-				}				
+				}
 			}
 			
 			// put some stones on the new section, if there are stones planned for it
 			{
-				SortedMap<Integer, CollidingTerrainItem> plannedCoinsInRange = sd.getItemsInRange((int)(s.firstX()+offsetX), MathUtils.ceil(s.lastX()+offsetX));
-				for (int plannedCoinX : plannedCoinsInRange.keySet()) {
-					final CollidingTerrainItem cti = plannedCoinsInRange.get(plannedCoinX);
-					if (!(cti instanceof Stone)) {
+				SortedMap<Integer, TerrainItemType> plannedStonesInRange = sd.getItemsInRange((int)(s.firstX()+offsetX), MathUtils.ceil(s.lastX()+offsetX));
+				for (int plannedStoneX : plannedStonesInRange.keySet()) {
+					if (plannedStonesInRange.get(plannedStoneX) != TerrainItemType.STONE) {
 						continue;
 					}
+					itemsToDelete.add(plannedStoneX);
+					final Stone cti = Pools.get(Stone.class).obtain();
+//					cti.init(); // TODO
 					// the CTI are being created with a wider view, so they already have the absolute X value correct: now move them back
+					cti.setPosition(plannedStoneX, -0.5f);
 					cti.moveBy(-offsetX, 0);
 					cti.moveBy(0, s.heightAt(cti.getX()));
 					s.surroundingItems.add(cti);
 				}				
+				for (Integer integer : itemsToDelete) {
+					plannedStonesInRange.remove(integer);
+				}
 			}
 			
 			s.addOffsetToSurroundings(offset);

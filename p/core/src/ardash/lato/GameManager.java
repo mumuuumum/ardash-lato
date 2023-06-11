@@ -20,8 +20,10 @@ package ardash.lato;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.PerformanceCounters;
 
+import ardash.lato.A.SoundAsset;
 import ardash.lato.screens.GameScreen;
 import ardash.lato.terrain.TerrainManager;
+import ardash.lato.utils.SoundPlayer;
 import ardash.lato.weather.SODChangeListener;
 
 public class GameManager implements SODChangeListener {
@@ -33,7 +35,7 @@ public class GameManager implements SODChangeListener {
 //	public static final boolean DEBUG_WEATHER_FASTMODE = true;
 	public static final boolean DEBUG_ZOOM_OUT_TO_MAX_SPEED = false;
 	public static final boolean DEBUG_PRINT_PERFORMANCE_STATS = false;
-	public static final boolean DEBUG_PRINT_POOL_STATS = true;
+	public static final boolean DEBUG_PRINT_POOL_STATS = false;
 	
 	public final LatoGame game;
 	public TerrainManager tm;
@@ -44,6 +46,7 @@ public class GameManager implements SODChangeListener {
 	 */
 	private boolean started;
 	private float lastHourOfDay = -1;
+	private int coinsPickedUpThisRound;
 
 	public GameManager(LatoGame game) {
 		this.game = game;
@@ -52,8 +55,11 @@ public class GameManager implements SODChangeListener {
 	}
 	
 	public void reset() {
-		tm.reset();
+//		tm.reset();
+		this.tm = new TerrainManager();
 		started = false;
+		coinsPickedUpThisRound = 0;
+		System.gc();
 	}
 
 	public Screen getScreen() {
@@ -80,6 +86,15 @@ public class GameManager implements SODChangeListener {
 	
 	public float getLastHourOfDay() {
 		return lastHourOfDay;
+	}
+
+	public void pickUpCoin() {
+		SoundPlayer.playSound(A.getSound(SoundAsset.COINDROP));
+		coinsPickedUpThisRound++;
+	}
+	
+	public int getCoinsPickedUpThisRound() {
+		return coinsPickedUpThisRound;
 	}
 
 }

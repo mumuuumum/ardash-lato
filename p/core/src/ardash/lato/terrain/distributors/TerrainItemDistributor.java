@@ -19,8 +19,7 @@ package ardash.lato.terrain.distributors;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import ardash.lato.terrain.CollidingTerrainItem;
-import ardash.lato.terrain.DummyTerrainItem;
+import ardash.lato.terrain.TerrainItemType;
 
 public abstract class TerrainItemDistributor {
 
@@ -35,7 +34,9 @@ public abstract class TerrainItemDistributor {
 	}
 
 	public void reset() {
-		// TODO return items to object pool
+//		for (TerrainItem ti : getRangeMap().values()) {
+//			Pools.free(ti);
+//		}
 		getRangeMap().clear();
 	}
 	
@@ -48,14 +49,23 @@ public abstract class TerrainItemDistributor {
 	 * The range map is static. For stones and coines it is the colliderRagemap.
 	 * @return The Rage Map for this Type.
 	 */
-	protected abstract TreeMap<Integer, CollidingTerrainItem> getRangeMap();
+	protected abstract TreeMap<Integer, TerrainItemType> getRangeMap(); // TODO here. Float is not godd, because wwhen fetching items in range, we can distingush betweem coin and stone. letst use an Enum for the type of item. however, oit must no be the otem itself
 
-	public SortedMap<Integer, CollidingTerrainItem> getItemsInRange(int from, int to) {
+	public SortedMap<Integer, TerrainItemType> getItemsInRange(int from, int to) {
 		if (to > getCurrMaxX()) {
 			generateNewRange();
 		}
 		return getRangeMap().subMap(from, to);
 	}
+	
+//	public void removeItemsBefore(int to) {
+//		SortedMap<Integer, CollidingTerrainItem> subMap = getItemsInRange(Integer.MIN_VALUE, to);
+//		for (Integer i : subMap.keySet()) {
+//			final CollidingTerrainItem removedValue = subMap.remove(i);
+//			// TODO ERROR here: this still hold refenrecs of coins that were on the stage and have been picked up, an freed already, now we free them again, while they are in use, prolly no godd idea to make the rferences in the distributor, solution, whne items to to stage, remove them from her rangemap
+//			//Pools.free(removedValue);
+//		}
+//	}
 
 	private void generateNewRange() {
 		final int from = getCurrMaxX();
@@ -85,8 +95,8 @@ public abstract class TerrainItemDistributor {
 	 * @param i the x index
 	 */
 	protected void addDummyItem(int i) {
-		final DummyTerrainItem di = new DummyTerrainItem();
-		getRangeMap().put(i, di);
+//		final DummyTerrainItem di = new DummyTerrainItem();
+		getRangeMap().put(i, TerrainItemType.DUMMY);
 	}
 
 	

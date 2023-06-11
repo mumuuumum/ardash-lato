@@ -7,13 +7,17 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.attributes.FloatAttribute;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Pools;
 
 import ardash.gdx.scenes.scene3d.pooling.PoolableActor3D;
 import ardash.lato.A;
 import ardash.lato.A.ModelAsset;
 import ardash.lato.terrain.CollidingTerrainItem;
 
-public class Coin extends PoolableActor3D implements CollidingTerrainItem{
+public class Coin extends PoolableActor3D implements CollidingTerrainItem {
+	private boolean hasCollided;
+	private Rectangle bb;
 	private static Color emissiveLightColour = Color.GOLD.cpy();
 	static {
 		emissiveLightColour.lerp(Color.BLACK, 0.15f); // make less shiny by moving it 15% towards black
@@ -31,14 +35,15 @@ public class Coin extends PoolableActor3D implements CollidingTerrainItem{
         setRoll(90f);
         setTag(Tag.CENTER);
         init();
+		this.bb = new Rectangle(getX(), getY(), 0.3f, 0.3f);
 	}
 	
-	int i = 0;
 	@Override
-		public void act(float delta) {
-			super.act(delta);
-			setYaw(getYaw()-3f);
-		}
+	public void act(float delta) {
+		super.act(delta);
+		CollidingTerrainItem.super.act(delta);
+		setYaw(getYaw()-3f);
+	}
 	
 	@Override
 	public void draw(ModelBatch modelBatch, Environment environment) {
@@ -51,6 +56,9 @@ public class Coin extends PoolableActor3D implements CollidingTerrainItem{
 	@Override
 	public void reset() {
 		super.reset();
+		hasCollided = false;
+		setPosition(0f, 0f);
+        translate(0, 0.7f, 0);
 	}
 	
 	@Override
@@ -58,8 +66,23 @@ public class Coin extends PoolableActor3D implements CollidingTerrainItem{
 		super.init();
 		setPitch(MathUtils.random(360f));
 	}
-	public void init(float rotation) {
-		this.init();
-        setPitch(rotation);
+
+	public void detectCollision() {
+		if (hasCollided)
+			return;
+		
+		// TODO update bb only when position changes (and in init())
+		bb.setPosition(getX(), getY());
+		if (getGameScreen().performer.bb.overlaps(bb)) {
+			onCollision();
+		}
 	}
+
+	public void onCollision() {
+		remove();
+		getGameManager().pickUpCoin();
+		hasCollided = true;
+		Pools.free(this);
+	}
+	
 }

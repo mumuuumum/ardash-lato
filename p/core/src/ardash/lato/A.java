@@ -201,7 +201,7 @@ public class A {
 	 * 
 	 */
 	public enum SoundAsset {
-		BELL;
+		COINDROP;
 
 		@Override
 		public String toString() {

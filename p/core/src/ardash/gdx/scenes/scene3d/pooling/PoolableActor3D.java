@@ -1,6 +1,7 @@
 package ardash.gdx.scenes.scene3d.pooling;
 
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.utils.Pools;
 
 import ardash.gdx.scenes.scene3d.Actor3D;
 
@@ -19,6 +20,19 @@ public class PoolableActor3D extends Actor3D implements Initable{
 	public PoolableActor3D(Model model) {
 		super(model);
 	}
+	
+//	@Override
+//	public boolean remove() {
+//		boolean canBeFree = false;
+//		if (hasParent())
+//			canBeFree = true;
+//		
+//		boolean b = super.remove();
+//		if (canBeFree)
+//			Pools.free(this);
+//			
+//		return b;
+//	}
 
 	@Override
 	public void reset() {
@@ -38,6 +52,9 @@ public class PoolableActor3D extends Actor3D implements Initable{
 	
 	@Override
 	public void act(float delta) {
+		if (!hasParent())
+			// This must be checked, because sometimes the Actor get removed, but is still in the loops of the parent to act(). if act() is called after being removed ADN freed, the verification fails. 
+			return;
 		super.act(delta);
 		verify();
 	}
