@@ -22,6 +22,7 @@ import com.badlogic.gdx.math.MathUtils;
 
 import ardash.lato.actors3.Stone;
 import ardash.lato.terrain.CollidingTerrainItem;
+import ardash.lato.terrain.TerrainItemType;
 
 public class StoneDistributor extends ColliderDistributor {
 	
@@ -55,7 +56,7 @@ public class StoneDistributor extends ColliderDistributor {
 		final int amount = (int)MathUtils.randomTriangular(1, 4, 1); // max 3 stones in a row, but 1 is most likely
 		
 		// check if there already coins in this range
-		SortedMap<Integer, CollidingTerrainItem> existingRange = getItemsInRange(start, start+amount);
+		SortedMap<Integer, TerrainItemType> existingRange = getItemsInRange(start, start+amount);
 		if (! existingRange.isEmpty()) {
 			return 0;
 		}
@@ -72,9 +73,9 @@ public class StoneDistributor extends ColliderDistributor {
 
 	@Override
 	protected void addItem(int i) {
-		final Stone s = new Stone();
-		s.setX(i);
-		getRangeMap().put(i, s);
+//		final Stone s = new Stone();
+//		s.setX(i);
+		getRangeMap().put(i, TerrainItemType.STONE);
 	}
 
 	@Override

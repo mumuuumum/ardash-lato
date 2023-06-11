@@ -66,10 +66,6 @@ public class Coin extends PoolableActor3D implements CollidingTerrainItem {
 		super.init();
 		setPitch(MathUtils.random(360f));
 	}
-//	public void init(float rotation) {
-//		this.init();
-//        setPitch(rotation);
-//	}
 
 	public void detectCollision() {
 		if (hasCollided)
@@ -88,4 +84,5 @@ public class Coin extends PoolableActor3D implements CollidingTerrainItem {
 		hasCollided = true;
 		Pools.free(this);
 	}
+	
 }
