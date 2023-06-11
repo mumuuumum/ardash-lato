@@ -1,0 +1,3 @@
+Het mechanisme voor het verzamelen van munten (3D, GUI, geluid, ...) aan het spel toegevoegd.
+Objectpooling toegevoegd voor betere prestaties.
+Stenen toegevoegd als botsobjecten.

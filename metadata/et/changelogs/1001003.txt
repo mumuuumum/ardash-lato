@@ -1,0 +1,3 @@
+Lisasime mängu müntide kogumise mehhanismi (3D, GUI, heli jne).
+Parema jõudluse tagamiseks on lisatud objektide ühendamine.
+Lisatud kivid põrkeobjektidena.

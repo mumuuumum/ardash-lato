@@ -1,0 +1,3 @@
+Dem Spiel wurde der Münzsammelmechanismus (3D, GUI, Sound, ...) hinzugefügt.
+Objekt-Pooling für bessere Leistung hinzugefügt.
+Steine als Collider-Objekte hinzugefügt.

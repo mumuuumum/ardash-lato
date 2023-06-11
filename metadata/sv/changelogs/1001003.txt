@@ -1,0 +1,3 @@
+Lade till myntinsamlingsmekanismen (3D, GUI, ljud, ...) till spelet.
+Lagt till objektpoolning för bättre prestanda.
+Lade till stenar som kolliderande objekt.

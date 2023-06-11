@@ -1,0 +1,3 @@
+Do hry bol pridaný mechanizmus zberu mincí (3D, GUI, zvuk, ...).
+Pridané združovanie objektov pre lepší výkon.
+Pridané kamene ako zrážacie objekty.

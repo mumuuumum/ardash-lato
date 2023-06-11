@@ -1,0 +1,3 @@
+Oyuna madeni para toplama mekanizması (3D, GUI, ses, ...) eklendi.
+Daha iyi performans için nesne havuzu eklendi.
+Çarpıştırıcı nesneler olarak taşlar eklendi.

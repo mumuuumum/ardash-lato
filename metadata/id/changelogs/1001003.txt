@@ -1,0 +1,3 @@
+Menambahkan mekanisme pengumpulan koin (3D, GUI, suara, ...) ke dalam game.
+Menambahkan penggabungan objek untuk kinerja yang lebih baik.
+Menambahkan batu sebagai objek collider.

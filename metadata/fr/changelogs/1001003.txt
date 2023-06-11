@@ -1,0 +1,3 @@
+Ajout du mécanisme de collecte de pièces (3D, GUI, son, ...) au jeu.
+Mise en commun d'objets ajoutée pour de meilleures performances.
+Ajout de pierres en tant qu'objets de collision.

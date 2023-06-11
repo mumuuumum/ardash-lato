@@ -1,0 +1,3 @@
+Đã thêm cơ chế thu thập xu (3D, GUI, âm thanh, ...) vào trò chơi.
+Đã thêm nhóm đối tượng để có hiệu suất tốt hơn.
+Đã thêm đá làm đối tượng máy va chạm.

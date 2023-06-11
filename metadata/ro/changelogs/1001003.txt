@@ -1,0 +1,3 @@
+S-a adăugat mecanismul de colectare a monedelor (3D, GUI, sunet, ...) la joc.
+S-a adăugat gruparea de obiecte pentru o performanță mai bună.
+S-au adăugat pietre ca obiecte de coliziune.
