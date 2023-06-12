@@ -96,61 +96,117 @@ public class TerrainManager {
 			if (MathUtils.random(0, 100)<20)
 				s = new Canyon();
 			final Vector2 offset = this.getLastSection().last();
-			final float offsetX = offset.x;
 			
 			// the type and size of the new sections is now final
 			
-			Set<Integer> itemsToDelete = new HashSet<>();
-			// put some coins on the new section, if there are coins planned for it
-			{
-				SortedMap<Integer, TerrainItemType> plannedCoinsInRange = cd.getItemsInRange((int)(s.firstX()+offsetX), MathUtils.ceil(s.lastX()+offsetX));
-				for (int plannedCoinX : plannedCoinsInRange.keySet()) {
-					if (plannedCoinsInRange.get(plannedCoinX) != TerrainItemType.COIN) {
-						continue;
-					}
-					itemsToDelete.add(plannedCoinX);
-					final Coin cti = Pools.get(Coin.class).obtain();
-					cti.init();
-					// the CTI are being created with a wider view, so they already have the absolute X value correct: now move them back
-					cti.setPosition(plannedCoinX, 0.7f);
-					cti.moveBy(-offsetX, 0);
-					cti.moveBy(0, s.heightAt(cti.getX()));
-					s.surroundingItems.add(cti);
-				}
-			}
-			
-			// put some stones on the new section, if there are stones planned for it
-			{
-				SortedMap<Integer, TerrainItemType> plannedStonesInRange = sd.getItemsInRange((int)(s.firstX()+offsetX), MathUtils.ceil(s.lastX()+offsetX));
-				for (int plannedStoneX : plannedStonesInRange.keySet()) {
-					if (plannedStonesInRange.get(plannedStoneX) != TerrainItemType.STONE) {
-						continue;
-					}
-					itemsToDelete.add(plannedStoneX);
-					final Stone cti = Pools.get(Stone.class).obtain();
-//					cti.init(); // TODO
-					// the CTI are being created with a wider view, so they already have the absolute X value correct: now move them back
-					cti.setPosition(plannedStoneX, -0.5f);
-					cti.moveBy(-offsetX, 0);
-					cti.moveBy(0, s.heightAt(cti.getX()));
-					s.surroundingItems.add(cti);
-				}				
-				for (Integer integer : itemsToDelete) {
-					plannedStonesInRange.remove(integer);
-				}
-			}
-			
+			final float offsetX = offset.x;
+			addCoinsAndStones(s, offsetX);
 			s.addOffsetToSurroundings(offset);
 			s.addOffsetToSegList(offset);
 			sections.add(s);
-
-		
 		}
-		
 		
 		for (TerrainListener listener : listeners) {
 			listener.onNewSectionCreated(s);
 			s.validate();
+		}
+	}
+
+	private void addCoinsAndStones(Section s, final float offsetX) {
+		Set<Integer> itemsToDelete = new HashSet<>();
+		// put some coins on the new section, if there are coins planned for it
+		{
+			SortedMap<Integer, TerrainItemType> plannedCoinsInRange = cd.getItemsInRange((int)(s.firstX()+offsetX), MathUtils.ceil(s.lastX()+offsetX));
+			for (int plannedCoinX : plannedCoinsInRange.keySet()) {
+				if (plannedCoinsInRange.get(plannedCoinX) != TerrainItemType.COIN) {
+					continue;
+				}
+				itemsToDelete.add(plannedCoinX);
+				final Coin cti = Pools.get(Coin.class).obtain();
+				cti.init();
+				// the CTI are being created with a wider view, so they already have the absolute X value correct: now move them back
+				cti.setPosition(plannedCoinX, 0.7f);
+				cti.moveBy(-offsetX, 0);
+				cti.moveBy(0, s.heightAt(cti.getX()));
+				s.surroundingItems.add(cti);
+			}
+		}
+		
+		// put some stones on the new section, if there are stones planned for it
+		{
+			SortedMap<Integer, TerrainItemType> plannedStonesInRange = sd.getItemsInRange((int)(s.firstX()+offsetX), MathUtils.ceil(s.lastX()+offsetX));
+			for (int plannedStoneX : plannedStonesInRange.keySet()) {
+				if (plannedStonesInRange.get(plannedStoneX) != TerrainItemType.STONE) {
+					continue;
+				}
+				itemsToDelete.add(plannedStoneX);
+				final Stone cti = Pools.get(Stone.class).obtain();
+//					cti.init(); // TODO does stone need no init ?
+				// the CTI are being created with a wider view, so they already have the absolute X value correct: now move them back
+				cti.setPosition(plannedStoneX, -0.5f);
+				cti.moveBy(-offsetX, 0);
+				cti.moveBy(0, s.heightAt(cti.getX()));
+				s.surroundingItems.add(cti);
+				addCoinsAboveStones(s, cti);
+			}				
+			
+			// delete is fromt the distributors rangemap
+			for (Integer integer : itemsToDelete) {
+				plannedStonesInRange.remove(integer);
+			}
+		}
+	}
+
+	private void addCoinsAboveStones(Section s, final Stone stone) {
+		// only in 30% of the stones,there shall be coins floating above it
+		final boolean putCoinsAboveStone = MathUtils.randomBoolean(0.30f);
+		if (!putCoinsAboveStone)
+			return;
+		
+		final int randomPatternIndex = MathUtils.random(1, 3);
+		final float heightOverStone = MathUtils.random(0.3f, 4.0f)+2.2f;
+		switch (randomPatternIndex) {
+		case 1:
+			// 1 coin over stone
+			{
+				final Coin coin = Pools.get(Coin.class).obtain();
+				coin.init();
+				coin.setPosition(stone.getX(), stone.getY());
+				coin.moveBy(1f, heightOverStone);
+				s.surroundingItems.add(coin);
+			}
+			break;
+
+		case 2:
+			// 3 coins over stone
+			for (int i =0; i<3 ; i++) {
+				final Coin coin = Pools.get(Coin.class).obtain();
+				coin.init();
+				coin.setPosition(stone.getX(), stone.getY());
+				coin.moveBy(i, heightOverStone);
+				s.surroundingItems.add(coin);
+			}
+			break;
+
+		case 3:
+			// 6 coins over stone
+			for (int i =0; i<3 ; i++) {
+				final Coin coin = Pools.get(Coin.class).obtain();
+				coin.init();
+				coin.setPosition(stone.getX(), stone.getY());
+				coin.moveBy(i, heightOverStone);
+				s.surroundingItems.add(coin);
+			}
+			for (float i =0.5f; i<2 ; i+=0.5f) {
+				final Coin coin = Pools.get(Coin.class).obtain();
+				coin.init();
+				coin.setPosition(stone.getX(), stone.getY());
+				coin.moveBy(i, (i == 1.0f ? 1f : 0.5f) +heightOverStone );
+				s.surroundingItems.add(coin);
+			}
+			break;
+		default:
+			break;
 		}
 	}
 	
