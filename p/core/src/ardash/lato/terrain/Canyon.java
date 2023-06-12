@@ -17,11 +17,14 @@
 package ardash.lato.terrain;
 
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Pools;
 
 import ardash.lato.actors3.AbyssCollider;
 import ardash.lato.actors3.CliffLeft;
 import ardash.lato.actors3.CliffRight;
+import ardash.lato.actors3.Coin;
 import ardash.lato.actors3.TerrainItem;
 import ardash.lato.terrain.TerrainSeg.TSType;
 
@@ -54,7 +57,44 @@ public class Canyon extends Section {
 		
 		// mist in the abyss
 		
+		// for a certain percentage of all canyons out a large array of coins above
+		final boolean putCoinsAboveCanyon = MathUtils.randomBoolean(0.4f);
+		if (!putCoinsAboveCanyon)
+			return;
 		
-//		surroundingItems.add( new Coin());
+		final float centerXofCanyon = 17.5f;
+		final int amountOfCoins = 15;
+		float xOfCoin = centerXofCanyon;
+		float yOfCoin = 7f;
+		for (int i =0; i<amountOfCoins ; i++) {
+			final Coin coin = Pools.get(Coin.class).obtain();
+			coin.init();
+			coin.setPosition(xOfCoin, yOfCoin);
+			surroundingItems.add(coin);
+			xOfCoin+=1;
+			
+			switch (i) {
+			case 0:
+				yOfCoin-=1f;
+				xOfCoin=centerXofCanyon-0.5f;
+				break;
+			case 2:
+				yOfCoin-=1f;
+				xOfCoin=centerXofCanyon-1.0f;
+				break;
+			case 5:
+				yOfCoin-=1f;
+				xOfCoin=centerXofCanyon-1.5f;
+				break;
+			case 9:
+				yOfCoin-=1f;
+				xOfCoin=centerXofCanyon-2.0f;
+				break;
+
+			default:
+				break;
+			}
+		}
+
 	}
 }
