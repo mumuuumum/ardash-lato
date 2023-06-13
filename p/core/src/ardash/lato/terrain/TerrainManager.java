@@ -95,6 +95,8 @@ public class TerrainManager {
 				s = new Hill();
 			if (MathUtils.random(0, 100)<20)
 				s = new Canyon();
+			if (MathUtils.random(0, 100)<10)
+				s = new Village();
 			final Vector2 offset = this.getLastSection().last();
 			
 			// the type and size of the new sections is now final
