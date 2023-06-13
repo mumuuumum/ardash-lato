@@ -237,7 +237,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			// check the the offset is very high, if the actor would suddenly fall, make him 0-jump : airborne + gravity
 			final float heightDelta = getY() - heightUnderActor;
 			
-			if ((heightDelta >=-0.92 && heightDelta < 0.92f) || ! state.isStarted()) {
+			if ((heightDelta >=-1.729992 && heightDelta < 1.729992f) || ! state.isStarted()) {
 				// all good, just put him on the ground
 				setPosition(getX(), heightUnderActor);
 				// set rotation to what the ground is under the actor
