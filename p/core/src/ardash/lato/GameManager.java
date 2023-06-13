@@ -24,6 +24,7 @@ import ardash.lato.A.SoundAsset;
 import ardash.lato.screens.GameScreen;
 import ardash.lato.terrain.TerrainManager;
 import ardash.lato.utils.SoundPlayer;
+import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.SODChangeListener;
 
 public class GameManager implements SODChangeListener {
@@ -46,6 +47,7 @@ public class GameManager implements SODChangeListener {
 	 */
 	private boolean started;
 	private float lastHourOfDay = -1;
+	private EnvColors lastKnownColorScheme = EnvColors.DAY;
 	private int coinsPickedUpThisRound;
 
 	public GameManager(LatoGame game) {
@@ -80,8 +82,9 @@ public class GameManager implements SODChangeListener {
 	}
 
 	@Override
-	public void onSODChange(float newSOD, float hourOfDay, float delta, float percentOfDayOver) {
-		this.lastHourOfDay = hourOfDay;	
+	public void onSODChange(float newSOD, float hourOfDay, float delta, float percentOfDayOver, EnvColors currentColorSchema) {
+		this.lastHourOfDay = hourOfDay;
+		this.lastKnownColorScheme = currentColorSchema;
 	}
 	
 	public float getLastHourOfDay() {
@@ -95,6 +98,10 @@ public class GameManager implements SODChangeListener {
 	
 	public int getCoinsPickedUpThisRound() {
 		return coinsPickedUpThisRound;
+	}
+
+	public EnvColors getLastKnownColorScheme() {
+		return lastKnownColorScheme;
 	}
 
 }

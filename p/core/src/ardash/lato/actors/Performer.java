@@ -184,6 +184,9 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			// apply the speed into a direction of movement, which is the direction of the terrain, or straight forward (angle 0) when in air
 			moveBy(speed*delta, 0); // movement is product of time-delta and speed-delta
 			
+			// linear damping in air, otherwise the player is floating to far forward (unrealistic - he doesn't have a wing glider)
+			setSpeed(speed-(1.1f*delta));
+			
 			setOriginY(-PERFORMER_WIDTH/2f);
 			
 			//register landing
@@ -234,7 +237,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 			// check the the offset is very high, if the actor would suddenly fall, make him 0-jump : airborne + gravity
 			final float heightDelta = getY() - heightUnderActor;
 			
-			if ((heightDelta >=-0.92 && heightDelta < 0.92f) || ! state.isStarted()) {
+			if ((heightDelta >=-1.729992 && heightDelta < 1.729992f) || ! state.isStarted()) {
 				// all good, just put him on the ground
 				setPosition(getX(), heightUnderActor);
 				// set rotation to what the ground is under the actor

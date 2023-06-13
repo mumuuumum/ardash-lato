@@ -43,8 +43,8 @@ public class WeatherProvider extends Actor{
 	public static final float NIGHT_HOURS = 8f;
 	public static final float DAY_HOURS = DAYTIME_HOURS + NIGHT_HOURS;
 	public static final float DUSK_HOURS = 1.84f;
-	public static final float DAWN_HOURS = 1.84f;
-	public static final float SECONDS_PER_DAY = FASTMODE ? 60f : 7f * 60f + 20f; // one 24 hours cycle shall have 7 minutes and 10 seconds (only 180 seconds in FASTMODE)
+	public static final float DAWN_HOURS = 0.92f;
+	public static final float SECONDS_PER_DAY = FASTMODE ? 180f : 7f * 60f + 20f; // one 24 hours cycle shall have 7 minutes and 20 seconds (only 180 seconds in FASTMODE)
 	public static final float SECONDS_PER_HOUR = SECONDS_PER_DAY / DAY_HOURS;
 	public static final float DAYTIME_SECONDS = DAYTIME_HOURS * SECONDS_PER_HOUR;
 	public static final float NIGHT_SECONDS = NIGHT_HOURS * SECONDS_PER_HOUR;
@@ -82,8 +82,9 @@ public class WeatherProvider extends Actor{
 	/**
 	 * @param initialTimeOfday example: 10.5 = 10:30 am 
 	 */
-	public WeatherProvider(float initialTimeOfday) {
+	public WeatherProvider(float initialTimeOfday, EnvColors initialEnvColors) {
 		currentSOD = SECONDS_PER_HOUR * initialTimeOfday;
+		currentColorSchema = initialEnvColors;
 	}
 
 	@Override
@@ -95,7 +96,7 @@ public class WeatherProvider extends Actor{
 		sendInitialColorsIfNotDoneYet();
 		
 		// change the colour scheme of the day at certain times
-		changeColoursWithAccordingToDaytime();
+		changeColoursWithAccordingToDaytime(true);
 		
 		adjustPrecipitation();
 		
@@ -189,13 +190,17 @@ public class WeatherProvider extends Actor{
 		
 	}
 
-	private void changeColoursWithAccordingToDaytime() {
+	/**
+	 * This method sets the colours according to the time. 
+	 * But it only moves to the next colour schema if the time has come.
+	 */
+	private void changeColoursWithAccordingToDaytime(final boolean doTrigger) {
 		switch (currentColorSchema) {
 		case DAY:
 			if (currentTOD()>15.2f)
 			{
 				currentColorSchema = currentColorSchema.next();
-				final float duration = 10f;
+				final float duration = 20f;
 				triggerColorSchemaChange(duration);
 			}
 			break;
@@ -216,10 +221,10 @@ public class WeatherProvider extends Actor{
 			}
 			break;
 		case DAWN:
-			if (currentTOD()>10f)
+			if (currentTOD()>8.5f)
 			{
 				currentColorSchema = currentColorSchema.next();
-				final float duration = 10f;
+				final float duration = 20f;
 				triggerColorSchemaChange(duration);
 			}
 			break;
@@ -241,7 +246,7 @@ public class WeatherProvider extends Actor{
 		final float percentOfDayOver = currentSOD / SECONDS_PER_DAY;
 		final float hourOfDay = currentSOD / SECONDS_PER_HOUR;
 		for (SODChangeListener listener : sodChangeListeners) {
-			listener.onSODChange(currentSOD, hourOfDay, delta, percentOfDayOver);
+			listener.onSODChange(currentSOD, hourOfDay, delta, percentOfDayOver, currentColorSchema);
 		}
 //		System.out.println(String.format("SOD: %+10.4f", currentTOD() ));
 	}

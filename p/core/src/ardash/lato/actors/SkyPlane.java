@@ -235,7 +235,7 @@ public class SkyPlane extends Group implements StageAccessor, Disposable, SkyCol
 
 //	boolean fading = false;
 	@Override
-	public void onSODChange(float newSOD, float hourOfDay, float delta, float percentOfDayOver) {
+	public void onSODChange(float newSOD, float hourOfDay, float delta, float percentOfDayOver, EnvColors currentColorSchema) {
 		sunRotor.setRotation(percentOfDayOver * -360f);
 		for (SkyPlaneListener listener : listeners) {
 			listener.onSunDirectionChanged(sunRotor.getRotation());

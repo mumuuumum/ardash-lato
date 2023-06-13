@@ -16,12 +16,13 @@ public class SteepDowner extends Section {
 	static final float MIN_ANGLE = 38f;
 	static final float MAX_ANGLE = 40f;
 	static final float MIN_LENGTH = 120f;
-	static final float MAX_LENGTH = 140f;
+	static final float MAX_LENGTH = 190f;
 	static final Vector2 currentRandomVector= new Vector2();
 	
 	public SteepDowner() {
 		makeNewRandomVector();
-		add (new Vector2(0,0), new Vector2(currentRandomVector), new Exp(2, 5));
+		final int power = MathUtils.random(5,10); // 5 is very down, 10 is crazy down
+		add (new Vector2(0,0), new Vector2(currentRandomVector), new Exp(2, power));
 
 		// add trees
 		Spruce tree = new Spruce();

@@ -7,5 +7,5 @@ package ardash.lato.weather;
  *
  */
 public interface SODChangeListener {
-	void onSODChange(float newSOD, float hourOfDay, float delta, float percentOfDayOver);
+	void onSODChange(float newSOD, float hourOfDay, float delta, float percentOfDayOver, EnvColors currentColorSchema);
 }

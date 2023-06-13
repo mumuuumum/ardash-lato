@@ -91,11 +91,13 @@ public class TerrainManager {
 		else
 		{
 			s = new Downer();
-			if (MathUtils.random(0, 100)<10)
+			if (MathUtils.randomBoolean(0.1f))
+				s = new SteepDowner();
+			if (MathUtils.randomBoolean(0.1f))
 				s = new Hill();
-			if (MathUtils.random(0, 100)<20)
+			if (MathUtils.randomBoolean(0.2f))
 				s = new Canyon();
-			if (MathUtils.random(0, 100)<10)
+			if (MathUtils.randomBoolean(0.1f))
 				s = new Village();
 			final Vector2 offset = this.getLastSection().last();
 			
