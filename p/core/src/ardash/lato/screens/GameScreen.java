@@ -127,7 +127,8 @@ public class GameScreen implements Screen {
 	 */
 	public void show() {
 		final float lastKnownHourOfDay = gm.getLastHourOfDay();
-		weather = new WeatherProvider(lastKnownHourOfDay <= 0 ? 10.5f : lastKnownHourOfDay);
+		EnvColors lastKnownColorScheme = gm.getLastKnownColorScheme();
+		weather = new WeatherProvider(lastKnownHourOfDay <= 0 ? 10.5f : lastKnownHourOfDay, lastKnownColorScheme );
 		weather.addSODChangeListener(gm);
 		backStage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), "bs");
 //		stage = new LatoStage(new ExtendViewport(WORLD_WIDTH, WORLD_HEIGHT), "s");
