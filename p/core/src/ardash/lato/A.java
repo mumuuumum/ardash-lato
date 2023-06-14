@@ -18,6 +18,7 @@
 package ardash.lato;
 
 import java.util.EnumSet;
+import java.util.Locale;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
@@ -154,7 +155,7 @@ public class A {
 		TLWGTYPIST,TLWGTYPISTBOLD;
 		@Override
 		public String toString() {
-			return "" + super.toString().toLowerCase() + ".ttf"; // example "arial.ttf"  
+			return "" + super.toString().toLowerCase(Locale.ENGLISH) + ".ttf"; // example "arial.ttf"  
 		}
 	}
 
@@ -168,7 +169,7 @@ public class A {
 		RAIN, SNOW, SPRAY;
 		@Override
 		public String toString() {
-			return "" + super.toString().toLowerCase() + ".p";
+			return "" + super.toString().toLowerCase(Locale.ENGLISH) + ".p";
 		}
 	}
 
@@ -184,7 +185,7 @@ public class A {
 		YCOIN,FARMHOUSE;
 		@Override
 		public String toString() {
-			return "3d/" + super.toString().toLowerCase() + ".g3db";
+			return "3d/" + super.toString().toLowerCase(Locale.ENGLISH) + ".g3db";
 		}
 	}
 
@@ -192,7 +193,7 @@ public class A {
 		BG;
 		@Override
 		public String toString() {
-			return "music/" + super.toString().toLowerCase() + ".mp3";
+			return "music/" + super.toString().toLowerCase(Locale.ENGLISH) + ".mp3";
 		}
 	}
 
@@ -205,7 +206,7 @@ public class A {
 
 		@Override
 		public String toString() {
-			return "sounds/" + super.toString().toLowerCase() + ".mp3";
+			return "sounds/" + super.toString().toLowerCase(Locale.ENGLISH) + ".mp3";
 		}
 	}
 	
@@ -215,7 +216,7 @@ public class A {
 		SCENE;
 		@Override
 		public String toString() {
-			return "" + super.toString().toLowerCase() + ".atlas"; // "misc.atlas"  
+			return "" + super.toString().toLowerCase(Locale.ENGLISH) + ".atlas"; // "misc.atlas"  
 		}
 	}
 
@@ -245,7 +246,7 @@ public class A {
 		ADD_FLARE, PAUSE, ADD_FLARE_A, TITLESCREEN, MOON_SHAPE;
 		@Override
 		public String toString() {
-			return "" + super.toString().toLowerCase() + ""; 
+			return "" + super.toString().toLowerCase(Locale.ENGLISH) + ""; 
 		}
 	}
 	
@@ -323,7 +324,7 @@ public class A {
 //			// init all sprites
 //			for (SpriteAsset e : SpriteAsset.values()) {
 //				// first the name and index must be set, so thString(works properly)
-//				final String lowername = e.name().toLowerCase();
+//				final String lowername = e.name().toLowerCase(Locale.ENGLISH);
 //				if (lowername.contains("_")) 
 //				{
 //					final int uscp = lowername.lastIndexOf('_'); // underscore position
@@ -708,7 +709,7 @@ public class A {
 
 	public static AtlasRegion getRandomAtlasRegion(SpriteGroupAsset sg) {
 		final int i = MathUtils.random(0, sg.size()-1);
-		final String sgname = sg.name().toLowerCase();
+		final String sgname = sg.name().toLowerCase(Locale.ENGLISH);
 		return A.getTextureRegions(sgname).get(i);
 	}
 
