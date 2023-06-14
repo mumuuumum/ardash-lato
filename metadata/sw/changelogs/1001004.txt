@@ -1,0 +1,4 @@
+aliongeza vijiji vidogo njiani chini ya kilima
+aliongeza damping linear wakati katika hewa, hivyo mchezaji haina kuelea mbali sana
+marekebisho madogo katika mzunguko wa mchana-usiku
+bugfix: pakia faili za vipengee kwa usahihi bila kujali mipangilio ya lugha ya kifaa

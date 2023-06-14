@@ -1,0 +1,4 @@
+se agregaron pequeños pueblos en el camino cuesta abajo
+amortiguación lineal agregada mientras está en el aire, para que el jugador no flote demasiado
+pequeños ajustes en el ciclo día-noche
+corrección de errores: cargar archivos de activos correctamente independientemente de la configuración de idioma del dispositivo

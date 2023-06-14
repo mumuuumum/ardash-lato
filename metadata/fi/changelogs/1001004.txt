@@ -1,0 +1,4 @@
+lisäsi pieniä kyliä matkalla alas mäkeä
+lisätty lineaarinen vaimennus ilmassa, joten pelaaja ei kellu liian pitkälle
+pieniä säätöjä päivä-yö-syklissä
+bugikorjaus: lataa omaisuustiedostot oikein laitteen kieliasetuksista riippumatta

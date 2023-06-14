@@ -1,0 +1,4 @@
+aggiunti piccoli villaggi lungo la discesa
+aggiunto smorzamento lineare mentre è in aria, in modo che il giocatore non galleggi troppo lontano
+piccoli aggiustamenti nel ciclo giorno-notte
+bugfix: carica correttamente i file delle risorse indipendentemente dalle impostazioni della lingua del dispositivo

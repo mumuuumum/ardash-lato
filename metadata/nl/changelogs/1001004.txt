@@ -1,0 +1,4 @@
+kleine dorpjes toegevoegd onderweg de heuvel af
+lineaire demping toegevoegd in de lucht, zodat de speler niet te ver zweeft
+kleine aanpassingen in de dag-nacht-cyclus
+bugfix: laad activabestanden correct, onafhankelijk van de taalinstellingen van het apparaat

@@ -1,0 +1,4 @@
+added small villages on the way down the hill
+added linear damping while in air, so he player doesn't float too far
+small adjustments in the day-night-cycle
+bugfix: load asset files correctly independently of the device's language-settings

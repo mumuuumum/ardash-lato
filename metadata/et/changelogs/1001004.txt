@@ -1,0 +1,4 @@
+lisas mäest alla teel väikesed külad
+lisatud lineaarne summutus õhus olles, nii et mängija ei ujuks liiga kaugele
+väikesed muudatused tsüklis päev-öö
+veaparandus: laadige varafailid õigesti, sõltumata seadme keeleseadetest

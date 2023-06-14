@@ -1,0 +1,4 @@
+va afegir petits pobles a la baixada del turó
+S'ha afegit un amortiment lineal mentre està a l'aire, perquè el jugador no suri massa lluny
+petits ajustos en el cicle dia-nit
+Correcció d'errors: carregueu els fitxers de recursos correctament independentment de la configuració d'idioma del dispositiu

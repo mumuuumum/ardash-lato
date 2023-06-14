@@ -1,0 +1,4 @@
+klein dorpies bygevoeg op pad teen die heuwel af
+bygevoeg lineêre demping terwyl hy in die lug is, sodat die speler nie te ver dryf nie
+klein aanpassings in die dag-nag-siklus
+foutoplossing: laai batelêers korrek onafhanklik van die toestel se taalinstellings

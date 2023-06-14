@@ -1,0 +1,4 @@
+lagt till små byar på vägen nerför backen
+lagt till linjär dämpning i luften, så att spelaren inte flyter för långt
+små justeringar i dag-natt-cykeln
+buggfix: ladda tillgångsfiler korrekt oberoende av enhetens språkinställningar

@@ -1,0 +1,4 @@
+menambahkan desa-desa kecil dalam perjalanan menuruni bukit
+menambahkan redaman linier saat di udara, sehingga pemain tidak melayang terlalu jauh
+penyesuaian kecil dalam siklus siang-malam
+perbaikan bug: memuat file aset dengan benar terlepas dari pengaturan bahasa perangkat

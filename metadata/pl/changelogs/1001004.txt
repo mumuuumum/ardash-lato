@@ -1,0 +1,4 @@
+dodano małe wioski po drodze w dół wzgórza
+dodano tłumienie liniowe w powietrzu, aby gracz nie unosił się zbyt daleko
+małe korekty w cyklu dnia i nocy
+poprawka: poprawnie ładuj pliki zasobów niezależnie od ustawień językowych urządzenia

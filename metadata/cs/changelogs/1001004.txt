@@ -1,0 +1,4 @@
+přibyly malé vesnice na cestě z kopce
+přidáno lineární tlumení ve vzduchu, takže hráč nepluje příliš daleko
+malé úpravy v cyklu den-noc-
+oprava chyb: načte soubory aktiv správně nezávisle na nastavení jazyka zařízení

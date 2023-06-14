@@ -1,0 +1,4 @@
+dodao mala sela na putu niz brdo
+dodano linearno prigušenje dok je u zraku, tako da igrač ne lebdi predaleko
+male prilagodbe u ciklusu dan-noć
+ispravak greške: pravilno učitajte datoteke sredstava neovisno o jezičnim postavkama uređaja

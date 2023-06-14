@@ -1,0 +1,4 @@
+lagt til små landsbyer på vei ned bakken
+lagt til lineær demping mens han er i luften, slik at spilleren ikke flyter for langt
+små justeringer i dag-natt-syklusen
+feilretting: last ressursfiler riktig uavhengig av enhetens språkinnstillinger

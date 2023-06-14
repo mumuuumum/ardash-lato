@@ -1,0 +1,4 @@
+kis falvak lettek hozzáadva a dombról lefelé vezető úton
+hozzáadott lineáris csillapítás a levegőben, így a játékos nem lebeg túl messzire
+kis módosítások a nappal-éjszaka ciklusban
+hibajavítás: az eszközfájlok helyes betöltése az eszköz nyelvi beállításaitól függetlenül

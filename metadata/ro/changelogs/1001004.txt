@@ -1,0 +1,4 @@
+a adăugat mici sate la coborârea dealului
+a adăugat amortizare liniară în aer, astfel încât jucătorul să nu plutească prea departe
+mici ajustări în ciclul zi-noapte
+remediere: încărcați corect fișierele active, independent de setările de limbă ale dispozitivului

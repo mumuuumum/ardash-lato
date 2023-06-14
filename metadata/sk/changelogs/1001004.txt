@@ -1,0 +1,4 @@
+pribudli malé dedinky na ceste dolu kopcom
+pridané lineárne tlmenie vo vzduchu, takže hráč nepláva príliš ďaleko
+malé úpravy v cykle deň-noc-
+oprava chýb: správne načítajte súbory aktív nezávisle od nastavení jazyka zariadenia

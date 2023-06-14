@@ -1,0 +1,4 @@
+tepeden aşağı giderken küçük köyler eklendi
+havadayken doğrusal sönümleme eklendi, böylece oyuncu çok uzağa uçmaz
+gündüz-gece döngüsünde küçük ayarlamalar
+hata düzeltme: varlık dosyalarını cihazın dil ayarlarından bağımsız olarak doğru şekilde yükleyin

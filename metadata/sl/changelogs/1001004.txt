@@ -1,0 +1,4 @@
+dodane majhne vasice na poti po hribu navzdol
+dodano linearno dušenje v zraku, tako da igralec ne lebdi predaleč
+majhne prilagoditve v ciklu dan-noč
+popravek napake: pravilno naloži datoteke sredstev neodvisno od jezikovnih nastavitev naprave

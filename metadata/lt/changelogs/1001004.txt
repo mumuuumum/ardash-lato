@@ -1,0 +1,4 @@
+pakeliui nuo kalno pridėjo mažų kaimelių
+pridėtas linijinis slopinimas ore, todėl žaidėjas neplaukia per toli
+nedideli koregavimai cikle diena-naktis
+klaidų taisymas: teisingai įkelkite išteklių failus nepriklausomai nuo įrenginio kalbos nustatymų

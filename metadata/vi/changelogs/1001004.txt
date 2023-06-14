@@ -1,0 +1,4 @@
+thêm những ngôi làng nhỏ trên đường xuống đồi
+đã thêm giảm xóc tuyến tính khi ở trong không khí, vì vậy người chơi không trôi quá xa
+điều chỉnh nhỏ trong chu kỳ ngày đêm
+sửa lỗi: tải tệp nội dung chính xác độc lập với cài đặt ngôn ngữ của thiết bị

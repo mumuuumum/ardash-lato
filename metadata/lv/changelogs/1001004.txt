@@ -1,0 +1,4 @@
+pievienoja mazus ciematiņus pa ceļam lejup no kalna
+pievienota lineāra amortizācija, atrodoties gaisā, lai spēlētājs nepeld pārāk tālu
+nelielas korekcijas ciklā diena-nakts
+kļūdu labojums: pareizi ielādējiet līdzekļu failus neatkarīgi no ierīces valodas iestatījumiem

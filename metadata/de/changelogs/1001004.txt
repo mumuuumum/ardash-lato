@@ -1,0 +1,4 @@
+fügte auf dem Weg den Hügel hinunter kleine Dörfer hinzu
+Lineare Dämpfung in der Luft hinzugefügt, damit der Spieler nicht zu weit schwebt
+kleine Anpassungen im Tag-Nacht-Rhythmus
+Bugfix: Asset-Dateien unabhängig von den Spracheinstellungen des Geräts korrekt laden

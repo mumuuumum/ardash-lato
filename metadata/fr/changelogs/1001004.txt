@@ -1,0 +1,4 @@
+ajouté de petits villages en descendant la colline
+ajout d'un amortissement linéaire dans l'air, pour que le joueur ne flotte pas trop loin
+petits ajustements dans le cycle jour-nuit
+correction de bug : charger correctement les fichiers de ressources indépendamment des paramètres de langue de l'appareil

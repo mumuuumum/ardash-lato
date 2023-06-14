@@ -1,0 +1,4 @@
+adicionou pequenas aldeias no caminho descendo a colina
+adicionado amortecimento linear no ar, para que o jogador não flutue muito longe
+pequenos ajustes no ciclo dia-noite
+bugfix: carregue arquivos de recursos corretamente independentemente das configurações de idioma do dispositivo
