@@ -17,15 +17,9 @@
 package ardash.lato.actors;
 
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.actions.FloatAction;
-import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-
-import ardash.lato.A;
-import ardash.lato.A.MusicAsset;
-import ardash.lato.actions.MoreActions;
 
 
 /**
@@ -35,14 +29,12 @@ import ardash.lato.actions.MoreActions;
  */
 public class MusicProvider extends Actor {
 	private static MusicProvider INSTANCE;
-//	SequenceAction fadeOverAction;
-//	FloatAction fadeOutAction;
-//	FloatAction fadeInAction;
-//	private float currentVolume = 0f;
 	private Music currentMusic = null;
 	
 	private MusicProvider () {
 		setX(0); // we use x for the volume
+		setVisible(false);
+		setTouchable(Touchable.disabled);
 	}
 	
 	public static MusicProvider getInstance() {
@@ -57,20 +49,6 @@ public class MusicProvider extends Actor {
 		if (currentMusic != null) {
 			currentMusic.setVolume(getX());
 		}
-//		A.getMusic(MusicAsset.BG).setVolume(getX());
-//		A.getMusic(MusicAsset.SAD).setVolume(getX());
-
-		//		if (fadeOverAction != null) {
-//			if (fadeOutAction != null && !fadeOutAction.isComplete()) {
-//				currentVolume = fadeOutAction.getValue()
-//				A.getMusic(MusicAsset.BG).setVolume(currentVolume);
-//				A.getMusic(MusicAsset.SAD).setVolume(currentVolume);
-//			} else if (fadeInAction != null && !fadeInAction.isComplete()) {
-//				currentVolume = fadeInAction.getValue()
-//				A.getMusic(MusicAsset.BG).setVolume(currentVolume);
-//				A.getMusic(MusicAsset.SAD).setVolume(currentVolume);
-//			}
-//		}
 	}
 	
 	/**
@@ -101,9 +79,5 @@ public class MusicProvider extends Actor {
 				}),
 				Actions.moveTo(1f, -1f, fadeDuration) // fade in 
 				));
-//		fadeOutAction = MoreActions.floata(currentVolume, 0f, 5f);
-//		fadeInAction = MoreActions.floata(currentVolume, 1f, 5f);
-//		fadeOverAction = Actions.sequence(fadeOutAction, fadeInAction);
-//		addAction(fadeInAction);
 	}
 }
