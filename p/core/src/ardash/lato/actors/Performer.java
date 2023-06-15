@@ -155,7 +155,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 //		scarfAttachPointGroup.setPosition(0.5f, 0.1f);
 		scarfAttachPointGroup.setPosition(0f, 0f);
 		
-		this.bb = new Rectangle(getX(), getY(), PERFORMER_WIDTH, PERFORMER_WIDTH);
+		this.bb = new Rectangle(getX(), getY(), PERFORMER_WIDTH*0.9f, PERFORMER_WIDTH*0.9f);
 	}
 	
 //	private float accum = 0;
