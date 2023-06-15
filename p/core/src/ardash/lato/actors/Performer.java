@@ -47,10 +47,12 @@ import ardash.gdx.scenes.scene3d.actions.Actions3D;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.A;
 import ardash.lato.A.ARAsset;
+import ardash.lato.A.MusicAsset;
 import ardash.lato.A.ParticleAsset;
 import ardash.lato.actions.Actions;
 import ardash.lato.actions.GravityAction;
 import ardash.lato.screens.GameOverDialog;
+import ardash.lato.utils.SoundPlayer;
 import ardash.lato.weather.AmbientColorChangeListener;
 
 public class Performer extends Group3D implements Disposable, AmbientColorChangeListener {
@@ -153,7 +155,7 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 //		scarfAttachPointGroup.setPosition(0.5f, 0.1f);
 		scarfAttachPointGroup.setPosition(0f, 0f);
 		
-		this.bb = new Rectangle(getX(), getY(), PERFORMER_WIDTH, PERFORMER_WIDTH);
+		this.bb = new Rectangle(getX(), getY(), PERFORMER_WIDTH*0.9f, PERFORMER_WIDTH*0.9f);
 	}
 	
 //	private float accum = 0;
@@ -600,6 +602,11 @@ public class Performer extends Group3D implements Disposable, AmbientColorChange
 				        Zoomer sb = new Zoomer((int)(Gdx.graphics.getWidth() * 0.25f), (int)(Gdx.graphics.getHeight() * 0.25f) , Quality.VeryHigh);
 				        sb.setBlurStrength(2);
 						getGameScreen().postProcessor.addEffect( sb );
+						
+						// play sad music
+//						SoundPlayer.swapMusicTo(MusicAsset.SAD);
+				        MusicProvider.getInstance().fadeToMusic(A.getMusic(MusicAsset.SAD));
+
 					}
 				})
 				));

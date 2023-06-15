@@ -54,11 +54,13 @@ import ardash.gdx.scenes.scene3d.pooling.PoolsManager;
 import ardash.gdx.scenes.scene3d.shape.Image3D;
 import ardash.lato.A;
 import ardash.lato.A.ARAsset;
+import ardash.lato.A.MusicAsset;
 import ardash.lato.GameManager;
 import ardash.lato.LatoShaderProvider;
 import ardash.lato.LatoStage;
 import ardash.lato.LatoStage3D;
 import ardash.lato.actors.FlarePlane;
+import ardash.lato.actors.MusicProvider;
 import ardash.lato.actors.ParticlePlane;
 import ardash.lato.actors.Performer;
 import ardash.lato.actors.Performer.PerformerListener;
@@ -67,6 +69,7 @@ import ardash.lato.actors.SkyPlane;
 import ardash.lato.actors.SkyPlane.SkyPlaneListener;
 import ardash.lato.actors.WaveDrawer;
 import ardash.lato.actors3.MountainRange3;
+import ardash.lato.utils.SoundPlayer;
 import ardash.lato.weather.EnvColors;
 import ardash.lato.weather.WeatherProvider;
 
@@ -148,6 +151,7 @@ public class GameScreen implements Screen {
 //		Gdx.input.setInputProcessor(backStage);
 		
 		guiStage.addActor(weather); // weather can be on any stage
+		guiStage.addActor(MusicProvider.getInstance()); // music can be on any stage
 
 		// particle plane must be drawn under flare plane
 		final ParticlePlane particlePlane = new ParticlePlane(MAX_WORLD_WIDTH*2f,WORLD_HEIGHT);
@@ -368,6 +372,9 @@ public class GameScreen implements Screen {
         postProcessor.addEffect( bloom );
         Fxaa fxaa = new Fxaa(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         postProcessor.addEffect( fxaa );
+        
+//        SoundPlayer.swapMusicTo(MusicAsset.BG);
+        MusicProvider.getInstance().fadeToMusic(A.getMusic(MusicAsset.BG));
 	}
 
 	private ShaderProvider getShaderP(LatoShaders type) {

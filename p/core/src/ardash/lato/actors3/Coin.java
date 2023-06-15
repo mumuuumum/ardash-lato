@@ -35,7 +35,7 @@ public class Coin extends PoolableActor3D implements CollidingTerrainItem {
         setRoll(90f);
         setTag(Tag.CENTER);
         init();
-		this.bb = new Rectangle(getX(), getY(), 0.3f, 0.3f);
+		this.bb = new Rectangle(getX(), getY(), 0.1f, 0.1f);
 	}
 	
 	@Override
