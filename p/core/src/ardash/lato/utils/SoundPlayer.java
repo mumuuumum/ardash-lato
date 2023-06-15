@@ -19,6 +19,9 @@ package ardash.lato.utils;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
+import ardash.lato.A;
+import ardash.lato.A.MusicAsset;
+
 /**
  * Warpper for play sound and music. Obeys the Sound-on-off-setting
  */
@@ -71,4 +74,20 @@ public class SoundPlayer {
 			return;
 			music.pause();
 	}
+
+	public static void swapMusicTo(MusicAsset musicAsset)
+	{
+		if (musicAsset == null)
+			return;
+		// stop all other musics
+		for (MusicAsset ma : MusicAsset.values()) {
+			A.getMusic(ma).pause();
+		}
+		final Music music = A.getMusic(musicAsset);
+		if (/* Pref.getSoundOn() && */ !music.isPlaying()) {
+			music.play();
+			music.setLooping(true);
+		}
+	}
+
 }

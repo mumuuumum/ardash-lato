@@ -190,7 +190,7 @@ public class A {
 	}
 
 	public enum MusicAsset {
-		BG;
+		BG, SAD;
 		@Override
 		public String toString() {
 			return "music/" + super.toString().toLowerCase(Locale.ENGLISH) + ".mp3";
