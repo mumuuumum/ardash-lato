@@ -1,0 +1,1 @@
+bugfix: fixo atraso maciço quando muitas moedas são recolhidas

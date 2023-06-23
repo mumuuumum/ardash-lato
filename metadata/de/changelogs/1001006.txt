@@ -1,0 +1,1 @@
+Bugfix: Massive Verzögerung beim Aufsammeln vieler Münzen behoben

@@ -1,0 +1,1 @@
+feilretting: fikset massiv etterslep når mange mynter er plukket opp

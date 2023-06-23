@@ -1,0 +1,1 @@
+buggfix: fixade massiv eftersläpning när många mynt plockas upp

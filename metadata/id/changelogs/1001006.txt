@@ -1,0 +1,1 @@
+perbaikan bug: memperbaiki kelambatan besar-besaran saat banyak koin diambil

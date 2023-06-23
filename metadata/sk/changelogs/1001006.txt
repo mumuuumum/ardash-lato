@@ -1,0 +1,1 @@
+bugfix: opravené masívne oneskorenie, keď sa vyberie veľa mincí

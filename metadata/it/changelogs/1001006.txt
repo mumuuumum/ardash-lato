@@ -1,0 +1,1 @@
+bugfix: risolto un enorme ritardo quando vengono raccolte molte monete

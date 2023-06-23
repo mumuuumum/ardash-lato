@@ -1,0 +1,1 @@
+bugfix: opraveno masivní zpoždění při sebrání velkého množství mincí

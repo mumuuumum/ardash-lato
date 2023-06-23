@@ -1,0 +1,1 @@
+popravek napak: popravljeno veliko zaostajanje, ko je pobranih veliko kovancev
