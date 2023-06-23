@@ -1,0 +1,1 @@
+poprawka: naprawiono ogromne opóźnienia, gdy podnoszono wiele monet

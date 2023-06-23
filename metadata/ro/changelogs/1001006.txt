@@ -1,0 +1,1 @@
+bugfix: s-a remediat întârzierea masivă atunci când sunt ridicate multe monede

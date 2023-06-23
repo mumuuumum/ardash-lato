@@ -1,0 +1,1 @@
+bugfix: fixed massive lagging when many coins are picked up

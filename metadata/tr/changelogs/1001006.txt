@@ -1,0 +1,1 @@
+hata düzeltme: çok sayıda madeni para alındığında oluşan büyük gecikme düzeltildi

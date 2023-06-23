@@ -1,0 +1,1 @@
+bugikorjaus: korjattu massiivinen viive, kun useita kolikoita kerätään

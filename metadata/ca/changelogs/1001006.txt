@@ -1,0 +1,1 @@
+Correcció d'errors: s'ha corregit el retard massiu quan es recullen moltes monedes

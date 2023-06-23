@@ -1,0 +1,1 @@
+bugfix: enorme vertraging opgelost wanneer veel munten worden opgepakt
