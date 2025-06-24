@@ -125,7 +125,7 @@ How much to donate? 🙂
 https://matrix.to/#/#lato:abga.be
 
 ### email the developer
-ar-lato@abga.be
+ar-lato-26ab0d@abga.be
 
 ### email to create a gitlab ticket (if you don't have a gitlab account)
 incoming+ar-/lato@gitlab.com
