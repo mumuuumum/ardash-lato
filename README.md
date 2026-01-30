@@ -59,7 +59,7 @@ This is a 2020 remake of the Game Alto's Adventure (2015), which was a remake of
 
 Unfortunately none of the previous endless runner games was FLOSS. There was TredGamerZ/Legendary (2017), it was open source but still based on Unity. Unity is not open source. The corona SDK engine has been made open source in Jan 2019 and they got a show case example called Endless Sk8boarder, which looks like crap and doesn't do good marketing for the engine.
 
-The day and night cycles of Alto's adventure have also been remade a few times - most promitently in the game Fishing Life in 2019. However Fishing Life was also made in Unity. Lato is the first release of these day and night cycles into the pen source world, to be reused in other projects.
+The day and night cycles of Alto's adventure have also been remade a few times - most promitently in the game Fishing Life in 2019. However Fishing Life was also made in Unity. Lato is the first release of these day and night cycles into the open source world, to be reused in other projects.
 
 The only suitable way around the restictions of closed source games and engines was to use a well established and well supported FLOSS engine (LibGDX) to make a complete new endless runner game. Unfortunately many problems are also not resolved yet in LibGDX and yet have to be pioneered. That's what this project attempts. Bring a showcase app to the FLOSS community that provides an example implementation for:
 * endless procedural random terrain
@@ -108,7 +108,7 @@ Cash donations are not accepted. You can buy the author of this app a coffee if 
 * ETH: 0x0a6604dc5000c57e80f824601535db216e77482f
 * XMR: 4AffoFbFhfGZdBeMaQYSCMTURacM3qZYxKHQeLx8xkiLUjzk2GPzjCrNU5uquXEsEL6wcN8b5ULg5JdDaQfuQRkUJs6xx3f
 
-*Note: These addresses are taken from the original autors website (http://andreas.redmer.super-sm.art/). They are cryptographically signed, with the same key, that signed the git commits of this software project. Feel free to verify the GPG signatures so you can be sure, that you donation goes to the person, who actually commited the code of this software.*
+*Note: These addresses are taken from the original autors website. They are cryptographically signed, with the same key, that signed the git commits of this software project. Feel free to verify the GPG signatures so you can be sure, that you donation goes to the person, who actually commited the code of this software.*
 
 How much to donate? 🙂
 
