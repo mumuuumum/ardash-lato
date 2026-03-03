@@ -1,24 +1,25 @@
-buildscript {
-    
-
-    repositories {
+buildscript { 
+    repositories { 
+        maven { 
+            url('/opt/android-plugin')
+        }
         mavenLocal()
         mavenCentral()
         gradlePluginPortal()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { 
+            url('https://oss.sonatype.org/content/repositories/snapshots/')
+        }
         google()
     }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.4'
+    dependencies { 
+        classpath('com.android.tools.build:gradle:7.4.0-dev')
     }
 }
-
-allprojects {
-    apply plugin: "eclipse"
-
+allprojects { 
+    apply(['plugin': 'eclipse'])
     version = '1.0'
-    ext {
-        appName = "Lato"
+    ext { 
+        appName = 'Lato'
         gdxVersion = '1.11.0'
         roboVMVersion = '2.3.16'
         box2DLightsVersion = '1.5'
@@ -26,69 +27,59 @@ allprojects {
         aiVersion = '1.8.2'
         gdxControllersVersion = '2.2.1'
     }
-
-    repositories {
+    repositories { 
+        maven { 
+            url('/opt/android-plugin')
+        }
         mavenLocal()
         mavenCentral()
         google()
         gradlePluginPortal()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-        maven { url "https://jitpack.io" }
+        maven { 
+            url('https://oss.sonatype.org/content/repositories/snapshots/')
+        }
+        maven { 
+            url('https://oss.sonatype.org/content/repositories/releases/')
+        }
+        maven { 
+            url('https://jitpack.io')
+        }
     }
 }
-
-project(":desktop") {
-    apply plugin: "java-library"
-
-
-    dependencies {
-        implementation project(":core")
-        api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
- //       api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
-        api "com.badlogicgames.gdx:gdx-tools:$gdxVersion"  // for texturepacker
+project(':desktop', { 
+    apply(['plugin': 'java-library'])
+    dependencies { 
+        implementation(project(':core'))
+        api("com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion")
+        api("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop")
+        api("com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop")
+        api("com.badlogicgames.gdx:gdx-tools:$gdxVersion")
     }
-}
-
-project(":android") {
-    apply plugin: "com.android.application"
-
-    configurations { natives }
-
-    dependencies {
-        implementation project(":core")
-        api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
-        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
-//        api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-//        natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-armeabi-v7a"
-//        natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-arm64-v8a"
-//        natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86"
-//        natives "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-x86_64"
-        
+})
+project(':android', { 
+    apply(['plugin': 'com.android.application'])
+    configurations { 
+        natives 
     }
-}
-
-project(":core") {
-    apply plugin: "java-library"
-
-
-    dependencies {
-        api "com.badlogicgames.gdx:gdx:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-//        api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-//        api "net.dermetfan.libgdx-utils:libgdx-utils:0.13.4" // prolly not needed. AnnottationAssetManagr is gone
-//        api "net.dermetfan.libgdx-utils:libgdx-utils-box2d:0.13.4"
-        api "com.github.czyzby:gdx-kiwi:1.9.1.9.6"
-        
+    dependencies { 
+        implementation(project(':core'))
+        api("com.badlogicgames.gdx:gdx-backend-android:$gdxVersion")
+        natives("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a")
+        natives("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a")
+        natives("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86")
+        natives("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64")
+        api("com.badlogicgames.gdx:gdx-freetype:$gdxVersion")
+        natives("com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a")
+        natives("com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a")
+        natives("com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86")
+        natives("com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64")
     }
-}
+})
+project(':core', { 
+    apply(['plugin': 'java-library'])
+    dependencies { 
+        api("com.badlogicgames.gdx:gdx:$gdxVersion")
+        api("com.badlogicgames.gdx:gdx-freetype:$gdxVersion")
+        api('com.github.czyzby:gdx-kiwi:1.9.1.9.6')
+    }
+})
